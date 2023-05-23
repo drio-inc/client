@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"yarn workspace root.drio dev\" \"yarn workspace saas.drio dev\""
+  },
+  "workspaces": [
+    "root.drio",
+    "saas.drio"
+  ],
+  "dependencies": {
+    "concurrently": "^8.0.1"
+  }
+}
