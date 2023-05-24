@@ -5,6 +5,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storageSession from "redux-persist/lib/storage/session";
 
 import uiReducer from "./slices/uiSlice";
+import DDXSlice from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
 import adminAccountReducer from "./slices/adminAccountSlice";
 import adminOrgAccountReducer from "./slices/adminOrgAccountSlice";
@@ -24,6 +25,7 @@ const persistedUIReducer = persistReducer(persistLocalConfig, uiReducer);
 
 export const store = configureStore({
   reducer: {
+    DDX: DDXSlice,
     ui: persistedUIReducer,
     auth: persistedAuthReducer,
     adminAccount: adminAccountReducer,

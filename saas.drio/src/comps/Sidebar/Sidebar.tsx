@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-import { IoGridOutline, IoLayersOutline } from "react-icons/io5";
+import { IoGridOutline } from "react-icons/io5";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 
 import {
@@ -14,10 +14,6 @@ import {
   HiOutlineClipboardCheck,
   HiOutlineDocumentDuplicate,
   HiOutlinePresentationChartBar,
-  HiOutlinePresentationChartLine,
-  HiOutlineLibrary,
-  HiOutlineCloud,
-  HiOutlineCog,
 } from "react-icons/hi";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
@@ -32,84 +28,7 @@ interface NavLink {
   }[];
 }
 
-const RootNavLinks = [
-  {
-    name: "Dashboard",
-    href: "dashboard",
-    icon: <IoGridOutline className="inline-block w-6 h-6 mr-2" />,
-  },
-  {
-    name: "Datasets",
-    href: "datasets",
-    icon: <HiOutlineCloud className="inline-block w-6 h-6 mr-2" />,
-  },
-
-  {
-    name: "Data Contracts",
-    href: "data-contracts",
-    icon: <IoLayersOutline className="inline-block w-6 h-6 mr-2" />,
-  },
-
-  {
-    name: "Policies",
-    href: "policies",
-    icon: <HiOutlineClipboardCheck className="inline-block w-6 h-6 mr-2" />,
-  },
-
-  {
-    name: "Monitoring",
-    href: "monitoring",
-    icon: (
-      <HiOutlinePresentationChartBar className="inline-block w-6 h-6 mr-2" />
-    ),
-  },
-
-  {
-    name: "Troubleshooting",
-    href: "troubleshooting",
-    icon: (
-      <HiOutlinePresentationChartLine className="inline-block w-6 h-6 mr-2" />
-    ),
-  },
-
-  {
-    name: "DDX Infrastructure",
-    href: "ddx-infra",
-    icon: <HiOutlineDocumentReport className="inline-block w-6 h-6 mr-2" />,
-  },
-
-  {
-    name: "My Org",
-    href: "my-org",
-    icon: <HiOutlineLibrary className="inline-block w-6 h-6 mr-2" />,
-    children: [
-      {
-        name: "Organizational Units",
-        href: "ou",
-      },
-      {
-        name: "Agreements and Assets",
-        href: "agreements",
-      },
-      {
-        name: "Authentication",
-        href: "authentication",
-      },
-      {
-        name: "Roles",
-        href: "roles",
-      },
-    ],
-  },
-
-  {
-    name: "Settings",
-    href: "settings",
-    icon: <HiOutlineCog className="inline-block w-6 h-6 mr-2" />,
-  },
-];
-
-const AdminNavLinks = [
+const NavLinks = [
   {
     name: "Dashboard",
     href: "dashboard",
@@ -135,7 +54,7 @@ const AdminNavLinks = [
 
   {
     name: "DDX Infrastructure",
-    href: "ddx-infra",
+    href: "ddx",
     icon: <HiOutlineDocumentReport className="inline-block w-6 h-6 mr-2" />,
   },
 
@@ -178,8 +97,6 @@ export default function Sidebar() {
   const { user } = useAppSelector((state) => state.auth);
   // const { expandedLinks } = useAppSelector((state) => state.ui);
 
-  const NavLinks = user?.role === "root-admin" ? RootNavLinks : AdminNavLinks;
-
   const [expandedLinks, setExpandedLinks] = useState<{
     [key: string]: boolean;
   }>({});
@@ -214,7 +131,7 @@ export default function Sidebar() {
                         }
                       `}
                   >
-                    <Link href={`/saas/${link.href}`}>
+                    <Link href={`/${link.href}`}>
                       <span
                         className={`                        ${
                           router.pathname.indexOf(link.href) !== -1

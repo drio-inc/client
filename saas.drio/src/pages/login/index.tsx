@@ -51,18 +51,10 @@ export default function Login() {
         password: data.password,
       }).unwrap();
 
-      console.log(res.role);
-
       dispatch(setUser(res));
       dispatch(setAuthenticated(true));
 
-      if (res.role === "super-admin") {
-        router.push("/saas/accounts");
-      } else if (res.role === "root-admin") {
-        router.push("/root/my-org");
-      } else {
-        router.push("/auth/login");
-      }
+      router.push("/accounts");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again."

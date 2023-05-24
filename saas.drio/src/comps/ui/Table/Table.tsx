@@ -12,6 +12,9 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 type TableHeader = {
   header: string;
   accessor: string;
+  status?: {
+    [key: string]: string;
+  };
 };
 
 type TableProps = {
@@ -46,7 +49,11 @@ const Table = ({
   return (
     <>
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        <div className="rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between">
+        <div
+          className={`rounded-lg bg-gray-50 ${
+            selectedRows.length > 0 && `px-4 py-3`
+          } flex flex-wrap items-center justify-between`}
+        >
           {selectedRows.length > 0 && (
             <div className="flex items-center">
               <Checkbox.Root
@@ -158,7 +165,13 @@ const Table = ({
                           "border-t border-b text-gray-500 text-xs p-4 text-left"
                         }
                       >
-                        {row[header.accessor]}
+                        <span
+                          className={`${
+                            header?.status?.[row[header.accessor]]
+                          }`}
+                        >
+                          {row[header.accessor]}
+                        </span>
                       </td>
                     ))}
 

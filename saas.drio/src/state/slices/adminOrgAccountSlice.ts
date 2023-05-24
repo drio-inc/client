@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type AdminOrgAccountState = {
-  rows: any[];
-  selectedRows: any[];
+  rows: TableRow[];
+  selectedRows: number[];
 };
 
 const initialState: AdminOrgAccountState = {
