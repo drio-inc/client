@@ -13,7 +13,7 @@ import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { useEditAccountMutation } from "@/state/services/apiService";
-import { setOpenEditModal, setOpenModal } from "@/state/slices/uiSlice";
+import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/adminAccountSlice";
 
 const schema = z.object({
@@ -31,7 +31,6 @@ type FormData = z.infer<typeof schema>;
 export default function EditAccountForm({ row }: TableRow) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const uiState = useAppSelector((state) => state.ui);
   const [editAccount, result] = useEditAccountMutation();
   const adminAccountState = useAppSelector((state) => state.adminAccount);
 
@@ -52,7 +51,7 @@ export default function EditAccountForm({ row }: TableRow) {
         )
       );
 
-      dispatch(setOpenEditModal(false));
+      dispatch(setCloseModal("editAccountForm"));
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again."
@@ -150,7 +149,7 @@ export default function EditAccountForm({ row }: TableRow) {
               <Button
                 type="button"
                 intent={`secondary`}
-                onClick={() => dispatch(setOpenEditModal(false))}
+                onClick={() => dispatch(setCloseModal("editAccountForm"))}
                 className="w-full md:w-auto mr-2 md:mr-6"
               >
                 <span className="inline-flex justify-center w-full">

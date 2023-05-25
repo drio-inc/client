@@ -165,7 +165,7 @@ export default function Sidebar() {
                       <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-4 my-2">
                         {link.children.map((child) => (
                           <li key={child.name}>
-                            <Link href={`/saas/${link.href}/${child.href}`}>
+                            <Link href={`/${link.href}/${child.href}`}>
                               <span
                                 className={`text-sm py-3 px-2 font-medium block text-gray-500 hover:text-gray-500`}
                               >

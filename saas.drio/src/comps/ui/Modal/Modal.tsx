@@ -1,16 +1,19 @@
+import { useAppSelector } from "@/hooks/useStoreTypes";
 import * as CustomModal from "@radix-ui/react-alert-dialog";
 
 interface IModalProps {
   label?: string;
   row?: TableRow;
+  identifier: string;
   onClick?: () => void;
-  toggleState?: boolean;
   children?: React.ReactNode;
 }
 
-const Modal = ({ label, children, onClick, toggleState }: IModalProps) => {
+const Modal = ({ label, onClick, children, identifier }: IModalProps) => {
+  const isOpen = useAppSelector((state) => state.ui[identifier]);
+
   return (
-    <CustomModal.Root open={toggleState} onOpenChange={onClick}>
+    <CustomModal.Root open={isOpen} onOpenChange={onClick}>
       <CustomModal.Trigger asChild>
         <span className="inline-block w-full py-2 px-4">{label}</span>
       </CustomModal.Trigger>

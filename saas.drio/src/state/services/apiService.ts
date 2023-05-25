@@ -9,7 +9,6 @@ type APIResponse = {
   userName: string;
   otherUserInfo: string;
   someSessionIdentifier: string;
-  authMode?: "ldap" | "google" | "oauth" | "";
 };
 
 export const rootApi = createApi({
@@ -19,14 +18,6 @@ export const rootApi = createApi({
   }),
   endpoints: (builder) => {
     return {
-      activate: builder.mutation<APIResponse, FormData>({
-        query: (credentials) => ({
-          url: `/activate`,
-          method: "POST",
-          body: credentials,
-        }),
-      }),
-
       login: builder.mutation<APIResponse, FormData>({
         query: (credentials) => ({
           url: `/login`,
@@ -82,6 +73,38 @@ export const rootApi = createApi({
           body: credentials,
         }),
       }),
+
+      editOrgAccount: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/edit-org`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      addOrgAccountGoogle: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/add-org/google`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      addOrgAccountOAuth: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/add-org/oauth`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      addOrgAccountLDAP: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/add-org/ldap`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
     };
   },
 });
@@ -90,9 +113,12 @@ export const {
   useLoginMutation,
   useSetLDAPMutation,
   useSetOAuthMutation,
-  useActivateMutation,
   useAddAccountMutation,
   useEditAccountMutation,
   useResetPasswordMutation,
   useSetGoogleAuthMutation,
+  useEditOrgAccountMutation,
+  useAddOrgAccountGoogleMutation,
+  useAddOrgAccountOAuthMutation,
+  useAddOrgAccountLDAPMutation,
 } = rootApi;

@@ -1,55 +1,35 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type UIState = {
-  openModal: boolean;
-  openEditModal: boolean;
-  openDeleteModal: boolean;
-  openDetailsModal: boolean;
-  expandedLinks: string[];
+  [key: string]: boolean;
+  // expandedLinks: string[];
 };
 
 const initialState: UIState = {
-  openModal: false,
-  openEditModal: false,
-  openDeleteModal: false,
-  openDetailsModal: false,
-  expandedLinks: [],
+  // expandedLinks: [],
 };
 
 const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
+    setOpenModal(state, action: PayloadAction<string>) {
+      state[action.payload] = true;
+    },
+
+    setCloseModal(state, action: PayloadAction<string>) {
+      state[action.payload] = false;
+    },
+
     setExpandedLinks(state, action) {
       state.expandedLinks = action.payload;
-    },
-
-    setOpenModal(state, action) {
-      state.openModal = action.payload;
-    },
-
-    setOpenEditModal(state, action) {
-      state.openEditModal = action.payload;
-    },
-
-    setOpenDeleteModal(state, action) {
-      state.openDeleteModal = action.payload;
-    },
-
-    setOpenDetailsModal(state, action) {
-      state.openDetailsModal = action.payload;
     },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const {
-  setOpenModal,
-  setOpenEditModal,
-  setOpenDeleteModal,
-  setOpenDetailsModal,
-  setExpandedLinks,
-} = uiSlice.actions;
+export const { setOpenModal, setCloseModal, setExpandedLinks } =
+  uiSlice.actions;
 
 export default uiSlice.reducer;

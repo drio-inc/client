@@ -12,8 +12,9 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { useSetLDAPMutation } from "@/state/services/apiService";
-import { setOpenEditModal, setOpenModal } from "@/state/slices/uiSlice";
+import { useEditOrgAccountMutation } from "@/state/services/apiService";
+import { setCloseModal } from "@/state/slices/uiSlice";
+import { setRows } from "@/state/slices/adminOrgAccountSlice";
 
 const schema = z.object({
   ou: z.string().nonempty("Please Enter a value"),
@@ -26,30 +27,35 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function EditOrgAccountForm() {
+export default function EditOrgAccountForm({ row }: TableRow) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [setLDAP, result] = useSetLDAPMutation();
-  const uiState = useAppSelector((state) => state.ui);
+  const [editOrgAccount, result] = useEditOrgAccountMutation();
+  const adminOrgState = useAppSelector((state) => state.adminOrgAccount);
 
   const form = useZodForm({
     schema: schema,
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log(data);
-    // try {
-    //   const res = await setLDAP({
-    //     ...data,
-    //   }).unwrap();
+    try {
+      const res = await editOrgAccount({
+        ...data,
+        id: row.id,
+      }).unwrap();
 
-    //   dispatch(setUser(res));
-    //   dispatch(setAuthenticated(true));
-    // } catch (err: any) {
-    //   showAlert(
-    //     err?.data?.message ?? "Something went wrong. Please try again."
-    //   );
-    // }
+      dispatch(
+        setRows(
+          adminOrgState.rows.map((row) => (row.id === res.id ? res : row))
+        )
+      );
+
+      dispatch(setCloseModal("editOrgAccountForm"));
+    } catch (err: any) {
+      showAlert(
+        err?.data?.message ?? "Something went wrong. Please try again."
+      );
+    }
   };
 
   return (
@@ -66,6 +72,7 @@ export default function EditOrgAccountForm() {
                   <TextInput
                     label="Organization Unit"
                     placeholder="Enter OU"
+                    defaultValue={row.ou}
                     {...form.register("ou")}
                   />
                 </div>
@@ -75,6 +82,7 @@ export default function EditOrgAccountForm() {
                 <div className="relative">
                   <TextInput
                     label="Authentication"
+                    defaultValue={row.authentication}
                     placeholder="Enter Authentication"
                     {...form.register("authentication")}
                   />
@@ -85,6 +93,7 @@ export default function EditOrgAccountForm() {
                 <div className="relative">
                   <TextInput
                     label="Datasets published"
+                    defaultValue={row.dsPublished}
                     placeholder="Enter datasets published"
                     {...form.register("dsPublished")}
                   />
@@ -95,6 +104,7 @@ export default function EditOrgAccountForm() {
                 <div className="relative">
                   <TextInput
                     label="Public/contract"
+                    defaultValue={row.contract}
                     placeholder="Enter contract"
                     {...form.register("contract")}
                   />
@@ -105,6 +115,7 @@ export default function EditOrgAccountForm() {
                 <div className="relative">
                   <TextInput
                     label="Daily Usage Frequency"
+                    defaultValue={row.frequency}
                     placeholder="Enter frequency"
                     {...form.register("frequency")}
                   />
@@ -115,6 +126,7 @@ export default function EditOrgAccountForm() {
                 <div className="relative">
                   <TextInput
                     label="Alerts (7 Days)"
+                    defaultValue={row.alerts}
                     placeholder="Enter Alerts"
                     {...form.register("alerts")}
                   />
@@ -125,7 +137,7 @@ export default function EditOrgAccountForm() {
               <Button
                 type="button"
                 intent={`secondary`}
-                onClick={() => dispatch(setOpenEditModal(false))}
+                onClick={() => dispatch(setCloseModal("editOrgAccountForm"))}
                 className="w-full mr-2 md:mr-6"
               >
                 <span className="inline-flex justify-center w-full">

@@ -9,7 +9,7 @@ import EditOrgAccountForm from "./EditOrgAccountForm";
 
 const headers = [
   {
-    header: "Organizational Units",
+    header: "Organizational Unit",
     accessor: "ou",
   },
   {
@@ -19,19 +19,19 @@ const headers = [
 
   {
     header: "Datasets Published",
-    accessor: "datasetsPublished",
+    accessor: "dsPublished",
   },
   {
     header: "Public Contract Datasets",
-    accessor: "publicContractDatasets",
+    accessor: "contract",
   },
   {
     header: "Daily Usage Frequency",
-    accessor: "dailyUsageFrequency",
+    accessor: "frequency",
   },
   {
     header: "Alert ( 7 days)",
-    accessor: "alert",
+    accessor: "alerts",
   },
 ];
 
@@ -63,6 +63,7 @@ const OrgAccounts = () => {
         addForm={AddOrgAccountForm}
         editForm={EditOrgAccountForm}
         rows={adminOrgAccountState.rows}
+        modalIdentifier="addOrgAccountForm"
         clearSelectedRows={clearSelectedRows}
         handleRowSelection={handleRowSelection}
         primaryButton="Add New Organization Unit"

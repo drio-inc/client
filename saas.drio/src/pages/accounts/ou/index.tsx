@@ -12,7 +12,7 @@ const AccountsPage = () => {
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
   if (!isAuthenticated) {
-    router.push("/auth/login");
+    router.push("/login");
     return <Loader />;
   }
 

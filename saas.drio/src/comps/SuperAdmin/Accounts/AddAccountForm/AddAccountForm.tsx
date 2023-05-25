@@ -9,12 +9,11 @@ import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
-import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setRows } from "@/state/slices/adminAccountSlice";
 import { useAddAccountMutation } from "@/state/services/apiService";
-import { setOpenModal } from "@/state/slices/uiSlice";
+import { setCloseModal } from "@/state/slices/uiSlice";
 
 const nameFields = [
   {
@@ -119,7 +118,7 @@ export default function AddAccountForm() {
     }
 
     form.reset();
-    dispatch(setOpenModal(false));
+    dispatch(setCloseModal("addAccountForm"));
   };
 
   return (
@@ -183,7 +182,7 @@ export default function AddAccountForm() {
               <Button
                 type="button"
                 intent={`secondary`}
-                onClick={() => dispatch(setOpenModal(false))}
+                onClick={() => dispatch(setCloseModal("addAccountForm"))}
                 className="w-full md:w-auto mr-2 md:mr-6"
               >
                 <span className="inline-flex justify-center w-full">

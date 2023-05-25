@@ -69,6 +69,7 @@ const Accounts = () => {
         detailsWindow={AccountDetails}
         rows={adminAccountState.rows}
         primaryButton="Add New Account"
+        modalIdentifier="addAccountForm"
         clearSelectedRows={clearSelectedRows}
         handleRowSelection={handleRowSelection}
         selectedRows={adminAccountState.selectedRows}

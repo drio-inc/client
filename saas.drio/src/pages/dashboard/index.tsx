@@ -15,13 +15,13 @@ const Dashboard = () => {
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
   if (!isAuthenticated) {
-    router.push("/auth/login");
+    router.push("/login");
     return <Loader />;
   }
 
   const handleLogout = () => {
     dispatch(logOut());
-    router.push("/auth/login");
+    router.push("/login");
   };
 
   return (

@@ -1,16 +1,12 @@
-import Button from "@ui/Button";
-
 import Layout from "@/comps/Layout";
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { setOpenDetailsModal, setOpenModal } from "@/state/slices/uiSlice";
+import { setCloseModal } from "@/state/slices/uiSlice";
 
 import { HiX } from "react-icons/hi";
 
 export default function AccountDetails({ row }: any) {
   const dispatch = useAppDispatch();
-  const uiState = useAppSelector((state) => state.ui);
-
   return (
     <>
       <Layout>
@@ -100,7 +96,7 @@ export default function AccountDetails({ row }: any) {
           </div>
 
           <span
-            onClick={() => dispatch(setOpenDetailsModal(false))}
+            onClick={() => dispatch(setCloseModal("detailsWindow"))}
             className="absolute top-0 right-0 p-6 cursor-pointer"
           >
             <HiX className="w-6 h-6" />

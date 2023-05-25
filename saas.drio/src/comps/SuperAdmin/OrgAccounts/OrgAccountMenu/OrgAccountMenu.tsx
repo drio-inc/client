@@ -5,7 +5,7 @@ import * as Popover from "@radix-ui/react-popover";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import { setOpenEditModal, setOpenDeleteModal } from "@/state/slices/uiSlice";
+import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/adminOrgAccountSlice";
 
 const AccountMenu = ({ row, editForm }: any) => {
@@ -43,8 +43,8 @@ const AccountMenu = ({ row, editForm }: any) => {
             {editForm && (
               <Modal
                 label="Edit"
-                toggleState={openEditModal}
-                onClick={() => dispatch(setOpenEditModal(!openEditModal))}
+                identifier="editOrgAccountForm"
+                onClick={() => dispatch(setOpenModal("editOrgAccountForm"))}
               >
                 {editForm}
               </Modal>
