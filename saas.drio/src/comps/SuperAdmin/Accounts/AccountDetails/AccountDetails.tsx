@@ -5,7 +5,7 @@ import { setCloseModal } from "@/state/slices/uiSlice";
 
 import { HiX } from "react-icons/hi";
 
-export default function AccountDetails({ row }: any) {
+export default function AccountDetails({ row }: TableRow) {
   const dispatch = useAppDispatch();
   return (
     <>

@@ -4,8 +4,9 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import DDXDetails from "./DDXDetails/DDXDetails";
 import UpdateLicenseForm from "./UpdateLicenseForm";
+import AddDDXForm from "./AddDDXForm/AddDDXForm";
 
-import DDXMenu from "@/comps/SuperAdmin/DDX/DDXMenu";
+import DDXMenu from "@/comps/RootAdmin/DDX/DDXMenu";
 
 const headers = [
   {
@@ -76,6 +77,9 @@ const DDX = () => {
         menu={DDXMenu}
         headers={headers}
         rows={DDXState.rows}
+        addForm={AddDDXForm}
+        primaryButton="Add DDX"
+        modalIdentifier="addDDXForm"
         detailsWindow={DDXDetails}
         editForm={UpdateLicenseForm}
         clearSelectedRows={clearSelectedRows}

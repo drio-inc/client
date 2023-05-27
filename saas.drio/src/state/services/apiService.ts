@@ -105,6 +105,22 @@ export const rootApi = createApi({
           body: credentials,
         }),
       }),
+
+      fetchDDXLicense: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/ddx/fetch-license`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      updateDDXLicense: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/ddx/update-license`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
     };
   },
 });
@@ -121,4 +137,6 @@ export const {
   useAddOrgAccountGoogleMutation,
   useAddOrgAccountOAuthMutation,
   useAddOrgAccountLDAPMutation,
+  useUpdateDDXLicenseMutation,
+  useFetchDDXLicenseMutation,
 } = rootApi;

@@ -6,14 +6,17 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { setOpenModal } from "@/state/slices/uiSlice";
 import Link from "next/link";
+import AlertModal from "@/comps/ui/AlertModal";
+import { setRows, setSelectedRows } from "@/state/slices/DDXSlice";
 
 const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
   const dispatch = useAppDispatch();
-  const { openEditModal, openDetailsModal, openModal } = useAppSelector(
-    (state) => state.ui
-  );
+  const ddxState = useAppSelector((state) => state.DDX);
 
-  const adminAccountState = useAppSelector((state) => state.adminAccount);
+  const deleteRow = (id: number | string) => {
+    dispatch(setRows(ddxState.rows.filter((row) => row.id !== id)));
+    dispatch(setSelectedRows([]));
+  };
 
   return (
     <Popover.Root>
@@ -28,6 +31,14 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
           align="center"
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
+          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            <AlertModal
+              row={row}
+              accessor={row.ou}
+              onClick={() => deleteRow(row.id)}
+            />
+          </span>
+
           <span
             className={
               "cursor-pointer hover:bg-indigo-50 w-full block text-drio-red-dark py-2 px-4"

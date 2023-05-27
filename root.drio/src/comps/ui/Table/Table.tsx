@@ -12,14 +12,18 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 type TableHeader = {
   header: string;
   accessor: string;
+  status?: {
+    [key: string]: string;
+  };
 };
 
 type TableProps = {
   rows?: TableRow[];
-  primaryButton?: string;
-  selectedRows: number[];
-  headers?: TableHeader[];
   menu?: React.FC | any;
+  selectedRows: number[];
+  primaryButton?: string;
+  headers?: TableHeader[];
+  modalIdentifier?: string;
   addForm?: React.FC | any;
   editForm?: React.FC | any;
   detailsWindow?: React.FC | any;
@@ -34,6 +38,7 @@ const Table = ({
   primaryButton,
   clearSelectedRows,
   handleRowSelection,
+  modalIdentifier,
   menu: TableMenu,
   addForm: AddFormComponent,
   editForm: EditFormComponent,
@@ -46,7 +51,11 @@ const Table = ({
   return (
     <>
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        <div className="rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between">
+        <div
+          className={`rounded-lg bg-gray-50 ${
+            (selectedRows.length > 0 || primaryButton) && `px-4 py-3`
+          } flex flex-wrap items-center justify-between`}
+        >
           {selectedRows.length > 0 && (
             <div className="flex items-center">
               <Checkbox.Root
@@ -75,26 +84,17 @@ const Table = ({
             <Button
               intent={"primary"}
               className="ml-auto"
-              onClick={() => dispatch(setOpenModal(!uiState.openModal))}
+              onClick={() => dispatch(setOpenModal(modalIdentifier ?? ""))}
             >
               + {primaryButton ?? "Add Entity"}
             </Button>
           )}
 
           {AddFormComponent && (
-            <EditModal.Root
-              open={uiState.openModal}
-              onOpenChange={() => dispatch(setOpenModal(!uiState.openModal))}
-            >
+            <EditModal.Root open={uiState[modalIdentifier ?? ""]}>
               <EditModal.Overlay className="bg-[#6B6B6B] data-[state=open]:animate-overlayShow fixed inset-0 bg-opacity-40" />
               <EditModal.Content className="data-[state=open]:animate-contentShow fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-4">
-                {
-                  <AddFormComponent
-                    {...props}
-                    setOpenModal={setOpenModal}
-                    openModal={uiState.openModal}
-                  />
-                }
+                {<AddFormComponent {...props} />}
               </EditModal.Content>
             </EditModal.Root>
           )}
@@ -158,7 +158,13 @@ const Table = ({
                           "border-t border-b text-gray-500 text-xs p-4 text-left"
                         }
                       >
-                        {row[header.accessor]}
+                        <span
+                          className={`${
+                            header?.status?.[row[header.accessor]]
+                          }`}
+                        >
+                          {row[header.accessor]}
+                        </span>
                       </td>
                     ))}
 

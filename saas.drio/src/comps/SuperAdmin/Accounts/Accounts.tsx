@@ -1,5 +1,5 @@
 import Table from "@/comps/ui/Table";
-import AccountDetails from "./AccountDetals";
+import AccountDetails from "./AccountDetails";
 import EditAccountForm from "./EditAccountForm";
 import AddAccountForm from "./AddAccountForm/AddAccountForm";
 import { setSelectedRows } from "@/state/slices/adminAccountSlice";

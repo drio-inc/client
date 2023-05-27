@@ -15,8 +15,9 @@ type APIResponse = {
 export const rootApi = createApi({
   reducerPath: "rootApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://779f508a-ad6b-4ed1-a232-dc0f458ca58c.mock.pstmn.io/api/v1`,
+    baseUrl: `https://a14c37a0-5c64-4c14-ace9-784f0afc6ac8.mock.pstmn.io/api/v1`,
   }),
+
   endpoints: (builder) => {
     return {
       activate: builder.mutation<APIResponse, FormData>({
@@ -67,17 +68,64 @@ export const rootApi = createApi({
         }),
       }),
 
-      addAccount: builder.mutation<APIResponse, FormData>({
+      editOrgAccount: builder.mutation<APIResponse, FormData>({
         query: (credentials) => ({
-          url: `/saas/add-account`,
+          url: `/edit-org`,
           method: "POST",
           body: credentials,
         }),
       }),
 
-      editAccount: builder.mutation<APIResponse, FormData>({
+      addOrgAccountGoogle: builder.mutation<APIResponse, FormData>({
         query: (credentials) => ({
-          url: `/saas/edit-account`,
+          url: `/add-org/google`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      addOrgAccountOAuth: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/add-org/oauth`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      addOrgAccountLDAP: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/add-org/ldap`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      fetchDDXLicense: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/ddx/fetch-license`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      updateDDXLicense: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/ddx/update-license`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      generateDDXKey: builder.mutation<any, any>({
+        query: () => ({
+          url: `/ddx/generate-key`,
+          method: "GET",
+        }),
+      }),
+
+      provisionDDX: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/ddx/provision`,
           method: "POST",
           body: credentials,
         }),
@@ -91,8 +139,14 @@ export const {
   useSetLDAPMutation,
   useSetOAuthMutation,
   useActivateMutation,
-  useAddAccountMutation,
-  useEditAccountMutation,
-  useResetPasswordMutation,
   useSetGoogleAuthMutation,
+  useResetPasswordMutation,
+  useEditOrgAccountMutation,
+  useAddOrgAccountLDAPMutation,
+  useAddOrgAccountOAuthMutation,
+  useAddOrgAccountGoogleMutation,
+  useUpdateDDXLicenseMutation,
+  useFetchDDXLicenseMutation,
+  useGenerateDDXKeyMutation,
+  useProvisionDDXMutation,
 } = rootApi;

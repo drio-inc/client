@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"yarn workspace root.drio dev\" \"yarn workspace saas.drio dev\"",
-    "sass": "yarn workspace saas.drio dev",
+    "saas": "yarn workspace saas.drio dev",
     "root": "yarn workspace root.drio dev"
   },
   "workspaces": [

@@ -32,7 +32,7 @@ interface NavLink {
   }[];
 }
 
-const RootNavLinks = [
+const NavLinks = [
   {
     name: "Dashboard",
     href: "dashboard",
@@ -74,7 +74,7 @@ const RootNavLinks = [
 
   {
     name: "DDX Infrastructure",
-    href: "ddx-infra",
+    href: "ddx",
     icon: <HiOutlineDocumentReport className="inline-block w-6 h-6 mr-2" />,
   },
 
@@ -85,7 +85,7 @@ const RootNavLinks = [
     children: [
       {
         name: "Organizational Units",
-        href: "ou",
+        href: "/",
       },
       {
         name: "Agreements and Assets",
@@ -178,8 +178,6 @@ export default function Sidebar() {
   const { user } = useAppSelector((state) => state.auth);
   // const { expandedLinks } = useAppSelector((state) => state.ui);
 
-  const NavLinks = user?.role === "root-admin" ? RootNavLinks : AdminNavLinks;
-
   const [expandedLinks, setExpandedLinks] = useState<{
     [key: string]: boolean;
   }>({});
@@ -214,7 +212,7 @@ export default function Sidebar() {
                         }
                       `}
                   >
-                    <Link href={`/saas/${link.href}`}>
+                    <Link href={`/${link.href}`}>
                       <span
                         className={`                        ${
                           router.pathname.indexOf(link.href) !== -1
@@ -248,7 +246,7 @@ export default function Sidebar() {
                       <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-4 my-2">
                         {link.children.map((child) => (
                           <li key={child.name}>
-                            <Link href={`/saas/${link.href}/${child.href}`}>
+                            <Link href={`/${link.href}/${child.href}`}>
                               <span
                                 className={`text-sm py-3 px-2 font-medium block text-gray-500 hover:text-gray-500`}
                               >
