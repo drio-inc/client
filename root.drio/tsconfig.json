@@ -19,7 +19,8 @@
       "@lib/*": ["./src/lib/*"],
       "@ui/*": ["./src/comps/ui/*"],
       "@state/*": ["./src/state/*"],
-      "@hooks/*": ["./src/hooks/*"]
+      "@hooks/*": ["./src/hooks/*"],
+      "react": ["../node_modules/@types/react"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
