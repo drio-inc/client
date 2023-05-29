@@ -26,7 +26,7 @@ export default function Home() {
           intent={"primary"}
           className="mt-8 flex justify-center items-center"
         >
-          <Link href="/auth/login" className="text-lg md:text-2xl py-2">
+          <Link href="/login" className="text-lg md:text-2xl py-2">
             Login to your account
             <HiArrowRight className="inline-block w-6 h-6 ml-2" />
           </Link>
