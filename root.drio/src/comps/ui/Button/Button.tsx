@@ -10,6 +10,7 @@ const buttonStyles = cva(`${styles[`ui-button`]}`, {
       google: `${styles[`google-button`]}`,
       primary: `${styles[`primary-button`]}`,
       secondary: `${styles[`secondary-button`]}`,
+      tertiary: `${styles[`tertiary-button`]}`,
     },
   },
 

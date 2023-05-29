@@ -1,15 +1,16 @@
 import { toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
-import { HiOutlineCheckCircle } from "react-icons/hi";
+import { HiOutlineCheckCircle, HiOutlineXCircle } from "react-icons/hi";
 
 import { formatHourAgo } from "@/lib/formatTime";
 
 interface IAlertProps {
-  message: string | null;
   timeStamp?: number;
+  status?: "success" | "error" | "warning" | "info" | undefined;
+  message: string | null;
 }
 
-const AlertMessage = ({ message, timeStamp }: IAlertProps) => {
+const AlertMessage = ({ message, status, timeStamp }: IAlertProps) => {
   const [serverError, setServerError] = useState<{
     message: string | null;
     timestamp: number;
@@ -25,7 +26,16 @@ const AlertMessage = ({ message, timeStamp }: IAlertProps) => {
 
   return (
     <div className="flex">
-      <HiOutlineCheckCircle className="text-drio-red w-8 h-8 inline-block mr-2 -mt-1" />
+      {status === "error" && (
+        <HiOutlineXCircle className="text-drio-red w-6 h-6 inline-block mr-2" />
+      )}
+
+      {status === "success" && (
+        <HiOutlineCheckCircle
+          className={`text-green-400 w-6 h-6 inline-block mr-2`}
+        />
+      )}
+
       <div>
         <span className="font-medium text-sm text-gray-900">
           {message ?? "Something went wrong. Please try again."}
@@ -41,8 +51,11 @@ const AlertMessage = ({ message, timeStamp }: IAlertProps) => {
   );
 };
 
-const showAlert = (message: string | null) => {
-  return toast.error(<AlertMessage message={message} />, {
+const showAlert = (
+  message: string | null,
+  status?: "success" | "error" | "warning" | "info" | undefined
+) => {
+  return toast(<AlertMessage message={message} status={status} />, {
     icon: false,
     theme: "light",
     autoClose: 5000,

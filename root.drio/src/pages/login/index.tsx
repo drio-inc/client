@@ -55,14 +55,7 @@ export default function Login() {
 
       dispatch(setUser(res));
       dispatch(setAuthenticated(true));
-
-      if (res.role === "super-admin") {
-        router.push("/saas/accounts");
-      } else if (res.role === "root-admin") {
-        router.push("/root/my-org");
-      } else {
-        router.push("/auth/login");
-      }
+      router.push("/my-org");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again."

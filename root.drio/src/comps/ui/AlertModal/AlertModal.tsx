@@ -14,7 +14,7 @@ const AlertModal = ({ row, accessor, onClick }: IModalProps) => {
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger asChild>
-        <span className="text-red-400 inline-block w-full py-2 px-4">
+        <span className="text-drio-red-dark inline-block w-full py-2 px-4">
           Delete
         </span>
       </AlertDialog.Trigger>

@@ -172,7 +172,7 @@ export default function AddDDXForm() {
                 type="button"
                 intent={`secondary`}
                 className="w-full md:w-auto mr-2 md:mr-6"
-                onClick={() => dispatch(setCloseModal("addDDXForm"))}
+                onClick={() => dispatch(setCloseModal("publishDatasetForm"))}
               >
                 <span className="inline-flex justify-center w-full">
                   Cancel

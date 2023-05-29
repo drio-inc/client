@@ -13,7 +13,7 @@ type TableHeader = {
   header: string;
   accessor: string;
   status?: {
-    [key: string]: string;
+    [key: string]: string | undefined;
   };
 };
 
@@ -22,8 +22,10 @@ type TableProps = {
   menu?: React.FC | any;
   selectedRows: number[];
   primaryButton?: string;
+  secondaryButton?: string;
   headers?: TableHeader[];
   modalIdentifier?: string;
+  modalIdentifier2?: string;
   addForm?: React.FC | any;
   editForm?: React.FC | any;
   detailsWindow?: React.FC | any;
@@ -36,9 +38,11 @@ const Table = ({
   headers,
   selectedRows,
   primaryButton,
+  secondaryButton,
   clearSelectedRows,
   handleRowSelection,
   modalIdentifier,
+  modalIdentifier2,
   menu: TableMenu,
   addForm: AddFormComponent,
   editForm: EditFormComponent,
@@ -80,15 +84,25 @@ const Table = ({
             </div>
           )}
 
-          {primaryButton && (
-            <Button
-              intent={"primary"}
-              className="ml-auto"
-              onClick={() => dispatch(setOpenModal(modalIdentifier ?? ""))}
-            >
-              + {primaryButton ?? "Add Entity"}
-            </Button>
-          )}
+          <div className="flex gap-4 ml-auto">
+            {secondaryButton && (
+              <Button
+                intent={"primary"}
+                onClick={() => dispatch(setOpenModal(modalIdentifier ?? ""))}
+              >
+                + {secondaryButton ?? "Add Entity"}
+              </Button>
+            )}
+
+            {primaryButton && (
+              <Button
+                intent={"primary"}
+                onClick={() => dispatch(setOpenModal(modalIdentifier ?? ""))}
+              >
+                + {primaryButton ?? "Add Entity"}
+              </Button>
+            )}
+          </div>
 
           {AddFormComponent && (
             <EditModal.Root open={uiState[modalIdentifier ?? ""]}>
@@ -161,7 +175,7 @@ const Table = ({
                         <span
                           className={`${
                             header?.status?.[row[header.accessor]]
-                          }`}
+                          } inline-block`}
                         >
                           {row[header.accessor]}
                         </span>

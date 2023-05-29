@@ -109,69 +109,6 @@ const NavLinks = [
   },
 ];
 
-const AdminNavLinks = [
-  {
-    name: "Dashboard",
-    href: "dashboard",
-    icon: <IoGridOutline className="inline-block w-6 h-6 mr-2" />,
-  },
-  {
-    name: "Analytics",
-    href: "analytics",
-    icon: <HiOutlineChartBar className="inline-block w-6 h-6 mr-2" />,
-  },
-
-  {
-    name: "Accounts",
-    href: "accounts",
-    icon: <HiOutlineDocumentDuplicate className="inline-block w-6 h-6 mr-2" />,
-    children: [
-      {
-        name: "Organizational Units",
-        href: "ou",
-      },
-    ],
-  },
-
-  {
-    name: "DDX Infrastructure",
-    href: "ddx-infra",
-    icon: <HiOutlineDocumentReport className="inline-block w-6 h-6 mr-2" />,
-  },
-
-  {
-    name: "Licensing",
-    href: "licensing",
-    icon: <HiOutlineClipboardCheck className="inline-block w-6 h-6 mr-2" />,
-    children: [
-      {
-        name: "Licenses",
-        href: "licenses",
-      },
-    ],
-  },
-
-  {
-    name: "Monitoring",
-    href: "monitoring",
-    icon: (
-      <HiOutlinePresentationChartBar className="inline-block w-6 h-6 mr-2" />
-    ),
-  },
-
-  {
-    name: "System Settings",
-    href: "system-settings",
-    icon: <HiOutlinePuzzle className="inline-block w-6 h-6 mr-2" />,
-  },
-
-  {
-    name: "Tools",
-    href: "tools",
-    icon: <HiOutlineKey className="inline-block w-6 h-6 mr-2" />,
-  },
-];
-
 export default function Sidebar() {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -191,7 +128,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden border-r border-gray-200 bg-white flex flex-wrap items-center justify-between relative md:w-64 py-4 px-2">
+      <nav className="hidden md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden border-r border-gray-200 bg-white flex flex-wrap items-center justify-between relative md:w-64 py-4 px-2">
         <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
           <Link href="/">
             <Image src="/logo.svg" alt="Drio Logo" width={145} height={145} />

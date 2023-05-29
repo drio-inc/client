@@ -13,8 +13,6 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setLicenseDetails } from "@/state/slices/DDXSlice";
 
-import LicenseDetails from "../LicenseDetails/LicenseDetails";
-
 import {
   useUpdateDDXLicenseMutation,
   useFetchDDXLicenseMutation,
@@ -142,12 +140,6 @@ export default function UpdateLicenseForm() {
                 </Button>
               </div>
             </div>
-
-            {showLicenseDetails && (
-              <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">
-                <LicenseDetails details={ddxSstate.licenseDetails ?? {}} />
-              </div>
-            )}
 
             <div className="py-2 flex justify-center md:justify-end w-full mt-4">
               <Button

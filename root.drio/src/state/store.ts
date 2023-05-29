@@ -5,8 +5,10 @@ import { persistReducer, persistStore } from "redux-persist";
 import storageSession from "redux-persist/lib/storage/session";
 
 import uiReducer from "./slices/uiSlice";
-import DDXSlice from "./slices/DDXSlice";
+import DDXReducer from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
+import datasetReducer from "./slices/datasetSlice";
+import datasourceReducer from "./slices/datasourceSlice";
 import adminOrgAccountReducer from "./slices/adminOrgAccountSlice";
 
 const persistConfig = {
@@ -24,9 +26,11 @@ const persistedUIReducer = persistReducer(persistLocalConfig, uiReducer);
 
 export const store = configureStore({
   reducer: {
-    DDX: DDXSlice,
+    DDX: DDXReducer,
     ui: persistedUIReducer,
+    dataset: datasetReducer,
     auth: persistedAuthReducer,
+    datasource: datasourceReducer,
     adminOrgAccount: adminOrgAccountReducer,
     [rootApi.reducerPath]: rootApi.reducer,
   },

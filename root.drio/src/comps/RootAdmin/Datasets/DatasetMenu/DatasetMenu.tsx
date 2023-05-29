@@ -4,12 +4,11 @@ import * as Popover from "@radix-ui/react-popover";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import { setOpenModal } from "@/state/slices/uiSlice";
-import Link from "next/link";
 import AlertModal from "@/comps/ui/AlertModal";
+import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/DDXSlice";
 
-const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
+const DatasetMenu = ({ row, editForm, detailsWindow }: any) => {
   const dispatch = useAppDispatch();
   const ddxState = useAppSelector((state) => state.DDX);
 
@@ -56,7 +55,6 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
               "cursor-pointer hover:bg-indigo-50 w-full block text-drio-red-dark py-2 px-4"
             }
           >
-            {/* <Link href={`/ddx/${row.account}/dashboard`}>View Dashboard</Link> */}
             View Dashboard
           </span>
 
@@ -77,4 +75,4 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
   );
 };
 
-export default AccountMenu;
+export default DatasetMenu;
