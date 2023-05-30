@@ -34,7 +34,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function AddDDXForm() {
+export default function PublishDatasetForm() {
   const dispatch = useAppDispatch();
   const [visibility, setVisibility] = useState("");
   const [key, keyResult] = useGenerateDDXKeyMutation();
@@ -60,7 +60,7 @@ export default function AddDDXForm() {
     }
 
     form.reset();
-    dispatch(setCloseModal("addDDXForm"));
+    dispatch(setCloseModal("publishDatasetForm"));
   };
 
   const generateKey = async () => {
@@ -90,7 +90,7 @@ export default function AddDDXForm() {
         <Form form={form} onSubmit={onSubmit} className="">
           <div className="mx-auto bg-white p-4 rounded-lg max-w-[20vw]">
             <h2 className="text-gray-700 text-2xl font-bold text-center">
-              Add DDX
+              Publish Dataset
             </h2>
 
             <div className="flex flex-wrap -m-2 rounded-lg my-4">
