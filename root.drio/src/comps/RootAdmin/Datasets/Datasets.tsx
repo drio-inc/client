@@ -10,12 +10,11 @@ import DatasetMenu from "./DatasetMenu/DatasetMenu";
 import AddDataSourceForm from "../DataSources/AddDatasetForm";
 
 import Button from "@ui/Button";
+import { HiMinusSm } from "react-icons/hi";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { HiMinusSm } from "react-icons/hi";
 import { setOpenModal } from "@/state/slices/uiSlice";
 
-import * as EditModal from "@radix-ui/react-alert-dialog";
 import Modal from "@/comps/ui/Modal";
 
 const headers = [
@@ -66,7 +65,6 @@ const headers = [
 const Dataset = () => {
   const dispatch = useAppDispatch();
   const datasetState = useAppSelector((state) => state.dataset);
-  const uiState = useAppSelector((state) => state.ui);
 
   const handleRowSelection = (index: number) => {
     if (datasetState.selectedRows.includes(index)) {
