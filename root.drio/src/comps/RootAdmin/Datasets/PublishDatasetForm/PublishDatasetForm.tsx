@@ -10,10 +10,10 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/DDXSlice";
+import { setCloseModal } from "@/state/slices/uiSlice";
 
-import { HiOutlineDuplicate } from "react-icons/hi";
+import { HiOutlineDownload, HiOutlinePaperClip } from "react-icons/hi";
 
 import { useState } from "react";
 import { Radio } from "react-aria-components";
@@ -22,14 +22,21 @@ import {
   useProvisionDDXMutation,
   useGenerateDDXKeyMutation,
 } from "@/state/services/apiService";
+import { IoRefresh } from "react-icons/io5";
 
 const schema = z.object({
-  name: z.string().nonempty("Please Enter a value"),
-  ou: z.string({
+  dataSource: z.string({
     required_error: "Please select an option",
   }),
-  mfaURL: z.string().optional(),
-  mfaKey: z.string().nonempty("Please Enter a value").optional(),
+  topic: z.string({
+    required_error: "Please select an option",
+  }),
+  baseURL: z
+    .string()
+    .nonempty("Please Enter a value")
+    .url("Please enter a valid URL"),
+  name: z.string().nonempty("Please Enter a value"),
+  file: z.object({}),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -51,37 +58,14 @@ export default function PublishDatasetForm() {
       const res = await provision({
         ...data,
       }).unwrap();
-
       dispatch(setRows([...ddxSstate.rows, res]));
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again."
       );
     }
-
     form.reset();
     dispatch(setCloseModal("publishDatasetForm"));
-  };
-
-  const generateKey = async () => {
-    try {
-      const res = await key({}).unwrap();
-      form.setValue(
-        "mfaKey",
-        res.key.substring(0, 30).split("-").join("").toUpperCase()
-      );
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
-      );
-    }
-  };
-
-  const copyKey = () => {
-    navigator.clipboard.writeText(
-      form.getValues("mfaKey") ?? "wJalrXUtnFEMIK7MDENGbPxRfiCY"
-    );
-    showAlert("Rollover Key Successfully Copied!", "success");
   };
 
   return (
@@ -95,83 +79,104 @@ export default function PublishDatasetForm() {
 
             <div className="flex flex-wrap -m-2 rounded-lg my-4">
               <div className="px-4 py-2 w-full">
-                <TextInput
-                  label={"Name"}
-                  {...form.register("name")}
-                  placeholder={"Enter name"}
-                  className="md:text-sm 2xl:text-base"
-                />
-              </div>
-
-              <div className="px-4 py-2 w-full">
                 <SelectInput
-                  registerName="ou"
-                  label={"Organization Unit"}
-                  placeholder={"Enter OU"}
+                  registerName="dataSource"
+                  label={"Select Data Source"}
+                  placeholder={"Select"}
                   options={[
-                    { label: "Corp", value: "corp" },
-                    { label: "Dealer.com", value: "dealer.com" },
-                    { label: "KBB", value: "kbb" },
+                    { label: "My Kafka 1", value: "my_kafka_1" },
+                    { label: "Cassandra-Q", value: "cassandra_q" },
+                    { label: "Retail Kafka", value: "retail_kafka" },
+                    { label: "MySQL-24", value: "mysql_24" },
                   ]}
                   className="md:text-sm 2xl:text-base"
                 />
               </div>
 
               <div className="px-4 py-2 w-full">
+                <SelectInput
+                  registerName="dataSource"
+                  label={"Select Topic Dataset "}
+                  placeholder={"All"}
+                  options={[
+                    { label: "All", value: "all" },
+                    { label: "Purchase", value: "purchase" },
+                    { label: "MySQL", value: "mysql" },
+                  ]}
+                  className="md:text-sm 2xl:text-base"
+                />
+              </div>
+
+              <div className="px-4 py-2 w-full">
+                <TextInput
+                  label={"Base URL"}
+                  {...form.register("baseURL")}
+                  placeholder={"Enter URL"}
+                  className="md:text-sm 2xl:text-base"
+                />
+              </div>
+
+              <div className="px-4 py-2 w-full">
+                <TextInput
+                  label={"Set Dataset Name"}
+                  {...form.register("name")}
+                  placeholder={"Enter display name"}
+                  className="md:text-sm 2xl:text-base"
+                />
+              </div>
+
+              <h3 className="px-4">Set Visibility</h3>
+
+              <div className="px-4 py-2 w-full">
                 <div className="relative">
                   <RadioGroup value={visibility} onChange={setVisibility}>
-                    <Radio value="addMFA">
-                      <span>Add MFA</span>
-                    </Radio>
+                    <div className="flex flex-wrap gap-y-2 justify-between w-full">
+                      <Radio value="private">
+                        <span>Private</span>
+                      </Radio>
+                      <Radio value="contractual">
+                        <span>Contractual</span>
+                      </Radio>
+                      <Radio value="public">
+                        <span>Public</span>
+                      </Radio>
+                    </div>
                   </RadioGroup>
                 </div>
               </div>
 
-              {visibility === "addMFA" && (
-                <div className="px-4 py-2 w-full">
-                  <TextInput
-                    label={"MFA URL"}
-                    {...form.register("mfaURL")}
-                    placeholder={"validate.cox.com"}
-                    defaultValue={"validate.cox.com"}
-                    className="md:text-sm 2xl:text-base"
-                  />
-                </div>
-              )}
-
-              <div className="px-4 pt-2 w-full">
-                <Button
-                  intent={`tertiary`}
-                  className="w-full"
-                  isLoading={provisionResult.isLoading}
-                >
-                  Provision
-                </Button>
+              <div className="px-4 py-2 w-full">
+                <TextInput
+                  label={"Set Public View"}
+                  {...form.register("file")}
+                  className="md:text-sm 2xl:text-base"
+                  placeholder={"Select A json or csv file with example data"}
+                />
               </div>
 
-              <div className="px-4 py-2 w-full relative">
-                <span className="text-xs text-gray-500 font-medium">
-                  Note:use this key when installing and bringing up the DDX
-                </span>
-                <TextInput
-                  disabled
-                  label={""}
-                  {...form.register("mfaKey")}
-                  className="md:text-sm 2xl:text-base"
-                  placeholder={"wJalrXUtnFEMIK7MDENGbPxRfiCY"}
-                />
-                <HiOutlineDuplicate
-                  className="w-5 h-5 absolute right-8 top-12 text-gray-500 z-50 cursor-pointer"
-                  onClick={() => copyKey()}
-                />
+              <div className="flex flex-wrap gap-y-2 w-full justify-between px-4 py-2">
+                <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark">
+                  <HiOutlineDownload className="mr-1 font-bold rotate-180" />
+                  <span className="text-sm font-medium">Upload</span>
+                </button>
+
+                <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark">
+                  <IoRefresh className="mr-1 font-bold" />
+                  <span className="text-sm font-medium">Swagger</span>
+                </button>
+
+                <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark">
+                  <HiOutlinePaperClip className="mr-1 font-bold" />
+                  <span className="text-sm font-medium">GraphQL</span>
+                </button>
               </div>
             </div>
 
-            <div className="py-2 flex justify-center w-full mt-4">
+            <div className="px-2 py-2 flex gap-4 justify-center w-full mt-4">
               <Button
                 type="button"
                 intent={`secondary`}
-                className="w-full md:w-auto mr-2 md:mr-6"
+                className="w-full"
                 onClick={() => dispatch(setCloseModal("publishDatasetForm"))}
               >
                 <span className="inline-flex justify-center w-full">
@@ -180,14 +185,12 @@ export default function PublishDatasetForm() {
               </Button>
 
               <Button
-                type="button"
                 intent={`primary`}
-                className="w-full md:w-auto"
-                onClick={() => generateKey()}
+                className="w-full"
                 isLoading={keyResult.isLoading}
               >
                 <span className="inline-flex justify-center w-full">
-                  Generate New Key
+                  Publish
                 </span>
               </Button>
             </div>

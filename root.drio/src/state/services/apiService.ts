@@ -130,6 +130,14 @@ export const rootApi = createApi({
           body: credentials,
         }),
       }),
+
+      addDataSource: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/data-source/add`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
     };
   },
 });
@@ -149,4 +157,5 @@ export const {
   useFetchDDXLicenseMutation,
   useGenerateDDXKeyMutation,
   useProvisionDDXMutation,
+  useAddDataSourceMutation,
 } = rootApi;

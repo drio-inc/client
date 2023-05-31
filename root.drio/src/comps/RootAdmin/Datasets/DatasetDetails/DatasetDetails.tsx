@@ -1,166 +1,187 @@
-import Layout from "@/comps/Layout";
+import Image from "next/image";
 import Button from "@/comps/ui/Button/Button";
-import { useAppDispatch } from "@/hooks/useStoreTypes";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
-import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
+const headers = [
+  {
+    header: "VIN#",
+    accessor: "vin",
+  },
+  {
+    header: "Ok",
+    accessor: "ok",
+  },
 
-import { HiX } from "react-icons/hi";
+  {
+    header: "Service",
+    accessor: "service",
+  },
 
-export default function DDXDetails({ row }: TableRow) {
+  {
+    header: "Data",
+    accessor: "data",
+  },
+
+  {
+    header: "Year",
+    accessor: "year",
+  },
+  {
+    header: "Make",
+    accessor: "make",
+  },
+  {
+    header: "Model",
+    accessor: "model",
+  },
+  {
+    header: "Resell",
+    accessor: "resell",
+  },
+];
+
+const rows: TableRow[] = [
+  {
+    id: "1",
+    vin: "CFQ123456",
+    ok: "Yes",
+    service: "Transmisson",
+    data: "True",
+    year: "2",
+    make: "41",
+    model: "F250",
+    resell: "2",
+  },
+  {
+    id: "2",
+    vin: "CFQ123456",
+    ok: "Yes",
+    service: "Transmisson",
+    data: "True",
+    year: "2",
+    make: "41",
+    model: "F250",
+    resell: "2",
+  },
+  {
+    id: "3",
+    vin: "CFQ123456",
+    ok: "Yes",
+    service: "Transmisson",
+    data: "True",
+    year: "2",
+    make: "41",
+    model: "F250",
+    resell: "2",
+  },
+  {
+    id: "4",
+    vin: "CFQ123456",
+    ok: "Yes",
+    service: "Transmisson",
+    data: "True",
+    year: "2",
+    make: "41",
+    model: "F250",
+    resell: "2",
+  },
+];
+
+export default function DatasetDetails({ row }: TableRow) {
+  const router = useRouter();
+  const pathname = router.query.dataset;
   const dispatch = useAppDispatch();
+
+  const datasetState = useAppSelector((state) => state.dataset);
+
+  const currentDataset = datasetState.rows.find(
+    (row) => row.dataset === pathname
+  );
+
+  console.log(currentDataset);
+
   return (
-    <>
-      <Layout>
-        <div className="min-w-[60vw] relative w-full mx-auto bg-white p-8 rounded-lg">
-          <h2 className="text-gray-700 text-base font-bold mb-4">
-            {row.account}
-          </h2>
+    <div className="py-2">
+      <div className={"flex flex-col w-full shadow-lg rounded-lg bg-gray-50"}>
+        <span className="text-sm text-gray-900 inline-block p-4 rounded-md">
+          {currentDataset?.dataset}
+        </span>
 
-          <div className="flex justify-between">
-            <h3 className="text-gray-500 font-semibold">System Details</h3>
-            <Button
-              intent={`tertiary`}
-              onClick={() => {
-                dispatch(setCloseModal("detailsWindow"));
-                dispatch(setOpenModal("addDDXForm"));
-              }}
-            >
-              + Add DDX
+        <div className={`bg-white rounded-lg flex flex-col`}>
+          <div className="flex flex-col gap-y-4 text-sm p-4">
+            <div className="p-4 shadow-lg rounded-lg w-48">
+              <Image
+                src="/images/google.png"
+                alt="Picture of the author"
+                width={25}
+                height={25}
+              />
+            </div>
+
+            <span>Accessibility: Must Have Contract in place to access</span>
+            <span>Organization / Business Unit: Xtime</span>
+            <span>Number of Subscribers: 56</span>
+            <span>Contract in Place: Pending </span>
+            <span>Daliy Access Frequency: 25</span>
+            <div>
+              <Button intent={"primary"} className="-ml-1">
+                View Contract Request
+              </Button>
+            </div>
+          </div>
+
+          <div className="block w-full overflow-x-auto bg-white mt-4">
+            <table className="w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  {headers?.map((header, index) => (
+                    <th
+                      key={index}
+                      className={
+                        "border-t border-b text-gray-500 text-xs p-4 text-left"
+                      }
+                    >
+                      {header.header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows?.map((row, index) => {
+                  return (
+                    <tr
+                      key={index}
+                      className={`hover:bg-gray-5 border-t border-b border-gray-100`}
+                    >
+                      {headers?.map((header, index) => (
+                        <td
+                          key={index}
+                          className={
+                            "border-t border-b text-gray-500 text-xs p-4 text-left"
+                          }
+                        >
+                          <span className={`inline-block`}>
+                            {row[header.accessor]}
+                          </span>
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
+                <tr></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="rounded-lg bg-gray-50 w-full py-3 flex justify-end">
+            <Button intent={"primary"} className="mx-4">
+              <Link href={`/datasets`}>Done</Link>
             </Button>
           </div>
-
-          <div className="flex my-4 shadow-md p-2 rounded-lg bg-gray-50 text-gray-500">
-            <div className="w-2/3 flex-grow">
-              <div className="flex my-2">
-                <span className="block w-1/2">Docker image</span>
-                <span className="block">:Standard Rev 1.0.2.1102023</span>
-              </div>
-
-              <div className="flex">
-                <span className="block w-1/2">Licensed</span>
-                <span className="block">:Yes ( Standard )</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">
-                  Data rate sent to controller
-                </span>
-                <span className="block">:1200/sec</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Avg Access Rates(24 hrs)</span>
-                <span className="block">:24/day</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Transfer rate</span>
-                <span className="block">:2 Gbps</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Dataset rate</span>
-                <span className="block">:5 Datasets/sec</span>
-              </div>
-            </div>
-
-            <div className="w-1/3">
-              <h3 className="mb-3">DDX Cluster Provisioning</h3>
-              <div className="flex my-2">
-                <span className="block w-1/2">#vCPU</span>
-                <span className="block">:30</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Memory</span>
-                <span className="block w-1/2">:500 GB</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Storage</span>
-                <span className="block w-1/2">:1 TB</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Auto-scale</span>
-                <span className="block w-1/2">:ON</span>
-              </div>
-            </div>
-
-            <div className="w-1/3">
-              <h3 className="mb-3">System Utilization</h3>
-              <div className="flex my-2">
-                <span className="block w-1/2">CPU</span>
-                <span className="block">:30 %</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Memory</span>
-                <span className="block w-1/2">:83 %</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Storage</span>
-                <span className="block w-1/2">:12 %</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Auto-scale</span>
-                <span className="block w-1/2">:ON</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-between">
-            <h2 className="text-gray-500 font-medium">Deployment details</h2>
-            <Button
-              intent={`tertiary`}
-              onClick={() => {
-                dispatch(setCloseModal("detailsWindow"));
-                dispatch(setOpenModal("addDDXForm"));
-              }}
-            >
-              + Rollover Key
-            </Button>
-          </div>
-
-          <div className="flex my-4 shadow-md p-2 rounded-lg bg-gray-50 text-gray-500">
-            <div className="">
-              <div className="flex my-2">
-                <span className="block w-1/2">Service Provider</span>
-                <span className="block">: Datacenter</span>
-              </div>
-
-              <div className="flex">
-                <span className="block w-1/2">Location</span>
-                <span className="block">: Santa Clara</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Region</span>
-                <span className="block">: US West</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Rack</span>
-                <span className="block">: 22</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Subnet</span>
-                <span className="block">: 10.02</span>
-              </div>
-            </div>
-          </div>
-
-          <span
-            onClick={() => dispatch(setCloseModal("detailsWindow"))}
-            className="absolute top-0 right-0 p-6 cursor-pointer"
-          >
-            <HiX className="w-6 h-6" />
-          </span>
         </div>
-      </Layout>
-    </>
+      </div>
+    </div>
   );
 }

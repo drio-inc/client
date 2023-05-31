@@ -6,16 +6,14 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import AlertModal from "@/comps/ui/AlertModal";
 import { setOpenModal } from "@/state/slices/uiSlice";
-import { setRows, setSelectedRows } from "@/state/slices/datasetSlice";
+import { setRows, setSelectedRows } from "@/state/slices/dataSourceSlice";
 
-import Link from "next/link";
-
-const DatasetMenu = ({ row, editForm, detailsWindow }: any) => {
+const DataSourcesMenu = ({ row, editForm, detailsWindow }: any) => {
   const dispatch = useAppDispatch();
-  const datasetState = useAppSelector((state) => state.dataset);
+  const dataSourceState = useAppSelector((state) => state.dataSource);
 
   const deleteRow = (id: number | string) => {
-    dispatch(setRows(datasetState.rows.filter((row) => row.id !== id)));
+    dispatch(setRows(dataSourceState.rows.filter((row) => row.id !== id)));
     dispatch(setSelectedRows([]));
   };
 
@@ -30,34 +28,26 @@ const DatasetMenu = ({ row, editForm, detailsWindow }: any) => {
           side="left"
           sideOffset={5}
           align="center"
-          className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
+          className="bg-white rounded-lg shadow-lg text-sm text-gray-700 z-[999]"
         >
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            <AlertModal
-              row={row}
-              accessor={row.dataset}
-              onClick={() => deleteRow(row.id)}
-            />
-          </span>
-
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             {editForm && (
               <Modal
                 label="Edit"
-                identifier="editDatasetForm"
-                onClick={() => dispatch(setOpenModal("editDatasetForm"))}
+                identifier="editDataSourceForm"
+                onClick={() => dispatch(setOpenModal("editDataSourceForm"))}
               >
                 {editForm}
               </Modal>
             )}
           </span>
 
-          <span
-            className={
-              "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
-            }
-          >
-            <Link href={`/datasets/${row.dataset}`}>View</Link>
+          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            <AlertModal
+              row={row}
+              accessor={row.ou}
+              onClick={() => deleteRow(row.id)}
+            />
           </span>
         </Popover.Content>
       </Popover.Portal>
@@ -65,4 +55,4 @@ const DatasetMenu = ({ row, editForm, detailsWindow }: any) => {
   );
 };
 
-export default DatasetMenu;
+export default DataSourcesMenu;

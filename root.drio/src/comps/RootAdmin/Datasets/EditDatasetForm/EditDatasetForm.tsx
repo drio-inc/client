@@ -10,33 +10,42 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
+import { setRows } from "@/state/slices/DDXSlice";
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { setLicenseDetails } from "@/state/slices/DDXSlice";
 
-import {
-  useUpdateDDXLicenseMutation,
-  useFetchDDXLicenseMutation,
-} from "@/state/services/apiService";
+import { HiOutlineDownload, HiOutlinePaperClip } from "react-icons/hi";
+
 import { useState } from "react";
+import { Radio } from "react-aria-components";
+import RadioGroup from "@/comps/ui/Forms/RadioGroup";
+import {
+  useProvisionDDXMutation,
+  useGenerateDDXKeyMutation,
+} from "@/state/services/apiService";
+import { IoRefresh } from "react-icons/io5";
 
 const schema = z.object({
-  sku: z.string({
-    required_error: "Please Enter a value",
+  dataSource: z.string({
+    required_error: "Please select an option",
   }),
-  licenseType: z.string({
-    required_error: "Please Enter a value",
+  topic: z.string({
+    required_error: "Please select an option",
   }),
-  licenseKey: z.string().nonempty("Please Enter a value"),
+  baseURL: z
+    .string()
+    .nonempty("Please Enter a value")
+    .url("Please enter a valid URL"),
+  name: z.string().nonempty("Please Enter a value"),
+  file: z.object({}),
 });
 
 type FormData = z.infer<typeof schema>;
 
-export default function UpdateLicenseForm() {
-  const [showLicenseDetails, setShowLicenseDetails] = useState(false);
-
+export default function EditDatasetForm() {
   const dispatch = useAppDispatch();
-  const [updateLicense, updateResult] = useUpdateDDXLicenseMutation();
-  const [fetchLicense, fetchResult] = useFetchDDXLicenseMutation();
+  const [visibility, setVisibility] = useState("");
+  const [key, keyResult] = useGenerateDDXKeyMutation();
+  const [provision, provisionResult] = useProvisionDDXMutation();
 
   const ddxSstate = useAppSelector((state) => state.DDX);
 
@@ -44,64 +53,41 @@ export default function UpdateLicenseForm() {
     schema: schema,
   });
 
-  const onFetchLicense: SubmitHandler<FormData> = async (data) => {
-    try {
-      const res = await fetchLicense({
-        ...data,
-      }).unwrap();
-
-      console.log(res);
-
-      if (res) {
-        setShowLicenseDetails(true);
-        dispatch(setLicenseDetails(res));
-      }
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
-  };
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const res = await updateLicense({
+      const res = await provision({
         ...data,
       }).unwrap();
-
-      if (res) {
-        showAlert("License updated successfully", "success");
-      }
+      dispatch(setRows([...ddxSstate.rows, res]));
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again."
       );
     }
-
     form.reset();
-    dispatch(setCloseModal("updateLicenseForm"));
+    dispatch(setCloseModal("editDatasetForm"));
   };
 
   return (
     <>
       <Layout>
-        <Form form={form} onSubmit={onSubmit} className="min-w-[50vw]">
-          <div className="w-full mx-auto bg-white p-8 rounded-lg">
-            <h2 className="text-gray-700 text-2xl font-bold my-4">
-              Account Information
+        <Form form={form} onSubmit={onSubmit} className="">
+          <div className="mx-auto bg-white p-4 rounded-lg max-w-[20vw]">
+            <h2 className="text-gray-700 text-2xl font-bold text-center">
+              Update Dataset
             </h2>
 
-            <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">
+            <div className="flex flex-wrap -m-2 rounded-lg my-4">
               <div className="px-4 py-2 w-full">
                 <SelectInput
-                  registerName="sku"
-                  label={"Product SKU"}
-                  placeholder={"Enter SKU"}
+                  registerName="dataSource"
+                  label={"Select Data Source"}
+                  placeholder={"Select"}
                   options={[
-                    { label: "SKU 1", value: "sku1" },
-                    { label: "SKU 2", value: "sku2" },
-                    { label: "SKU 3", value: "sku3" },
+                    { label: "My Kafka 1", value: "my_kafka_1" },
+                    { label: "Cassandra-Q", value: "cassandra_q" },
+                    { label: "Retail Kafka", value: "retail_kafka" },
+                    { label: "MySQL-24", value: "mysql_24" },
                   ]}
                   className="md:text-sm 2xl:text-base"
                 />
@@ -109,44 +95,89 @@ export default function UpdateLicenseForm() {
 
               <div className="px-4 py-2 w-full">
                 <SelectInput
-                  registerName="licenseType"
-                  label={"License Type"}
-                  placeholder={"Enter type"}
+                  registerName="dataSource"
+                  label={"Select Topic Dataset "}
+                  placeholder={"All"}
                   options={[
-                    { label: "Demo", value: "demo" },
-                    { label: "Medium", value: "medium" },
-                    { label: "Standard", value: "standard" },
+                    { label: "All", value: "all" },
+                    { label: "Purchase", value: "purchase" },
+                    { label: "MySQL", value: "mysql" },
                   ]}
                   className="md:text-sm 2xl:text-base"
                 />
               </div>
 
-              <div className="px-4 py-2 w-full flex flex-col md:flex-row md:items-center">
+              <div className="px-4 py-2 w-full">
                 <TextInput
-                  label={"License Key"}
-                  {...form.register("licenseKey")}
-                  placeholder={"Enter license key"}
-                  className="md:text-sm 2xl:text-base flex-grow"
+                  label={"Base URL"}
+                  {...form.register("baseURL")}
+                  placeholder={"Enter URL"}
+                  className="md:text-sm 2xl:text-base"
                 />
+              </div>
 
-                <Button
-                  type="button"
-                  intent={`primary`}
-                  className="mt-5 md:ml-4"
-                  isLoading={fetchResult.isLoading}
-                  onClick={() => form.handleSubmit(onFetchLicense)()}
-                >
-                  <span className="py-[3px] px-4">Go</span>
-                </Button>
+              <div className="px-4 py-2 w-full">
+                <TextInput
+                  label={"Set Dataset Name"}
+                  {...form.register("name")}
+                  placeholder={"Enter display name"}
+                  className="md:text-sm 2xl:text-base"
+                />
+              </div>
+
+              <h3 className="px-4">Set Visibility</h3>
+
+              <div className="px-4 py-2 w-full">
+                <div className="relative">
+                  <RadioGroup value={visibility} onChange={setVisibility}>
+                    <div className="flex flex-wrap gap-y-2 justify-between w-full">
+                      <Radio value="private">
+                        <span>Private</span>
+                      </Radio>
+                      <Radio value="contractual">
+                        <span>Contractual</span>
+                      </Radio>
+                      <Radio value="public">
+                        <span>Public</span>
+                      </Radio>
+                    </div>
+                  </RadioGroup>
+                </div>
+              </div>
+
+              <div className="px-4 py-2 w-full">
+                <TextInput
+                  label={"Set Public View"}
+                  {...form.register("file")}
+                  className="md:text-sm 2xl:text-base"
+                  placeholder={"Select A json or csv file with example data"}
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-y-2 w-full justify-between px-4 py-2">
+                <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark">
+                  <HiOutlineDownload className="mr-1 font-bold rotate-180" />
+                  <span className="text-sm font-medium">Upload</span>
+                </button>
+
+                <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark">
+                  <IoRefresh className="mr-1 font-bold" />
+                  <span className="text-sm font-medium">Swagger</span>
+                </button>
+
+                <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark">
+                  <HiOutlinePaperClip className="mr-1 font-bold" />
+                  <span className="text-sm font-medium">GraphQL</span>
+                </button>
               </div>
             </div>
 
-            <div className="py-2 flex justify-center md:justify-end w-full mt-4">
+            <div className="px-2 py-2 flex gap-4 justify-center w-full mt-4">
               <Button
                 type="button"
                 intent={`secondary`}
-                className="w-full md:w-auto mr-2 md:mr-6"
-                onClick={() => dispatch(setCloseModal("updateLicenseForm"))}
+                className="w-full"
+                onClick={() => dispatch(setCloseModal("editDatasetForm"))}
               >
                 <span className="inline-flex justify-center w-full">
                   Cancel
@@ -155,12 +186,11 @@ export default function UpdateLicenseForm() {
 
               <Button
                 intent={`primary`}
-                className="w-full md:w-auto"
-                isLoading={updateResult.isLoading}
-                disabled={!showLicenseDetails}
+                className="w-full"
+                isLoading={keyResult.isLoading}
               >
                 <span className="inline-flex justify-center w-full">
-                  Update
+                  Publish
                 </span>
               </Button>
             </div>

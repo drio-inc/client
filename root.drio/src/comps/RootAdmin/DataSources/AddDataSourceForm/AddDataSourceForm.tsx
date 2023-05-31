@@ -13,19 +13,19 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { setRows } from "@/state/slices/datasourceSlice";
+import { setRows } from "@/state/slices/dataSourceSlice";
 
 import { HiCheck } from "react-icons/hi";
 
 import { useState } from "react";
-import { useProvisionDDXMutation } from "@/state/services/apiService";
+import { useAddDataSourceMutation } from "@/state/services/apiService";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
   type: z.string({
     required_error: "Please select an option",
   }),
-  brokerEndpoint: z.string().nonempty("Please Enter a value"),
+  endpoint: z.string().nonempty("Please Enter a value"),
   schemaURL: z.string().optional(),
 });
 
@@ -34,9 +34,9 @@ type FormData = z.infer<typeof schema>;
 export default function AddDataSourceForm() {
   const dispatch = useAppDispatch();
   const [visibility, setVisibility] = useState(false);
-  const [provision, provisionResult] = useProvisionDDXMutation();
+  const [addDataSource, result] = useAddDataSourceMutation();
 
-  const datasourceState = useAppSelector((state) => state.datasource);
+  const dataSourceState = useAppSelector((state) => state.dataSource);
 
   const form = useZodForm({
     schema: schema,
@@ -44,11 +44,12 @@ export default function AddDataSourceForm() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const res = await provision({
+      const res = await addDataSource({
         ...data,
       }).unwrap();
 
-      dispatch(setRows([...datasourceState.rows, res]));
+      dispatch(setRows([...dataSourceState.rows, res]));
+      showAlert("Data Source Added Successfully", "success");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again."
@@ -96,7 +97,7 @@ export default function AddDataSourceForm() {
               <div className="px-4 py-2 w-full">
                 <TextInput
                   label={"Broker Endpoint"}
-                  {...form.register("brokerEndpoint")}
+                  {...form.register("endpoint")}
                   placeholder={"Enter broker endpoint"}
                   className="md:text-sm 2xl:text-base"
                 />
@@ -149,7 +150,7 @@ export default function AddDataSourceForm() {
               <Button
                 intent={`primary`}
                 className="w-full"
-                isLoading={provisionResult.isLoading}
+                isLoading={result.isLoading}
               >
                 <span className="inline-flex justify-center w-full">Add</span>
               </Button>

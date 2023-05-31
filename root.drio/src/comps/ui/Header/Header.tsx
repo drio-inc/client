@@ -30,7 +30,7 @@ export default function Header() {
           {user && <span className="mr-3">{user.role}</span>}
           <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
             <div className="relative flex w-full flex-wrap items-center">
-              <HiSearch className="text-gray-400 inline-flex z-10 h-full absolute items-center justify-center w-8 pl-2 py-2" />
+              <HiSearch className="text-gray-400 inline-flex h-full absolute items-center justify-center w-8 pl-2 py-2" />
               <input
                 placeholder="Search"
                 className="pl-10 transition-colors ease-in-out duration-200 border py-2 px-3 my-1 rounded-md focus:outline-none shadow-sm"

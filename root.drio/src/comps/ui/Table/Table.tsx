@@ -31,7 +31,7 @@ const Table = ({
   detailsWindow: DetailsWindow,
 }: TableProps) => {
   return (
-    <div className="block w-full overflow-x-auto">
+    <div className="block w-full overflow-x-auto bg-white">
       <table className="w-full">
         <thead className="bg-gray-50">
           <tr>
@@ -94,7 +94,7 @@ const Table = ({
                         header?.status?.[row[header.accessor]]
                       } inline-block`}
                     >
-                      {row[header.accessor]}
+                      {row[header.accessor] ?? "N/A"}
                     </span>
                   </td>
                 ))}

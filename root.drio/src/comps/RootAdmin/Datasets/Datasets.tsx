@@ -7,14 +7,15 @@ import EditDatasetForm from "./EditDatasetForm";
 import PublishDatasetForm from "./PublishDatasetForm";
 
 import DatasetMenu from "./DatasetMenu/DatasetMenu";
-import AddDataSourceForm from "../DataSources/AddDatasetForm";
+import AddDataSourceForm from "../DataSources/AddDataSourceForm";
 
 import Button from "@ui/Button";
-import { HiMinusSm } from "react-icons/hi";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
+import { HiMinusSm, HiUpload, HiPlus } from "react-icons/hi";
 
+import TopOrgs from "./TopOrgs";
 import Modal from "@/comps/ui/Modal";
 
 const headers = [
@@ -83,7 +84,17 @@ const Dataset = () => {
   };
 
   return (
-    <div className="py-6 w-full">
+    <div className="py-2 w-full">
+      <span className="text-sm text-gray-500 inline-block px-4 py-2 my-2 bg-white rounded-md border">
+        Top 10 Organisations Accessing Data
+      </span>
+
+      <TopOrgs />
+
+      <span className="text-xs text-gray-900 inline-block px-4 py-2 my-2 bg-white rounded-md border">
+        Top by Access Frequency
+      </span>
+
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div
           className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
@@ -117,14 +128,20 @@ const Dataset = () => {
               intent={"primary"}
               onClick={() => dispatch(setOpenModal("addDataSourceForm"))}
             >
-              + {"Add Data Source"}
+              <div className="flex items-center gap-1">
+                <HiPlus />
+                <span className="inline-block">Add New Data Source</span>
+              </div>
             </Button>
 
             <Button
               intent={"primary"}
               onClick={() => dispatch(setOpenModal("publishDatasetForm"))}
             >
-              + {"Publish Dataset"}
+              <div className="flex items-center gap-1">
+                <HiUpload />
+                <span className="inline-block">Publish Dataset</span>
+              </div>
             </Button>
           </div>
 

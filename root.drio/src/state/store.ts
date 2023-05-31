@@ -8,7 +8,7 @@ import uiReducer from "./slices/uiSlice";
 import DDXReducer from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
 import datasetReducer from "./slices/datasetSlice";
-import datasourceReducer from "./slices/datasourceSlice";
+import dataSourceReducer from "./slices/dataSourceSlice";
 import adminOrgAccountReducer from "./slices/adminOrgAccountSlice";
 
 const persistConfig = {
@@ -30,7 +30,7 @@ export const store = configureStore({
     ui: persistedUIReducer,
     dataset: datasetReducer,
     auth: persistedAuthReducer,
-    datasource: datasourceReducer,
+    dataSource: dataSourceReducer,
     adminOrgAccount: adminOrgAccountReducer,
     [rootApi.reducerPath]: rootApi.reducer,
   },

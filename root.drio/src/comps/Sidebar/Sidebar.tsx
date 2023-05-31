@@ -42,6 +42,20 @@ const NavLinks = [
     name: "Datasets",
     href: "datasets",
     icon: <HiOutlineCloud className="inline-block w-6 h-6 mr-2" />,
+    children: [
+      {
+        name: "My Datasets",
+        href: "/",
+      },
+      {
+        name: "My Data Sources",
+        href: "/data-sources",
+      },
+      {
+        name: "Subscribe Datasets",
+        href: "/subscribe-datasets",
+      },
+    ],
   },
 
   {
