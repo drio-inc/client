@@ -8,8 +8,12 @@ const DashboardContainer = ({ children }: { children: React.ReactNode }) => {
     <>
       <Sidebar />
       <div className="relative md:ml-64">
-        <Header />
-        <div className="px-6 mx-auto w-full bg-gray-100">{children}</div>
+        <div className="min-h-screen relative">
+          <Header />
+          <div className="px-6 mx-auto w-full bg-gray-100 h-full">
+            {children}
+          </div>
+        </div>
       </div>
     </>
   );

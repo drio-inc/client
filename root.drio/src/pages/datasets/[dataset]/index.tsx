@@ -21,13 +21,11 @@ const DatasetsPage = () => {
   }
 
   return (
-    <div>
-      <Layout>
-        <DashboardContainer>
-          <DatasetDetails />
-        </DashboardContainer>
-      </Layout>
-    </div>
+    <Layout>
+      <DashboardContainer>
+        <DatasetDetails />
+      </DashboardContainer>
+    </Layout>
   );
 };
 

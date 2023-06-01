@@ -36,6 +36,10 @@ interface SelectProps extends ComponentProps<"select">, SharedProps {
   registerName: string;
   redirect?: boolean;
   isPlusIndicator?: boolean;
+  defaultSelectedValue?: {
+    value: string;
+    label: string;
+  };
   options: {
     value: string;
     label: string;
@@ -179,9 +183,11 @@ export const SelectInput = ({
   className,
   registerName,
   isPlusIndicator,
+  defaultSelectedValue,
   ...props
 }: SelectProps) => {
   const {
+    control,
     formState: { errors },
   } = useFormContext<FieldValues>();
 
@@ -198,36 +204,42 @@ export const SelectInput = ({
       </label>
 
       <Controller
+        control={control}
         name={registerName}
-        render={({ field }) => (
-          <Select
-            unstyled
-            {...field}
-            options={options}
-            onBlur={field.onBlur}
-            placeholder={props.placeholder}
-            value={options.find((c) => c.value === field.value)}
-            onChange={(selectedOption: any) => {
-              field.onChange(selectedOption?.value);
+        defaultValue={defaultSelectedValue?.value}
+        render={({ field }) => {
+          const selectedValue = options.find((c) => c.value === field.value);
 
-              if (redirect) {
-                dispatch(setAuthMode(selectedOption?.value));
-                router.push(selectedOption?.value);
-              }
-            }}
-            components={{
-              Menu: CustomMenu as ComponentType<MenuProps>,
-              Option: CustomOption as ComponentType<OptionProps>,
-              Control: (props: ControlProps) => (
-                <CustomControl registerName={registerName} {...props} />
-              ),
+          return (
+            <Select
+              unstyled
+              {...field}
+              options={options}
+              value={selectedValue}
+              onBlur={field.onBlur}
+              placeholder={props.placeholder}
+              onChange={(selectedOption: any) => {
+                field.onChange(selectedOption?.value);
 
-              IndicatorSeparator: () => null,
-              DropdownIndicator: () =>
-                isPlusIndicator ? <HiPlus /> : <HiChevronDown />,
-            }}
-          />
-        )}
+                if (redirect) {
+                  dispatch(setAuthMode(selectedOption?.value));
+                  router.push(selectedOption?.value);
+                }
+              }}
+              components={{
+                Menu: CustomMenu as ComponentType<MenuProps>,
+                Option: CustomOption as ComponentType<OptionProps>,
+                Control: (props: ControlProps) => (
+                  <CustomControl registerName={registerName} {...props} />
+                ),
+
+                IndicatorSeparator: () => null,
+                DropdownIndicator: () =>
+                  isPlusIndicator ? <HiPlus /> : <HiChevronDown />,
+              }}
+            />
+          );
+        }}
       />
 
       {error && (

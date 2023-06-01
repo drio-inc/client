@@ -138,6 +138,30 @@ export const rootApi = createApi({
           body: credentials,
         }),
       }),
+
+      publishDataset: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/dataset/publish`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      updateDataset: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/dataset/update`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      editDataSource: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/data-source/update`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
     };
   },
 });
@@ -158,4 +182,7 @@ export const {
   useGenerateDDXKeyMutation,
   useProvisionDDXMutation,
   useAddDataSourceMutation,
+  usePublishDatasetMutation,
+  useEditDataSourceMutation,
+  useUpdateDatasetMutation,
 } = rootApi;

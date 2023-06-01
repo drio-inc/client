@@ -100,10 +100,8 @@ export default function DatasetDetails({ row }: TableRow) {
     (row) => row.dataset === pathname
   );
 
-  console.log(currentDataset);
-
   return (
-    <div className="py-2">
+    <div className="py-2 h-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-gray-50"}>
         <span className="text-sm text-gray-900 inline-block p-4 rounded-md">
           {currentDataset?.dataset}
@@ -111,12 +109,12 @@ export default function DatasetDetails({ row }: TableRow) {
 
         <div className={`bg-white rounded-lg flex flex-col`}>
           <div className="flex flex-col gap-y-4 text-sm p-4">
-            <div className="p-4 shadow-lg rounded-lg w-48">
+            <div className="p-2 shadow-lg rounded-lg w-48">
               <Image
-                src="/images/google.png"
-                alt="Picture of the author"
-                width={25}
-                height={25}
+                src="/images/xtime.png"
+                alt="Logo"
+                width={150}
+                height={150}
               />
             </div>
 
