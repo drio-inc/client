@@ -21,10 +21,7 @@ import styles from "./Inputs.module.scss";
 
 import { useRouter } from "next/router";
 import { FieldError } from "@ui/Forms/Form";
-import { useAppDispatch } from "@/hooks/useStoreTypes";
 import { useFormContext, Controller, FieldValues } from "react-hook-form";
-
-import { setAuthMode } from "@/state/slices/authSlice";
 
 type SharedProps = {
   label: string;
@@ -33,13 +30,15 @@ type SharedProps = {
 
 interface InputProps extends ComponentProps<"input">, SharedProps {}
 interface SelectProps extends ComponentProps<"select">, SharedProps {
-  registerName: string;
   redirect?: boolean;
-  isPlusIndicator?: boolean;
+  registerName: string;
+  onChangeCustomAction?: (selectedOption?: string) => void;
+  hasPlusIndicator?: boolean;
   defaultSelectedValue?: {
     value: string;
     label: string;
   };
+
   options: {
     value: string;
     label: string;
@@ -163,7 +162,11 @@ const CustomOption = (props: OptionProps) => {
   return (
     <Option {...props}>
       <div
-        className={`cursor-pointer hover:bg-gray-50 flex justify-between items-center text-gray-900 p-2`}
+        className={`cursor-pointer hover:bg-gray-50 flex justify-between items-center p-2 w-full ${
+          props.label === "Add New"
+            ? `text-drio-red border-t block`
+            : `text-gray-900 `
+        } `}
       >
         <span className={`${props.isSelected && `font-medium`} text-sm`}>
           {props.label}
@@ -182,8 +185,9 @@ export const SelectInput = ({
   redirect,
   className,
   registerName,
-  isPlusIndicator,
+  hasPlusIndicator,
   defaultSelectedValue,
+  onChangeCustomAction,
   ...props
 }: SelectProps) => {
   const {
@@ -191,8 +195,6 @@ export const SelectInput = ({
     formState: { errors },
   } = useFormContext<FieldValues>();
 
-  const router = useRouter();
-  const dispatch = useAppDispatch();
   const error = errors[registerName];
 
   return (
@@ -220,11 +222,7 @@ export const SelectInput = ({
               placeholder={props.placeholder}
               onChange={(selectedOption: any) => {
                 field.onChange(selectedOption?.value);
-
-                if (redirect) {
-                  dispatch(setAuthMode(selectedOption?.value));
-                  router.push(selectedOption?.value);
-                }
+                onChangeCustomAction?.(selectedOption?.value);
               }}
               components={{
                 Menu: CustomMenu as ComponentType<MenuProps>,
@@ -235,7 +233,7 @@ export const SelectInput = ({
 
                 IndicatorSeparator: () => null,
                 DropdownIndicator: () =>
-                  isPlusIndicator ? <HiPlus /> : <HiChevronDown />,
+                  hasPlusIndicator ? <HiPlus /> : <HiChevronDown />,
               }}
             />
           );

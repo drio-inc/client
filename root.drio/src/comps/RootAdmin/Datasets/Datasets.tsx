@@ -91,7 +91,7 @@ const Dataset = () => {
 
       <TopOrgs />
 
-      <span className="text-xs text-gray-900 inline-block px-4 py-2 my-2 bg-white rounded-md border">
+      <span className="text-xs text-gray-900 inline-block px-4 py-2 mt-2 mb-6 bg-white rounded-md border">
         Top by Access Frequency
       </span>
 

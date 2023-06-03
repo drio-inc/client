@@ -9,7 +9,7 @@ const initialState: dataSourceState = {
   rows: [
     {
       id: "1",
-      sourceName: "My Kafka 1",
+      sourceName: "KBB Kafka",
       type: "Kafka",
       endpoint: "mykafka.host.com:9093",
       datasets: 25,
@@ -19,7 +19,7 @@ const initialState: dataSourceState = {
     },
     {
       id: "2",
-      sourceName: "My Kafka 1",
+      sourceName: "Dealer Kafka",
       type: "Kafka",
       endpoint: "mykafka.host.com:9093",
       datasets: 25,
@@ -29,7 +29,7 @@ const initialState: dataSourceState = {
     },
     {
       id: "3",
-      sourceName: "My Kafka 1",
+      sourceName: "Policy-GDPR",
       type: "Kafka",
       endpoint: "mykafka.host.com:9093",
       datasets: 25,
@@ -39,7 +39,7 @@ const initialState: dataSourceState = {
     },
     {
       id: "4",
-      sourceName: "My Kafka 1",
+      sourceName: "MySQL-DT",
       type: "Kafka",
       endpoint: "mykafka.host.com:9093",
       datasets: 25,

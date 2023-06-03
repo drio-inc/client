@@ -11,7 +11,7 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setRows } from "@/state/slices/datasetSlice";
-import { setCloseModal } from "@/state/slices/uiSlice";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 import { HiOutlineDownload, HiOutlinePaperClip } from "react-icons/hi";
 
@@ -52,27 +52,28 @@ export default function PublishDatasetForm() {
   const datasetState = useAppSelector((state) => state.dataset);
   const dataSourceState = useAppSelector((state) => state.dataSource);
 
-  const sourceObject = [];
-
-  const dataSourceOptions = dataSourceState.rows.map((row) => {
-    return [
-      {
-        label: row.sourceName,
-        value: row.sourceName.split(" ").join("").toLowerCase(),
-      },
-    ];
+  const options = dataSourceState.rows.map((row) => {
+    return {
+      label: row.sourceName,
+      value: row.sourceName.split(" ").join("").toLowerCase(),
+    };
   });
-
-  console.log(dataSourceOptions);
 
   const form = useZodForm({
     schema: schema,
   });
 
+  const onAddNew = (selectedOption?: string) => {
+    if (selectedOption === "add_new") {
+      dispatch(setCloseModal("publishDatasetForm"));
+      dispatch(setOpenModal("addDataSourceForm"));
+      return;
+    }
+  };
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     if (visibility === "") {
       showAlert("Please select a visibility", "error");
-      console.log("VISIBILITY NOT SELECTED");
       return;
     }
 
@@ -83,6 +84,7 @@ export default function PublishDatasetForm() {
       }).unwrap();
 
       dispatch(setRows([...datasetState.rows, res]));
+      showAlert("Dataset published successfully", "success");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again."
@@ -105,16 +107,12 @@ export default function PublishDatasetForm() {
             <div className="flex flex-wrap -m-2 rounded-lg my-4">
               <div className="px-4 py-2 w-full">
                 <SelectInput
+                  placeholder={"Select"}
                   registerName="dataSource"
                   label={"Select Data Source"}
-                  placeholder={"Select"}
-                  options={dataSourceState.rows.map((row) => {
-                    return {
-                      label: row.sourceName,
-                      value: row.sourceName.split(" ").join("").toLowerCase(),
-                    };
-                  })}
+                  onChangeCustomAction={onAddNew}
                   className="md:text-sm 2xl:text-base"
+                  options={[...options, { label: "Add New", value: "add_new" }]}
                 />
               </div>
 

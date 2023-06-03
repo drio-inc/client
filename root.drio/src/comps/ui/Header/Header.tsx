@@ -14,12 +14,11 @@ export default function Header() {
 
   const handleLogout = () => {
     dispatch(logOut());
-    router.push("/login");
   };
 
   return (
-    <nav className="p-2 shadow-sm">
-      <div className="flex items-center justify-between md:px-8 px-4">
+    <nav className="shadow-sm h-16">
+      <div className="flex items-center justify-between md:px-8 px-4 h-full">
         <Link
           className="text-gray-600 text-sm capitalize hidden md:inline-block font-medium"
           href={router.pathname}

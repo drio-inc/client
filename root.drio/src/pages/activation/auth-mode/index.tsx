@@ -10,19 +10,15 @@ import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { z } from "zod";
-import { setAuthMode } from "@/state/slices/authSlice";
 import { SubmitHandler } from "react-hook-form";
+import { setAuthMode } from "@/state/slices/authSlice";
 
 import { Form, useZodForm } from "@ui/Forms/Form";
 
 const schema = z.object({
-  authValue: z
-    .string({
-      required_error: "Please select an option",
-      invalid_type_error: "Option must be a string",
-    })
-    .nonempty("Please Enter a value")
-    .nullable(),
+  authValue: z.string({
+    required_error: "Please select an option",
+  }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -46,10 +42,8 @@ export default function AuthMode() {
   });
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
-
-    // dispatch(setAuthMode(data.authValue));
-    // router.push(`/auth/activation/auth-mode/${data.authValue}`);
+    dispatch(setAuthMode(data.authValue));
+    router.push(`/auth/activation/auth-mode/${data.authValue}`);
   };
 
   if (!user) {

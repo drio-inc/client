@@ -45,6 +45,11 @@ export default function GoogleAuth() {
     schema: schema,
   });
 
+  const redirect = () => {
+    dispatch(setAuthMode(form.getValues("authValue")));
+    router.push(`/activation/auth-mode/${form.getValues("authValue")}`);
+  };
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const res = await setGoogleAuth({
@@ -73,9 +78,9 @@ export default function GoogleAuth() {
             <div className="px-4 py-2 w-full">
               <div className="relative">
                 <SelectInput
-                  redirect
                   options={options}
                   className="w-full"
+                  onChangeCustomAction={redirect}
                   registerName="authValue"
                   label="Select Authentication Mode"
                   placeholder={options.find((o) => o.value === authMode)?.label}

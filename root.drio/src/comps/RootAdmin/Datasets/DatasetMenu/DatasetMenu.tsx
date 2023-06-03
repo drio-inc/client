@@ -52,12 +52,23 @@ const DatasetMenu = ({ row, editForm, detailsWindow }: any) => {
             )}
           </span>
 
+          <Link href={`/datasets/${row.dataset}`}>
+            <span
+              className={
+                "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
+              }
+            >
+              View
+            </span>
+          </Link>
+
           <span
             className={
               "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
             }
           >
-            <Link href={`/datasets/${row.dataset}`}>View</Link>
+            <span className="inline-block w-3 h-3 rounded-full bg-drio-red-dark mr-2"></span>
+            Metadata
           </span>
         </Popover.Content>
       </Popover.Portal>

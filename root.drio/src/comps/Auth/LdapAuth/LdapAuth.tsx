@@ -59,6 +59,11 @@ export default function LdapAuth() {
     schema: schema,
   });
 
+  const redirect = () => {
+    dispatch(setAuthMode(form.getValues("authValue")));
+    router.push(`/activation/auth-mode/${form.getValues("authValue")}`);
+  };
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const res = await setLDAP({
@@ -84,8 +89,8 @@ export default function LdapAuth() {
             <div className="px-4 py-2 w-full md:w-1/2">
               <div className="relative">
                 <SelectInput
-                  redirect
                   className="w-full"
+                  onChangeCustomAction={redirect}
                   options={authOptions}
                   registerName="authValue"
                   label="Select Authentication Mode"
@@ -130,7 +135,7 @@ export default function LdapAuth() {
                   Validate
                 </button>
                 <SelectInput
-                  isPlusIndicator
+                  hasPlusIndicator
                   label="DN Pattern"
                   registerName="dnPattern"
                   placeholder="DN Pattern"

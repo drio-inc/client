@@ -31,7 +31,7 @@ const Table = ({
   detailsWindow: DetailsWindow,
 }: TableProps) => {
   return (
-    <div className="block w-full overflow-x-auto bg-white">
+    <div className="block w-full overflow-x-auto bg-white rounded-br-lg rounded-bl-lg">
       <table className="w-full">
         <thead className="bg-gray-50">
           <tr>
@@ -86,7 +86,7 @@ const Table = ({
                   <td
                     key={index}
                     className={
-                      "border-t border-b text-gray-500 text-xs p-4 text-left"
+                      "border-t border-b text-gray-500 text-xs p-4 text-left "
                     }
                   >
                     <span
@@ -115,7 +115,7 @@ const Table = ({
               </tr>
             );
           })}
-          <tr>
+          <tr className="">
             <td colSpan={headers?.length && headers?.length + 2}>
               <DashboardFooter rows={rows} />
             </td>

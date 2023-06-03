@@ -174,3 +174,7 @@
     opacity: 0.4;
   }
 }
+
+.custom-container {
+  height: calc(100vh - 4rem);
+}

@@ -35,7 +35,7 @@ interface InputProps extends ComponentProps<"input">, SharedProps {}
 interface SelectProps extends ComponentProps<"select">, SharedProps {
   registerName: string;
   redirect?: boolean;
-  isPlusIndicator?: boolean;
+  hasPlusIndicator?: boolean;
   options: {
     value: string;
     label: string;
@@ -178,7 +178,7 @@ export const SelectInput = ({
   redirect,
   className,
   registerName,
-  isPlusIndicator,
+  hasPlusIndicator,
   ...props
 }: SelectProps) => {
   const {
@@ -224,7 +224,7 @@ export const SelectInput = ({
 
               IndicatorSeparator: () => null,
               DropdownIndicator: () =>
-                isPlusIndicator ? <HiPlus /> : <HiChevronDown />,
+                hasPlusIndicator ? <HiPlus /> : <HiChevronDown />,
             }}
           />
         )}
