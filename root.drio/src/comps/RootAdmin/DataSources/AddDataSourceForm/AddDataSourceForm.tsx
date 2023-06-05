@@ -81,16 +81,16 @@ export default function AddDataSourceForm() {
 
               <div className="px-4 py-2 w-full">
                 <SelectInput
-                  registerName="type"
                   label={"Type"}
+                  registerName="type"
                   placeholder={"Enter Type"}
+                  className="md:text-sm 2xl:text-base"
                   options={[
                     { label: "RabbitMQ", value: "rabbitmq" },
                     { label: "MongoDB", value: "mongodb" },
                     { label: "Kafka", value: "kafka" },
                     { label: "Cassandra", value: "cassandra" },
                   ]}
-                  className="md:text-sm 2xl:text-base"
                 />
               </div>
 
@@ -98,8 +98,9 @@ export default function AddDataSourceForm() {
                 <TextInput
                   label={"Broker Endpoint"}
                   {...form.register("endpoint")}
-                  placeholder={"Enter broker endpoint"}
                   className="md:text-sm 2xl:text-base"
+                  placeholder={"Enter broker endpoint"}
+                  defaultValue={"mykafka.host.com:9093"}
                 />
               </div>
 
