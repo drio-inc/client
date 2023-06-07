@@ -60,7 +60,14 @@ const initialState: DDXState = {
     },
   ],
   selectedRows: [],
-  licenseDetails: {},
+  licenseDetails: {
+    datasets: "100",
+    contract: "100",
+    accessRate: "100/day",
+    expiryDate: "2021-12-31",
+    logStorage: "100",
+    metricsStorage: "100",
+  },
 };
 
 const DDXSlice = createSlice({

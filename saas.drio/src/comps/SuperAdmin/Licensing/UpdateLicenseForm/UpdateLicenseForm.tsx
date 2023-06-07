@@ -33,16 +33,15 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function UpdateLicenseForm() {
+export default function UpdateLicenseForm({ row }: TableRow) {
   const [showLicenseDetails, setShowLicenseDetails] = useState(false);
+  console.log(row);
 
   const dispatch = useAppDispatch();
   const [updateLicense, updateResult] = useUpdateDDXLicenseMutation();
   const [fetchLicense, fetchResult] = useFetchDDXLicenseMutation();
 
   const ddxSstate = useAppSelector((state) => state.DDX);
-
-  const { rows } = useAppSelector((state) => state.adminAccount);
 
   const form = useZodForm({
     schema: schema,
@@ -74,7 +73,7 @@ export default function UpdateLicenseForm() {
       }).unwrap();
 
       if (res) {
-        showAlert("License updated successfully");
+        showAlert("License updated successfully", "success");
       }
     } catch (err: any) {
       showAlert(
@@ -92,7 +91,7 @@ export default function UpdateLicenseForm() {
         <Form form={form} onSubmit={onSubmit} className="min-w-[50vw]">
           <div className="w-full mx-auto bg-white p-8 rounded-lg">
             <h2 className="text-gray-700 text-2xl font-bold my-4">
-              Account Information
+              Update License
             </h2>
 
             <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">

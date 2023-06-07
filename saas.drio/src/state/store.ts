@@ -7,6 +7,7 @@ import storageSession from "redux-persist/lib/storage/session";
 import uiReducer from "./slices/uiSlice";
 import DDXSlice from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
+import licensingReducer from "./slices/licensingSlice";
 import adminAccountReducer from "./slices/adminAccountSlice";
 import adminOrgAccountReducer from "./slices/adminOrgAccountSlice";
 
@@ -28,6 +29,7 @@ export const store = configureStore({
     DDX: DDXSlice,
     ui: persistedUIReducer,
     auth: persistedAuthReducer,
+    licensing: licensingReducer,
     adminAccount: adminAccountReducer,
     adminOrgAccount: adminOrgAccountReducer,
     [rootApi.reducerPath]: rootApi.reducer,

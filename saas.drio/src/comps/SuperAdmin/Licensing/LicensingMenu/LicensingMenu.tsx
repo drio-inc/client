@@ -1,14 +1,23 @@
 import Modal from "@/comps/ui/Modal";
+import AlertModal from "@ui/AlertModal";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 
-import { useAppDispatch } from "@/hooks/useStoreTypes";
+import AddOrgAccountForm from "../../OrgAccounts/AddOrgAccountForm";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import Link from "next/link";
 import { setOpenModal } from "@/state/slices/uiSlice";
+import { setRows, setSelectedRows } from "@/state/slices/licensingSlice";
+import CreateKeyForm from "../CreateKeyForm";
 
-const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
+const LicensingMenu = ({ row, editForm, detailsWindow }: any) => {
   const dispatch = useAppDispatch();
+  const licensingState = useAppSelector((state) => state.licensing);
+
+  const deleteRow = (id: string) => {
+    dispatch(setRows(licensingState.rows.filter((row) => row.id !== id)));
+    dispatch(setSelectedRows([]));
+  };
 
   return (
     <Popover.Root>
@@ -23,19 +32,18 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
           align="center"
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
-          <span
-            className={
-              "cursor-pointer hover:bg-indigo-50 w-full block text-drio-red-dark py-2 px-4"
-            }
-          >
-            {/* <Link href={`/ddx/${row.account}/dashboard`}>View Dashboard</Link> */}
-            View Dashboard
+          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            <AlertModal
+              row={row}
+              accessor={row.account}
+              onClick={() => deleteRow(row.id)}
+            />
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             {editForm && (
               <Modal
-                label="Update License"
+                label="Edit"
                 identifier="updateLicenseForm"
                 onClick={() => dispatch(setOpenModal("updateLicenseForm"))}
               >
@@ -47,7 +55,7 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             {detailsWindow && (
               <Modal
-                label="Details"
+                label="View"
                 identifier="detailsWindow"
                 onClick={() => dispatch(setOpenModal("detailsWindow"))}
               >
@@ -55,10 +63,20 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
               </Modal>
             )}
           </span>
+
+          <span className={"cursor-pointer block hover:bg-indigo-50"}>
+            <Modal
+              label="Create Key"
+              identifier="createKeyForm"
+              onClick={() => dispatch(setOpenModal("createKeyForm"))}
+            >
+              <CreateKeyForm />
+            </Modal>
+          </span>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
   );
 };
 
-export default AccountMenu;
+export default LicensingMenu;

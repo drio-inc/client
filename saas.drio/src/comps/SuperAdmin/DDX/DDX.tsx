@@ -3,7 +3,7 @@ import { setSelectedRows } from "@/state/slices/DDXSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import DDXDetails from "./DDXDetails/DDXDetails";
-import UpdateLicenseForm from "./UpdateLicenseForm";
+import UpdateLicenseForm from "../Licensing/UpdateLicenseForm";
 
 import DDXMenu from "@/comps/SuperAdmin/DDX/DDXMenu";
 
