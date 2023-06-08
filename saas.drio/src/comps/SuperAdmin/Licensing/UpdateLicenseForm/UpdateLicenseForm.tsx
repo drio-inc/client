@@ -16,8 +16,8 @@ import { setLicenseDetails } from "@/state/slices/DDXSlice";
 import LicenseDetails from "../LicenseDetails/LicenseDetails";
 
 import {
-  useUpdateDDXLicenseMutation,
-  useFetchDDXLicenseMutation,
+  useUpdateLicenseMutation,
+  useFetchLicenseMutation,
 } from "@/state/services/apiService";
 import { useState } from "react";
 
@@ -38,8 +38,8 @@ export default function UpdateLicenseForm({ row }: TableRow) {
   console.log(row);
 
   const dispatch = useAppDispatch();
-  const [updateLicense, updateResult] = useUpdateDDXLicenseMutation();
-  const [fetchLicense, fetchResult] = useFetchDDXLicenseMutation();
+  const [updateLicense, updateResult] = useUpdateLicenseMutation();
+  const [fetchLicense, fetchResult] = useFetchLicenseMutation();
 
   const ddxSstate = useAppSelector((state) => state.DDX);
 

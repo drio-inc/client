@@ -13,11 +13,8 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import LicenseDetails from "../LicenseDetails/LicenseDetails";
 
-import {
-  useUpdateDDXLicenseMutation,
-  useFetchDDXLicenseMutation,
-} from "@/state/services/apiService";
-import { useState } from "react";
+import { useCreateLicenseMutation } from "@/state/services/apiService";
+import { setRows } from "@/state/slices/licensingSlice";
 
 const schema = z.object({
   account: z.string({
@@ -35,8 +32,17 @@ type FormData = z.infer<typeof schema>;
 
 export default function UpdateLicenseForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [updateLicense, updateResult] = useUpdateDDXLicenseMutation();
+  const [create, result] = useCreateLicenseMutation();
   const ddxSstate = useAppSelector((state) => state.DDX);
+  const adminAccountState = useAppSelector((state) => state.adminAccount);
+  const licenseState = useAppSelector((state) => state.licensing);
+
+  const options = adminAccountState.rows.map((row) => {
+    return {
+      label: row.account,
+      value: row.account.split(" ").join("_").toLowerCase(),
+    };
+  });
 
   const form = useZodForm({
     schema: schema,
@@ -44,14 +50,17 @@ export default function UpdateLicenseForm({ row }: TableRow) {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const res = await updateLicense({
+      const res = await create({
         ...data,
       }).unwrap();
 
       if (res) {
-        showAlert("License updated successfully");
+        dispatch(setRows([...licenseState.rows, res]));
+        showAlert("License created successfully", "success");
       }
     } catch (err: any) {
+      console.log(err);
+
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again."
       );
@@ -75,11 +84,7 @@ export default function UpdateLicenseForm({ row }: TableRow) {
                 registerName="account"
                 label={"For Account"}
                 placeholder={"Select Account"}
-                options={[
-                  { label: "SKU 1", value: "sku1" },
-                  { label: "SKU 2", value: "sku2" },
-                  { label: "SKU 3", value: "sku3" },
-                ]}
+                options={options}
                 className="md:text-sm 2xl:text-base"
               />
             </div>
@@ -90,9 +95,9 @@ export default function UpdateLicenseForm({ row }: TableRow) {
                 label={"Product SKU"}
                 placeholder={"Enter SKU"}
                 options={[
-                  { label: "SKU 1", value: "sku1" },
-                  { label: "SKU 2", value: "sku2" },
-                  { label: "SKU 3", value: "sku3" },
+                  { label: "SKU 1", value: "sku_1" },
+                  { label: "SKU 2", value: "sku_2" },
+                  { label: "SKU 3", value: "sku_3" },
                 ]}
                 className="md:text-sm 2xl:text-base"
               />
@@ -130,7 +135,7 @@ export default function UpdateLicenseForm({ row }: TableRow) {
             <Button
               intent={`primary`}
               className="w-full md:w-auto"
-              isLoading={updateResult.isLoading}
+              isLoading={result.isLoading}
             >
               <span className="inline-flex justify-center w-full">Create</span>
             </Button>

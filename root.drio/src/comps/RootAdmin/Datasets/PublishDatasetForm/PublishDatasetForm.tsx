@@ -55,7 +55,7 @@ export default function PublishDatasetForm() {
   const options = dataSourceState.rows.map((row) => {
     return {
       label: row.sourceName,
-      value: row.sourceName.split(" ").join("").toLowerCase(),
+      value: row.sourceName.split(" ").join("_").toLowerCase(),
     };
   });
 
