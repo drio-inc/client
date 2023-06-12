@@ -11,6 +11,10 @@ type APIResponse = {
   someSessionIdentifier: string;
 };
 
+type LicenseKeyResponse = {
+  licenseKey: string;
+};
+
 export const rootApi = createApi({
   reducerPath: "rootApi",
   baseQuery: fetchBaseQuery({
@@ -106,19 +110,41 @@ export const rootApi = createApi({
         }),
       }),
 
-      fetchDDXLicense: builder.mutation<APIResponse, FormData>({
+      fetchLicense: builder.mutation<APIResponse, FormData>({
         query: (credentials) => ({
-          url: `/ddx/fetch-license`,
+          url: `/license/fetch-license`,
           method: "POST",
           body: credentials,
         }),
       }),
 
-      updateDDXLicense: builder.mutation<APIResponse, FormData>({
+      updateLicense: builder.mutation<APIResponse, FormData>({
         query: (credentials) => ({
-          url: `/ddx/update-license`,
+          url: `/license/update-license`,
           method: "POST",
           body: credentials,
+        }),
+      }),
+
+      createLicense: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/license/create-license`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      // createLicenseKey: builder.mutation<LicenseKeyResponse, FormData>({
+      //   query: () => ({
+      //     url: `/license/create-key`,
+      //     method: "GET",
+      //   }),
+      // }),
+
+      getLicenseKey: builder.query<LicenseKeyResponse, FormData>({
+        query: () => ({
+          url: `/license/create-key`,
+          method: "GET",
         }),
       }),
     };
@@ -137,6 +163,9 @@ export const {
   useAddOrgAccountGoogleMutation,
   useAddOrgAccountOAuthMutation,
   useAddOrgAccountLDAPMutation,
-  useUpdateDDXLicenseMutation,
-  useFetchDDXLicenseMutation,
+  useUpdateLicenseMutation,
+  useFetchLicenseMutation,
+  useCreateLicenseMutation,
+  // useCreateLicenseKeyMutation,
+  useGetLicenseKeyQuery,
 } = rootApi;

@@ -1,3 +1,3 @@
 type TableRow = {
-  [key: string]: string | number | boolean;
+  [key: string]: any;
 };

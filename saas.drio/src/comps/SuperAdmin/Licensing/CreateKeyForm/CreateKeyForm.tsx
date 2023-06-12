@@ -8,11 +8,11 @@ import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { setRows } from "@/state/slices/adminAccountSlice";
-import { useAddAccountMutation } from "@/state/services/apiService";
+import { useGetLicenseKeyQuery } from "@/state/services/apiService";
+import { useEffect } from "react";
 
 const schema = z.object({
   license: z.string().nonempty("Please Enter a value"),
@@ -22,24 +22,31 @@ type FormData = z.infer<typeof schema>;
 
 export default function AddNewLicenseForm() {
   const dispatch = useAppDispatch();
-  const [addAccount, result] = useAddAccountMutation();
-  const { rows } = useAppSelector((state) => state.adminAccount);
+  const { data: createKey, refetch } = useGetLicenseKeyQuery({});
+
+  useEffect(() => {
+    if (createKey?.licenseKey) {
+      refetch();
+    }
+  }, [refetch]);
 
   const form = useZodForm({
     schema: schema,
   });
 
+  const normalizeLicense =
+    createKey?.licenseKey.split("-").join("").toUpperCase().substring(0, 20) ??
+    "";
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const res = await addAccount({
-        ...data,
-      }).unwrap();
+      navigator.clipboard.writeText(normalizeLicense);
 
-      // dispatch(setRows([...rows, res]));
-      showAlert("License created successfully.", "success");
+      showAlert("License copied successfully.", "success");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
 
@@ -56,10 +63,11 @@ export default function AddNewLicenseForm() {
           <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">
             <div className="px-4 py-2 w-full">
               <TextInput
-                className="md:text-sm 2xl:text-base"
-                {...form.register("license")}
+                disabled
                 label={"License"}
-                placeholder={"AQFW23H9027KLWEB"}
+                {...form.register("license")}
+                defaultValue={normalizeLicense}
+                className="md:text-sm 2xl:text-base"
               />
             </div>
           </div>
@@ -75,9 +83,10 @@ export default function AddNewLicenseForm() {
             </Button>
 
             <Button
+              type="button"
               intent={`primary`}
               className="w-full md:w-auto"
-              isLoading={result.isLoading}
+              onClick={() => onSubmit(form.getValues())}
             >
               <span className="inline-flex justify-center w-full">Copy</span>
             </Button>
