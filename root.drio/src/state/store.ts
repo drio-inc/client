@@ -1,7 +1,9 @@
 import { rootApi } from "./services/apiService";
-import storage from "redux-persist/lib/storage";
+
 import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
+
+import storage from "redux-persist/lib/storage";
 import storageSession from "redux-persist/lib/storage/session";
 
 import uiReducer from "./slices/uiSlice";
@@ -9,6 +11,7 @@ import DDXReducer from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
 import datasetReducer from "./slices/datasetSlice";
 import dataSourceReducer from "./slices/dataSourceSlice";
+import dataContractReducer from "./slices/dataContractSlice";
 import adminOrgAccountReducer from "./slices/adminOrgAccountSlice";
 
 const persistConfig = {
@@ -31,6 +34,7 @@ export const store = configureStore({
     dataset: datasetReducer,
     auth: persistedAuthReducer,
     dataSource: dataSourceReducer,
+    dataContract: dataContractReducer,
     adminOrgAccount: adminOrgAccountReducer,
     [rootApi.reducerPath]: rootApi.reducer,
   },

@@ -62,6 +62,24 @@ const NavLinks = [
     name: "Data Contracts",
     href: "data-contracts",
     icon: <IoLayersOutline className="inline-block w-6 h-6 mr-2" />,
+    children: [
+      {
+        name: "Inbound Contracts to Approve",
+        href: "/",
+      },
+      {
+        name: "Approved Contracts",
+        href: "/approved-contracts",
+      },
+      {
+        name: "Outbound Contracts",
+        href: "/outbound-contracts",
+      },
+      {
+        name: "Personas",
+        href: "/personas",
+      },
+    ],
   },
 
   {
