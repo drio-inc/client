@@ -12,6 +12,17 @@ type APIResponse = {
   authMode?: "ldap" | "google" | "oauth" | "";
 };
 
+type DataSourceAPIResponse = {
+  id: string;
+  sourceName: string;
+  type: string;
+  endpoint: string;
+  datasets: number;
+  schemaRegistry: string;
+  metadataManagement: string;
+  apiDocumentation: string;
+};
+
 export const rootApi = createApi({
   reducerPath: "rootApi",
   baseQuery: fetchBaseQuery({
@@ -131,7 +142,7 @@ export const rootApi = createApi({
         }),
       }),
 
-      addDataSource: builder.mutation<APIResponse, FormData>({
+      addDataSource: builder.mutation<DataSourceAPIResponse, FormData>({
         query: (credentials) => ({
           url: `/data-source/add`,
           method: "POST",

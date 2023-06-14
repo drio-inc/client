@@ -1,12 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type UIState = {
-  [key: string]: boolean;
-  // expandedLinks: string[];
+  expandedLinks: {
+    [key: string]: boolean;
+  };
+
+  modalBoolObject: {
+    [key: string]: boolean;
+  };
 };
 
 const initialState: UIState = {
-  // expandedLinks: [],
+  expandedLinks: {},
+  modalBoolObject: {},
 };
 
 const uiSlice = createSlice({
@@ -14,15 +20,16 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     setOpenModal(state, action: PayloadAction<string>) {
-      state[action.payload] = true;
+      state.modalBoolObject[action.payload] = true;
     },
 
     setCloseModal(state, action: PayloadAction<string>) {
-      state[action.payload] = false;
+      state.modalBoolObject[action.payload] = false;
     },
 
     setExpandedLinks(state, action) {
-      state.expandedLinks = action.payload;
+      const { linkName, expanded } = action.payload;
+      state.expandedLinks[linkName] = expanded;
     },
   },
 

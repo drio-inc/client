@@ -29,12 +29,13 @@ const headers = [
   },
 
   {
-    header: "Public",
-    accessor: "public",
+    header: "Visibility",
+    accessor: "visibility",
     status: {
       Private: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
-      Exported: "bg-cyan-100 text-cyan-800 px-2 py-1 font-medium rounded",
-      Contract: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      Public: "bg-cyan-100 text-cyan-800 px-2 py-1 font-medium rounded",
+      Contractual:
+        "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -126,16 +127,6 @@ const Dataset = () => {
           <div className="flex gap-4 ml-auto">
             <Button
               intent={"primary"}
-              onClick={() => dispatch(setOpenModal("addDataSourceForm"))}
-            >
-              <div className="flex items-center gap-1">
-                <HiPlus />
-                <span className="inline-block">Add New Data Source</span>
-              </div>
-            </Button>
-
-            <Button
-              intent={"primary"}
               onClick={() => dispatch(setOpenModal("publishDatasetForm"))}
             >
               <div className="flex items-center gap-1">
@@ -145,15 +136,15 @@ const Dataset = () => {
             </Button>
           </div>
 
-          <div className="hidden">
-            <Modal identifier="addDataSourceForm">
-              <AddDataSourceForm />
-            </Modal>
+          {/* <div className="hidden"> */}
+          <Modal identifier="addDataSourceForm">
+            <AddDataSourceForm />
+          </Modal>
 
-            <Modal identifier="publishDatasetForm">
-              <PublishDatasetForm />
-            </Modal>
-          </div>
+          <Modal identifier="publishDatasetForm">
+            <PublishDatasetForm />
+          </Modal>
+          {/* </div> */}
         </div>
 
         <Table

@@ -6,7 +6,7 @@ import { useAppSelector } from "@/hooks/useStoreTypes";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 import DataContracts from "@/comps/RootAdmin/DataContracts/DataContracts";
 
-const DataContractsPage = () => {
+const ApprovedContractsPage = () => {
   const router = useRouter();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
@@ -17,11 +17,9 @@ const DataContractsPage = () => {
 
   return (
     <Layout>
-      <DashboardContainer>
-        <DataContracts />
-      </DashboardContainer>
+      <DashboardContainer>ApprovedContractsPage</DashboardContainer>
     </Layout>
   );
 };
 
-export default DataContractsPage;
+export default ApprovedContractsPage;

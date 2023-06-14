@@ -6,11 +6,13 @@ interface IModalProps {
   row?: TableRow;
   identifier: string;
   onClick?: () => void;
-  children?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const Modal = ({ label, onClick, children, identifier }: IModalProps) => {
-  const isOpen = useAppSelector((state) => state.ui[identifier]);
+  const isOpen = useAppSelector(
+    (state) => state.ui.modalBoolObject[identifier]
+  );
 
   return (
     <CustomModal.Root open={isOpen} onOpenChange={onClick}>
@@ -21,7 +23,7 @@ const Modal = ({ label, onClick, children, identifier }: IModalProps) => {
       <CustomModal.Portal>
         <CustomModal.Overlay className="bg-[#6B6B6B] data-[state=open]:animate-overlayShow fixed inset-0 opacity-40" />
         <CustomModal.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white shadow-sm focus:outline-none">
-          {children}
+          <div className="max-h-[90vh] overflow-auto">{children}</div>
         </CustomModal.Content>
       </CustomModal.Portal>
     </CustomModal.Root>

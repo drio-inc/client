@@ -30,7 +30,7 @@ const persistedUIReducer = persistReducer(persistLocalConfig, uiReducer);
 export const store = configureStore({
   reducer: {
     DDX: DDXReducer,
-    ui: persistedUIReducer,
+    ui: uiReducer,
     dataset: datasetReducer,
     auth: persistedAuthReducer,
     dataSource: dataSourceReducer,

@@ -27,7 +27,7 @@ const persistedUIReducer = persistReducer(persistLocalConfig, uiReducer);
 export const store = configureStore({
   reducer: {
     DDX: DDXSlice,
-    ui: persistedUIReducer,
+    ui: uiReducer,
     auth: persistedAuthReducer,
     licensing: licensingReducer,
     adminAccount: adminAccountReducer,

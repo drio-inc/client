@@ -10,7 +10,6 @@ import { setRows, setSelectedRows } from "@/state/slices/adminOrgAccountSlice";
 
 const AccountMenu = ({ row, editForm }: any) => {
   const dispatch = useAppDispatch();
-  const { openEditModal } = useAppSelector((state) => state.ui);
   const adminOrgAccountState = useAppSelector((state) => state.adminOrgAccount);
 
   const deleteRow = (id: any) => {

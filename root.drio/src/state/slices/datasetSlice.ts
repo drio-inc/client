@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 type datasetState = {
   rows: TableRow[];
   selectedRows: number[];
+  addNewDispatched: boolean;
 };
 
 const initialState: datasetState = {
@@ -12,7 +13,7 @@ const initialState: datasetState = {
       dataset: "Service Record",
       ou: "98",
       sixMonthsAccess: 25,
-      public: "Private",
+      visibility: "Private",
       frequency: "25",
       alerts: "1",
       contractInPlace: "Yes",
@@ -22,7 +23,7 @@ const initialState: datasetState = {
       dataset: "Accidents",
       ou: "98",
       sixMonthsAccess: 25,
-      public: "Contract",
+      visibility: "Contractual",
       frequency: "25",
       alerts: "1",
       contractInPlace: "In-Progress",
@@ -32,7 +33,7 @@ const initialState: datasetState = {
       dataset: "Dealer Sales",
       ou: "98",
       sixMonthsAccess: 25,
-      public: "Exported",
+      visibility: "Public",
       frequency: "25",
       alerts: "1",
       contractInPlace: "No",
@@ -42,13 +43,14 @@ const initialState: datasetState = {
       dataset: "Customer Sales",
       ou: "98",
       sixMonthsAccess: 25,
-      public: "Private",
+      visibility: "Private",
       frequency: "25",
       alerts: "1",
       contractInPlace: "Yes",
     },
   ],
   selectedRows: [],
+  addNewDispatched: false,
 };
 
 const datasetSlice = createSlice({
@@ -62,11 +64,16 @@ const datasetSlice = createSlice({
     setSelectedRows(state, action) {
       state.selectedRows = action.payload;
     },
+
+    setAddNewDispatched(state, action) {
+      state.addNewDispatched = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = datasetSlice.actions;
+export const { setRows, setSelectedRows, setAddNewDispatched } =
+  datasetSlice.actions;
 
 export default datasetSlice.reducer;

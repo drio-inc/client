@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 type dataSourceState = {
   rows: TableRow[];
   selectedRows: number[];
+  defaultSource: TableRow | null;
 };
 
 const initialState: dataSourceState = {
@@ -49,6 +50,7 @@ const initialState: dataSourceState = {
     },
   ],
   selectedRows: [],
+  defaultSource: null,
 };
 
 const dataSourceSlice = createSlice({
@@ -62,11 +64,16 @@ const dataSourceSlice = createSlice({
     setSelectedRows(state, action) {
       state.selectedRows = action.payload;
     },
+
+    setDefaultSource(state, action) {
+      state.defaultSource = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = dataSourceSlice.actions;
+export const { setRows, setSelectedRows, setDefaultSource } =
+  dataSourceSlice.actions;
 
 export default dataSourceSlice.reducer;

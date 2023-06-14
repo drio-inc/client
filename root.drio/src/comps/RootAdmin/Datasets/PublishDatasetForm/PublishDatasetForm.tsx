@@ -10,7 +10,7 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { setRows } from "@/state/slices/datasetSlice";
+import { setRows, setAddNewDispatched } from "@/state/slices/datasetSlice";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 import { HiOutlineDownload, HiOutlinePaperClip } from "react-icons/hi";
@@ -65,6 +65,8 @@ export default function PublishDatasetForm() {
 
   const onAddNew = (selectedOption?: string) => {
     if (selectedOption === "add_new") {
+      dispatch(setAddNewDispatched(true));
+
       dispatch(setCloseModal("publishDatasetForm"));
       dispatch(setOpenModal("addDataSourceForm"));
       return;
@@ -96,142 +98,145 @@ export default function PublishDatasetForm() {
   };
 
   return (
-    <>
-      <Layout>
-        <Form form={form} onSubmit={onSubmit}>
-          <div className="mx-auto bg-white p-4 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
-            <h2 className="text-gray-700 text-2xl font-bold text-center">
-              Publish Dataset
-            </h2>
+    <Layout>
+      <Form form={form} onSubmit={onSubmit}>
+        <div className="mx-auto bg-white p-4 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
+          <h2 className="text-gray-700 text-2xl font-bold text-center">
+            Publish Dataset
+          </h2>
 
-            <div className="flex flex-wrap -m-2 rounded-lg my-4">
-              <div className="px-4 py-2 w-full">
-                <SelectInput
-                  placeholder={"Select"}
-                  registerName="dataSource"
-                  label={"Select Data Source"}
-                  onChangeCustomAction={onAddNew}
-                  className="md:text-sm 2xl:text-base"
-                  options={[...options, { label: "Add New", value: "add_new" }]}
-                />
-              </div>
+          <div className="flex flex-wrap -m-2 rounded-lg my-4">
+            <div className="px-4 py-2 w-full">
+              <SelectInput
+                placeholder={"Select"}
+                defaultSelectedValue={
+                  {
+                    label: dataSourceState.defaultSource?.sourceName,
+                    value: dataSourceState.defaultSource?.sourceName
+                      .split(" ")
+                      .join("_")
+                      .toLowerCase(),
+                  } ?? null
+                }
+                registerName="dataSource"
+                label={"Select Data Source"}
+                onChangeCustomAction={onAddNew}
+                className="md:text-sm 2xl:text-base"
+                options={[...options, { label: "Add New", value: "add_new" }]}
+              />
+            </div>
 
-              <div className="px-4 py-2 w-full">
-                <SelectInput
-                  registerName="dataSource"
-                  label={"Select Topic Dataset "}
-                  placeholder={"All"}
-                  options={[
-                    { label: "All", value: "all" },
-                    { label: "Purchase", value: "purchase" },
-                    { label: "MySQL", value: "mysql" },
-                  ]}
-                  className="md:text-sm 2xl:text-base"
-                />
-              </div>
+            <div className="px-4 py-2 w-full">
+              <SelectInput
+                registerName="dataSource"
+                label={"Select Topic Dataset "}
+                placeholder={"All"}
+                options={[
+                  { label: "All", value: "all" },
+                  { label: "Purchase", value: "purchase" },
+                  { label: "MySQL", value: "mysql" },
+                ]}
+                className="md:text-sm 2xl:text-base"
+              />
+            </div>
 
-              <div className="px-4 py-2 w-full">
-                <TextInput
-                  label={"Base URL"}
-                  placeholder={"Enter URL"}
-                  defaultValue={`https://example.com`}
-                  {...form.register("baseURL")}
-                  className="md:text-sm 2xl:text-base"
-                />
-              </div>
+            <div className="px-4 py-2 w-full">
+              <TextInput
+                label={"Base URL"}
+                placeholder={"Enter URL"}
+                defaultValue={`https://example.com`}
+                {...form.register("baseURL")}
+                className="md:text-sm 2xl:text-base"
+              />
+            </div>
 
-              <div className="px-4 py-2 w-full">
-                <TextInput
-                  label={"Set Dataset Name"}
-                  {...form.register("name")}
-                  placeholder={"Enter display name"}
-                  className="md:text-sm 2xl:text-base"
-                />
-              </div>
+            <div className="px-4 py-2 w-full">
+              <TextInput
+                label={"Set Dataset Name"}
+                {...form.register("name")}
+                placeholder={"Enter display name"}
+                className="md:text-sm 2xl:text-base"
+              />
+            </div>
 
-              <h3 className="px-4">Set Visibility</h3>
+            <h3 className="px-4">Set Visibility</h3>
 
-              <div className="px-4 py-2 w-full">
-                <div className="relative">
-                  <RadioGroup value={visibility} onChange={setVisibility}>
-                    <div className="flex flex-wrap gap-y-2 justify-between w-full">
-                      <Radio value="private">
-                        <span>Private</span>
-                      </Radio>
-                      <Radio value="contractual">
-                        <span>Contractual</span>
-                      </Radio>
-                      <Radio value="public">
-                        <span>Public</span>
-                      </Radio>
-                    </div>
-                  </RadioGroup>
-                </div>
-              </div>
-
-              <div className="px-4 py-2 w-full">
-                <TextInput
-                  label={"Set Public View"}
-                  {...form.register("file")}
-                  className="md:text-sm 2xl:text-base"
-                  placeholder={"Select A json or csv file with example data"}
-                />
-              </div>
-
-              <div className="flex flex-wrap gap-y-2 w-full justify-between px-4 py-2">
-                <button
-                  type="button"
-                  className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
-                >
-                  <HiOutlineDownload className="mr-1 font-bold rotate-180" />
-                  <span className="text-sm font-medium">Upload</span>
-                </button>
-
-                <button
-                  type="button"
-                  className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
-                >
-                  <IoRefresh className="mr-1 font-bold" />
-                  <span className="text-sm font-medium">Swagger</span>
-                </button>
-
-                <button
-                  type="button"
-                  className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
-                >
-                  <HiOutlinePaperClip className="mr-1 font-bold" />
-                  <span className="text-sm font-medium">GraphQL</span>
-                </button>
+            <div className="px-4 py-2 w-full">
+              <div className="relative">
+                <RadioGroup value={visibility} onChange={setVisibility}>
+                  <div className="flex flex-wrap gap-y-2 justify-between w-full">
+                    <Radio value="private">
+                      <span>Private</span>
+                    </Radio>
+                    <Radio value="contractual">
+                      <span>Contractual</span>
+                    </Radio>
+                    <Radio value="public">
+                      <span>Public</span>
+                    </Radio>
+                  </div>
+                </RadioGroup>
               </div>
             </div>
 
-            <div className="px-2 py-2 flex gap-4 justify-center w-full mt-4">
-              <Button
-                type="button"
-                intent={`secondary`}
-                className="w-full"
-                onClick={() => dispatch(setCloseModal("publishDatasetForm"))}
-              >
-                <span className="inline-flex justify-center w-full">
-                  Cancel
-                </span>
-              </Button>
+            <div className="px-4 py-2 w-full">
+              <TextInput
+                label={"Set Public View"}
+                {...form.register("file")}
+                className="md:text-sm 2xl:text-base"
+                placeholder={"Select A json or csv file with example data"}
+              />
+            </div>
 
-              <Button
+            <div className="flex flex-wrap gap-y-2 w-full justify-between px-4 py-2">
+              <button
                 type="button"
-                onClick={() => onSubmit(form.getValues())}
-                intent={`primary`}
-                className="w-full"
-                isLoading={result.isLoading}
+                className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
               >
-                <span className="inline-flex justify-center w-full">
-                  Publish
-                </span>
-              </Button>
+                <HiOutlineDownload className="mr-1 font-bold rotate-180" />
+                <span className="text-sm font-medium">Upload</span>
+              </button>
+
+              <button
+                type="button"
+                className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
+              >
+                <IoRefresh className="mr-1 font-bold" />
+                <span className="text-sm font-medium">Swagger</span>
+              </button>
+
+              <button
+                type="button"
+                className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
+              >
+                <HiOutlinePaperClip className="mr-1 font-bold" />
+                <span className="text-sm font-medium">GraphQL</span>
+              </button>
             </div>
           </div>
-        </Form>
-      </Layout>
-    </>
+
+          <div className="px-2 py-2 flex gap-4 justify-center w-full mt-4">
+            <Button
+              type="button"
+              intent={`secondary`}
+              className="w-full"
+              onClick={() => dispatch(setCloseModal("publishDatasetForm"))}
+            >
+              <span className="inline-flex justify-center w-full">Cancel</span>
+            </Button>
+
+            <Button
+              type="button"
+              onClick={() => onSubmit(form.getValues())}
+              intent={`primary`}
+              className="w-full"
+              isLoading={result.isLoading}
+            >
+              <span className="inline-flex justify-center w-full">Publish</span>
+            </Button>
+          </div>
+        </div>
+      </Form>
+    </Layout>
   );
 }
