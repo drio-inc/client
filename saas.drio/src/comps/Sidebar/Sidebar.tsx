@@ -15,8 +15,8 @@ import {
   HiOutlinePresentationChartBar,
 } from "react-icons/hi";
 
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 import { setExpandedLinks } from "@/state/slices/uiSlice";
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 interface NavLink {
   name: string;

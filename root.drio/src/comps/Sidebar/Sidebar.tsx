@@ -172,7 +172,11 @@ export default function Sidebar() {
                         }
                       `}
                 >
-                  <Link href={`/${link.href}`}>
+                  <Link
+                    href={`/${link.href}/${
+                      link.children && (link?.children[0].href ?? "")
+                    }`}
+                  >
                     <span
                       className={`                        ${
                         router.pathname.indexOf(link.href) !== -1
