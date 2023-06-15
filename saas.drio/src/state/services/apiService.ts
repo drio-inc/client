@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const API_URL = "https://controller.drio.ai:8443/drioapi/v1";
+const MOCK_URL =
+  "https://779f508a-ad6b-4ed1-a232-dc0f458ca58c.mock.pstmn.io/api/v1";
+
 type FormData = {};
 
 type APIResponse = {
@@ -18,16 +22,31 @@ type LicenseKeyResponse = {
 export const rootApi = createApi({
   reducerPath: "rootApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://779f508a-ad6b-4ed1-a232-dc0f458ca58c.mock.pstmn.io/api/v1`,
+    baseUrl: `${MOCK_URL}`,
   }),
   endpoints: (builder) => {
     return {
-      login: builder.mutation<APIResponse, FormData>({
+      login: builder.mutation<any, any>({
         query: (credentials) => ({
           url: `/login`,
           method: "POST",
           body: credentials,
         }),
+
+        async onQueryStarted({ requestId }, { dispatch, queryFulfilled }) {
+          const response = await queryFulfilled;
+
+          const setCookieHeader = response;
+
+          if (setCookieHeader) {
+            console.log("Set-Cookie:", setCookieHeader);
+          }
+        },
+
+        transformResponse(baseQueryReturnValue, meta, arg) {
+          console.log("meta", meta?.response?.headers.get("Set-Cookie"));
+          return baseQueryReturnValue;
+        },
       }),
 
       setLDAP: builder.mutation<APIResponse, FormData>({

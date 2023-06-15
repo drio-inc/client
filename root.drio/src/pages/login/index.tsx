@@ -55,7 +55,7 @@ export default function Login() {
 
       dispatch(setUser(res));
       dispatch(setAuthenticated(true));
-      router.push("/my-org");
+      router.push("/my-org/org-units");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again."
@@ -63,84 +63,78 @@ export default function Login() {
     }
   };
   return (
-    <>
-      <Layout>
-        <AuthContainer authText="Sign in to your account" maxWidth="xl">
-          <Form form={form} onSubmit={onSubmit}>
-            <div className="px-4 py-2 w-full">
-              <div className="relative">
-                <TextInput
-                  label="Email address / username"
-                  {...form.register("email")}
-                  placeholder="Email"
-                  type="email"
-                />
-              </div>
+    <Layout>
+      <AuthContainer authText="Sign in to your account" maxWidth="xl">
+        <Form form={form} onSubmit={onSubmit}>
+          <div className="px-4 py-2 w-full">
+            <div className="relative">
+              <TextInput
+                label="Email address / username"
+                {...form.register("email")}
+                placeholder="Email"
+                type="email"
+              />
+            </div>
+          </div>
+
+          <div className="px-4 py-2 w-full">
+            <div className="relative">
+              <TextInput
+                label="Password"
+                type="password"
+                {...form.register("password")}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row items-center justify-between px-4 py-2 w-full text-gray-900 mb-2">
+            <div className="flex items-center mb-2 md:mb-0">
+              <Checkbox onChange={() => setRememberMe(!rememberMe)}>
+                <label htmlFor="remember-me" className="text-sm">
+                  Remember me
+                </label>
+              </Checkbox>
             </div>
 
-            <div className="px-4 py-2 w-full">
-              <div className="relative">
-                <TextInput
-                  label="Password"
-                  type="password"
-                  {...form.register("password")}
-                />
-              </div>
-            </div>
+            <span className="inline-block text-drio-red text-sm font-medium cursor-pointer">
+              <Link href={`/auth/forgot-password`}>Forgot your password?</Link>
+            </span>
+          </div>
 
-            <div className="flex flex-col md:flex-row items-center justify-between px-4 py-2 w-full text-gray-900 mb-2">
-              <div className="flex items-center mb-2 md:mb-0">
-                <Checkbox onChange={() => setRememberMe(!rememberMe)}>
-                  <label htmlFor="remember-me" className="text-sm">
-                    Remember me
-                  </label>
-                </Checkbox>
-              </div>
+          <div className="px-4 py-2 w-full">
+            <Button
+              intent={`primary`}
+              className="w-full relative"
+              isLoading={result.isLoading}
+            >
+              <FaLock className="inline-block text-drio-red-dark w-4 h-4 absolute left-4" />
+              Sign In
+            </Button>
+          </div>
 
-              <span className="inline-block text-drio-red text-sm font-medium cursor-pointer">
-                <Link href={`/auth/forgot-password`}>
-                  Forgot your password?
-                </Link>
+          <div className="px-4 py-2 w-full text-center">
+            <p className="text-gray-600 text-sm my-3">
+              Don’t have an account?
+              <span className="text-drio-red font-medium cursor-pointer">
+                <Link href={`/auth/activation`}> Sign Up</Link>
               </span>
-            </div>
+            </p>
+          </div>
 
-            <div className="px-4 py-2 w-full">
-              <Button
-                intent={`primary`}
-                className="w-full relative"
-                isLoading={result.isLoading}
-              >
-                <FaLock className="inline-block text-drio-red-dark w-4 h-4 absolute left-4" />
-                Sign In
-              </Button>
-            </div>
+          <div className="px-4 flex items-center w-full mb-4">
+            <div className="flex-grow h-px bg-gray-300"></div>
+            <span className="inline-block mx-4 text-gray-500 text-sm">or</span>
+            <div className="flex-grow h-px bg-gray-300"></div>
+          </div>
 
-            <div className="px-4 py-2 w-full text-center">
-              <p className="text-gray-600 text-sm my-3">
-                Don’t have an account?
-                <span className="text-drio-red font-medium cursor-pointer">
-                  <Link href={`/auth/activation`}> Sign Up</Link>
-                </span>
-              </p>
-            </div>
-
-            <div className="px-4 flex items-center w-full mb-4">
-              <div className="flex-grow h-px bg-gray-300"></div>
-              <span className="inline-block mx-4 text-gray-500 text-sm">
-                or
-              </span>
-              <div className="flex-grow h-px bg-gray-300"></div>
-            </div>
-
-            <div className="px-4 py-2 w-full">
-              <Button intent={`google`} className="w-full justify-center">
-                <FcGoogle className="inline-block w-6 h-6" />
-                <span className="ml-2">Sign In with Google</span>
-              </Button>
-            </div>
-          </Form>
-        </AuthContainer>
-      </Layout>
-    </>
+          <div className="px-4 py-2 w-full">
+            <Button intent={`google`} className="w-full justify-center">
+              <FcGoogle className="inline-block w-6 h-6" />
+              <span className="ml-2">Sign In with Google</span>
+            </Button>
+          </div>
+        </Form>
+      </AuthContainer>
+    </Layout>
   );
 }

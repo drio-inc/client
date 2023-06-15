@@ -136,15 +136,11 @@ const Dataset = () => {
             </Button>
           </div>
 
-          {/* <div className="hidden"> */}
-          <Modal identifier="addDataSourceForm">
-            <AddDataSourceForm />
-          </Modal>
-
-          <Modal identifier="publishDatasetForm">
-            <PublishDatasetForm />
-          </Modal>
-          {/* </div> */}
+          <div className="hidden">
+            <Modal identifier="publishDatasetForm">
+              <PublishDatasetForm />
+            </Modal>
+          </div>
         </div>
 
         <Table

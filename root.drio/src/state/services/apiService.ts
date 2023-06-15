@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const API_URL = "https://controller.drio.ai:8443/drioapi/v1";
+const MOCK_URL =
+  "https://a14c37a0-5c64-4c14-ace9-784f0afc6ac8.mock.pstmn.io/api/v1";
+
 type FormData = {};
 
 type APIResponse = {
@@ -26,7 +30,7 @@ type DataSourceAPIResponse = {
 export const rootApi = createApi({
   reducerPath: "rootApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://a14c37a0-5c64-4c14-ace9-784f0afc6ac8.mock.pstmn.io/api/v1`,
+    baseUrl: `${MOCK_URL}`,
   }),
 
   endpoints: (builder) => {
