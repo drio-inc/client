@@ -35,16 +35,15 @@ import axios from "axios";
 // });
 
 const schema = z.object({
-  userID: z
+  username: z
     .string()
     .nonempty("Please Enter a value")
-    .min(1, "userID must be at least 1 characters long")
-    .max(1024, "userID must be less than 1024 characters long"),
+    .max(1024, "username must be less than 1024 characters"),
   password: z
     .string()
     .nonempty("Please Enter a value")
     .min(8, "Password must be at least 8 characters long")
-    .max(256, "Password must be less than 256 characters long"),
+    .max(256, "Password must be less than 256 characters"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -68,7 +67,7 @@ export default function Login() {
       // }).unwrap();
 
       const res = await login({
-        email: data.userID,
+        username: data.username,
         password: data.password,
       }).unwrap();
 
@@ -103,7 +102,7 @@ export default function Login() {
               <TextInput
                 label="Username"
                 placeholder="Username"
-                {...form.register("userID")}
+                {...form.register("username")}
               />
             </div>
           </div>
@@ -128,7 +127,7 @@ export default function Login() {
             </div>
 
             <span className="inline-block text-drio-red text-sm font-medium cursor-pointer">
-              <Link href={`/auth/forgot-password`}>Forgot your password?</Link>
+              <Link href={`/forgot-password`}>Forgot your password?</Link>
             </span>
           </div>
 
@@ -143,14 +142,14 @@ export default function Login() {
             </Button>
           </div>
 
-          <div className="px-4 py-2 w-full text-center">
+          {/* <div className="px-4 py-2 w-full text-center">
             <p className="text-gray-600 text-sm my-3">
               Don’t have an account?
               <span className="text-drio-red font-medium cursor-pointer">
-                <Link href={`/auth/activation`}> Sign Up</Link>
+                <Link href={`/activation`}> Sign Up</Link>
               </span>
             </p>
-          </div>
+          </div> */}
 
           <div className="px-4 flex items-center w-full mb-4">
             <div className="flex-grow h-px bg-gray-300"></div>

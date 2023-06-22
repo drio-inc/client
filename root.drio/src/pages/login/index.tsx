@@ -21,10 +21,11 @@ import { useLoginMutation } from "@/state/services/apiService";
 import { setUser, setAuthenticated } from "@/state/slices/authSlice";
 
 const schema = z.object({
-  email: z
-    .string()
-    .nonempty("Please Enter a value")
-    .email("Please enter a valid email address."),
+  // email: z
+  //   .string()
+  //   .nonempty("Please Enter a value")
+  //   .email("Please enter a valid email address."),
+  username: z.string().nonempty("Please Enter a value").max(1024),
   password: z
     .string()
     .nonempty("Please Enter a value")
@@ -46,19 +47,23 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
+      // const res = await login({
+      //   email: data.email,
+      //   password: data.password,
+      // }).unwrap();
+
       const res = await login({
-        email: data.email,
+        username: data.username,
         password: data.password,
       }).unwrap();
-
-      console.log(res.role);
 
       dispatch(setUser(res));
       dispatch(setAuthenticated(true));
       router.push("/my-org/org-units");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
   };
@@ -66,7 +71,7 @@ export default function Login() {
     <Layout>
       <AuthContainer authText="Sign in to your account" maxWidth="xl">
         <Form form={form} onSubmit={onSubmit}>
-          <div className="px-4 py-2 w-full">
+          {/* <div className="px-4 py-2 w-full">
             <div className="relative">
               <TextInput
                 label="Email address / username"
@@ -75,13 +80,23 @@ export default function Login() {
                 type="email"
               />
             </div>
+          </div> */}
+
+          <div className="px-4 py-2 w-full">
+            <div className="relative">
+              <TextInput
+                label="Username"
+                placeholder="Username"
+                {...form.register("username")}
+              />
+            </div>
           </div>
 
           <div className="px-4 py-2 w-full">
             <div className="relative">
               <TextInput
-                label="Password"
                 type="password"
+                label="Password"
                 {...form.register("password")}
               />
             </div>
@@ -97,7 +112,7 @@ export default function Login() {
             </div>
 
             <span className="inline-block text-drio-red text-sm font-medium cursor-pointer">
-              <Link href={`/auth/forgot-password`}>Forgot your password?</Link>
+              <Link href={`/forgot-password`}>Forgot your password?</Link>
             </span>
           </div>
 
@@ -116,7 +131,7 @@ export default function Login() {
             <p className="text-gray-600 text-sm my-3">
               Don’t have an account?
               <span className="text-drio-red font-medium cursor-pointer">
-                <Link href={`/auth/activation`}> Sign Up</Link>
+                <Link href={`/activation`}> Sign Up</Link>
               </span>
             </p>
           </div>

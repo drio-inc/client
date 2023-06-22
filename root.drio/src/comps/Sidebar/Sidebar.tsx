@@ -174,7 +174,7 @@ export default function Sidebar() {
                 >
                   <Link
                     href={`/${link.href}/${
-                      link.children && (link?.children[0].href ?? "")
+                      link.children ? link?.children[0].href : ""
                     }`}
                   >
                     <span

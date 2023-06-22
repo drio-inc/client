@@ -11,7 +11,7 @@ import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 import { useActivateMutation } from "@/state/services/apiService";
@@ -20,7 +20,7 @@ import { setUser } from "@/state/slices/authSlice";
 
 const schema = z
   .object({
-    userName: z.string().nonempty("Please Enter a value"),
+    username: z.string().nonempty("Please Enter a value").max(1024),
     email: z
       .string()
       .nonempty("Please Enter a value")
@@ -56,14 +56,13 @@ export default function Activation() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const res = await activate({
-        userName: data.userName,
+        username: data.username,
         email: data.email,
         password: data.password,
       }).unwrap();
-      console.log(res);
 
       dispatch(setUser(res));
-      router.push("/auth/activation/auth-mode");
+      router.push("/activation/auth-mode");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again."
@@ -80,7 +79,7 @@ export default function Activation() {
               <div className="relative">
                 <TextInput
                   label="Username"
-                  {...form.register("userName")}
+                  {...form.register("username")}
                   placeholder="Enter your username"
                 />
               </div>

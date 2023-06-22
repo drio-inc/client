@@ -88,7 +88,7 @@ export default function AddDDXForm() {
     <>
       <Layout>
         <Form form={form} onSubmit={onSubmit} className="">
-          <div className="mx-auto bg-white p-4 rounded-lg max-w-[20vw]">
+          <div className="mx-auto bg-white p-4 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
             <h2 className="text-gray-700 text-2xl font-bold text-center">
               Add DDX
             </h2>

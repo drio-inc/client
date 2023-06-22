@@ -43,11 +43,11 @@ export default function AuthMode() {
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     dispatch(setAuthMode(data.authValue));
-    router.push(`/auth/activation/auth-mode/${data.authValue}`);
+    router.push(`/activation/auth-mode/${data.authValue}`);
   };
 
   if (!user) {
-    router.push("/auth/activation");
+    router.push("/activation");
   }
 
   return (
