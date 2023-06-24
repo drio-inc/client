@@ -8,6 +8,8 @@ import { HiMinusSm } from "react-icons/hi";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
 
+import EditInboundContractsForm from "./EditInboundContractsForm";
+
 const headers = [
   {
     header: "Org/BU Requesting",
@@ -114,6 +116,7 @@ const InboundContracts = () => {
           headers={headers}
           menu={InboundContractsMenu}
           rows={inboundContractState.rows}
+          editForm={EditInboundContractsForm}
           handleRowSelection={handleRowSelection}
           selectedRows={inboundContractState.selectedRows}
         />
