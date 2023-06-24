@@ -6,13 +6,13 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import AlertModal from "@/comps/ui/AlertModal";
 import { setOpenModal } from "@/state/slices/uiSlice";
-import { setRows, setSelectedRows } from "@/state/slices/dataContractSlice";
+import { setRows, setSelectedRows } from "@/state/slices/inboundContractSlice";
 
 import Link from "next/link";
 
-const DataContractsMenu = ({ row, editForm, detailsWindow }: any) => {
+const OutboundContractsMenu = ({ row, editForm, detailsWindow }: any) => {
   const dispatch = useAppDispatch();
-  const dataContractState = useAppSelector((state) => state.dataContract);
+  const dataContractState = useAppSelector((state) => state.inboundContract);
 
   const deleteRow = (id: number | string) => {
     dispatch(setRows(dataContractState.rows.filter((row) => row.id !== id)));
@@ -49,10 +49,20 @@ const DataContractsMenu = ({ row, editForm, detailsWindow }: any) => {
               View
             </span>
           </Link>
+
+          <Link href={`/data-contracts/inbound-contracts`}>
+            <span
+              className={
+                "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
+              }
+            >
+              Edit
+            </span>
+          </Link>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
   );
 };
 
-export default DataContractsMenu;
+export default OutboundContractsMenu;

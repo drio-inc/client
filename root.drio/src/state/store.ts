@@ -11,8 +11,10 @@ import DDXReducer from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
 import datasetReducer from "./slices/datasetSlice";
 import dataSourceReducer from "./slices/dataSourceSlice";
-import dataContractReducer from "./slices/dataContractSlice";
 import adminOrgAccountReducer from "./slices/adminOrgAccountSlice";
+import inboundContractReducer from "./slices/inboundContractSlice";
+import outboundContractReducer from "./slices/outboundContractSlice";
+import approvedContractReducer from "./slices/approvedContractSlice";
 
 const persistConfig = {
   key: "auth",
@@ -34,7 +36,9 @@ export const store = configureStore({
     dataset: datasetReducer,
     auth: persistedAuthReducer,
     dataSource: dataSourceReducer,
-    dataContract: dataContractReducer,
+    inboundContract: inboundContractReducer,
+    outboundContract: outboundContractReducer,
+    approvedContract: approvedContractReducer,
     adminOrgAccount: adminOrgAccountReducer,
     [rootApi.reducerPath]: rootApi.reducer,
   },

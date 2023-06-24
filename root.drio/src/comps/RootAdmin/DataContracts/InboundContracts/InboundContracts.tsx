@@ -1,15 +1,12 @@
 import Table from "@/comps/ui/Table";
-import { setSelectedRows } from "@/state/slices/dataContractSlice";
+import { setSelectedRows } from "@/state/slices/inboundContractSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import DataContractsmenu from "./DataContractsMenu/DataContractsMenu";
+import InboundContractsMenu from "./InboundContractsMenu/InboundContractsMenu";
 
 import { HiMinusSm } from "react-icons/hi";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { setOpenModal } from "@/state/slices/uiSlice";
-
-import Modal from "@/comps/ui/Modal";
 
 const headers = [
   {
@@ -58,19 +55,19 @@ const headers = [
   },
 ];
 
-const DataContracts = () => {
+const InboundContracts = () => {
   const dispatch = useAppDispatch();
-  const dataContractState = useAppSelector((state) => state.dataContract);
+  const inboundContractState = useAppSelector((state) => state.inboundContract);
 
   const handleRowSelection = (index: number) => {
-    if (dataContractState.selectedRows.includes(index)) {
+    if (inboundContractState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
-          dataContractState.selectedRows.filter((row) => row !== index)
+          inboundContractState.selectedRows.filter((row) => row !== index)
         )
       );
     } else {
-      dispatch(setSelectedRows([...dataContractState.selectedRows, index]));
+      dispatch(setSelectedRows([...inboundContractState.selectedRows, index]));
     }
   };
 
@@ -85,14 +82,14 @@ const DataContracts = () => {
       </span>
 
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        {dataContractState.selectedRows.length > 0 && (
+        {inboundContractState.selectedRows.length > 0 && (
           <div
             className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
           >
             <div className="flex items-center">
               <Checkbox.Root
                 className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                checked={dataContractState.selectedRows.length > 0}
+                checked={inboundContractState.selectedRows.length > 0}
                 onCheckedChange={() => {
                   clearSelectedRows?.();
                 }}
@@ -102,7 +99,7 @@ const DataContracts = () => {
                 </Checkbox.Indicator>
               </Checkbox.Root>
               <h3 className={"font-medium text-sm text-gray-700"}>
-                {dataContractState.selectedRows.length} Item(s) Selected
+                {inboundContractState.selectedRows.length} Item(s) Selected
               </h3>
 
               <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
@@ -115,14 +112,14 @@ const DataContracts = () => {
 
         <Table
           headers={headers}
-          menu={DataContractsmenu}
-          rows={dataContractState.rows}
+          menu={InboundContractsMenu}
+          rows={inboundContractState.rows}
           handleRowSelection={handleRowSelection}
-          selectedRows={dataContractState.selectedRows}
+          selectedRows={inboundContractState.selectedRows}
         />
       </div>
     </div>
   );
 };
 
-export default DataContracts;
+export default InboundContracts;

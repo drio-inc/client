@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 import { useAppSelector } from "@/hooks/useStoreTypes";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
-import InboundContracts from "@/comps/RootAdmin/DataContracts/InboundContracts";
+import OutboundContracts from "@/comps/RootAdmin/DataContracts/OutboundContracts";
 
 const InboundContractsPage = () => {
   const router = useRouter();
@@ -18,7 +18,7 @@ const InboundContractsPage = () => {
   return (
     <Layout>
       <DashboardContainer>
-        <InboundContracts />
+        <OutboundContracts />
       </DashboardContainer>
     </Layout>
   );
