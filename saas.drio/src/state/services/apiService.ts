@@ -23,6 +23,10 @@ export const rootApi = createApi({
   reducerPath: "rootApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${MOCK_URL}`,
+    credentials: "include",
+    prepareHeaders: (headers) => {
+      return headers;
+    },
   }),
   endpoints: (builder) => {
     return {
@@ -35,9 +39,7 @@ export const rootApi = createApi({
 
         async onQueryStarted({ requestId }, { dispatch, queryFulfilled }) {
           const response = await queryFulfilled;
-
           const setCookieHeader = response;
-
           if (setCookieHeader) {
             console.log("Set-Cookie:", setCookieHeader);
           }

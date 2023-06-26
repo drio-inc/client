@@ -21,10 +21,7 @@ import { useLoginMutation } from "@/state/services/apiService";
 import { setUser, setAuthenticated } from "@/state/slices/authSlice";
 
 const schema = z.object({
-  // email: z
-  //   .string()
-  //   .nonempty("Please Enter a value")
-  //   .email("Please enter a valid email address."),
+  company: z.string().nonempty("Please Enter a value").max(1024),
   username: z.string().nonempty("Please Enter a value").max(1024),
   password: z
     .string()
@@ -47,12 +44,8 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      // const res = await login({
-      //   email: data.email,
-      //   password: data.password,
-      // }).unwrap();
-
       const res = await login({
+        company: data.company,
         username: data.username,
         password: data.password,
       }).unwrap();
@@ -71,16 +64,15 @@ export default function Login() {
     <Layout>
       <AuthContainer authText="Sign in to your account" maxWidth="xl">
         <Form form={form} onSubmit={onSubmit}>
-          {/* <div className="px-4 py-2 w-full">
+          <div className="px-4 py-2 w-full">
             <div className="relative">
               <TextInput
-                label="Email address / username"
-                {...form.register("email")}
-                placeholder="Email"
-                type="email"
+                label="Company Name"
+                placeholder="Company"
+                {...form.register("company")}
               />
             </div>
-          </div> */}
+          </div>
 
           <div className="px-4 py-2 w-full">
             <div className="relative">

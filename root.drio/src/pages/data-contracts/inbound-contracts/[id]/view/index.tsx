@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 
 import { useAppSelector } from "@/hooks/useStoreTypes";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
-import EditInboundContractsForm from "@/comps/RootAdmin/DataContracts/InboundContracts/EditInboundContractsForm";
+import ViewInboundContractsForm from "@/comps/RootAdmin/DataContracts/InboundContracts/ViewInboundContractsForm";
 
-const EditInboundContractPage = () => {
+const ViewInboundContractPage = () => {
   const router = useRouter();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
@@ -17,10 +17,10 @@ const EditInboundContractPage = () => {
   return (
     <Layout>
       <DashboardContainer>
-        <EditInboundContractsForm />
+        <ViewInboundContractsForm />
       </DashboardContainer>
     </Layout>
   );
 };
 
-export default EditInboundContractPage;
+export default ViewInboundContractPage;
