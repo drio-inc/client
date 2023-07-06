@@ -2,7 +2,7 @@ import Button from "@ui/Button";
 import { useRouter } from "next/router";
 import { FaLock } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { TextInput } from "@ui/Forms/Inputs";
+import { TextInput, SelectInput } from "@ui/Forms/Inputs";
 
 import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
@@ -21,7 +21,7 @@ import { useLoginMutation } from "@/state/services/apiService";
 import { setUser, setAuthenticated } from "@/state/slices/authSlice";
 
 const schema = z.object({
-  company: z.string().nonempty("Please Enter a value").max(1024),
+  organization: z.string().nonempty("Please Enter a value").max(1024),
   username: z.string().nonempty("Please Enter a value").max(1024),
   password: z
     .string()
@@ -45,7 +45,7 @@ export default function Login() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const res = await login({
-        company: data.company,
+        organization: data.organization,
         username: data.username,
         password: data.password,
       }).unwrap();
@@ -65,13 +65,17 @@ export default function Login() {
       <AuthContainer authText="Sign in to your account" maxWidth="xl">
         <Form form={form} onSubmit={onSubmit}>
           <div className="px-4 py-2 w-full">
-            <div className="relative">
-              <TextInput
-                label="Company Name"
-                placeholder="Company"
-                {...form.register("company")}
-              />
-            </div>
+            <SelectInput
+              registerName="organization"
+              label={"Organization/Company"}
+              placeholder={"Select your organization"}
+              options={[
+                { label: "KBB", value: "kbb" },
+                { label: "VISA", value: "visa" },
+                { label: "Paypal", value: "paypal" },
+              ]}
+              className="md:text-sm 2xl:text-base"
+            />
           </div>
 
           <div className="px-4 py-2 w-full">
@@ -94,7 +98,7 @@ export default function Login() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row items-center justify-between px-4 py-2 w-full text-gray-900 mb-2">
+          <div className="flex gap-x-6 flex-col md:flex-row items-center justify-between px-4 py-2 w-full text-gray-900 mb-2">
             <div className="flex items-center mb-2 md:mb-0">
               <Checkbox onChange={() => setRememberMe(!rememberMe)}>
                 <label htmlFor="remember-me" className="text-sm">

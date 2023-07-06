@@ -37,18 +37,18 @@ export const rootApi = createApi({
           body: credentials,
         }),
 
-        async onQueryStarted({ requestId }, { dispatch, queryFulfilled }) {
-          const response = await queryFulfilled;
-          const setCookieHeader = response;
-          if (setCookieHeader) {
-            console.log("Set-Cookie:", setCookieHeader);
-          }
-        },
+        // async onQueryStarted({ requestId }, { dispatch, queryFulfilled }) {
+        //   const response = await queryFulfilled;
+        //   const setCookieHeader = response;
+        //   if (setCookieHeader) {
+        //     console.log("Set-Cookie:", setCookieHeader);
+        //   }
+        // },
 
-        transformResponse(baseQueryReturnValue, meta, arg) {
-          console.log("meta", meta?.response?.headers.get("Set-Cookie"));
-          return baseQueryReturnValue;
-        },
+        // transformResponse(baseQueryReturnValue, meta, arg) {
+        //   console.log("meta", meta?.response?.headers.get("Set-Cookie"));
+        //   return baseQueryReturnValue;
+        // },
       }),
 
       setLDAP: builder.mutation<APIResponse, FormData>({

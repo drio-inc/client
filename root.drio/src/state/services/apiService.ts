@@ -56,6 +56,14 @@ export const rootApi = createApi({
         }),
       }),
 
+      setPassword: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/set-password`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
       setLDAP: builder.mutation<APIResponse, FormData>({
         query: (credentials) => ({
           url: `/ldap`,
@@ -96,25 +104,9 @@ export const rootApi = createApi({
         }),
       }),
 
-      addOrgAccountGoogle: builder.mutation<APIResponse, FormData>({
+      addOrgAccount: builder.mutation<APIResponse, FormData>({
         query: (credentials) => ({
-          url: `/add-org/google`,
-          method: "POST",
-          body: credentials,
-        }),
-      }),
-
-      addOrgAccountOAuth: builder.mutation<APIResponse, FormData>({
-        query: (credentials) => ({
-          url: `/add-org/oauth`,
-          method: "POST",
-          body: credentials,
-        }),
-      }),
-
-      addOrgAccountLDAP: builder.mutation<APIResponse, FormData>({
-        query: (credentials) => ({
-          url: `/add-org/ldap`,
+          url: `/add-org/add`,
           method: "POST",
           body: credentials,
         }),
@@ -194,9 +186,7 @@ export const {
   useSetGoogleAuthMutation,
   useResetPasswordMutation,
   useEditOrgAccountMutation,
-  useAddOrgAccountLDAPMutation,
-  useAddOrgAccountOAuthMutation,
-  useAddOrgAccountGoogleMutation,
+  useAddOrgAccountMutation,
   useUpdateLicenseMutation,
   useFetchLicenseMutation,
   useGenerateDDXKeyMutation,
@@ -205,4 +195,5 @@ export const {
   usePublishDatasetMutation,
   useEditDataSourceMutation,
   useUpdateDatasetMutation,
+  useSetPasswordMutation,
 } = rootApi;

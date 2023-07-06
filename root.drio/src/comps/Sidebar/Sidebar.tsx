@@ -147,11 +147,18 @@ export default function Sidebar() {
 
   const showNested = (link: NavLink) => {
     const expanded = !expandedLinks[link.name];
+
+    NavLinks.forEach((link) => {
+      if (link.children) {
+        dispatch(setExpandedLinks({ linkName: link.name, expanded: false }));
+      }
+    });
+
     dispatch(setExpandedLinks({ linkName: link.name, expanded }));
   };
 
   return (
-    <nav className="z-[1000] hidden md:left-0 md:flex md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden border-r border-gray-200 bg-white relative md:w-64 py-4 px-2">
+    <nav className="hidden md:left-0 md:flex md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden border-r border-gray-200 bg-white relative md:w-64 py-4 px-2">
       <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
         <Link href="/">
           <Image src="/logo.svg" alt="Drio Logo" width={145} height={145} />

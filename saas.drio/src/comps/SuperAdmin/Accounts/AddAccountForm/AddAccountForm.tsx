@@ -1,5 +1,6 @@
 import Button from "@ui/Button";
-import { TextInput } from "@ui/Forms/Inputs";
+import { SelectInput, TextInput } from "@ui/Forms/Inputs";
+import { Country, State, City } from "country-state-city";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
@@ -11,43 +12,49 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
+import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/adminAccountSlice";
 import { useAddAccountMutation } from "@/state/services/apiService";
-import { setCloseModal } from "@/state/slices/uiSlice";
 
 const nameFields = [
   {
     name: "name",
     label: "Account Name*",
     type: "text",
-    placeholder: "Name",
+    placeholder: "Enter account name",
   },
   {
-    name: "address",
-    label: "Address",
+    name: "streetAddress",
+    label: "Street address",
     type: "text",
-    placeholder: "Enter your address",
-  },
-  {
-    name: "description",
-    label: "Description",
-    type: "text",
-    placeholder: "Enter your description",
+    placeholder: "Enter your street address",
   },
 ];
 
 const detailFields = [
   {
-    name: "rootAdminName",
-    label: "Root Admin Name",
+    name: "rootAdminFirstName",
+    label: "Root Admin First Name",
     type: "text",
-    placeholder: "Account root admin",
+    placeholder: "Enter root admin first name",
+  },
+  {
+    name: "rootAdminLastName",
+    label: "Root Admin Last Name",
+    type: "text",
+    placeholder: "Enter root admin last name",
   },
   {
     name: "rootAdminID",
     label: "Root Admin ID",
     type: "text",
     placeholder: "Enter your ID",
+  },
+  {
+    name: "rootAdminInitialPassword",
+    label: "Root Admin Initial Password",
+    type: "password",
+    placeholder: "Enter root admin password",
   },
 ];
 
@@ -56,17 +63,17 @@ const contactFields = [
     name: "firstName",
     label: "First Name",
     type: "text",
-    placeholder: "First Name",
+    placeholder: "First name",
   },
   {
     name: "lastName",
     label: "Last Name",
     type: "text",
-    placeholder: "Last Name",
+    placeholder: "Last name",
   },
   {
     name: "email",
-    label: "Enter",
+    label: "Email",
     type: "email",
     placeholder: "Enter your email",
   },
@@ -80,10 +87,26 @@ const contactFields = [
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
-  address: z.string().nonempty("Please Enter a value"),
+  streetAddress: z.string().nonempty("Please Enter a value"),
+  country: z.string({
+    required_error: "Please Enter a value",
+  }),
+  state: z.string({
+    required_error: "Please Enter a value",
+  }),
+  city: z
+    .string({
+      required_error: "Please Enter a value",
+    })
+    .optional(),
+  zipCode: z.string().nonempty("Please Enter a value"),
   description: z.string().nonempty("Please Enter a value"),
-  rootAdminName: z.string().nonempty("Please Enter a value"),
+
+  rootAdminFirstName: z.string().nonempty("Please Enter a value"),
+  rootAdminLastName: z.string().nonempty("Please Enter a value"),
   rootAdminID: z.string().nonempty("Please Enter a value"),
+  rootAdminInitialPassword: z.string().nonempty("Please Enter a value"),
+
   firstName: z.string().nonempty("Please Enter a value"),
   lastName: z.string().nonempty("Please Enter a value"),
   email: z.string().nonempty("Please Enter a value"),
@@ -113,7 +136,8 @@ export default function AddAccountForm() {
       dispatch(setRows([...rows, res]));
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
 
@@ -122,85 +146,146 @@ export default function AddAccountForm() {
   };
 
   return (
-    <>
-      <Layout>
-        <Form form={form} onSubmit={onSubmit} className="min-w-full">
-          <div className="w-full mx-auto bg-white p-8 rounded-lg">
-            <h2 className="text-gray-700 text-2xl font-bold my-4">
-              Account Information
-            </h2>
+    <Layout>
+      <Form form={form} onSubmit={onSubmit} className="min-w-full">
+        <div className="w-full mx-auto bg-white p-8 rounded-lg">
+          <h2 className="text-gray-700 text-2xl font-bold my-4">
+            Account Information
+          </h2>
 
-            <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">
-              {nameFields.map((field) => (
-                <div className="px-4 py-2 w-full" key={field.name}>
-                  <TextInput
-                    type={field.type}
-                    className="md:text-sm 2xl:text-base"
-                    {...form.register(field.name as FormKeyTypes)}
-                    label={field.label}
-                    placeholder={field.placeholder}
-                  />
-                </div>
-              ))}
+          <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">
+            {nameFields.map((field) => (
+              <div className="px-4 py-2 w-full" key={field.name}>
+                <TextInput
+                  type={field.type}
+                  className="md:text-sm 2xl:text-base"
+                  {...form.register(field.name as FormKeyTypes)}
+                  label={field.label}
+                  placeholder={field.placeholder}
+                />
+              </div>
+            ))}
+
+            <div className="px-4 py-2 w-1/2">
+              <SelectInput
+                label="Country"
+                registerName="country"
+                placeholder="Select country"
+                options={
+                  Country.getAllCountries().map((country) => ({
+                    label: country.name,
+                    value: country.isoCode,
+                  })) ?? []
+                }
+              />
             </div>
 
-            <h2 className="text-gray-700 text-sm my-2">Account Details</h2>
-
-            <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">
-              {detailFields.map((field) => (
-                <div className="px-4 py-2 w-full md:w-1/2" key={field.name}>
-                  <TextInput
-                    type={field.type}
-                    className="md:text-sm 2xl:text-base"
-                    {...form.register(field.name as FormKeyTypes)}
-                    label={field.label}
-                    placeholder={field.placeholder}
-                  />
-                </div>
-              ))}
+            <div className="px-4 py-2 w-1/2">
+              <SelectInput
+                label="State / Province"
+                registerName="state"
+                placeholder="Select state"
+                options={
+                  State.getStatesOfCountry(form.watch("country") as string).map(
+                    (state) => ({
+                      label: state.name,
+                      value: state.isoCode,
+                    })
+                  ) ?? []
+                }
+              />
             </div>
 
-            <h2 className="text-gray-700 text-sm my-2">
-              Primary Contact Information
-            </h2>
-
-            <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">
-              {contactFields.map((field) => (
-                <div className="px-4 py-2 w-full md:w-1/2" key={field.name}>
-                  <TextInput
-                    type={field.type}
-                    className="md:text-sm 2xl:text-base"
-                    {...form.register(field.name as FormKeyTypes)}
-                    label={field.label}
-                    placeholder={field.placeholder}
-                  />
-                </div>
-              ))}
+            <div className="px-4 py-2 w-1/2">
+              <SelectInput
+                label="City"
+                registerName="city"
+                placeholder="Select city"
+                options={
+                  City.getCitiesOfState(
+                    form.watch("country") as string,
+                    form.watch("state") as string
+                  ).map((city) => ({
+                    label: city.name,
+                    value: city.name,
+                  })) ?? []
+                }
+              />
             </div>
 
-            <div className="py-2 flex justify-center md:justify-end w-full mt-4">
-              <Button
-                type="button"
-                intent={`secondary`}
-                onClick={() => dispatch(setCloseModal("addAccountForm"))}
-                className="w-full md:w-auto mr-2 md:mr-6"
-              >
-                <span className="inline-flex justify-center w-full">
-                  Cancel
-                </span>
-              </Button>
+            <div className="px-4 py-2 w-1/2">
+              <TextInput
+                className="md:text-sm 2xl:text-base"
+                {...form.register("zipCode")}
+                label={"Zip Code"}
+                placeholder={"Enter zip code"}
+              />
+            </div>
 
-              <Button
-                intent={`primary`}
-                className="w-full md:w-auto"
-                isLoading={result.isLoading}
-              >
-                <span className="inline-flex justify-center w-full">Add</span>
-              </Button>
+            <div className="px-4 py-2 w-full">
+              <TextInput
+                className="md:text-sm 2xl:text-base"
+                {...form.register("description")}
+                label={"Description"}
+                placeholder={"Enter description"}
+              />
             </div>
           </div>
-        </Form>
-      </Layout>
-    </>
+
+          <h2 className="text-gray-700 text-sm my-2">Account Details</h2>
+
+          <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">
+            {detailFields.map((field) => (
+              <div className="px-4 py-2 w-full md:w-1/2" key={field.name}>
+                <TextInput
+                  type={field.type}
+                  className="md:text-sm 2xl:text-base"
+                  {...form.register(field.name as FormKeyTypes)}
+                  label={field.label}
+                  placeholder={field.placeholder}
+                />
+              </div>
+            ))}
+          </div>
+
+          <h2 className="text-gray-700 text-sm my-2">
+            Primary Contact Information
+          </h2>
+
+          <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">
+            {contactFields.map((field) => (
+              <div className="px-4 py-2 w-full md:w-1/2" key={field.name}>
+                <TextInput
+                  type={field.type}
+                  className="md:text-sm 2xl:text-base"
+                  {...form.register(field.name as FormKeyTypes)}
+                  label={field.label}
+                  placeholder={field.placeholder}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="py-2 flex justify-center md:justify-end w-full mt-4">
+            <Button
+              type="button"
+              intent={`secondary`}
+              onClick={() => dispatch(setCloseModal("addAccountForm"))}
+              className="w-full md:w-auto mr-2 md:mr-6"
+            >
+              <span className="inline-flex justify-center w-full">Cancel</span>
+            </Button>
+
+            <Button
+              intent={`primary`}
+              className="w-full md:w-auto"
+              isLoading={result.isLoading}
+            >
+              <span className="inline-flex justify-center w-full">Add</span>
+            </Button>
+          </div>
+        </div>
+      </Form>
+    </Layout>
   );
 }

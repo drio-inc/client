@@ -47,7 +47,7 @@ type FormData = z.infer<typeof schema>;
 export default function EditDatasetForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [update, result] = useUpdateDatasetMutation();
-  const [visibility, setVisibility] = useState(row?.public.toLowerCase() ?? "");
+  const [visibility, setVisibility] = useState("");
 
   const datasetState = useAppSelector((state) => state.dataset);
 

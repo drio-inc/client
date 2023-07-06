@@ -21,8 +21,8 @@ const Modal = ({ label, onClick, children, identifier }: IModalProps) => {
       </CustomModal.Trigger>
 
       <CustomModal.Portal>
-        <CustomModal.Overlay className="bg-[#6B6B6B] data-[state=open]:animate-overlayShow fixed inset-0 opacity-40" />
-        <CustomModal.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white shadow-sm focus:outline-none">
+        <CustomModal.Overlay className="bg-[#6B6B6B] data-[state=open]:animate-overlayShow fixed inset-0 opacity-40 z-[1000]" />
+        <CustomModal.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white shadow-sm focus:outline-none z-[1001]">
           <div className="max-h-[90vh] overflow-auto">{children}</div>
         </CustomModal.Content>
       </CustomModal.Portal>

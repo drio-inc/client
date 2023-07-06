@@ -117,7 +117,7 @@ export default function Login() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row items-center justify-between px-4 py-2 w-full text-gray-900 mb-2">
+          <div className="flex flex-col gap-x-6 md:flex-row items-center justify-between px-4 py-2 w-full text-gray-900 mb-2">
             <div className="flex items-center mb-2 md:mb-0">
               <Checkbox onChange={() => setRememberMe(!rememberMe)}>
                 <label htmlFor="remember-me" className="text-sm">

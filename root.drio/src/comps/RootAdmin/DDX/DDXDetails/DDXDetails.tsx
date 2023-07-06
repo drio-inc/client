@@ -6,6 +6,119 @@ import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 import { HiX } from "react-icons/hi";
 
+const SystemDetails = [
+  {
+    defaults: [
+      {
+        name: "dockerImage",
+        label: "Docker image",
+        value: "Standard Rev 1.0.2.1102023",
+      },
+      {
+        name: "licensed",
+        label: "Licensed",
+        value: "Yes",
+      },
+      {
+        name: "dataRate",
+        label: "Data Rate sent to controller",
+        value: "1200/sec",
+      },
+      {
+        name: "avgAccessRate",
+        label: "Average Access Rate",
+        value: "24/day",
+      },
+      {
+        name: "transferRate",
+        label: "Transfer Rate",
+        value: "2 Gbps",
+      },
+      {
+        name: "datasetRate",
+        label: "Dataset Rate",
+        value: "5 Datasets/sec",
+      },
+    ],
+
+    provisioning: [
+      {
+        name: "vCPU",
+        label: "#vCPU",
+        value: "30",
+      },
+      {
+        name: "memory",
+        label: "Memory",
+        value: "64 GB",
+      },
+      {
+        name: "storage",
+        label: "Storage",
+        value: "1 TB",
+      },
+      {
+        name: "autoScale",
+        label: "Auto-scale",
+        value: "ON",
+      },
+    ],
+
+    utilization: [
+      {
+        name: "cpu",
+        label: "CPU",
+        value: "30%",
+      },
+      {
+        name: "memory",
+        label: "Memory",
+        value: "64%",
+      },
+      {
+        name: "storage",
+        label: "Storage",
+        value: "12%",
+      },
+      {
+        name: "autoScale",
+        label: "Auto-scale",
+        value: "ON",
+      },
+    ],
+  },
+];
+
+const DeploymentDetails = [
+  {
+    name: "serviceProvider",
+    label: "Service Provider",
+    value: "AWS",
+  },
+
+  {
+    name: "region",
+    label: "Region",
+    value: "us-east-1",
+  },
+  {
+    name: "location",
+    label: "Location",
+    value: "US East (N. Virginia)",
+  },
+
+  {
+    name: "rack",
+    label: "Rack",
+    value: "1",
+  },
+  {
+    name: "subnet",
+    label: "Subnet",
+    value: "1",
+  },
+];
+
 export default function DDXDetails({ row }: TableRow) {
   const dispatch = useAppDispatch();
   return (
@@ -29,85 +142,34 @@ export default function DDXDetails({ row }: TableRow) {
             </Button>
           </div>
 
-          <div className="flex my-4 shadow-md p-2 rounded-lg bg-gray-50 text-gray-500">
-            <div className="w-2/3 flex-grow">
-              <div className="flex my-2">
-                <span className="block w-1/2">Docker image</span>
-                <span className="block">:Standard Rev 1.0.2.1102023</span>
-              </div>
-
-              <div className="flex">
-                <span className="block w-1/2">Licensed</span>
-                <span className="block">:Yes ( Standard )</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">
-                  Data rate sent to controller
-                </span>
-                <span className="block">:1200/sec</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Avg Access Rates(24 hrs)</span>
-                <span className="block">:24/day</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Transfer rate</span>
-                <span className="block">:2 Gbps</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Dataset rate</span>
-                <span className="block">:5 Datasets/sec</span>
-              </div>
+          <div className="flex justify-between gap-x-4 my-4 shadow-md p-2 rounded-lg bg-gray-50 text-gray-500">
+            <div className="flex flex-col w-2/3">
+              {SystemDetails[0].defaults.map((field) => (
+                <div className="flex my-2" key={field.name}>
+                  <span className="block w-1/2 font-bold">{field.label}</span>
+                  <span className="block">:{field.value}</span>
+                </div>
+              ))}
             </div>
 
-            <div className="w-1/3">
-              <h3 className="mb-3">DDX Cluster Provisioning</h3>
-              <div className="flex my-2">
-                <span className="block w-1/2">#vCPU</span>
-                <span className="block">:30</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Memory</span>
-                <span className="block w-1/2">:500 GB</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Storage</span>
-                <span className="block w-1/2">:1 TB</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Auto-scale</span>
-                <span className="block w-1/2">:ON</span>
-              </div>
+            <div className="flex flex-col w-1/3">
+              <h3 className="my-2 font-bold">Cluster Provisioning</h3>
+              {SystemDetails[0].provisioning.map((field) => (
+                <div className="flex my-2" key={field.name}>
+                  <span className="block w-1/2 font-bold">{field.label}</span>
+                  <span className="block">:{field.value}</span>
+                </div>
+              ))}
             </div>
 
-            <div className="w-1/3">
-              <h3 className="mb-3">System Utilization</h3>
-              <div className="flex my-2">
-                <span className="block w-1/2">CPU</span>
-                <span className="block">:30 %</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Memory</span>
-                <span className="block w-1/2">:83 %</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Storage</span>
-                <span className="block w-1/2">:12 %</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Auto-scale</span>
-                <span className="block w-1/2">:ON</span>
-              </div>
+            <div className="flex flex-col w-1/3">
+              <h3 className="my-2 font-bold">System Utilization</h3>
+              {SystemDetails[0].utilization.map((field) => (
+                <div className="flex my-2" key={field.name}>
+                  <span className="block w-1/2 font-bold">{field.label}</span>
+                  <span className="block">:{field.value}</span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -125,31 +187,13 @@ export default function DDXDetails({ row }: TableRow) {
           </div>
 
           <div className="flex my-4 shadow-md p-2 rounded-lg bg-gray-50 text-gray-500">
-            <div className="">
-              <div className="flex my-2">
-                <span className="block w-1/2">Service Provider</span>
-                <span className="block">: Datacenter</span>
-              </div>
-
-              <div className="flex">
-                <span className="block w-1/2">Location</span>
-                <span className="block">: Santa Clara</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Region</span>
-                <span className="block">: US West</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Rack</span>
-                <span className="block">: 22</span>
-              </div>
-
-              <div className="flex my-2">
-                <span className="block w-1/2">Subnet</span>
-                <span className="block">: 10.02</span>
-              </div>
+            <div className="flex flex-col w-1/3">
+              {DeploymentDetails.map((field) => (
+                <div className="flex my-2" key={field.name}>
+                  <span className="block w-1/2 font-bold">{field.label}</span>
+                  <span className="block">:{field.value}</span>
+                </div>
+              ))}
             </div>
           </div>
 

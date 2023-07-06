@@ -133,7 +133,7 @@ const CustomControl = ({
   return (
     <Control {...props}>
       <div
-        className={`cursor-pointer flex justify-between w-full py-2 px-3 my-1 caret-transparent border rounded-md  ${
+        className={`cursor-pointer flex justify-between w-full py-2 px-3 my-1 caret-transparent border rounded-md bg-white ${
           error
             ? `border-red-300 focus:border-red-300 text-red-900 placeholder-red-900`
             : `border-gray-300 focus:border-gray-700 text-gray-500`

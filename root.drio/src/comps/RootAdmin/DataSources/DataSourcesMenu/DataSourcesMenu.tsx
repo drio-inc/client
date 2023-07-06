@@ -28,7 +28,7 @@ const DataSourcesMenu = ({ row, editForm, detailsWindow }: any) => {
           side="left"
           sideOffset={5}
           align="center"
-          className="bg-white rounded-lg shadow-lg text-sm text-gray-700 z-[999]"
+          className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             {editForm && (
