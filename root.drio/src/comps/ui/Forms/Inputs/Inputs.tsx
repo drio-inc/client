@@ -126,21 +126,35 @@ const { Option, Control, Menu } = components;
 const CustomControl = ({
   registerName,
   ...props
-}: ControlProps & { registerName: string }) => {
+}: ControlProps & { registerName?: string }) => {
   const {
     formState: { errors },
   } = useFormContext<FieldValues>();
 
-  const error = errors[registerName];
+  const error = errors[registerName || ""];
 
   return (
     <Control {...props}>
       <div
-        className={`cursor-pointer flex justify-between w-full py-2 px-3 my-1 caret-transparent border rounded-md  ${
+        className={`cursor-pointer flex justify-between w-full py-2 px-3 my-1 caret-transparent border rounded-md bg-white  ${
           error
             ? `border-red-300 focus:border-red-300 text-red-900 placeholder-red-900`
             : `border-gray-300 focus:border-gray-700 text-gray-500`
         }`}
+      >
+        {props.children}
+      </div>
+    </Control>
+  );
+};
+
+const StatelessCustomControl = ({
+  ...props
+}: ControlProps & { registerName?: string }) => {
+  return (
+    <Control {...props}>
+      <div
+        className={`cursor-pointer flex justify-between w-full py-2 px-3 my-1 caret-transparent border rounded-md bg-white min-w-[18rem]`}
       >
         {props.children}
       </div>
@@ -245,6 +259,40 @@ export const SelectInput = ({
           {error?.message as string}
         </span>
       )}
+    </div>
+  );
+};
+
+export const StatelessSelectInput = ({
+  label,
+  options,
+  className,
+  ...props
+}: SelectProps) => {
+  return (
+    <div className={`${textInputStyles({})} relative flex flex-col`}>
+      <label className="flex items-center">
+        <span className="inline-block text-gray-700 text-sm font-medium">
+          {label}
+        </span>
+      </label>
+
+      <Select
+        unstyled
+        options={options}
+        placeholder={props.placeholder}
+        onChange={(selectedOption: any) => {}}
+        components={{
+          Menu: CustomMenu as ComponentType<MenuProps>,
+          Option: CustomOption as ComponentType<OptionProps>,
+          Control: (props: ControlProps) => (
+            <StatelessCustomControl {...props} />
+          ),
+
+          IndicatorSeparator: () => null,
+          DropdownIndicator: () => <HiChevronDown />,
+        }}
+      />
     </div>
   );
 };

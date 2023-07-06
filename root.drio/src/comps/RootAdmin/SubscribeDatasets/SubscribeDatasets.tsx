@@ -1,22 +1,24 @@
 import Table from "@/comps/ui/Table";
-import { setSelectedRows } from "@/state/slices/datasetSlice";
+import { setSelectedRows } from "@/state/slices/subscribeDatasetsSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import DatasetDetails from "./DatasetDetails";
-import EditDatasetForm from "./EditDatasetForm";
-import PublishDatasetForm from "./PublishDatasetForm";
+import EditDatasetForm from "./RequestDataAccessForm";
 
-import DatasetMenu from "./DatasetMenu/DatasetMenu";
-import AddDataSourceForm from "../DataSources/AddDataSourceForm";
+import SubscribeDatasetMenu from "./SubscribeDatasetMenu/SubscribeDatasetMenu";
 
-import Button from "@ui/Button";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { setOpenModal } from "@/state/slices/uiSlice";
-import { HiMinusSm, HiUpload, HiPlus } from "react-icons/hi";
+import {
+  HiUpload,
+  HiMinusSm,
+  HiOutlineFilter,
+  HiOutlineViewBoards,
+} from "react-icons/hi";
 
 import TopOrgs from "../TopOrgs";
 import Modal from "@/comps/ui/Modal";
+import { StatelessSelectInput } from "@/comps/ui/Forms/Inputs/Inputs";
 
 const headers = [
   {
@@ -51,13 +53,10 @@ const headers = [
   },
 
   {
-    header: "6 Months Access",
-    accessor: "sixMonthsAccess",
-  },
-  {
     header: "Daily Usage Frequency",
     accessor: "frequency",
   },
+
   {
     header: "Alerts (7 days)",
     accessor: "alerts",
@@ -66,17 +65,17 @@ const headers = [
 
 const Dataset = () => {
   const dispatch = useAppDispatch();
-  const datasetState = useAppSelector((state) => state.dataset);
+  const subscribeDatasets = useAppSelector((state) => state.subscribeDataset);
 
   const handleRowSelection = (index: number) => {
-    if (datasetState.selectedRows.includes(index)) {
+    if (subscribeDatasets.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
-          datasetState.selectedRows.filter((row) => row !== index)
+          subscribeDatasets.selectedRows.filter((row) => row !== index)
         )
       );
     } else {
-      dispatch(setSelectedRows([...datasetState.selectedRows, index]));
+      dispatch(setSelectedRows([...subscribeDatasets.selectedRows, index]));
     }
   };
 
@@ -92,19 +91,59 @@ const Dataset = () => {
 
       <TopOrgs />
 
-      <span className="text-xs text-gray-900 inline-block px-4 py-2 mt-2 mb-6 bg-white rounded-md border">
-        Top by Access Frequency
-      </span>
+      <div className="flex justify-between my-2">
+        <div className="flex gap-x-2 items-center text-gray-500">
+          <span>Sort by:</span>
+          <button className="px-4 py-2 rounded-lg hover:bg-gray-200">
+            Organizations
+          </button>
+          <button className="px-4 py-2 rounded-lg hover:bg-gray-200">
+            Category
+          </button>
+        </div>
+
+        <div className="flex gap-x-6">
+          <div className="flex items-center gap-x-2 w-full">
+            <span className="inline-block p-2 bg-blue-100 rounded border">
+              <HiOutlineViewBoards className="text-drio-red" />
+            </span>
+
+            <StatelessSelectInput
+              label=""
+              registerName="view"
+              options={[
+                { label: "Subscribed", value: "subscribed" },
+                { label: "Not Subscribed", value: "notSubscribed" },
+              ]}
+            />
+          </div>
+
+          <div className="flex items-center gap-x-2 w-full">
+            <span className="inline-block p-2 bg-blue-100 rounded border">
+              <HiOutlineFilter className="text-drio-red" />
+            </span>
+
+            <StatelessSelectInput
+              label=""
+              registerName="view"
+              options={[
+                { label: "List", value: "list" },
+                { label: "Table", value: "table" },
+              ]}
+            />
+          </div>
+        </div>
+      </div>
 
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div
-          className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
+          className={`rounded-lg bg-gray-50 flex flex-wrap items-center justify-between`}
         >
-          {datasetState.selectedRows.length > 0 && (
-            <div className="flex items-center">
+          {subscribeDatasets.selectedRows.length > 0 && (
+            <div className="flex items-center px-4 py-3">
               <Checkbox.Root
                 className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                checked={datasetState.selectedRows.length > 0}
+                checked={subscribeDatasets.selectedRows.length > 0}
                 onCheckedChange={() => {
                   clearSelectedRows?.();
                 }}
@@ -114,7 +153,7 @@ const Dataset = () => {
                 </Checkbox.Indicator>
               </Checkbox.Root>
               <h3 className={"font-medium text-sm text-gray-700"}>
-                {datasetState.selectedRows.length} Item(s) Selected
+                {subscribeDatasets.selectedRows.length} Item(s) Selected
               </h3>
 
               <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
@@ -123,38 +162,16 @@ const Dataset = () => {
               </button>
             </div>
           )}
-
-          <div className="flex gap-4 ml-auto">
-            <Button
-              intent={"primary"}
-              onClick={() => dispatch(setOpenModal("publishDatasetForm"))}
-            >
-              <div className="flex items-center gap-1">
-                <HiUpload />
-                <span className="inline-block">Publish Dataset</span>
-              </div>
-            </Button>
-          </div>
-
-          <div className="hidden">
-            <Modal identifier="addDataSourceForm">
-              <AddDataSourceForm />
-            </Modal>
-
-            <Modal identifier="publishDatasetForm">
-              <PublishDatasetForm />
-            </Modal>
-          </div>
         </div>
 
         <Table
           headers={headers}
-          menu={DatasetMenu}
-          rows={datasetState.rows}
+          menu={SubscribeDatasetMenu}
+          rows={subscribeDatasets.rows}
           editForm={EditDatasetForm}
           detailsWindow={DatasetDetails}
           handleRowSelection={handleRowSelection}
-          selectedRows={datasetState.selectedRows}
+          selectedRows={subscribeDatasets.selectedRows}
         />
       </div>
     </div>

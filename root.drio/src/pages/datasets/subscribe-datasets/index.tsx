@@ -2,11 +2,11 @@ import Layout from "@/comps/Layout";
 import Loader from "@ui/Loader/Loader";
 import { useRouter } from "next/router";
 
-import Datasets from "@/comps/RootAdmin/Datasets";
 import { useAppSelector } from "@/hooks/useStoreTypes";
+import SubscribeDatasets from "@/comps/RootAdmin/SubscribeDatasets";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
-const DatasetsPage = () => {
+const SubscribeDatasetsPage = () => {
   const router = useRouter();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
@@ -18,10 +18,10 @@ const DatasetsPage = () => {
   return (
     <Layout>
       <DashboardContainer>
-        <Datasets />
+        <SubscribeDatasets />
       </DashboardContainer>
     </Layout>
   );
 };
 
-export default DatasetsPage;
+export default SubscribeDatasetsPage;
