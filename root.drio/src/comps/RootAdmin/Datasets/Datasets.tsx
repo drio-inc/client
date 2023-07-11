@@ -86,43 +86,18 @@ const Dataset = () => {
 
   return (
     <div className="py-2 w-full">
-      <span className="text-sm text-gray-500 inline-block px-4 py-2 my-2 bg-white rounded-md border">
-        Top 10 Organisations Accessing Data
-      </span>
-
-      <TopOrgs />
-
-      <span className="text-xs text-gray-900 inline-block px-4 py-2 mt-2 mb-6 bg-white rounded-md border">
-        Top by Access Frequency
-      </span>
+      <div className="flex flex-col text-2xl text-gray-900 font-medium p-6 mt-4 mb-6 bg-white rounded-md border">
+        <span>Top 10 Organisations Accessing Data</span>
+        <TopOrgs />
+      </div>
 
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div
-          className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
+          className={`rounded-lg px-4 py-5 flex flex-wrap items-center justify-between`}
         >
-          {datasetState.selectedRows.length > 0 && (
-            <div className="flex items-center">
-              <Checkbox.Root
-                className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                checked={datasetState.selectedRows.length > 0}
-                onCheckedChange={() => {
-                  clearSelectedRows?.();
-                }}
-              >
-                <Checkbox.Indicator className="text-white">
-                  <HiMinusSm />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
-              <h3 className={"font-medium text-sm text-gray-700"}>
-                {datasetState.selectedRows.length} Item(s) Selected
-              </h3>
-
-              <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
-                <IoRefresh className="mr-1 font-bold" />
-                <span className="text-sm font-medium">Re-run</span>
-              </button>
-            </div>
-          )}
+          <span className="font-semibold text-gray-700 mx-2 text-lg">
+            Top by Access Frequency
+          </span>
 
           <div className="flex gap-4 ml-auto">
             <Button
@@ -146,6 +121,30 @@ const Dataset = () => {
             </Modal>
           </div>
         </div>
+
+        {datasetState.selectedRows.length > 0 && (
+          <div className="flex items-center p-4 bg-gray-50">
+            <Checkbox.Root
+              className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+              checked={datasetState.selectedRows.length > 0}
+              onCheckedChange={() => {
+                clearSelectedRows?.();
+              }}
+            >
+              <Checkbox.Indicator className="text-white">
+                <HiMinusSm />
+              </Checkbox.Indicator>
+            </Checkbox.Root>
+            <h3 className={"font-medium text-sm text-gray-700"}>
+              {datasetState.selectedRows.length} Item(s) Selected
+            </h3>
+
+            <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
+              <IoRefresh className="mr-1 font-bold" />
+              <span className="text-sm font-medium">Re-run</span>
+            </button>
+          </div>
+        )}
 
         <Table
           headers={headers}
