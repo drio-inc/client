@@ -13,7 +13,8 @@ type TableHeader = {
 type TableProps = {
   rows?: TableRow[];
   menu?: React.FC | any;
-  selectedRows: number[];
+  noSelection?: boolean;
+  selectedRows?: number[];
   headers?: TableHeader[];
   editForm?: React.FC | any;
   detailsWindow?: React.FC | any;
@@ -27,15 +28,18 @@ const Table = ({
   selectedRows,
   menu: TableMenu,
   handleRowSelection,
+  noSelection = false,
   editForm: EditFormComponent,
   detailsWindow: DetailsWindow,
 }: TableProps) => {
   return (
-    <div className="block w-full overflow-x-auto bg-white rounded-br-lg rounded-bl-lg">
+    <div className="block w-full overflow-x-auto bg-white rounded-lg">
       <table className="w-full">
         <thead className="bg-gray-50">
           <tr>
-            <th className="border-t border-b text-gray-500 text-xs p-4 text-left"></th>
+            {!noSelection && (
+              <th className="border-t border-b text-gray-500 text-xs p-4 text-left"></th>
+            )}
             {headers?.map((header, index) => (
               <th
                 key={index}
@@ -57,7 +61,7 @@ const Table = ({
         </thead>
         <tbody>
           {rows?.map((row, index) => {
-            const isChecked = selectedRows.includes(row.id);
+            const isChecked = selectedRows?.includes(row.id);
             return (
               <tr
                 key={index}
@@ -67,20 +71,22 @@ const Table = ({
                     : "hover:bg-gray-50"
                 } border-t border-b border-gray-100`}
               >
-                <td className="border-t border-b text-xs p-4">
-                  <Checkbox.Root
-                    className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                    id={index.toString()}
-                    checked={isChecked}
-                    onCheckedChange={() => {
-                      handleRowSelection?.(row.id);
-                    }}
-                  >
-                    <Checkbox.Indicator className="text-white">
-                      <HiCheck />
-                    </Checkbox.Indicator>
-                  </Checkbox.Root>
-                </td>
+                {!noSelection && (
+                  <td className="border-t border-b text-xs p-4">
+                    <Checkbox.Root
+                      className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+                      id={index.toString()}
+                      checked={isChecked}
+                      onCheckedChange={() => {
+                        handleRowSelection?.(row.id);
+                      }}
+                    >
+                      <Checkbox.Indicator className="text-white">
+                        <HiCheck />
+                      </Checkbox.Indicator>
+                    </Checkbox.Root>
+                  </td>
+                )}
 
                 {headers?.map((header, index) => (
                   <td
@@ -115,7 +121,7 @@ const Table = ({
               </tr>
             );
           })}
-          <tr className="">
+          <tr>
             <td colSpan={headers?.length && headers?.length + 2}>
               <DashboardFooter rows={rows} />
             </td>

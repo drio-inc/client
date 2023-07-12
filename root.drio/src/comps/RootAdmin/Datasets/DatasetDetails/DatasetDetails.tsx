@@ -3,6 +3,9 @@ import Button from "@/comps/ui/Button/Button";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Modal from "@/comps/ui/Modal";
+import SubscriptionStatus from "../../SubscribeDatasets/SubscriptionStatus/SubscriptionStatus";
+import { setOpenModal } from "@/state/slices/uiSlice";
 
 const headers = [
   {
@@ -124,9 +127,19 @@ export default function DatasetDetails({ row }: TableRow) {
             <span>Contract in Place: Pending </span>
             <span>Daliy Access Frequency: 25</span>
             <div>
-              <Button intent={"primary"} className="-ml-1">
+              <Button
+                intent={"primary"}
+                className="-ml-1"
+                onClick={() => dispatch(setOpenModal("subscriptionStatus"))}
+              >
                 View Contract Request
               </Button>
+            </div>
+
+            <div className="hidden">
+              <Modal identifier={`subscriptionStatus`}>
+                <SubscriptionStatus />
+              </Modal>
             </div>
           </div>
 
