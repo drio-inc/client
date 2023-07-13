@@ -48,7 +48,7 @@ const TopOrgs = () => {
     <div className="flex gap-2 flex-wrap justify-between my-4">
       {Organizations.map((org) => (
         <div
-          className="flex-auto xl:flex-1 bg-white flex gap-1 items-center shadow-lg rounded-md p-2"
+          className="flex-auto xl:flex-1 bg-white flex gap-1 items-center shadow-lg rounded-md px-2 py-4"
           key={org.name}
         >
           <Image src={org.logo} alt={org.name} width={25} height={25} />
