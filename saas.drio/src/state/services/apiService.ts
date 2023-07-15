@@ -1,9 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const API_URL = "https://controller.drio.ai:8443/drioapi/v1";
-const MOCK_URL =
-  "https://779f508a-ad6b-4ed1-a232-dc0f458ca58c.mock.pstmn.io/api/v1";
-
 type FormData = {};
 
 type APIResponse = {
@@ -22,33 +18,25 @@ type LicenseKeyResponse = {
 export const rootApi = createApi({
   reducerPath: "rootApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${MOCK_URL}`,
+    baseUrl: `/api`,
     credentials: "include",
-    prepareHeaders: (headers) => {
-      return headers;
-    },
   }),
   endpoints: (builder) => {
     return {
       login: builder.mutation<any, any>({
         query: (credentials) => ({
-          url: `/login`,
+          url: `/auth/admin-login`,
           method: "POST",
           body: credentials,
         }),
+      }),
 
-        // async onQueryStarted({ requestId }, { dispatch, queryFulfilled }) {
-        //   const response = await queryFulfilled;
-        //   const setCookieHeader = response;
-        //   if (setCookieHeader) {
-        //     console.log("Set-Cookie:", setCookieHeader);
-        //   }
-        // },
-
-        // transformResponse(baseQueryReturnValue, meta, arg) {
-        //   console.log("meta", meta?.response?.headers.get("Set-Cookie"));
-        //   return baseQueryReturnValue;
-        // },
+      logout: builder.mutation<any, any>({
+        query: (credentials) => ({
+          url: `/auth/logout`,
+          method: "POST",
+          body: credentials,
+        }),
       }),
 
       setLDAP: builder.mutation<APIResponse, FormData>({
@@ -107,25 +95,9 @@ export const rootApi = createApi({
         }),
       }),
 
-      addOrgAccountGoogle: builder.mutation<APIResponse, FormData>({
+      addOrgAccount: builder.mutation<APIResponse, FormData>({
         query: (credentials) => ({
-          url: `/add-org/google`,
-          method: "POST",
-          body: credentials,
-        }),
-      }),
-
-      addOrgAccountOAuth: builder.mutation<APIResponse, FormData>({
-        query: (credentials) => ({
-          url: `/add-org/oauth`,
-          method: "POST",
-          body: credentials,
-        }),
-      }),
-
-      addOrgAccountLDAP: builder.mutation<APIResponse, FormData>({
-        query: (credentials) => ({
-          url: `/add-org/ldap`,
+          url: `/add-org/add`,
           method: "POST",
           body: credentials,
         }),
@@ -174,6 +146,7 @@ export const rootApi = createApi({
 
 export const {
   useLoginMutation,
+  useLogoutMutation,
   useSetLDAPMutation,
   useSetOAuthMutation,
   useAddAccountMutation,
@@ -181,9 +154,7 @@ export const {
   useResetPasswordMutation,
   useSetGoogleAuthMutation,
   useEditOrgAccountMutation,
-  useAddOrgAccountGoogleMutation,
-  useAddOrgAccountOAuthMutation,
-  useAddOrgAccountLDAPMutation,
+  useAddOrgAccountMutation,
   useUpdateLicenseMutation,
   useFetchLicenseMutation,
   useCreateLicenseMutation,

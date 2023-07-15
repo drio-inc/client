@@ -85,7 +85,7 @@ const Dataset = () => {
   };
 
   return (
-    <div className="py-2 w-full">
+    <div className="py-8 w-full">
       <div className="flex flex-col text-2xl text-gray-900 font-medium p-6 mt-4 mb-6 bg-white rounded-md border">
         <span>Top 10 Organisations Accessing Data</span>
         <TopOrgs />

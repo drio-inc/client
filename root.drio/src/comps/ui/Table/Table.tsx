@@ -35,16 +35,16 @@ const Table = ({
   return (
     <div className="block w-full overflow-x-auto bg-white rounded-lg">
       <table className="w-full">
-        <thead className="bg-gray-50">
+        <thead className="bg-[#F4F9FF]">
           <tr>
             {!noSelection && (
-              <th className="border-t border-b text-gray-500 text-xs p-4 text-left"></th>
+              <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left"></th>
             )}
             {headers?.map((header, index) => (
               <th
                 key={index}
                 className={
-                  "border-t border-b text-gray-500 text-xs p-4 text-left"
+                  "uppercase border-t border-b text-gray-500 text-xs px-4 py-6 text-left"
                 }
               >
                 {header.header}
@@ -52,7 +52,7 @@ const Table = ({
             ))}
             <th
               className={
-                "border-t border-b text-gray-500 text-xs p-4 text-left"
+                "border-t border-b text-gray-500 text-xs px-4 py-6 text-left"
               }
             >
               <HiOutlinePencil />

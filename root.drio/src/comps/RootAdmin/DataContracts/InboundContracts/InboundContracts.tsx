@@ -78,12 +78,11 @@ const InboundContracts = () => {
   };
 
   return (
-    <div className="py-2 w-full">
-      <span className="text-sm text-gray-500 inline-block px-4 py-2 my-2 bg-white rounded-md border">
-        Contracts to Approve
-      </span>
-
+    <div className="py-8 w-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
+        <span className="text-lg text-gray-700 font-semibold inline-block p-4 my-1 bg-white">
+          Contracts to Approve
+        </span>
         {inboundContractState.selectedRows.length > 0 && (
           <div
             className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}

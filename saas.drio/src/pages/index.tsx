@@ -1,14 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Inter } from "next/font/google";
 import Layout from "@/comps/Layout/Layout";
 
 import Button from "@ui/Button";
 import { HiArrowRight } from "react-icons/hi";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
+  console.log(process.env.DEVELOPMENT_MODE);
+
   return (
     <Layout>
       <section className="flex min-h-screen flex-col items-center justify-center relative w-full">

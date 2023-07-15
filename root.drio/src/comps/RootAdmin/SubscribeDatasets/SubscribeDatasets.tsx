@@ -16,9 +16,9 @@ import {
 } from "react-icons/hi";
 
 import TopOrgs from "../TopOrgs";
-import { StatelessSelectInput } from "@/comps/ui/Forms/Inputs/Inputs";
 import { useState } from "react";
 import Categories from "./Categories";
+import { StatelessSelectInput } from "@/comps/ui/Forms/Inputs/Inputs";
 
 const headers = [
   {
@@ -85,16 +85,16 @@ const Dataset = () => {
   };
 
   return (
-    <div className="py-2 w-full">
+    <div className="py-8 w-full">
       <div className="flex flex-col text-2xl text-gray-900 font-medium p-6 mt-4 mb-6 bg-white rounded-md border">
         <span>Top 10 Organisations Accessing Data</span>
         <TopOrgs />
       </div>
 
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        <div className="flex justify-between my-2 bg-white px-4">
+        <div className="flex justify-between my-2 bg-white px-4 py-2">
           <div className="flex flex-wrap gap-x-2 items-center text-gray-500">
-            <span>Sort by:</span>
+            <span className="inline-block mr-4">Sort by:</span>
             <button
               className={`px-4 py-2 rounded-lg hover:bg-gray-200 ${
                 tab === "organizations" && "bg-gray-200 text-gray-900"

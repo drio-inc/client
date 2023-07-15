@@ -19,20 +19,10 @@ import Checkbox from "@ui/Forms/Checkbox";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 import { useLoginMutation } from "@/state/services/apiService";
 import { setUser, setAuthenticated } from "@/state/slices/authSlice";
+
 import axios from "axios";
 
-// const schema = z.object({
-//   email: z
-//     .string()
-//     .nonempty("Please Enter a value")
-//     .min(3, "Email must be at least 3 characters long")
-//     .max(255, "Email must be less than 255 characters long")
-//     .email("Please enter a valid email address."),
-//   password: z
-//     .string()
-//     .nonempty("Please Enter a value")
-//     .min(8, "Password must be at least 8 characters long"),
-// });
+import { parseCookies } from "nookies";
 
 const schema = z.object({
   username: z
@@ -61,21 +51,15 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      // const res = await login({
-      //   email: data.email,
-      //   password: data.password,
-      // }).unwrap();
-
       const res = await login({
         username: data.username,
         password: data.password,
       }).unwrap();
 
       dispatch(setUser(res));
-      dispatch(setAuthenticated(true));
-
       router.push("/accounts");
     } catch (err: any) {
+      console.log(err);
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
         "error"
@@ -86,23 +70,13 @@ export default function Login() {
     <Layout>
       <AuthContainer authText="Sign in to your account" maxWidth="xl">
         <Form form={form} onSubmit={onSubmit}>
-          {/* <div className="px-4 py-2 w-full">
-              <div className="relative">
-                <TextInput
-                  label="Email address / username"
-                  {...form.register("email")}
-                  placeholder="Email"
-                  type="email"
-                />
-              </div>
-            </div> */}
-
           <div className="px-4 py-2 w-full">
             <div className="relative">
               <TextInput
                 label="Username"
                 placeholder="Username"
                 {...form.register("username")}
+                defaultValue={`saas-admin@drio.ai`}
               />
             </div>
           </div>
@@ -141,15 +115,6 @@ export default function Login() {
               Sign In
             </Button>
           </div>
-
-          {/* <div className="px-4 py-2 w-full text-center">
-            <p className="text-gray-600 text-sm my-3">
-              Don’t have an account?
-              <span className="text-drio-red font-medium cursor-pointer">
-                <Link href={`/activation`}> Sign Up</Link>
-              </span>
-            </p>
-          </div> */}
 
           <div className="px-4 flex items-center w-full mb-4">
             <div className="flex-grow h-px bg-gray-300"></div>

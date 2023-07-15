@@ -16,14 +16,18 @@ export default function Header() {
     dispatch(logOut());
   };
 
+  const path = router.pathname
+    .split("/")
+    [router.pathname.split("/").length - 1].replace(/-/g, " ");
+
   return (
-    <nav className="shadow-sm h-16">
+    <nav className="shadow-sm h-24">
       <div className="flex items-center justify-between md:px-8 px-4 h-full">
         <Link
-          className="text-gray-600 text-sm capitalize hidden md:inline-block font-medium"
+          className="text-gray-700 text-3xl capitalize hidden md:inline-block font-bold"
           href={router.pathname}
         >
-          {router.pathname.split("/")[router.pathname.split("/").length - 1]}
+          {path}
         </Link>
         <div className="flex items-center">
           {user && <span className="mr-3">{user.role}</span>}

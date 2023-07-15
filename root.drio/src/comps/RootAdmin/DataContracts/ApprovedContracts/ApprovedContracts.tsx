@@ -67,8 +67,11 @@ const ApprovedContracts = () => {
   };
 
   return (
-    <div className="py-2 w-full">
+    <div className="py-8 w-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
+        <span className="text-lg text-gray-700 font-semibold inline-block p-4 my-1 bg-white">
+          Approved Contracts
+        </span>
         {approvedContractState.selectedRows.length > 0 && (
           <div
             className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}

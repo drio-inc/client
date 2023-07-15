@@ -1,18 +1,10 @@
 import Layout from "@/comps/Layout";
-import { useRouter } from "next/router";
-
 import Accounts from "@/comps/SuperAdmin/Accounts";
-import { useAppSelector } from "@/hooks/useStoreTypes";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
+import WithAuth from "@/comps/HOC/WithAuth";
+
 const AccountsPage = () => {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
-
-  // if (!isAuthenticated) {
-  //   router.push("/login");
-  //   return <Loader />;
-  // }
-
   return (
     <Layout>
       <DashboardContainer>
@@ -22,4 +14,4 @@ const AccountsPage = () => {
   );
 };
 
-export default AccountsPage;
+export default WithAuth(AccountsPage);
