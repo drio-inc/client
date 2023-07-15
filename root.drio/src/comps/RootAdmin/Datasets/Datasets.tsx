@@ -15,7 +15,7 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { HiMinusSm, HiUpload, HiPlus } from "react-icons/hi";
 
-import TopOrgs from "./TopOrgs";
+import TopOrgs from "../TopOrgs";
 import Modal from "@/comps/ui/Modal";
 
 const headers = [
