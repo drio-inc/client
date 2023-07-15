@@ -24,7 +24,7 @@ const SubscribeDatasetMenu = ({ row, detailsWindow }: any) => {
           side="left"
           sideOffset={5}
           align="center"
-          className="bg-white rounded-lg shadow-lg text-sm text-gray-700 z-[1001]"
+          className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
           <span
             className={
