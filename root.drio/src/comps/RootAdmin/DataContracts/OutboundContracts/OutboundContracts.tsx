@@ -54,7 +54,7 @@ const OutboundContracts = () => {
     (state) => state.outboundContract
   );
 
-  const handleRowSelection = (index: number) => {
+  const handleCheckbox = (index: number) => {
     if (outboundContractState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
@@ -108,7 +108,7 @@ const OutboundContracts = () => {
           headers={headers}
           menu={OutboundContractsMenu}
           rows={outboundContractState.rows}
-          handleRowSelection={handleRowSelection}
+          handleCheckbox={handleCheckbox}
           selectedRows={outboundContractState.selectedRows}
         />
       </div>

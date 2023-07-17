@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type UIState = {
+  pageTitles: {
+    [key: string]: string;
+  };
+
   expandedLinks: {
     [key: string]: boolean;
   };
@@ -13,6 +17,12 @@ type UIState = {
 const initialState: UIState = {
   expandedLinks: {},
   modalBoolObject: {},
+  pageTitles: {
+    ddx: "DDX",
+    accounts: "Accounts",
+    licensing: "Licensing",
+    ou: "Organization Units",
+  },
 };
 
 const uiSlice = createSlice({

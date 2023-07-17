@@ -10,7 +10,7 @@ const initialState: AdminOrgAccountState = {
     {
       id: "1",
       ou: "Cox Automotive",
-      authentication: "OKTA",
+      location: "San Diego, California, USA",
       dsPublished: 25,
       contract: "2/22",
       frequency: "798/day",
@@ -19,7 +19,7 @@ const initialState: AdminOrgAccountState = {
     {
       id: "2",
       ou: "Cox Automotive",
-      authentication: "OKTA",
+      location: "San Diego, California, USA",
       dsPublished: 25,
       contract: "2/22",
       frequency: "798/day",
@@ -28,7 +28,7 @@ const initialState: AdminOrgAccountState = {
     {
       id: "3",
       ou: "Cox Automotive",
-      authentication: "OKTA",
+      location: "San Diego, California, USA",
       dsPublished: 25,
       contract: "2/22",
       frequency: "798/day",
@@ -37,7 +37,7 @@ const initialState: AdminOrgAccountState = {
     {
       id: "4",
       ou: "Cox Automotive",
-      authentication: "OKTA",
+      location: "San Diego, California, USA",
       dsPublished: 25,
       contract: "2/22",
       frequency: "798/day",

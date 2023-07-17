@@ -64,7 +64,7 @@ const DDX = () => {
   const dispatch = useAppDispatch();
   const DDXState = useAppSelector((state) => state.DDX);
 
-  const handleRowSelection = (index: number) => {
+  const handleCheckbox = (index: number) => {
     if (DDXState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(DDXState.selectedRows.filter((row) => row !== index))
@@ -134,7 +134,7 @@ const DDX = () => {
           detailsWindow={DDXDetails}
           editForm={UpdateLicenseForm}
           selectedRows={DDXState.selectedRows}
-          handleRowSelection={handleRowSelection}
+          handleCheckbox={handleCheckbox}
         />
       </div>
     </div>

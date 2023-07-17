@@ -10,9 +10,9 @@ import EditOrgAccountForm from "./EditOrgAccountForm";
 import Button from "@ui/Button";
 import Modal from "@/comps/ui/Modal";
 import { IoRefresh } from "react-icons/io5";
-import { HiMinusSm, HiPlus } from "react-icons/hi";
+import { HiMinusSm, HiPlus, HiX } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { setOpenModal } from "@/state/slices/uiSlice";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 const headers = [
   {
@@ -20,8 +20,8 @@ const headers = [
     accessor: "ou",
   },
   {
-    header: "Authentication",
-    accessor: "authentication",
+    header: "Location",
+    accessor: "location",
   },
 
   {
@@ -42,11 +42,11 @@ const headers = [
   },
 ];
 
-const OrgAccounts = () => {
+const OrgAccounts = ({ modal = false }: { modal?: boolean }) => {
   const dispatch = useAppDispatch();
   const adminOrgAccountState = useAppSelector((state) => state.adminOrgAccount);
 
-  const handleRowSelection = (index: number) => {
+  const handleCheckbox = (index: number) => {
     if (adminOrgAccountState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
@@ -63,7 +63,7 @@ const OrgAccounts = () => {
   };
 
   return (
-    <div className="py-8 w-full">
+    <div className={`${!modal && `py-8`} w-full`}>
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div
           className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
@@ -92,7 +92,7 @@ const OrgAccounts = () => {
             </div>
           )}
 
-          <div className="flex gap-4 ml-auto">
+          <div className="flex items-center gap-4 ml-auto">
             <Button
               intent={"primary"}
               onClick={() => dispatch(setOpenModal("addOrgAccountForm"))}
@@ -102,6 +102,15 @@ const OrgAccounts = () => {
                 <span className="inline-block">Add New Organization Unit</span>
               </div>
             </Button>
+
+            {modal && (
+              <span>
+                <HiX
+                  className="w-8 h-8 cursor-pointer hover:text-drio-red-dark transition-all duration-200"
+                  onClick={() => dispatch(setCloseModal("orgAccountTable"))}
+                />
+              </span>
+            )}
           </div>
 
           <div className="hidden">
@@ -116,7 +125,7 @@ const OrgAccounts = () => {
           menu={OrgAccountMenu}
           editForm={EditOrgAccountForm}
           rows={adminOrgAccountState.rows}
-          handleRowSelection={handleRowSelection}
+          handleCheckbox={handleCheckbox}
           selectedRows={adminOrgAccountState.selectedRows}
         />
       </div>

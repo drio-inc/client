@@ -97,7 +97,7 @@ export const rootApi = createApi({
 
       addOrgAccount: builder.mutation<APIResponse, FormData>({
         query: (credentials) => ({
-          url: `/add-org/add`,
+          url: `/add-org`,
           method: "POST",
           body: credentials,
         }),

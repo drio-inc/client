@@ -50,7 +50,7 @@ const ApprovedContracts = () => {
     (state) => state.approvedContract
   );
 
-  const handleRowSelection = (index: number) => {
+  const handleCheckbox = (index: number) => {
     if (approvedContractState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
@@ -104,7 +104,7 @@ const ApprovedContracts = () => {
           headers={headers}
           menu={ApprovedContractsMenu}
           rows={approvedContractState.rows}
-          handleRowSelection={handleRowSelection}
+          handleCheckbox={handleCheckbox}
           selectedRows={approvedContractState.selectedRows}
         />
       </div>

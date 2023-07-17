@@ -68,7 +68,7 @@ const Dataset = () => {
   const dispatch = useAppDispatch();
   const datasetState = useAppSelector((state) => state.dataset);
 
-  const handleRowSelection = (index: number) => {
+  const handleCheckbox = (index: number) => {
     if (datasetState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
@@ -152,7 +152,7 @@ const Dataset = () => {
           rows={datasetState.rows}
           editForm={EditDatasetForm}
           detailsWindow={DatasetDetails}
-          handleRowSelection={handleRowSelection}
+          handleCheckbox={handleCheckbox}
           selectedRows={datasetState.selectedRows}
         />
       </div>

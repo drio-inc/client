@@ -68,7 +68,7 @@ const Dataset = () => {
   const [tab, setTab] = useState("organizations");
   const subscribeDatasets = useAppSelector((state) => state.subscribeDataset);
 
-  const handleRowSelection = (index: number) => {
+  const handleCheckbox = (index: number) => {
     if (subscribeDatasets.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
@@ -180,7 +180,7 @@ const Dataset = () => {
             menu={SubscribeDatasetMenu}
             rows={subscribeDatasets.rows}
             detailsWindow={DatasetDetails}
-            handleRowSelection={handleRowSelection}
+            handleCheckbox={handleCheckbox}
             selectedRows={subscribeDatasets.selectedRows}
           />
         ) : (

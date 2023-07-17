@@ -16,7 +16,10 @@ function WithAuth(OriginalComponent: React.FC) {
     useEffect(() => {
       async function validateToken() {
         try {
-          const res = await axios.get(`/api/resources/validate`);
+          const res = await axios.get(`/api/resources/validate`, {
+            withCredentials: true,
+          });
+
           if (res.status === 401) {
             dispatch(logOut());
             router.push("/login");

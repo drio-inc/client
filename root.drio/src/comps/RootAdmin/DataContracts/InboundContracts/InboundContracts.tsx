@@ -61,7 +61,7 @@ const InboundContracts = () => {
   const dispatch = useAppDispatch();
   const inboundContractState = useAppSelector((state) => state.inboundContract);
 
-  const handleRowSelection = (index: number) => {
+  const handleCheckbox = (index: number) => {
     if (inboundContractState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
@@ -116,7 +116,7 @@ const InboundContracts = () => {
           menu={InboundContractsMenu}
           rows={inboundContractState.rows}
           editForm={EditInboundContractsForm}
-          handleRowSelection={handleRowSelection}
+          handleCheckbox={handleCheckbox}
           selectedRows={inboundContractState.selectedRows}
         />
       </div>
