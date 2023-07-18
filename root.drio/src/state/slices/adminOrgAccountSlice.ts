@@ -18,7 +18,7 @@ const initialState: AdminOrgAccountState = {
     },
     {
       id: "2",
-      ou: "Cox Automotive",
+      ou: "Paypal",
       authentication: "OKTA",
       dsPublished: 25,
       contract: "2/22",
@@ -27,7 +27,7 @@ const initialState: AdminOrgAccountState = {
     },
     {
       id: "3",
-      ou: "Cox Automotive",
+      ou: "KKB",
       authentication: "OKTA",
       dsPublished: 25,
       contract: "2/22",
@@ -36,7 +36,7 @@ const initialState: AdminOrgAccountState = {
     },
     {
       id: "4",
-      ou: "Cox Automotive",
+      ou: "VISA",
       authentication: "OKTA",
       dsPublished: 25,
       contract: "2/22",

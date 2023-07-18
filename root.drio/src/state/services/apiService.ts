@@ -172,6 +172,14 @@ export const rootApi = createApi({
           body: credentials,
         }),
       }),
+
+      requestDataAccess: builder.mutation<APIResponse, FormData>({
+        query: (credentials) => ({
+          url: `/subscribe-datasets/request-access`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
     };
   },
 });
@@ -194,4 +202,5 @@ export const {
   useEditDataSourceMutation,
   useUpdateDatasetMutation,
   useSetPasswordMutation,
+  useRequestDataAccessMutation,
 } = rootApi;

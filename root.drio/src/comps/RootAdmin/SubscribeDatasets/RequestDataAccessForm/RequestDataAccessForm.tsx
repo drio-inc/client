@@ -10,36 +10,33 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { setRows } from "@/state/slices/datasetSlice";
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { useUpdateDatasetMutation } from "@/state/services/apiService";
+import { useRequestDataAccessMutation } from "@/state/services/apiService";
 
 const schema = z.object({
-  fromOrganization: z.string({
+  ou: z.string({
     required_error: "Please select an option",
   }),
 
-  serverAddress: z.string({
-    required_error: "Please select an option",
-  }),
+  server_address: z.string().nonempty("Please Enter a value"),
 
   persona: z.string({
     required_error: "Please select an option",
   }),
 
-  requestorInfo: z.string().nonempty("Please Enter a value"),
-  contactPerson: z.string().nonempty("Please Enter a value"),
-  phoneNumber: z.string().nonempty("Please Enter a value"),
-  email: z.string().nonempty("Please Enter a value").email("Invalid email"),
   address: z.string().nonempty("Please Enter a value"),
+  phone_number: z.string().nonempty("Please Enter a value"),
+  requestor_info: z.string().nonempty("Please Enter a value"),
+  contact_person: z.string().nonempty("Please Enter a value"),
+  email: z.string().nonempty("Please Enter a value").email("Invalid email"),
 });
 
 type FormData = z.infer<typeof schema>;
 
 export default function RequestDataAccessForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [update, result] = useUpdateDatasetMutation();
-  const datasetState = useAppSelector((state) => state.dataset);
+  const [requestAccess, result] = useRequestDataAccessMutation();
+  const adminOrgState = useAppSelector((state) => state.adminOrgAccount);
 
   const form = useZodForm({
     schema: schema,
@@ -47,16 +44,13 @@ export default function RequestDataAccessForm({ row }: TableRow) {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const res = await update({
+      const res = await requestAccess({
         ...data,
-        id: row?.id,
       }).unwrap();
 
-      dispatch(
-        setRows(datasetState.rows.map((row) => (row.id === res.id ? res : row)))
-      );
+      console.log(res);
 
-      showAlert("Dataset updated successfully", "success");
+      showAlert("Request sent successfully", "success");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again."
@@ -80,27 +74,21 @@ export default function RequestDataAccessForm({ row }: TableRow) {
               <SelectInput
                 placeholder={"Select"}
                 label={"From Organization"}
-                registerName="fromOrganization"
+                registerName="ou"
                 className="md:text-sm 2xl:text-base"
-                options={[
-                  { label: "My Kafka 1", value: "my_kafka_1" },
-                  { label: "Cassandra-Q", value: "cassandra_q" },
-                  { label: "Retail Kafka", value: "retail_kafka" },
-                ]}
+                options={adminOrgState.rows.map((row) => ({
+                  label: row.ou,
+                  value: row.ou.toLowerCase().replace(/\s/g, ""),
+                }))}
               />
             </div>
 
             <div className="px-4 py-2 w-1/2">
-              <SelectInput
-                placeholder={"Select"}
+              <TextInput
                 label={"Server Address"}
-                registerName="serverAddress"
+                {...form.register("server_address")}
+                placeholder={"Enter server address"}
                 className="md:text-sm 2xl:text-base"
-                options={[
-                  { label: "My Kafka 1", value: "my_kafka_1" },
-                  { label: "Cassandra-Q", value: "cassandra_q" },
-                  { label: "Retail Kafka", value: "retail_kafka" },
-                ]}
               />
             </div>
 
@@ -111,9 +99,12 @@ export default function RequestDataAccessForm({ row }: TableRow) {
                 label={"Select Persona"}
                 className="md:text-sm 2xl:text-base"
                 options={[
-                  { label: "My Kafka 1", value: "my_kafka_1" },
-                  { label: "Cassandra-Q", value: "cassandra_q" },
-                  { label: "Retail Kafka", value: "retail_kafka" },
+                  { label: "Finance", value: "finance" },
+                  { label: "Vehicle", value: "vehicle" },
+                  {
+                    label: "Marketing",
+                    value: "marketing                        ",
+                  },
                 ]}
               />
             </div>
@@ -124,7 +115,7 @@ export default function RequestDataAccessForm({ row }: TableRow) {
               <TextInput
                 label={"Requestor Info"}
                 placeholder={"Enter info"}
-                {...form.register("requestorInfo")}
+                {...form.register("requestor_info")}
                 className="md:text-sm 2xl:text-base"
               />
             </div>
@@ -135,7 +126,7 @@ export default function RequestDataAccessForm({ row }: TableRow) {
               <TextInput
                 label={"Contact Person"}
                 placeholder={"Enter name"}
-                {...form.register("contactPerson")}
+                {...form.register("contact_person")}
                 className="md:text-sm 2xl:text-base"
               />
             </div>
@@ -143,7 +134,7 @@ export default function RequestDataAccessForm({ row }: TableRow) {
             <div className="px-4 py-2 w-1/2">
               <TextInput
                 label={"Work Phone Number"}
-                {...form.register("phoneNumber")}
+                {...form.register("phone_number")}
                 className="md:text-sm 2xl:text-base"
                 placeholder={"Enter your work phone number"}
               />
