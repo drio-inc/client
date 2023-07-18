@@ -1,11 +1,13 @@
-import Image from "next/image";
-import Button from "@/comps/ui/Button/Button";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import Image from "next/image";
 import Modal from "@/comps/ui/Modal";
-import SubscriptionStatus from "../../SubscribeDatasets/SubscriptionStatus/SubscriptionStatus";
+import { useRouter } from "next/router";
+import Button from "@/comps/ui/Button/Button";
+
 import { setOpenModal } from "@/state/slices/uiSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+
+import SubscriptionStatus from "../../SubscribeDatasets/SubscriptionStatus";
 
 const headers = [
   {
@@ -94,9 +96,9 @@ const rows: TableRow[] = [
 
 export default function DatasetDetails({ row }: TableRow) {
   const router = useRouter();
-  const pathname = router.query.dataset;
   const dispatch = useAppDispatch();
 
+  const pathname = router.query.dataset;
   const datasetState = useAppSelector((state) => state.dataset);
 
   const currentDataset = datasetState.rows.find(
@@ -104,9 +106,9 @@ export default function DatasetDetails({ row }: TableRow) {
   );
 
   return (
-    <div className="py-2 h-full">
+    <div className="py-8 h-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-gray-50"}>
-        <span className="text-sm text-gray-900 inline-block p-4 rounded-md">
+        <span className="text-gray-700 inline-block p-4 rounded-md font-semibold">
           {currentDataset?.dataset}
         </span>
 
@@ -121,11 +123,28 @@ export default function DatasetDetails({ row }: TableRow) {
               />
             </div>
 
-            <span>Accessibility: Must Have Contract in place to access</span>
-            <span>Organization / Business Unit: Xtime</span>
-            <span>Number of Subscribers: 56</span>
-            <span>Contract in Place: Pending </span>
-            <span>Daliy Access Frequency: 25</span>
+            <span>
+              <strong className="text-gray-700">Accessibility:</strong> Must
+              Have Contract in place to access
+            </span>
+            <span>
+              <strong className="text-gray-700">
+                Organization / Business Unit:
+              </strong>{" "}
+              Xtime
+            </span>
+            <span>
+              <strong className="text-gray-700">Number of Subscribers:</strong>{" "}
+              56
+            </span>
+            <span>
+              <strong className="text-gray-700">Contract in Place:</strong>{" "}
+              Pending
+            </span>
+            <span>
+              <strong className="text-gray-700">Daliy Access Frequency:</strong>{" "}
+              25
+            </span>
             <div>
               <Button
                 intent={"primary"}

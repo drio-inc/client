@@ -53,7 +53,7 @@ const DataSources = () => {
   const dispatch = useAppDispatch();
   const dataSourceState = useAppSelector((state) => state.dataSource);
 
-  const handleRowSelection = (index: number) => {
+  const handleCheckbox = (index: number) => {
     if (dataSourceState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
@@ -123,7 +123,7 @@ const DataSources = () => {
           menu={DataSourcesMenu}
           rows={dataSourceState.rows}
           editForm={EditDataSourceForm}
-          handleRowSelection={handleRowSelection}
+          handleCheckbox={handleCheckbox}
           selectedRows={dataSourceState.selectedRows}
         />
       </div>

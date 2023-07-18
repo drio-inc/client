@@ -161,7 +161,7 @@ export default function Sidebar() {
                           <Link href={`/${link.href}/${child.href}`}>
                             <span
                               className={`text-sm py-3 px-2 font-medium block ${
-                                router.pathname.indexOf(child.href) !== -1
+                                router.pathname.split("/").includes(child.href)
                                   ? "bg-gray-100 text-gray-600 hover:text-gray-500 rounded-lg"
                                   : "text-gray-500 hover:text-gray-600"
                               }`}

@@ -51,7 +51,7 @@ const Licensing = () => {
   const dispatch = useAppDispatch();
   const licensingState = useAppSelector((state) => state.licensing);
 
-  const handleRowSelection = (index: number) => {
+  const handleCheckbox = (index: number) => {
     if (licensingState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
@@ -122,7 +122,7 @@ const Licensing = () => {
           rows={licensingState.rows}
           editForm={UpdateLicenseForm}
           detailsWindow={LicenseDetails}
-          handleRowSelection={handleRowSelection}
+          handleCheckbox={handleCheckbox}
           selectedRows={licensingState.selectedRows}
         />
       </div>

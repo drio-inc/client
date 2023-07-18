@@ -53,6 +53,7 @@ export default function AddOrgAccountForm() {
 
       dispatch(setRows([...rows, res]));
       dispatch(setCloseModal("addOrgAccountForm"));
+      showAlert("Organization Unit added successfully", "success");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
@@ -64,7 +65,7 @@ export default function AddOrgAccountForm() {
   return (
     <Layout>
       <Form form={form} onSubmit={onSubmit} className="min-w-full">
-        <div className="max-w-md w-full mx-auto bg-white p-4 rounded-lg">
+        <div className="max-w-md w-full mx-auto bg-white px-4 py-8 rounded-lg">
           <h2 className="text-gray-700 text-2xl font-bold mb-4 text-center">
             Add New Organization Unit
           </h2>
@@ -90,7 +91,7 @@ export default function AddOrgAccountForm() {
             </div>
 
             <div className="px-4 py-2 w-full">
-              <div className="relative">
+              <div className="">
                 <SelectInput
                   label="Country"
                   registerName="country"

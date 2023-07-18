@@ -11,6 +11,7 @@ export default function Header() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
+  const { pageTitles } = useAppSelector((state) => state.ui);
 
   const handleLogout = () => {
     dispatch(logOut());
@@ -27,7 +28,7 @@ export default function Header() {
           className="text-gray-700 text-3xl capitalize hidden md:inline-block font-bold"
           href={router.pathname}
         >
-          {path}
+          {pageTitles[path] ?? path}
         </Link>
         <div className="flex items-center">
           {user && <span className="mr-3">{user.role}</span>}

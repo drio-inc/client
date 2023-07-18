@@ -19,7 +19,7 @@ type TableProps = {
   editForm?: React.FC | any;
   detailsWindow?: React.FC | any;
   clearSelectedRows?: () => void;
-  handleRowSelection?: (index: number) => void;
+  handleCheckbox?: (index: number) => void;
 };
 
 const Table = ({
@@ -27,7 +27,7 @@ const Table = ({
   headers,
   selectedRows,
   menu: TableMenu,
-  handleRowSelection,
+  handleCheckbox,
   noSelection = false,
   editForm: EditFormComponent,
   detailsWindow: DetailsWindow,
@@ -67,7 +67,7 @@ const Table = ({
                 key={index}
                 className={`${
                   isChecked
-                    ? "bg-indigo-50 hover:bg-indigo-50"
+                    ? "bg-[#ECF5FF] hover:bg-[#ECF5FF]"
                     : "hover:bg-gray-50"
                 } border-t border-b border-gray-100`}
               >
@@ -78,7 +78,7 @@ const Table = ({
                       id={index.toString()}
                       checked={isChecked}
                       onCheckedChange={() => {
-                        handleRowSelection?.(row.id);
+                        handleCheckbox?.(row.id);
                       }}
                     >
                       <Checkbox.Indicator className="text-white">

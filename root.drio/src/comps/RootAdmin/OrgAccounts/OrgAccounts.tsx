@@ -20,8 +20,8 @@ const headers = [
     accessor: "ou",
   },
   {
-    header: "Authentication",
-    accessor: "authentication",
+    header: "Location",
+    accessor: "location",
   },
 
   {
@@ -46,7 +46,7 @@ const OrgAccounts = () => {
   const dispatch = useAppDispatch();
   const adminOrgAccountState = useAppSelector((state) => state.adminOrgAccount);
 
-  const handleRowSelection = (index: number) => {
+  const handleCheckbox = (index: number) => {
     if (adminOrgAccountState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
@@ -116,7 +116,7 @@ const OrgAccounts = () => {
           menu={OrgAccountMenu}
           rows={adminOrgAccountState.rows}
           editForm={EditOrgAccountForm}
-          handleRowSelection={handleRowSelection}
+          handleCheckbox={handleCheckbox}
           selectedRows={adminOrgAccountState.selectedRows}
         />
       </div>

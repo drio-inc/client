@@ -66,8 +66,8 @@ export default function EditOrgAccountForm({ row }: TableRow) {
   return (
     <Layout>
       <Form form={form} onSubmit={onSubmit} className="min-w-full">
-        <div className="max-w-md w-full mx-auto bg-white p-4 rounded-lg">
-          <h2 className="text-gray-700 text-2xl font-bold my-4 text-center">
+        <div className="max-w-md w-full mx-auto bg-white px-4 py-8 rounded-lg">
+          <h2 className="text-gray-700 text-2xl font-bold mb-4 text-center">
             Edit Organization Unit
           </h2>
           <div className="flex flex-wrap p-2 rounded-lg">

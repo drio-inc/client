@@ -9,6 +9,7 @@ import AccountMenu from "./AccountMenu";
 
 import Button from "@ui/Button";
 import Modal from "@/comps/ui/Modal";
+import OrgAccounts from "../OrgAccounts";
 import { IoRefresh } from "react-icons/io5";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
@@ -22,10 +23,6 @@ const headers = [
   {
     header: "Organizational Units",
     accessor: "ous",
-  },
-  {
-    header: "Authentication",
-    accessor: "authentication",
   },
 
   {
@@ -50,7 +47,7 @@ const Accounts = () => {
   const dispatch = useAppDispatch();
   const adminAccountState = useAppSelector((state) => state.adminAccount);
 
-  const handleRowSelection = (index: number) => {
+  const handleCheckbox = (index: number) => {
     if (adminAccountState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
@@ -60,6 +57,10 @@ const Accounts = () => {
     } else {
       dispatch(setSelectedRows([...adminAccountState.selectedRows, index]));
     }
+  };
+
+  const handleRowClick = (index: number) => {
+    dispatch(setOpenModal("orgAccountTable"));
   };
 
   const clearSelectedRows = () => {
@@ -112,6 +113,10 @@ const Accounts = () => {
             <Modal identifier="addAccountForm">
               <AddAccountForm />
             </Modal>
+
+            <Modal identifier="orgAccountTable">
+              <OrgAccounts modal={true} />
+            </Modal>
           </div>
         </div>
 
@@ -121,7 +126,8 @@ const Accounts = () => {
           editForm={EditAccountForm}
           rows={adminAccountState.rows}
           detailsWindow={AccountDetails}
-          handleRowSelection={handleRowSelection}
+          handleCheckbox={handleCheckbox}
+          handleRowClick={handleRowClick}
           selectedRows={adminAccountState.selectedRows}
         />
       </div>
