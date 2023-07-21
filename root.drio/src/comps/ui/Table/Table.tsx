@@ -50,13 +50,15 @@ const Table = ({
                 {header.header}
               </th>
             ))}
-            <th
-              className={
-                "border-t border-b text-gray-500 text-xs px-4 py-6 text-left"
-              }
-            >
-              <HiOutlinePencil />
-            </th>
+            {TableMenu && (
+              <th
+                className={
+                  "border-t border-b text-gray-500 text-xs px-4 py-6 text-left"
+                }
+              >
+                <HiOutlinePencil />
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -105,19 +107,19 @@ const Table = ({
                   </td>
                 ))}
 
-                <td
-                  className={
-                    "border-t border-b text-gray-500 text-xs p-4 text-left"
-                  }
-                >
-                  {TableMenu && (
+                {TableMenu && (
+                  <td
+                    className={
+                      "border-t border-b text-gray-500 text-xs p-4 text-left"
+                    }
+                  >
                     <TableMenu
                       row={row}
                       editForm={<EditFormComponent row={row} />}
                       detailsWindow={<DetailsWindow row={row} />}
                     />
-                  )}
-                </td>
+                  </td>
+                )}
               </tr>
             );
           })}

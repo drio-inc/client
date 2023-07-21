@@ -1,3 +1,4 @@
+import axios from "axios";
 import Button from "@ui/Button";
 import { useRouter } from "next/router";
 import { FaLock } from "react-icons/fa";
@@ -19,10 +20,6 @@ import Checkbox from "@ui/Forms/Checkbox";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 import { useLoginMutation } from "@/state/services/apiService";
 import { setUser, setAuthenticated } from "@/state/slices/authSlice";
-
-import axios from "axios";
-
-import { parseCookies } from "nookies";
 
 const schema = z.object({
   username: z

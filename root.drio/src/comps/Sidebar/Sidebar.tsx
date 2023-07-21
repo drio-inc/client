@@ -92,6 +92,24 @@ const NavLinks = [
     icon: (
       <HiOutlinePresentationChartBar className="inline-block w-6 h-6 mr-2" />
     ),
+    children: [
+      {
+        name: "Alerts",
+        href: "/alerts",
+      },
+      {
+        name: "Reports",
+        href: "/reports",
+      },
+      {
+        name: "Anomalies",
+        href: "/anomalies",
+      },
+      {
+        name: "Audit Logs",
+        href: "/audit-logs",
+      },
+    ],
   },
 
   {
@@ -179,11 +197,7 @@ export default function Sidebar() {
                         }
                       `}
                 >
-                  <Link
-                    href={`/${link.href}/${
-                      link.children ? link?.children[0].href : ""
-                    }`}
-                  >
+                  <Link href={`/${link.href}`}>
                     <span
                       className={`                        ${
                         router.pathname.indexOf(link.href) !== -1
