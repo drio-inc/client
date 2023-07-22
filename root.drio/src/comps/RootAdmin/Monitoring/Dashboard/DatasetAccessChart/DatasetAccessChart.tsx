@@ -1,13 +1,5 @@
 import { StatelessSelectInput } from "@/comps/ui/Forms/Inputs/Inputs";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { useState } from "react";
 
 import { Bar } from "react-chartjs-2";
@@ -35,19 +27,13 @@ export const Data = [
   },
 ];
 
-const chart = ChartJS.register(
-  Title,
-  Legend,
-  Tooltip,
-  BarElement,
-  LinearScale,
-  CategoryScale
-);
+const chart = ChartJS.register(Title, Legend, Tooltip, BarElement, LinearScale, CategoryScale);
 
 export const options = {
   barPercentage: 0.6,
   categoryPercentage: 1,
   responsive: true,
+  maintainAspectRatio: false,
 
   scales: {
     y: {
@@ -139,32 +125,25 @@ export const data = {
 };
 
 const DatasetAccessChart = () => {
-  const [hiddenDatasets, setHiddenDatasets] = useState<number | string | any>(
-    []
-  );
+  const [filter, setFilter] = useState<string>("");
+  const [hiddenDatasets, setHiddenDatasets] = useState<number | string | any>([]);
 
   const toggleDataset = (index: number) => {
     const isHidden = hiddenDatasets.includes(index);
 
     if (isHidden) {
-      setHiddenDatasets(
-        hiddenDatasets.filter((item: number) => item !== index)
-      );
+      setHiddenDatasets(hiddenDatasets.filter((item: number) => item !== index));
     } else {
       setHiddenDatasets([...hiddenDatasets, index]);
     }
   };
 
-  const filteredDatasets = data.datasets.filter(
-    (_, index) => !hiddenDatasets.includes(index)
-  );
+  const filteredDatasets = data.datasets.filter((_, index) => !hiddenDatasets.includes(index));
 
   return (
     <div className="p-12">
       <div className="flex justify-between">
-        <h2 className="text-[#223354] text-2xl font-semibold mb-8">
-          Top Datasets Accessed
-        </h2>
+        <h2 className="text-[#223354] text-2xl font-semibold mb-8">Top Datasets Accessed</h2>
 
         <div className="flex items-center gap-x-4">
           <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 p-2 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
@@ -180,10 +159,11 @@ const DatasetAccessChart = () => {
             label=""
             placeholder="Filter by"
             registerName="filterBy"
+            onChange={(value: any) => setFilter(value)}
             options={[
-              { label: "Last 7 days", value: "last7" },
-              { label: "Last 30 days", value: "last30" },
-              { label: "Last 90 days", value: "last90" },
+              { label: "Last 7 days", value: "last_7_days" },
+              { label: "Last 30 days", value: "last_30_days" },
+              { label: "Last 90 days", value: "last_90_days" },
             ]}
           />
         </div>
@@ -197,18 +177,11 @@ const DatasetAccessChart = () => {
         {data.datasets.map((dataset, i) => (
           <div
             key={i}
-            className={`flex items-center cursor-pointer ${
-              hiddenDatasets.includes(i) ? "opacity-50" : ""
-            }`}
+            className={`flex items-center cursor-pointer ${hiddenDatasets.includes(i) ? "opacity-50" : ""}`}
             onClick={() => toggleDataset(i)}
           >
-            <div
-              className="py-2 px-8 rounded-md"
-              style={{ backgroundColor: dataset.backgroundColor }}
-            >
-              <span className="inline-block text-white font-medium">
-                {dataset.label}
-              </span>
+            <div className="py-2 px-8 rounded-md" style={{ backgroundColor: dataset.backgroundColor }}>
+              <span className="inline-block text-white font-medium">{dataset.label}</span>
             </div>
           </div>
         ))}

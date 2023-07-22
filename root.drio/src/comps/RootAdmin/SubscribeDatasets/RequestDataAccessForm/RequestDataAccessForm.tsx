@@ -52,9 +52,7 @@ export default function RequestDataAccessForm({ row }: TableRow) {
 
       showAlert("Request sent successfully", "success");
     } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
-      );
+      showAlert(err?.data?.message ?? "Something went wrong. Please try again.");
     }
 
     form.reset();
@@ -65,9 +63,7 @@ export default function RequestDataAccessForm({ row }: TableRow) {
     <Layout>
       <Form form={form} onSubmit={onSubmit}>
         <div className="mx-auto bg-white p-6 rounded-lg max-w-[60vw]">
-          <h2 className="text-gray-700 text-2xl font-bold">
-            Request Data Access
-          </h2>
+          <h2 className="text-gray-700 text-2xl font-bold">Request Data Access</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4 border bg-gray-50">
             <div className="px-4 py-2 w-1/2">
@@ -103,7 +99,7 @@ export default function RequestDataAccessForm({ row }: TableRow) {
                   { label: "Vehicle", value: "vehicle" },
                   {
                     label: "Marketing",
-                    value: "marketing                        ",
+                    value: "marketing",
                   },
                 ]}
               />
@@ -160,11 +156,7 @@ export default function RequestDataAccessForm({ row }: TableRow) {
           </div>
 
           <div className="px-2 py-2 flex gap-4 justify-end mt-4">
-            <Button
-              type="button"
-              intent={`secondary`}
-              onClick={() => dispatch(setCloseModal("requestDataAccessForm"))}
-            >
+            <Button type="button" intent={`secondary`} onClick={() => dispatch(setCloseModal("requestDataAccessForm"))}>
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>
 
