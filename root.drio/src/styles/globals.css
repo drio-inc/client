@@ -78,8 +78,7 @@
   }
 
   &[data-focus-visible] .checkbox {
-    box-shadow: 0 0 0 2px var(--spectrum-alias-background-color-default),
-      0 0 0 4px var(--selected-color);
+    box-shadow: 0 0 0 2px var(--spectrum-alias-background-color-default), 0 0 0 4px var(--selected-color);
   }
 
   &[data-disabled] {
@@ -166,8 +165,7 @@
   }
 
   &[data-focus-visible]:before {
-    box-shadow: 0 0 0 2px var(--spectrum-alias-background-color-default),
-      0 0 0 4px var(--selected-color);
+    box-shadow: 0 0 0 2px var(--spectrum-alias-background-color-default), 0 0 0 4px var(--selected-color);
   }
 
   &[data-disabled] {
@@ -177,4 +175,14 @@
 
 .custom-container {
   min-height: calc(100vh - 6rem);
+}
+
+canvas {
+  width: 80vw !important;
+  height: 400px !important;
+}
+
+a {
+  color: inherit !important;
+  text-decoration: none !important;
 }
