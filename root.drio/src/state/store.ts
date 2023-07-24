@@ -11,13 +11,14 @@ import DDXReducer from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
 import alertsReducer from "./slices/alertsSlice";
 import datasetReducer from "./slices/datasetSlice";
+import anomaliesReducer from "./slices/anomaliesSlice";
+import auditLogsReducer from "./slices/auditLogsSlice";
 import dataSourceReducer from "./slices/dataSourceSlice";
 import adminOrgAccountReducer from "./slices/adminOrgAccountSlice";
 import inboundContractReducer from "./slices/inboundContractSlice";
 import outboundContractReducer from "./slices/outboundContractSlice";
 import approvedContractReducer from "./slices/approvedContractSlice";
 import subscribeDatasetReducer from "./slices/subscribeDatasetsSlice";
-import anomaliesReducer from "./slices/anomaliesSlice";
 
 const persistConfig = {
   key: "auth",
@@ -40,6 +41,7 @@ export const store = configureStore({
     dataset: datasetReducer,
     auth: persistedAuthReducer,
     anomalies: anomaliesReducer,
+    auditLogs: auditLogsReducer,
     dataSource: dataSourceReducer,
     adminOrgAccount: adminOrgAccountReducer,
     inboundContract: inboundContractReducer,
