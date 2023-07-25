@@ -46,41 +46,39 @@ export default function AuthMode() {
     router.push(`/activation/auth-mode/${data.authValue}`);
   };
 
-  if (!user) {
-    router.push("/activation");
-  }
+  // if (!user) {
+  //   router.push("/activation");
+  // }
 
   return (
-    user && (
-      <Layout>
-        <Form form={form} onSubmit={onSubmit}>
-          <AuthContainer authText="Account activation" maxWidth="xl">
-            <div className="px-4 py-2 w-full">
-              <div className="relative">
-                <SelectInput
-                  options={options}
-                  label="Select an option"
-                  registerName="authValue"
-                  placeholder="Enter type"
-                />
-              </div>
+    <Layout>
+      <Form form={form} onSubmit={onSubmit}>
+        <AuthContainer authText="Account activation" maxWidth="xl">
+          <div className="px-4 py-2 w-full">
+            <div className="relative">
+              <SelectInput
+                options={options}
+                label="Select an option"
+                registerName="authValue"
+                placeholder="Enter type"
+              />
             </div>
+          </div>
 
-            <div className="px-4 py-2 w-full">
-              <Button
-                intent={`primary`}
-                // disabled={!authMode}
-                className="w-full relative"
-              >
-                <FaLock className="inline-block text-drio-red-dark ml-4 w-4 h-4 absolute left-0" />
-                <span className="inline-flex justify-center w-full">
-                  Set Authentication
-                </span>
-              </Button>
-            </div>
-          </AuthContainer>
-        </Form>
-      </Layout>
-    )
+          <div className="px-4 py-2 w-full">
+            <Button
+              intent={`primary`}
+              // disabled={!authMode}
+              className="w-full relative"
+            >
+              <FaLock className="inline-block text-drio-red-dark ml-4 w-4 h-4 absolute left-0" />
+              <span className="inline-flex justify-center w-full">
+                Set Authentication
+              </span>
+            </Button>
+          </div>
+        </AuthContainer>
+      </Form>
+    </Layout>
   );
 }

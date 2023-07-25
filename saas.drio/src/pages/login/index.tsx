@@ -15,8 +15,9 @@ import AuthContainer from "@ui/Containers/AuthContainer";
 
 import Link from "next/link";
 import { useState } from "react";
-import Checkbox from "@ui/Forms/Checkbox";
 
+import { HiCheck } from "react-icons/hi";
+import * as CheckBox from "@radix-ui/react-checkbox";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 import { useLoginMutation } from "@/state/services/apiService";
 import { setUser, setAuthenticated } from "@/state/slices/authSlice";
@@ -90,11 +91,16 @@ export default function Login() {
 
           <div className="flex flex-col gap-x-6 md:flex-row items-center justify-between px-4 py-2 w-full text-gray-900 mb-2">
             <div className="flex items-center mb-2 md:mb-0">
-              <Checkbox onChange={() => setRememberMe(!rememberMe)}>
-                <label htmlFor="remember-me" className="text-sm">
-                  Remember me
-                </label>
-              </Checkbox>
+              <CheckBox.Root
+                className="mr-1 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+                checked={rememberMe}
+                onCheckedChange={() => setRememberMe(!rememberMe)}
+              >
+                <CheckBox.Indicator className="text-white">
+                  <HiCheck className="w-3 h-3" />
+                </CheckBox.Indicator>
+              </CheckBox.Root>
+              <label className="text-sm">Remember Me</label>
             </div>
 
             <span className="inline-block text-drio-red text-sm font-medium cursor-pointer">

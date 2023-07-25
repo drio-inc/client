@@ -4,7 +4,6 @@ import { TextInput } from "@/comps/ui/Forms/Inputs";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
-import Checkbox from "@ui/Forms/Checkbox";
 import AuthContainer from "@ui/Containers/AuthContainer";
 
 import { z } from "zod";
@@ -13,10 +12,12 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 
 import { useState } from "react";
 import { useRouter } from "next/router";
+import * as CheckBox from "@radix-ui/react-checkbox";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 import { useActivateMutation } from "@/state/services/apiService";
 
 import { setUser } from "@/state/slices/authSlice";
+import { HiCheck } from "react-icons/hi";
 
 const schema = z
   .object({
@@ -117,13 +118,18 @@ export default function Activation() {
             </div>
 
             <div className="flex items-center justify-between px-4 py-2 w-full text-gray-900 mb-2">
-              <div className="flex items-center">
-                <Checkbox onChange={() => setTermsChecked(!termsChecked)}>
-                  <label htmlFor="remember-me" className="text-sm">
-                    I agree to the Terms of service and Privacy Policy
-                  </label>
-                </Checkbox>
-              </div>
+              <CheckBox.Root
+                className="mr-2 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+                checked={termsChecked}
+                onCheckedChange={() => setTermsChecked(!termsChecked)}
+              >
+                <CheckBox.Indicator className="text-white">
+                  <HiCheck className="w-3 h-3" />
+                </CheckBox.Indicator>
+              </CheckBox.Root>
+              <label className="text-sm">
+                I agree to the Terms of service and Privacy Policy
+              </label>
             </div>
 
             <div className="px-4 py-2 w-full">

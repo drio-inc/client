@@ -5,8 +5,8 @@ import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 import { useRouter } from "next/router";
 import { Radio } from "react-aria-components";
-import RadioGroup from "@ui/Forms/RadioGroup";
 import AuthContainer from "@ui/Containers/AuthContainer";
+import * as RadioGroup from "@radix-ui/react-radio-group";
 
 import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
@@ -112,18 +112,39 @@ export default function LdapAuth() {
             </div>
 
             <div className="px-4 py-2 w-full">
-              <div className="relative">
-                <RadioGroup
-                  label="Set Visibility"
-                  value={visibility}
-                  onChange={setVisibility}
-                >
-                  <Radio value="userDn">
-                    <span className="mr-2 md:mr-10">User DN</span>
-                  </Radio>
-                  <Radio value="searchUserDn">Search user DN</Radio>
-                </RadioGroup>
-              </div>
+              <RadioGroup.Root
+                value={visibility}
+                className="flex gap-2.5"
+                aria-label="Set Visibility"
+                onValueChange={setVisibility}
+              >
+                <div className="flex items-center">
+                  <RadioGroup.Item
+                    id="r1"
+                    value="userDn"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label
+                    htmlFor="r1"
+                    className="text-gray-500 text-sm font-medium mr-2 md:mr-10 pl-2"
+                  >
+                    User DN
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <RadioGroup.Item
+                    id="r2"
+                    value="searchUserDn"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label
+                    className="text-gray-500 text-sm font-medium mr-2 md:mr-10 pl-2"
+                    htmlFor="r2"
+                  >
+                    Search user DN
+                  </label>
+                </div>
+              </RadioGroup.Root>
             </div>
 
             <div className="px-4 py-2 w-full md:w-1/2">
@@ -206,23 +227,52 @@ export default function LdapAuth() {
             </div>
 
             <div className="px-4 py-2 w-full">
-              <div className="relative">
-                <RadioGroup
-                  label="Group Membership of User"
-                  value={membershipType}
-                  onChange={setMembershipType}
-                >
-                  <Radio value="userEntry">
-                    <span className="mr-2 md:mr-10">User Entry</span>
-                  </Radio>
-                  <Radio value="groupEntry">
-                    <span className="mr-2 md:mr-10">Group Entry</span>
-                  </Radio>
-                  <Radio value="bothEntry">
-                    <span className="">Both</span>
-                  </Radio>
-                </RadioGroup>
-              </div>
+              <RadioGroup.Root
+                value={membershipType}
+                className="flex gap-2.5"
+                onValueChange={setMembershipType}
+                aria-label="Group Membership of User"
+              >
+                <div className="flex items-center">
+                  <RadioGroup.Item
+                    id="r1"
+                    value="userEntry"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label
+                    htmlFor="r1"
+                    className="text-gray-500 text-sm font-medium mr-2 md:mr-10 pl-2"
+                  >
+                    User Entry
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <RadioGroup.Item
+                    id="r2"
+                    value="groupEntry"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label
+                    className="text-gray-500 text-sm font-medium mr-2 md:mr-10 pl-2"
+                    htmlFor="r2"
+                  >
+                    Group Entry
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <RadioGroup.Item
+                    id="r3"
+                    value="bothEntry"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label
+                    className="text-gray-500 text-sm font-medium mr-2 md:mr-10 pl-2"
+                    htmlFor="r3"
+                  >
+                    Both
+                  </label>
+                </div>
+              </RadioGroup.Root>
             </div>
 
             {membershipType === "bothEntry" && (

@@ -14,10 +14,9 @@ import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/DDXSlice";
 
 import { HiOutlineDuplicate } from "react-icons/hi";
+import * as RadioGroup from "@radix-ui/react-radio-group";
 
 import { useState } from "react";
-import { Radio } from "react-aria-components";
-import RadioGroup from "@/comps/ui/Forms/RadioGroup";
 import {
   useProvisionDDXMutation,
   useGenerateDDXKeyMutation,
@@ -118,13 +117,26 @@ export default function AddDDXForm() {
               </div>
 
               <div className="px-4 py-2 w-full">
-                <div className="relative">
-                  <RadioGroup value={visibility} onChange={setVisibility}>
-                    <Radio value="addMFA">
-                      <span>Add MFA</span>
-                    </Radio>
-                  </RadioGroup>
-                </div>
+                <RadioGroup.Root
+                  value={visibility}
+                  aria-label="Set Visibility"
+                  onValueChange={setVisibility}
+                  className="flex flex-wrap gap-y-2 justify-between w-full"
+                >
+                  <div className="flex items-center gap-x-2">
+                    <RadioGroup.Item
+                      id="r1"
+                      value="addMFA"
+                      className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                    />
+                    <label
+                      htmlFor="r1"
+                      className="text-gray-500 text-sm font-medium"
+                    >
+                      Add MFA
+                    </label>
+                  </div>
+                </RadioGroup.Root>
               </div>
 
               {visibility === "addMFA" && (

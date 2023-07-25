@@ -16,12 +16,9 @@ import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { HiOutlineDownload, HiOutlinePaperClip } from "react-icons/hi";
 
 import { useState } from "react";
-import { Radio } from "react-aria-components";
-import RadioGroup from "@/comps/ui/Forms/RadioGroup";
-
-import { usePublishDatasetMutation } from "@/state/services/apiService";
-
 import { IoRefresh } from "react-icons/io5";
+import * as RadioGroup from "@radix-ui/react-radio-group";
+import { usePublishDatasetMutation } from "@/state/services/apiService";
 
 const schema = z.object({
   dataSource: z.string({
@@ -162,21 +159,53 @@ export default function PublishDatasetForm() {
             <h3 className="px-4">Set Visibility</h3>
 
             <div className="px-4 py-2 w-full">
-              <div className="relative">
-                <RadioGroup value={visibility} onChange={setVisibility}>
-                  <div className="flex flex-wrap gap-y-2 justify-between w-full">
-                    <Radio value="private">
-                      <span>Private</span>
-                    </Radio>
-                    <Radio value="contractual">
-                      <span>Contractual</span>
-                    </Radio>
-                    <Radio value="public">
-                      <span>Public</span>
-                    </Radio>
-                  </div>
-                </RadioGroup>
-              </div>
+              <RadioGroup.Root
+                value={visibility}
+                aria-label="Set Visibility"
+                onValueChange={setVisibility}
+                className="flex flex-wrap gap-y-2 justify-between w-full"
+              >
+                <div className="flex items-center gap-x-2">
+                  <RadioGroup.Item
+                    id="r1"
+                    value="private"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label
+                    htmlFor="r1"
+                    className="text-gray-500 text-sm font-medium"
+                  >
+                    Private
+                  </label>
+                </div>
+                <div className="flex items-center gap-x-2">
+                  <RadioGroup.Item
+                    id="r2"
+                    value="contractual"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label
+                    className="text-gray-500 text-sm font-medium"
+                    htmlFor="r2"
+                  >
+                    Contractual
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-x-2">
+                  <RadioGroup.Item
+                    id="r2"
+                    value="public"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label
+                    className="text-gray-500 text-sm font-medium"
+                    htmlFor="r2"
+                  >
+                    Public
+                  </label>
+                </div>
+              </RadioGroup.Root>
             </div>
 
             <div className="px-4 py-2 w-full">
