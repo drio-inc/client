@@ -1,9 +1,13 @@
 import * as Checkbox from "@radix-ui/react-checkbox";
 import DashboardFooter from "@ui/Footer/DashbaordFooter";
 import { HiOutlinePencil, HiCheck } from "react-icons/hi";
+import MetaTags from "@/comps/RootAdmin/Datasets/Metadata/MetaTags";
+import { ReactNode } from "react";
 
 type TableHeader = {
+  type?: string;
   header: string;
+  menu?: ReactNode;
   accessor: string;
   status?: {
     [key: string]: string | undefined;
@@ -26,8 +30,8 @@ const Table = ({
   rows,
   headers,
   selectedRows,
-  menu: TableMenu,
   handleCheckbox,
+  menu: TableMenu,
   noSelection = false,
   editForm: EditFormComponent,
   detailsWindow: DetailsWindow,
@@ -48,8 +52,13 @@ const Table = ({
                 }
               >
                 {header.header}
+
+                {header.menu && (
+                  <div className="inline-block ml-2">{header.menu}</div>
+                )}
               </th>
             ))}
+
             {TableMenu && (
               <th
                 className={
@@ -91,20 +100,28 @@ const Table = ({
                 )}
 
                 {headers?.map((header, index) => (
-                  <td
-                    key={index}
-                    className={
-                      "border-t border-b text-gray-500 text-xs p-4 text-left "
-                    }
-                  >
-                    <span
-                      className={`${
-                        header?.status?.[row[header.accessor]]
-                      } inline-block`}
-                    >
-                      {row[header.accessor] ?? "N/A"}
-                    </span>
-                  </td>
+                  <>
+                    {header.type === "array" ? (
+                      <>
+                        <MetaTags tags={row[header.accessor]} />
+                      </>
+                    ) : (
+                      <td
+                        key={index}
+                        className={
+                          "border-t border-b text-gray-500 text-xs p-4 text-left "
+                        }
+                      >
+                        <span
+                          className={`${
+                            header?.status?.[row[header.accessor]]
+                          } inline-block`}
+                        >
+                          {row[header.accessor] ?? "N/A"}
+                        </span>
+                      </td>
+                    )}
+                  </>
                 ))}
 
                 {TableMenu && (

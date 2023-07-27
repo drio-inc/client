@@ -11,6 +11,7 @@ import DDXReducer from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
 import alertsReducer from "./slices/alertsSlice";
 import datasetReducer from "./slices/datasetSlice";
+import metadataReducer from "./slices/metadataSlice";
 import anomaliesReducer from "./slices/anomaliesSlice";
 import auditLogsReducer from "./slices/auditLogsSlice";
 import dataSourceReducer from "./slices/dataSourceSlice";
@@ -39,6 +40,7 @@ export const store = configureStore({
     ui: uiReducer,
     alerts: alertsReducer,
     dataset: datasetReducer,
+    metadata: metadataReducer,
     auth: persistedAuthReducer,
     anomalies: anomaliesReducer,
     auditLogs: auditLogsReducer,
