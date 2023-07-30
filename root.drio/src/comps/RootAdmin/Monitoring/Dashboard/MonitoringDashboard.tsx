@@ -3,8 +3,6 @@ import StatCards from "./StatCards";
 import DatasetAccessChart from "./DatasetAccessChart";
 import AnomaliesAndErrorsChart from "./AnomaliesAndErrorsChart";
 
-type ValueType = [Date, Date];
-
 import "rsuite/dist/rsuite.css";
 import { DateRangePicker } from "rsuite";
 import { DateRange } from "rsuite/esm/DateRangePicker";
@@ -24,7 +22,9 @@ const Monitoring = () => {
             placement="leftStart"
             onChange={setDateRange}
             onClean={() => setDateRange([new Date(), new Date()])}
-            placeholder={`${formatDate(dateRange[0]) + " - " + formatDate(dateRange[1])}`}
+            placeholder={`${
+              formatDate(dateRange[0]) + " - " + formatDate(dateRange[1])
+            }`}
             renderValue={(value: DateRange, format: string) => {
               return `${formatDate(value[0])} - ${formatDate(value[1])}`;
             }}

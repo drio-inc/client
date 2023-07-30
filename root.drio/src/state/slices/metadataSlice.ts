@@ -13,7 +13,18 @@ const initialState: MetadatSlice = {
       sampleValue: "MVCV0000927 /082021",
       dataType: "Str (256)",
       visibility: "Hide",
-      metadata: "time, date, address",
+      metadata: [
+        {
+          id: "1",
+          name: "Date",
+          status: "Rejected",
+        },
+        {
+          id: "2",
+          name: "Address",
+          status: "Pending",
+        },
+      ],
       lastUpdated: "12/06/2020 10:39",
     },
     {
@@ -22,7 +33,18 @@ const initialState: MetadatSlice = {
       sampleValue: "TVSLSL-PUZHAL-HUB,CHENNAI",
       dataType: "Lat-Long",
       visibility: "Hide",
-      metadata: "date, address",
+      metadata: [
+        {
+          id: "1",
+          name: "Date",
+          status: "Approved",
+        },
+        {
+          id: "2",
+          name: "Address",
+          status: "Pending",
+        },
+      ],
       lastUpdated: "12/06/2020 10:39",
     },
     {
@@ -31,7 +53,18 @@ const initialState: MetadatSlice = {
       sampleValue: "13.1550,80.1960",
       dataType: "KA590408",
       visibility: "Hide",
-      metadata: "date, address",
+      metadata: [
+        {
+          id: "1",
+          name: "Date",
+          status: "Approved",
+        },
+        {
+          id: "2",
+          name: "Address",
+          status: "Approved",
+        },
+      ],
       lastUpdated: "12/06/2020 10:39",
     },
     {
@@ -40,7 +73,18 @@ const initialState: MetadatSlice = {
       sampleValue: "05:09:00",
       dataType: "Market",
       visibility: "Hide",
-      metadata: "date, address",
+      metadata: [
+        {
+          id: "1",
+          name: "Date",
+          status: "Approved",
+        },
+        {
+          id: "2",
+          name: "Address",
+          status: "Approved",
+        },
+      ],
       lastUpdated: "12/06/2020 10:39",
     },
   ],

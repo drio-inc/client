@@ -52,7 +52,7 @@ const DatasetMenu = ({ row, editForm, detailsWindow }: any) => {
             )}
           </span>
 
-          <Link href={`/datasets/${row.dataset}`}>
+          <Link href={`/datasets/${row.id}`}>
             <span
               className={
                 "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
@@ -62,7 +62,7 @@ const DatasetMenu = ({ row, editForm, detailsWindow }: any) => {
             </span>
           </Link>
 
-          <Link href={`/datasets/my-datasets/${row.dataset}/metadata`}>
+          <Link href={`/datasets/my-datasets/${row.id}/metadata`}>
             <span
               className={
                 "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"

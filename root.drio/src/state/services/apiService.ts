@@ -29,11 +29,8 @@ type DataSourceAPIResponse = {
 export const rootApi = createApi({
   reducerPath: "rootApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `/api`,
-    credentials: "include",
-    prepareHeaders: (headers) => {
-      return headers;
-    },
+    baseUrl: `https://a14c37a0-5c64-4c14-ace9-784f0afc6ac8.mock.pstmn.io/api/v1`,
+    //credentials: "include",
   }),
 
   endpoints: (builder) => {
@@ -180,6 +177,22 @@ export const rootApi = createApi({
           body: credentials,
         }),
       }),
+
+      addMetadata: builder.mutation<APIResponse, any>({
+        query: (credentials) => ({
+          url: `/dataset/${credentials.id}/metadata`,
+          method: "POST",
+          body: credentials,
+        }),
+      }),
+
+      editMetadata: builder.mutation<APIResponse, any>({
+        query: (credentials) => ({
+          url: `/dataset/${credentials.id}/metadata`,
+          method: "PATCH",
+          body: credentials,
+        }),
+      }),
     };
   },
 });
@@ -189,18 +202,20 @@ export const {
   useSetLDAPMutation,
   useSetOAuthMutation,
   useActivateMutation,
+  useSetPasswordMutation,
+  useAddMetadataMutation,
+  useFetchLicenseMutation,
+  useProvisionDDXMutation,
+  useEditMetadataMutation,
+  useAddDataSourceMutation,
+  useUpdateDatasetMutation,
   useSetGoogleAuthMutation,
   useResetPasswordMutation,
-  useEditOrgAccountMutation,
   useAddOrgAccountMutation,
   useUpdateLicenseMutation,
-  useFetchLicenseMutation,
+  useEditOrgAccountMutation,
   useGenerateDDXKeyMutation,
-  useProvisionDDXMutation,
-  useAddDataSourceMutation,
   usePublishDatasetMutation,
   useEditDataSourceMutation,
-  useUpdateDatasetMutation,
-  useSetPasswordMutation,
   useRequestDataAccessMutation,
 } = rootApi;

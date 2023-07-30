@@ -1,22 +1,42 @@
-import Link from "next/link";
 import Modal from "@/comps/ui/Modal";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
-
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import AlertModal from "@/comps/ui/AlertModal";
 import AddMetaDataForm from "../AddMetaDataForm";
+import EditMetadataForm from "../EditMetadataForm";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/metadataSlice";
 
-const MetadataMenu = ({ row, editForm }: any) => {
+const MetadataMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const metadataState = useAppSelector((state) => state.metadata);
 
   const deleteRow = (id: number | string) => {
     dispatch(setRows(metadataState.rows.filter((row) => row.id !== id)));
     dispatch(setSelectedRows([]));
+  };
+
+  const approveOrRejectAll = (action: "Approved" | "Rejected" = "Approved") => {
+    dispatch(
+      setRows(
+        metadataState.rows.map((metadataRow) => {
+          if (metadataRow.id !== row.id) return metadataRow;
+          return {
+            ...metadataRow,
+            metadata: metadataRow.metadata.map(
+              (meta: { id: string; name: string; status: string }) => {
+                return {
+                  ...meta,
+                  status: action,
+                };
+              }
+            ),
+          };
+        })
+      )
+    );
   };
 
   return (
@@ -38,20 +58,18 @@ const MetadataMenu = ({ row, editForm }: any) => {
               identifier="addMetadataForm"
               onClick={() => dispatch(setOpenModal("addMetadataForm"))}
             >
-              <AddMetaDataForm />
+              <AddMetaDataForm row={row} />
             </Modal>
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {editForm && (
-              <Modal
-                label="Edit"
-                identifier="editDatasetForm"
-                onClick={() => dispatch(setOpenModal("editDatasetForm"))}
-              >
-                {editForm}
-              </Modal>
-            )}
+            <Modal
+              label="Edit"
+              identifier="editMetadataForm"
+              onClick={() => dispatch(setOpenModal("editMetadataForm"))}
+            >
+              <EditMetadataForm row={row} />
+            </Modal>
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
@@ -63,6 +81,7 @@ const MetadataMenu = ({ row, editForm }: any) => {
           </span>
 
           <span
+            onClick={() => approveOrRejectAll("Approved")}
             className={
               "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
             }
@@ -71,6 +90,7 @@ const MetadataMenu = ({ row, editForm }: any) => {
           </span>
 
           <span
+            onClick={() => approveOrRejectAll("Rejected")}
             className={
               "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
             }

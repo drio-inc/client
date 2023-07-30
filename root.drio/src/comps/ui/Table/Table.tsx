@@ -1,8 +1,8 @@
+import { ReactNode } from "react";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import DashboardFooter from "@ui/Footer/DashbaordFooter";
 import { HiOutlinePencil, HiCheck } from "react-icons/hi";
 import MetaTags from "@/comps/RootAdmin/Datasets/Metadata/MetaTags";
-import { ReactNode } from "react";
 
 type TableHeader = {
   type?: string;
@@ -117,7 +117,9 @@ const Table = ({
                             header?.status?.[row[header.accessor]]
                           } inline-block`}
                         >
-                          {row[header.accessor] ?? "N/A"}
+                          <span className="capitalize">
+                            {row[header.accessor] ?? "N/A"}
+                          </span>
                         </span>
                       </td>
                     )}

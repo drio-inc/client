@@ -1,5 +1,5 @@
 import Button from "@ui/Button";
-import { TextInput, SelectInput } from "@ui/Forms/Inputs";
+import { TextInput } from "@ui/Forms/Inputs";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
@@ -14,10 +14,18 @@ import { setRows } from "@/state/slices/metadataSlice";
 import { setCloseModal } from "@/state/slices/uiSlice";
 
 import { useCallback, useState } from "react";
-import { HiX } from "react-icons/hi";
 import { TagInput } from "@/comps/ui/Forms/Inputs/Inputs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { useAddMetadataMutation } from "@/state/services/apiService";
+
+import { FaCheckSquare } from "react-icons/fa";
+import { BsXSquareFill } from "react-icons/bs";
+
+interface ITag {
+  id: string;
+  name: string;
+  status: string;
+}
 
 const schema = z.object({
   name: z.string().optional(),
@@ -29,22 +37,29 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function AddMetaDataForm({ row }: TableRow) {
+export default function EditMetadataForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [tags, setTags] = useState<string[]>([]);
-  const [visibility, setVisibility] = useState("");
+
+  const [tags, setTags] = useState<string[]>(
+    row.metadata.map((m: ITag) => m.name) ?? []
+  );
+
   const [addMetadata, result] = useAddMetadataMutation();
   const metadataState = useAppSelector((state) => state.metadata);
+
+  const [visibility, setVisibility] = useState(
+    row.visibility.toLowerCase() ?? ""
+  );
 
   const form = useZodForm({
     schema: schema,
   });
 
   const handleTagChange = useCallback(
-    (tag: string) => {
-      setTags([...tags, tag]);
+    (tags: string[]) => {
+      setTags(tags);
     },
-    [tags]
+    [setTags]
   );
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -66,8 +81,6 @@ export default function AddMetaDataForm({ row }: TableRow) {
         tags: tags,
       }).unwrap();
 
-      console.log(res);
-
       dispatch(setRows([...metadataState.rows, res]));
       showAlert("Metadata added successfully", "success");
     } catch (err: any) {
@@ -78,11 +91,37 @@ export default function AddMetaDataForm({ row }: TableRow) {
     }
 
     form.reset();
-    dispatch(setCloseModal("addMetadataForm"));
+    dispatch(setCloseModal("editMetadataForm"));
   };
 
-  const removeTagData = (indexToRemove: number) => {
-    setTags(tags.filter((_, index) => index !== indexToRemove));
+  const approveOrReject = (
+    tag: string,
+    action: "Approved" | "Rejected" = "Approved"
+  ) => {
+    const findRow = metadataState.rows.find((r) => r.id === row.id);
+    const findTag = findRow?.metadata.find((m: ITag) => m.name === tag);
+
+    if (findTag) {
+      dispatch(
+        setRows(
+          metadataState.rows.map((r) => {
+            if (r.id !== row.id) return r;
+
+            return {
+              ...r,
+              metadata: r.metadata.map((m: ITag) => {
+                if (m.name !== tag) return m;
+
+                return {
+                  ...m,
+                  status: action,
+                };
+              }),
+            };
+          })
+        )
+      );
+    }
   };
 
   return (
@@ -98,23 +137,25 @@ export default function AddMetaDataForm({ row }: TableRow) {
       >
         <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
           <h2 className="text-gray-700 text-2xl font-bold text-center">
-            Add Metadata
+            Edit Metadata
           </h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             <div className="px-4 py-2 w-full">
               <TextInput
                 label={"Metadata Name"}
-                placeholder={"Enter metadata name"}
                 {...form.register("name")}
+                placeholder={"Enter metadata name"}
                 className="md:text-sm 2xl:text-base"
+                defaultValue={row.logisticsTripData}
               />
             </div>
 
             <div className="px-4 py-2 w-full">
               <TextInput
-                {...form.register("type")}
                 label={"Enter Data Type"}
+                {...form.register("type")}
+                defaultValue={row.dataType}
                 placeholder={"Enter data type"}
                 className="md:text-sm 2xl:text-base"
               />
@@ -123,6 +164,7 @@ export default function AddMetaDataForm({ row }: TableRow) {
             <div className="px-4 py-2 w-full">
               <TextInput
                 label={"Sample Value"}
+                defaultValue={row.sampleValue}
                 {...form.register("sampleValue")}
                 placeholder={"Enter sample value"}
                 className="md:text-sm 2xl:text-base"
@@ -193,11 +235,16 @@ export default function AddMetaDataForm({ row }: TableRow) {
                   {tags.map((tag, index) => (
                     <li
                       key={index}
-                      className="flex justify-center items-center bg-green-100 text-green-700 rounded-md p-1 border border-green-700 mx-1 my-2"
+                      className="flex justify-center items-center bg-green-100 text-green-700 rounded-md p-1 border border-green-700 mx-1 my-2 gap-x-1"
                     >
                       <span className="text-sm">{tag}</span>
-                      <span onClick={() => removeTagData(index)}>
-                        <HiX className="cursor-pointer" />
+                      {JSON.stringify(tag)}
+                      <span onClick={() => approveOrReject(tag, "Approved")}>
+                        <FaCheckSquare className="text-green-500 cursor-pointer" />
+                      </span>
+
+                      <span onClick={() => approveOrReject(tag, "Rejected")}>
+                        <BsXSquareFill className="text-red-500 cursor-pointer" />
                       </span>
                     </li>
                   ))}
@@ -211,7 +258,7 @@ export default function AddMetaDataForm({ row }: TableRow) {
               type="button"
               intent={`secondary`}
               className="w-full"
-              onClick={() => dispatch(setCloseModal("addMetadataForm"))}
+              onClick={() => dispatch(setCloseModal("editMetadataForm"))}
             >
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>

@@ -6,9 +6,20 @@ import Select, {
 } from "react-select";
 
 import { cva, VariantProps } from "class-variance-authority";
-import { ComponentProps, forwardRef, useState, ComponentType } from "react";
 
 import {
+  useRef,
+  useState,
+  forwardRef,
+  ChangeEvent,
+  KeyboardEvent,
+  ComponentType,
+  ComponentProps,
+  useEffect,
+} from "react";
+
+import {
+  HiX,
   HiEye,
   HiPlus,
   HiCheck,
@@ -19,7 +30,6 @@ import {
 
 import styles from "./Inputs.module.scss";
 
-import { useRouter } from "next/router";
 import { FieldError } from "@ui/Forms/Form";
 import { useFormContext, Controller, FieldValues } from "react-hook-form";
 
@@ -28,7 +38,14 @@ type SharedProps = {
   className?: string;
 };
 
+interface ITagInputProps extends ComponentProps<"input"> {
+  label: string;
+  tags?: string[];
+  onTagsChange: (tags: string) => void;
+}
+
 interface InputProps extends ComponentProps<"input">, SharedProps {}
+
 interface SelectProps extends ComponentProps<"select">, SharedProps {
   isMulti?: boolean;
   redirect?: boolean;
@@ -48,7 +65,6 @@ interface SelectProps extends ComponentProps<"select">, SharedProps {
 
 const textInputStyles = cva(`${styles[`ui-inputs`]}`, {
   variants: {},
-
   defaultVariants: {},
 });
 
@@ -79,6 +95,7 @@ export const TextInput = forwardRef<HTMLInputElement, ITextInputProps>(
             {label}
           </span>
         </label>
+
         <input
           ref={ref}
           {...props}
@@ -301,3 +318,66 @@ export const StatelessSelectInput = ({
     </div>
   );
 };
+
+export const TagInput = forwardRef<HTMLInputElement, ITagInputProps>(
+  function TagInput(
+    { tags = [], onTagsChange, label, children, ...props },
+    ref
+  ) {
+    const divRef = useRef<HTMLDivElement>(null);
+    const [inputWidth, setInputWidth] = useState(0);
+
+    useEffect(() => {
+      setInputWidth(divRef.current?.offsetWidth || 0);
+    }, [tags]);
+
+    const handleChange = (
+      event: KeyboardEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>
+    ) => {
+      if (event.currentTarget.value !== "") {
+        if (event.currentTarget.value.includes(",")) {
+          const tag = event.currentTarget.value.replace(",", "");
+          onTagsChange(tag);
+        } else {
+          onTagsChange(event.currentTarget.value);
+        }
+        event.currentTarget.value = "";
+      }
+    };
+
+    return (
+      <div>
+        <label className="flex items-center">
+          <span className="inline-block text-gray-700 text-sm font-medium">
+            {label}
+          </span>
+        </label>
+
+        <div
+          ref={divRef}
+          className="flex flex-wrap justify-between px-1 my-1 border rounded-md shadow-sm"
+        >
+          {children}
+
+          <input
+            ref={ref}
+            {...props}
+            placeholder="Enter tags"
+            className="flex-1 focus:outline-none py-2 px-3 rounded-md -mx-1"
+            style={{
+              width: `calc(${inputWidth}px - ${50}px)`,
+              minWidth: `40%`,
+            }}
+            onKeyUp={(event) =>
+              event.key === "," ||
+              event.code === "Enter" ||
+              event.code === "Space"
+                ? handleChange(event)
+                : null
+            }
+          />
+        </div>
+      </div>
+    );
+  }
+);

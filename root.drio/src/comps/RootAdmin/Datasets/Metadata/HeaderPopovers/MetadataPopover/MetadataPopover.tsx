@@ -8,6 +8,26 @@ const MetadataPopover = ({ row }: any) => {
   const dispatch = useAppDispatch();
   const metadataState = useAppSelector((state) => state.metadata);
 
+  const approveOrRejectAll = (action: "Approved" | "Rejected" = "Approved") => {
+    dispatch(
+      setRows(
+        metadataState.rows.map((row) => {
+          return {
+            ...row,
+            metadata: row.metadata.map(
+              (meta: { id: string; name: string; status: string }) => {
+                return {
+                  ...meta,
+                  status: action,
+                };
+              }
+            ),
+          };
+        })
+      )
+    );
+  };
+
   return (
     <Popover.Root>
       <Popover.Trigger>
@@ -22,6 +42,7 @@ const MetadataPopover = ({ row }: any) => {
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
           <span
+            onClick={() => approveOrRejectAll("Approved")}
             className={
               "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
             }
@@ -30,6 +51,7 @@ const MetadataPopover = ({ row }: any) => {
           </span>
 
           <span
+            onClick={() => approveOrRejectAll("Rejected")}
             className={
               "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
             }
