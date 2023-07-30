@@ -4,7 +4,6 @@ import { SelectInput, TextInput } from "@ui/Forms/Inputs";
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 import { useRouter } from "next/router";
-import { Radio } from "react-aria-components";
 import AuthContainer from "@ui/Containers/AuthContainer";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 
