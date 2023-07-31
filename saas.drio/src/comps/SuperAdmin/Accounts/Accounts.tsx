@@ -2,8 +2,8 @@ import Table from "@/comps/ui/Table";
 import AccountDetails from "./AccountDetails";
 import EditAccountForm from "./EditAccountForm";
 import AddAccountForm from "./AddAccountForm/AddAccountForm";
-import { setSelectedRows } from "@/state/slices/adminAccountSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import { setRows, setSelectedRows } from "@/state/slices/adminAccountSlice";
 
 import AccountMenu from "./AccountMenu";
 
@@ -14,15 +14,17 @@ import { IoRefresh } from "react-icons/io5";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
+import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+import { useGetAccountsQuery } from "@/api/resources/accounts";
 
 const headers = [
   {
     header: "Account",
-    accessor: "account",
+    accessor: "name",
   },
   {
-    header: "Organizational Units",
-    accessor: "ous",
+    header: "Organization Units",
+    accessor: "organization_units",
   },
 
   {
@@ -46,6 +48,12 @@ const headers = [
 const Accounts = () => {
   const dispatch = useAppDispatch();
   const adminAccountState = useAppSelector((state) => state.adminAccount);
+
+  const { data, isLoading } = useGetAccountsQuery();
+
+  if (isLoading) return <StaticLoader />;
+
+  if (data) dispatch(setRows(data));
 
   const handleCheckbox = (index: number) => {
     if (adminAccountState.selectedRows.includes(index)) {
@@ -124,7 +132,12 @@ const Accounts = () => {
           headers={headers}
           menu={AccountMenu}
           editForm={EditAccountForm}
-          rows={adminAccountState.rows}
+          rows={adminAccountState.rows.map((row: any) => {
+            return {
+              ...row,
+              organization_units: row.organization_units ?? 0,
+            };
+          })}
           detailsWindow={AccountDetails}
           handleCheckbox={handleCheckbox}
           handleRowClick={handleRowClick}

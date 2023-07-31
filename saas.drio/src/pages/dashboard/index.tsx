@@ -3,7 +3,7 @@ import Button from "@/comps/ui/Button";
 import { useRouter } from "next/router";
 import { HiLogout } from "react-icons/hi";
 
-import WithAuth from "@/comps/HOC/WithAuth";
+import withAuth from "@/comps/HOC/withAuth";
 import { logOut } from "@/state/slices/authSlice";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
@@ -46,4 +46,4 @@ const Dashboard = () => {
   );
 };
 
-export default WithAuth(Dashboard);
+export default withAuth(Dashboard);

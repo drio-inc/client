@@ -6,44 +6,7 @@ type AdminAccountState = {
 };
 
 const initialState: AdminAccountState = {
-  rows: [
-    {
-      id: "1",
-      account: "Cox Automotive",
-      ous: 5,
-      datasetsPublished: 25,
-      publicContractDatasets: "2/22",
-      dailyUsageFrequency: "798/day",
-      alerts: 2,
-    },
-    {
-      id: "2",
-      account: "VISA",
-      ous: 5,
-      datasetsPublished: 25,
-      publicContractDatasets: "2/22",
-      dailyUsageFrequency: "798/day",
-      alerts: 2,
-    },
-    {
-      id: "3",
-      account: "Paypal",
-      ous: 5,
-      datasetsPublished: 25,
-      publicContractDatasets: "2/22",
-      dailyUsageFrequency: "798/day",
-      alerts: 2,
-    },
-    {
-      id: "4",
-      account: "KKB",
-      ous: 5,
-      datasetsPublished: 25,
-      publicContractDatasets: "2/22",
-      dailyUsageFrequency: "798/day",
-      alerts: 2,
-    },
-  ],
+  rows: [],
   selectedRows: [],
 };
 

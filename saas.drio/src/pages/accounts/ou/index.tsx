@@ -1,4 +1,4 @@
-import WithAuth from "@/comps/HOC/WithAuth";
+import withAuth from "@/comps/HOC/withAuth";
 import Layout from "@/comps/Layout";
 
 import OrgAccounts from "@/comps/SuperAdmin/OrgAccounts";
@@ -16,4 +16,4 @@ const AccountsPage = () => {
   );
 };
 
-export default WithAuth(AccountsPage);
+export default withAuth(AccountsPage);

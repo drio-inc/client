@@ -3,18 +3,18 @@ import { useRouter } from "next/router";
 import { HiSearch } from "react-icons/hi";
 
 import Button from "../Button";
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
-
-import { logOut } from "@/state/slices/authSlice";
+import { useLogoutMutation } from "@/api/auth";
+import { useAppSelector } from "@/hooks/useStoreTypes";
 
 export default function Header() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const [logout, { isLoading }] = useLogoutMutation();
   const { user } = useAppSelector((state) => state.auth);
   const { pageTitles } = useAppSelector((state) => state.ui);
 
-  const handleLogout = () => {
-    dispatch(logOut());
+  const handleLogout = async () => {
+    await logout();
+    router.push("/login");
   };
 
   const path = router.pathname
@@ -43,6 +43,7 @@ export default function Header() {
           </form>
           <Button
             intent={"primary"}
+            isLoading={isLoading}
             className="text-sm mx-2"
             onClick={() => handleLogout()}
           >

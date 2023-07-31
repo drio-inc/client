@@ -2,7 +2,7 @@ import Layout from "@/comps/Layout";
 import Accounts from "@/comps/SuperAdmin/Accounts";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
-import WithAuth from "@/comps/HOC/WithAuth";
+import withAuth from "@/comps/HOC/withAuth";
 
 const AccountsPage = () => {
   return (
@@ -14,4 +14,4 @@ const AccountsPage = () => {
   );
 };
 
-export default WithAuth(AccountsPage);
+export default withAuth(AccountsPage);

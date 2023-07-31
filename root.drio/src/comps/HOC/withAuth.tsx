@@ -7,8 +7,8 @@ import { useEffect } from "react";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 import { logOut, setAuthenticated } from "@/state/slices/authSlice";
 
-function WithAuth(OriginalComponent: React.FC) {
-  function NewComponent() {
+function withAuth(OriginalComponent: React.FC) {
+  function AuthenticatedComponent() {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const { isAuthenticated } = useAppSelector((state) => state.auth);
@@ -17,15 +17,13 @@ function WithAuth(OriginalComponent: React.FC) {
       async function validateToken() {
         try {
           const res = await axios.get(`/api/resources/validate`);
-          if (res.status === 401) {
-            dispatch(logOut());
-            router.push("/login");
-          }
-
           if (res.status === 200) {
             dispatch(setAuthenticated(true));
             return;
           }
+
+          dispatch(logOut());
+          router.push("/login");
         } catch (error) {
           dispatch(logOut());
           router.push("/login");
@@ -42,7 +40,7 @@ function WithAuth(OriginalComponent: React.FC) {
     return <OriginalComponent />;
   }
 
-  return NewComponent;
+  return AuthenticatedComponent;
 }
 
-export default WithAuth;
+export default withAuth;

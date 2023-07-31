@@ -1,5 +1,5 @@
 import Layout from "@/comps/Layout";
-import WithAuth from "@/comps/HOC/WithAuth";
+import withAuth from "@/comps/HOC/withAuth";
 
 import DDX from "@/comps/SuperAdmin/DDX";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
@@ -14,4 +14,4 @@ const DDXPage = () => {
   );
 };
 
-export default WithAuth(DDXPage);
+export default withAuth(DDXPage);

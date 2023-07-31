@@ -11,7 +11,8 @@ export default function DashboardFooter(props: Props) {
       <Pagination />
       <div>
         <span>
-          Showing 1 to {props.rows?.length} of {props.rows?.length} results
+          Showing {props.rows?.length && props.rows?.length > 0 ? "1" : "0"} to{" "}
+          {props.rows?.length} of {props.rows?.length} results
         </span>
       </div>
 

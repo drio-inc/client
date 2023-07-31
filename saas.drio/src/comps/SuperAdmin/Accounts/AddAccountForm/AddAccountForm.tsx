@@ -14,11 +14,11 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/adminAccountSlice";
-import { useAddAccountMutation } from "@/state/services/apiService";
+import { useAddAccountMutation } from "@/api/resources/accounts";
 
 const nameFields = [
   {
-    name: "name",
+    name: "accountName",
     label: "Account Name*",
     type: "text",
     placeholder: "Enter account name",
@@ -86,7 +86,7 @@ const contactFields = [
 ];
 
 const schema = z.object({
-  name: z.string().nonempty("Please Enter a value"),
+  accountName: z.string().nonempty("Please Enter a value"),
   streetAddress: z.string().nonempty("Please Enter a value"),
   country: z.string({
     required_error: "Please Enter a value",
@@ -130,20 +130,31 @@ export default function AddAccountForm() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const res = await addAccount({
-        ...data,
+        login_id: data.rootAdminID,
+        password: data.rootAdminInitialPassword,
+        email: data.email,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        account_name: data.accountName,
+        ou_name: "Corp",
+        country: data.country,
+        state: data.state,
+        city: data.city,
       }).unwrap();
 
+      console.log(res);
+
       dispatch(setRows([...rows, res]));
+      dispatch(setCloseModal("addAccountForm"));
       showAlert("Account added successfully", "success");
+
+      form.reset();
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
         "error"
       );
     }
-
-    form.reset();
-    dispatch(setCloseModal("addAccountForm"));
   };
 
   return (

@@ -1,5 +1,5 @@
 import Layout from "@/comps/Layout";
-import WithAuth from "@/comps/HOC/WithAuth";
+import withAuth from "@/comps/HOC/withAuth";
 import Licensing from "@/comps/SuperAdmin/Licensing/Licensing";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
@@ -13,4 +13,4 @@ const LicensingPage = () => {
   );
 };
 
-export default WithAuth(LicensingPage);
+export default withAuth(LicensingPage);
