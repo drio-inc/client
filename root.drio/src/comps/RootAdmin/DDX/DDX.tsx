@@ -17,13 +17,14 @@ import { setOpenModal } from "@/state/slices/uiSlice";
 
 const headers = [
   {
-    header: "Account Name",
-    accessor: "account",
-  },
-  {
     header: "Organization Unit",
     accessor: "ou",
   },
+  {
+    header: "Location",
+    accessor: "location",
+  },
+
   {
     header: "Status",
     accessor: "status",

@@ -10,22 +10,22 @@ import { cva, VariantProps } from "class-variance-authority";
 import {
   useRef,
   useState,
+  useEffect,
   forwardRef,
   ChangeEvent,
   KeyboardEvent,
   ComponentType,
   ComponentProps,
-  useEffect,
 } from "react";
 
 import {
-  HiX,
   HiEye,
   HiPlus,
   HiCheck,
   HiEyeOff,
   HiChevronDown,
   HiExclamationCircle,
+  HiOutlineDuplicate,
 } from "react-icons/hi";
 
 import styles from "./Inputs.module.scss";
@@ -50,8 +50,9 @@ interface SelectProps extends ComponentProps<"select">, SharedProps {
   isMulti?: boolean;
   redirect?: boolean;
   registerName: string;
-  onChangeCustomAction?: (selectedOption?: string) => void;
   hasPlusIndicator?: boolean;
+  onChangeCustomAction?: (selectedOption?: string) => void;
+
   defaultSelectedValue?: {
     value: string;
     label: string;
@@ -70,10 +71,12 @@ const textInputStyles = cva(`${styles[`ui-inputs`]}`, {
 
 interface ITextInputProps
   extends InputProps,
-    VariantProps<typeof textInputStyles> {}
+    VariantProps<typeof textInputStyles> {
+  icon?: React.ReactNode;
+}
 
 export const TextInput = forwardRef<HTMLInputElement, ITextInputProps>(
-  function TextInput({ label, className, ...props }, ref) {
+  function TextInput({ icon, label, className, ...props }, ref) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const {
@@ -107,6 +110,8 @@ export const TextInput = forwardRef<HTMLInputElement, ITextInputProps>(
               : `border-gray-300 focus:border-gray-700 text-gray-500`
           }`}
         />
+
+        {icon && <>{icon}</>}
 
         {error && (
           <HiExclamationCircle className="absolute right-3 top-9 text-red-500 w-5 h-5" />

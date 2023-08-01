@@ -23,11 +23,13 @@ import {
 } from "@/state/services/apiService";
 
 const schema = z.object({
-  name: z.string().nonempty("Please Enter a value"),
+  location: z.string().nonempty("Please Enter a value"),
+
   ou: z.string({
     required_error: "Please select an option",
   }),
   mfaURL: z.string().optional(),
+
   mfaKey: z.string().nonempty("Please Enter a value").optional(),
 });
 
@@ -87,7 +89,7 @@ export default function AddDDXForm() {
     <>
       <Layout>
         <Form form={form} onSubmit={onSubmit} className="">
-          <div className="mx-auto bg-white p-4 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
+          <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
             <h2 className="text-gray-700 text-2xl font-bold text-center">
               Add DDX
             </h2>
@@ -95,9 +97,9 @@ export default function AddDDXForm() {
             <div className="flex flex-wrap -m-2 rounded-lg my-4">
               <div className="px-4 py-2 w-full">
                 <TextInput
-                  label={"Name"}
-                  {...form.register("name")}
-                  placeholder={"Enter name"}
+                  label={"Location"}
+                  placeholder={"Enter location"}
+                  {...form.register("location")}
                   className="md:text-sm 2xl:text-base"
                 />
               </div>
@@ -168,13 +170,15 @@ export default function AddDDXForm() {
                 <TextInput
                   disabled
                   label={""}
+                  icon={
+                    <HiOutlineDuplicate
+                      className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 z-50 cursor-pointer block bg-gray-100"
+                      onClick={() => copyKey()}
+                    />
+                  }
                   {...form.register("mfaKey")}
                   className="md:text-sm 2xl:text-base"
                   placeholder={"wJalrXUtnFEMIK7MDENGbPxRfiCY"}
-                />
-                <HiOutlineDuplicate
-                  className="w-5 h-5 absolute right-8 top-12 text-gray-500 z-50 cursor-pointer"
-                  onClick={() => copyKey()}
                 />
               </div>
             </div>
