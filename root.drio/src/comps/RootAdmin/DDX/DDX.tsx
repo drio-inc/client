@@ -80,7 +80,7 @@ const DDX = () => {
   };
 
   return (
-    <div className="py-8 w-full">
+    <div className="w-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div
           className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}

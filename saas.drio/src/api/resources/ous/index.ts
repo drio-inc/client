@@ -2,7 +2,7 @@
 
 import { rootApi } from "@/state/services/apiService";
 
-export const authApi = rootApi.injectEndpoints({
+export const orgApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     addOrgAccount: builder.mutation<ApiResponse<any>, FormData>({
       query: (credentials) => ({
@@ -22,4 +22,4 @@ export const authApi = rootApi.injectEndpoints({
   }),
 });
 
-export const { useAddOrgAccountMutation, useEditOrgAccountMutation } = authApi;
+export const { useAddOrgAccountMutation, useEditOrgAccountMutation } = orgApi;

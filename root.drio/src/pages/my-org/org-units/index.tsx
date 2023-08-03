@@ -16,13 +16,11 @@ const MyOrg = () => {
   }
 
   return (
-    <div>
-      <Layout>
-        <DashboardContainer>
-          <OrgAccounts />
-        </DashboardContainer>
-      </Layout>
-    </div>
+    <Layout>
+      <DashboardContainer>
+        <OrgAccounts />
+      </DashboardContainer>
+    </Layout>
   );
 };
 

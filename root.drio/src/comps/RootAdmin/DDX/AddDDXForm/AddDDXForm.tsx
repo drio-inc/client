@@ -20,7 +20,7 @@ import { useState } from "react";
 import {
   useProvisionDDXMutation,
   useGenerateDDXKeyMutation,
-} from "@/state/services/apiService";
+} from "@/api/resources/ddx";
 
 const schema = z.object({
   location: z.string().nonempty("Please Enter a value"),

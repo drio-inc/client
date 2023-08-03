@@ -106,7 +106,7 @@ export default function DatasetDetails({ row }: TableRow) {
   );
 
   return (
-    <div className="py-8 h-full">
+    <div className=" h-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-gray-50"}>
         <span className="text-gray-700 inline-block p-4 rounded-md font-semibold">
           {currentDataset?.dataset}

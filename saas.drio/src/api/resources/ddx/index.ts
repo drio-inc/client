@@ -1,7 +1,7 @@
 import { LicenseKeyResponse } from "./types";
 import { rootApi } from "@/state/services/apiService";
 
-export const authApi = rootApi.injectEndpoints({
+export const ddxApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     createLicense: builder.mutation<ApiResponse<any>, FormData>({
       query: (credentials) => ({
@@ -41,4 +41,4 @@ export const {
   useFetchLicenseMutation,
   useCreateLicenseMutation,
   useUpdateLicenseMutation,
-} = authApi;
+} = ddxApi;

@@ -18,7 +18,7 @@ import { HiOutlineDownload, HiOutlinePaperClip } from "react-icons/hi";
 import { useState } from "react";
 import { IoRefresh } from "react-icons/io5";
 import * as RadioGroup from "@radix-ui/react-radio-group";
-import { usePublishDatasetMutation } from "@/state/services/apiService";
+import { usePublishDatasetMutation } from "@/api/resources/datasets";
 
 const schema = z.object({
   dataSource: z.string({

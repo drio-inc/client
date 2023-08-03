@@ -14,7 +14,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { useEditOrgAccountMutation } from "@/state/services/apiService";
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { setRows } from "@/state/slices/adminOrgAccountSlice";
+import { setRows } from "@/state/slices/orgUnitSlice";
 
 const schema = z.object({
   ou: z.string().nonempty("Please Enter a value"),

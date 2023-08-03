@@ -16,13 +16,11 @@ const AuditLogsPage = () => {
   }
 
   return (
-    <div>
-      <Layout>
-        <DashboardContainer>
-          <AuditLogs />
-        </DashboardContainer>
-      </Layout>
-    </div>
+    <Layout>
+      <DashboardContainer>
+        <AuditLogs />
+      </DashboardContainer>
+    </Layout>
   );
 };
 

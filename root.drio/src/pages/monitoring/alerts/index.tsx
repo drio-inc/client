@@ -16,13 +16,11 @@ const MonitoringPage = () => {
   }
 
   return (
-    <div>
-      <Layout>
-        <DashboardContainer>
-          <Alerts />
-        </DashboardContainer>
-      </Layout>
-    </div>
+    <Layout>
+      <DashboardContainer>
+        <Alerts />
+      </DashboardContainer>
+    </Layout>
   );
 };
 

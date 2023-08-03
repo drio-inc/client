@@ -10,12 +10,13 @@ import uiReducer from "./slices/uiSlice";
 import DDXReducer from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
 import alertsReducer from "./slices/alertsSlice";
+import orgUnitReducer from "./slices/orgUnitSlice";
 import datasetReducer from "./slices/datasetSlice";
 import metadataReducer from "./slices/metadataSlice";
+import policiesReducer from "./slices/policiesSlice";
 import anomaliesReducer from "./slices/anomaliesSlice";
 import auditLogsReducer from "./slices/auditLogsSlice";
 import dataSourceReducer from "./slices/dataSourceSlice";
-import adminOrgAccountReducer from "./slices/adminOrgAccountSlice";
 import inboundContractReducer from "./slices/inboundContractSlice";
 import outboundContractReducer from "./slices/outboundContractSlice";
 import approvedContractReducer from "./slices/approvedContractSlice";
@@ -26,26 +27,21 @@ const persistConfig = {
   storage: storageSession,
 };
 
-const persistLocalConfig = {
-  key: "ui",
-  storage: storage,
-};
-
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
-const persistedUIReducer = persistReducer(persistLocalConfig, uiReducer);
 
 export const store = configureStore({
   reducer: {
-    DDX: DDXReducer,
     ui: uiReducer,
+    DDX: DDXReducer,
     alerts: alertsReducer,
+    orgUnit: orgUnitReducer,
     dataset: datasetReducer,
     metadata: metadataReducer,
+    policies: policiesReducer,
     auth: persistedAuthReducer,
     anomalies: anomaliesReducer,
     auditLogs: auditLogsReducer,
     dataSource: dataSourceReducer,
-    adminOrgAccount: adminOrgAccountReducer,
     inboundContract: inboundContractReducer,
     outboundContract: outboundContractReducer,
     approvedContract: approvedContractReducer,

@@ -63,7 +63,7 @@ const Anomalies = () => {
   };
 
   return (
-    <div className="py-8 w-full">
+    <div className="w-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         {anomalyState.selectedRows.length > 0 && (
           <div className="flex items-center p-4 bg-gray-50">

@@ -6,7 +6,7 @@ import {
   AccountCreationResponse,
 } from "./types";
 
-export const authApi = rootApi.injectEndpoints({
+export const accountApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     getAccounts: builder.query<Accounts, void>({
       query: () => ({
@@ -68,4 +68,4 @@ export const {
   useAddAccountMutation,
   useEditAccountMutation,
   useDeleteAccountMutation,
-} = authApi;
+} = accountApi;

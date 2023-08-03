@@ -18,7 +18,7 @@ import { setRows, setDefaultSource } from "@/state/slices/dataSourceSlice";
 import { HiCheck } from "react-icons/hi";
 
 import { useState } from "react";
-import { useAddDataSourceMutation } from "@/state/services/apiService";
+import { useAddDataSourceMutation } from "@/api/resources/data-sources";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),

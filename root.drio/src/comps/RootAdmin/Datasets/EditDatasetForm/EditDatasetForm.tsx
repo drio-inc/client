@@ -18,7 +18,7 @@ import { HiOutlineDownload, HiOutlinePaperClip } from "react-icons/hi";
 
 import { useState } from "react";
 import { IoRefresh } from "react-icons/io5";
-import { useUpdateDatasetMutation } from "@/state/services/apiService";
+import { useUpdateDatasetMutation } from "@/api/resources/datasets";
 
 const schema = z.object({
   dataSource: z.string({

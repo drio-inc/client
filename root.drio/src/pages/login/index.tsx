@@ -16,9 +16,9 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { HiCheck } from "react-icons/hi";
+import { useLoginMutation } from "@/api/auth";
 import * as CheckBox from "@radix-ui/react-checkbox";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
-import { useLoginMutation } from "@/state/services/apiService";
 import { setUser, setAuthenticated } from "@/state/slices/authSlice";
 
 const schema = z.object({

@@ -16,7 +16,7 @@ import { setCloseModal } from "@/state/slices/uiSlice";
 import { useCallback, useState } from "react";
 import { TagInput } from "@/comps/ui/Forms/Inputs/Inputs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
-import { useEditMetadataMutation } from "@/state/services/apiService";
+import { useEditMetadataMutation } from "@/api/resources/metadata";
 
 import { FaCheckSquare } from "react-icons/fa";
 import { BsXSquareFill } from "react-icons/bs";

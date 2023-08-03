@@ -12,7 +12,7 @@ import Layout from "@/comps/Layout";
 import AuthContainer from "@ui/Containers/AuthContainer";
 
 import { useAppDispatch } from "@/hooks/useStoreTypes";
-import { useSetPasswordMutation } from "@/state/services/apiService";
+import { useSetPasswordMutation } from "@/api/auth";
 import { setUser, setAuthenticated } from "@/state/slices/authSlice";
 
 const schema = z

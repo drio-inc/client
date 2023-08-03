@@ -19,30 +19,6 @@ export const authApi = rootApi.injectEndpoints({
       }),
     }),
 
-    setLDAP: builder.mutation<ApiResponse<any>, FormData>({
-      query: (credentials) => ({
-        url: `/ldap`,
-        method: "POST",
-        body: credentials,
-      }),
-    }),
-
-    setGoogleAuth: builder.mutation<ApiResponse<any>, FormData>({
-      query: (credentials) => ({
-        url: `/google-auth`,
-        method: "POST",
-        body: credentials,
-      }),
-    }),
-
-    setOAuth: builder.mutation<ApiResponse<any>, FormData>({
-      query: (credentials) => ({
-        url: `/oauth`,
-        method: "POST",
-        body: credentials,
-      }),
-    }),
-
     resetPassword: builder.mutation<ApiResponse<any>, FormData>({
       query: (credentials) => ({
         url: `/reset-password`,
@@ -53,11 +29,5 @@ export const authApi = rootApi.injectEndpoints({
   }),
 });
 
-export const {
-  useLoginMutation,
-  useLogoutMutation,
-  useSetLDAPMutation,
-  useSetOAuthMutation,
-  useSetGoogleAuthMutation,
-  useResetPasswordMutation,
-} = authApi;
+export const { useLoginMutation, useLogoutMutation, useResetPasswordMutation } =
+  authApi;

@@ -78,7 +78,7 @@ const InboundContracts = () => {
   };
 
   return (
-    <div className="py-8 w-full">
+    <div className="py-2 w-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <span className="text-lg text-gray-700 font-semibold inline-block p-4 my-1 bg-white">
           Contracts to Approve

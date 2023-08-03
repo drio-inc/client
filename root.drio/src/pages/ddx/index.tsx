@@ -16,13 +16,11 @@ const DDXPage = () => {
   }
 
   return (
-    <div>
-      <Layout>
-        <DashboardContainer>
-          <DDX />
-        </DashboardContainer>
-      </Layout>
-    </div>
+    <Layout>
+      <DashboardContainer>
+        <DDX />
+      </DashboardContainer>
+    </Layout>
   );
 };
 

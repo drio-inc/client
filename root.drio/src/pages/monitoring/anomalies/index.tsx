@@ -16,13 +16,11 @@ const AnomaliesPage = () => {
   }
 
   return (
-    <div>
-      <Layout>
-        <DashboardContainer>
-          <Anomalies />
-        </DashboardContainer>
-      </Layout>
-    </div>
+    <Layout>
+      <DashboardContainer>
+        <Anomalies />
+      </DashboardContainer>
+    </Layout>
   );
 };
 

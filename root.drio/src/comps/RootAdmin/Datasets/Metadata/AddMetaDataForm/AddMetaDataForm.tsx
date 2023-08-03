@@ -17,7 +17,7 @@ import { useCallback, useState } from "react";
 import { HiX } from "react-icons/hi";
 import { TagInput } from "@/comps/ui/Forms/Inputs/Inputs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
-import { useAddMetadataMutation } from "@/state/services/apiService";
+import { useAddMetadataMutation } from "@/api/resources/metadata";
 
 const schema = z.object({
   name: z.string().optional(),

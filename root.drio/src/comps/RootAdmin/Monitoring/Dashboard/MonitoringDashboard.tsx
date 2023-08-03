@@ -15,7 +15,7 @@ const Monitoring = () => {
   };
 
   return (
-    <div className="py-8">
+    <div className="">
       <div className="bg-gray-50 shadow-md pt-8">
         <div className="flex justify-end mb-4 mr-6">
           <DateRangePicker
