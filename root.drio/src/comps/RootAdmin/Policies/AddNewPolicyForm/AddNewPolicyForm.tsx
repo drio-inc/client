@@ -12,7 +12,8 @@ import { useRouter } from "next/router";
 import { Form, useZodForm } from "@/comps/ui/Forms/Form";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 import { useGetPoliciesQuery } from "@/api/resources/policies";
-import { SelectInput } from "@/comps/ui/Forms/Inputs";
+import { SelectInput, TextInput } from "@/comps/ui/Forms/Inputs";
+import Image from "next/image";
 
 const policySchema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -84,20 +85,60 @@ const AddNewPolicyForm = () => {
 
   return (
     <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-      <Form form={form} onSubmit={onSubmit}>
-        <div className="px-4 py-2 w-full">
-          <SelectInput
-            label="Country"
-            registerName="country"
-            placeholder="Select country"
-            options={[]}
-          />
+      <div className="p-4 bg-gray-50 rounded-lg">
+        <h2 className="text-gray-700 text-2xl font-bold">Add New Policy</h2>
+      </div>
+
+      <Form form={form} onSubmit={onSubmit} className="w-full mb-16">
+        <div className="flex justify-between">
+          <div className="px-4 py-2 w-1/4">
+            <TextInput
+              label={"Name"}
+              placeholder={"Enter name"}
+              {...form.register("name")}
+              className="md:text-sm 2xl:text-base"
+            />
+          </div>
+
+          <div className="px-4 py-2 w-1/4">
+            <SelectInput
+              label="Type"
+              registerName="type"
+              placeholder="Select type"
+              options={[]}
+            />
+          </div>
+
+          <div className="px-4 py-2 w-1/4">
+            <SelectInput
+              label="For Contract"
+              registerName="contract"
+              placeholder="Select contract"
+              options={[]}
+            />
+          </div>
+
+          <div className="px-4 py-2 w-1/4">
+            <SelectInput
+              label="Persona"
+              registerName="persona"
+              placeholder="Select persona"
+              options={[]}
+            />
+          </div>
+        </div>
+        <div className="px-4 py-2 flex">
+          <Button intent={"primary"} className="ml-auto">
+            Save Policy
+          </Button>
         </div>
       </Form>
 
       <div
-        className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
+        className={`bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between border-t pt-16`}
       >
+        <h2 className="text-gray-700 text-2xl font-bold">Service Record</h2>
+
         <Button
           intent={"tertiary"}
           className="ml-auto"
@@ -110,12 +151,37 @@ const AddNewPolicyForm = () => {
         </Button>
       </div>
 
-      <Table
+      <div className="w-full flex justify-around">
+        {headers?.map((header, index) => (
+          <div
+            key={index}
+            className={"font-medium uppercase text-gray-500 text-sm p-4"}
+          >
+            {header.header}
+          </div>
+        ))}
+      </div>
+
+      <div className="relative bg-gradient-to-t from-gray-100">
+        {[...Array(10)].map((_, i) => (
+          <div key={i} className="border-t border-b p-4 h-[64px]" />
+        ))}
+
+        <Image
+          width={50}
+          height={50}
+          alt="empty"
+          src="/document.svg"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white"
+        />
+      </div>
+
+      {/* <Table
         noSelection
         headers={headers}
         rows={policiesState.rows}
         selectedRows={policiesState.selectedRows}
-      />
+      /> */}
     </div>
   );
 };
