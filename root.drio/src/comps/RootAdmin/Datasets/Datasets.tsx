@@ -110,16 +110,6 @@ const Dataset = () => {
               </div>
             </Button>
           </div>
-
-          <div className="hidden">
-            <Modal identifier="addDataSourceForm">
-              <AddDataSourceForm />
-            </Modal>
-
-            <Modal identifier="publishDatasetForm">
-              <PublishDatasetForm />
-            </Modal>
-          </div>
         </div>
 
         {datasetState.selectedRows.length > 0 && (

@@ -11,7 +11,7 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import { useAddOrgAccountMutation } from "@/state/services/apiService";
+import { useAddOrgAccountMutation } from "@/api/resources/ous";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/adminOrgAccountSlice";

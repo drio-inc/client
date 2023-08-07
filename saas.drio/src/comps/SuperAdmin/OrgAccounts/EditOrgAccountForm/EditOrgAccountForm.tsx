@@ -12,7 +12,7 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { useEditOrgAccountMutation } from "@/state/services/apiService";
+import { useEditOrgAccountMutation } from "@/api/resources/ous";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/adminOrgAccountSlice";
 

@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import * as CheckBox from "@radix-ui/react-checkbox";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
-import { useActivateMutation } from "@/state/services/apiService";
+import { useActivateMutation } from "@/api/auth";
 
 import { setUser } from "@/state/slices/authSlice";
 import { HiCheck } from "react-icons/hi";

@@ -6,15 +6,17 @@ import * as Popover from "@radix-ui/react-popover";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { setOpenModal } from "@/state/slices/uiSlice";
-import { setRows, setSelectedRows } from "@/state/slices/orgUnitSlice";
+import { setRuleRows, setSelectedRuleRows } from "@/state/slices/policiesSlice";
 
-const AccountMenu = ({ row, editForm }: any) => {
+const PolicyRulesMenu = ({ row, editForm }: any) => {
   const dispatch = useAppDispatch();
-  const orgUnitState = useAppSelector((state) => state.orgUnit);
+  const policiesState = useAppSelector((state) => state.policies);
 
   const deleteRow = (id: number | string) => {
-    dispatch(setRows(orgUnitState.rows.filter((row) => row.id !== id)));
-    dispatch(setSelectedRows([]));
+    dispatch(
+      setRuleRows(policiesState.ruleRows.filter((row) => row.id !== id))
+    );
+    dispatch(setSelectedRuleRows([]));
   };
 
   return (
@@ -28,7 +30,7 @@ const AccountMenu = ({ row, editForm }: any) => {
           side="left"
           sideOffset={5}
           align="center"
-          className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
+          className="bg-white rounded-lg shadow-lg text-sm text-gray-700 z-[1001]"
         >
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <AlertModal
@@ -55,4 +57,4 @@ const AccountMenu = ({ row, editForm }: any) => {
   );
 };
 
-export default AccountMenu;
+export default PolicyRulesMenu;

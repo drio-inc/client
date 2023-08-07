@@ -18,7 +18,7 @@ import { setRows } from "@/state/slices/dataSourceSlice";
 import { HiCheck } from "react-icons/hi";
 
 import { useState } from "react";
-import { useEditDataSourceMutation } from "@/state/services/apiService";
+import { useEditDataSourceMutation } from "@/api/resources/data-sources";
 
 const options = [
   { label: "Kafka", value: "kafka" },
@@ -67,7 +67,8 @@ export default function EditDatasourceForm({ row }: TableRow) {
       showAlert("Data Source updated successfully.", "success");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
 

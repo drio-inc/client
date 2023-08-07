@@ -248,7 +248,9 @@ export default function AddAccountForm() {
             </div>
           </div>
 
-          <h2 className="text-gray-700 text-sm my-2">Account Details</h2>
+          <h2 className="text-gray-700 text-2xl font-bold my-4">
+            Account Details
+          </h2>
 
           <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">
             {detailFields.map((field) => (
@@ -264,7 +266,7 @@ export default function AddAccountForm() {
             ))}
           </div>
 
-          <h2 className="text-gray-700 text-sm my-2">
+          <h2 className="text-gray-700 text-2xl font-bold my-4">
             Primary Contact Information
           </h2>
 

@@ -25,7 +25,6 @@ import {
   HiEyeOff,
   HiChevronDown,
   HiExclamationCircle,
-  HiOutlineDuplicate,
 } from "react-icons/hi";
 
 import styles from "./Inputs.module.scss";
@@ -59,7 +58,7 @@ interface SelectProps extends ComponentProps<"select">, SharedProps {
   };
 
   options: {
-    value: string;
+    value: string | number | boolean;
     label: string;
   }[];
 }

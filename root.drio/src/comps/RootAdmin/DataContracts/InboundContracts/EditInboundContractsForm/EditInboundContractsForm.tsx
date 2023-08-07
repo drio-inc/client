@@ -14,7 +14,7 @@ import { setRows } from "@/state/slices/datasetSlice";
 import { setCloseModal } from "@/state/slices/uiSlice";
 
 import { HiPlus, HiX } from "react-icons/hi";
-import { useUpdateDatasetMutation } from "@/state/services/apiService";
+import { useUpdateDatasetMutation } from "@/api/resources/datasets";
 
 import Image from "next/image";
 import { AiFillCaretRight } from "react-icons/ai";

@@ -7,7 +7,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setRows, setAddNewDispatched } from "@/state/slices/datasetSlice";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
-import { usePublishDatasetMutation } from "@/state/services/apiService";
+import { usePublishDatasetMutation } from "@/api/resources/datasets";
 import { HiUpload, HiOutlineDuplicate } from "react-icons/hi";
 
 export default function ExportAppLink({ row }: TableRow) {

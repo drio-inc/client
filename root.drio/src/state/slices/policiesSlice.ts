@@ -3,15 +3,21 @@ import { createSlice } from "@reduxjs/toolkit";
 type PolicyState = {
   rows: TableRow[];
   selectedRows: number[];
+
+  ruleRows: TableRow[];
+  selectedRuleRows: number[];
 };
 
 const initialState: PolicyState = {
   rows: [],
   selectedRows: [],
+
+  ruleRows: [],
+  selectedRuleRows: [],
 };
 
 const policiesSlice = createSlice({
-  name: "policy",
+  name: "policies",
   initialState,
   reducers: {
     setRows(state, action) {
@@ -21,11 +27,20 @@ const policiesSlice = createSlice({
     setSelectedRows(state, action) {
       state.selectedRows = action.payload;
     },
+
+    setRuleRows(state, action) {
+      state.ruleRows = action.payload;
+    },
+
+    setSelectedRuleRows(state, action) {
+      state.selectedRuleRows = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = policiesSlice.actions;
+export const { setRows, setSelectedRows, setRuleRows, setSelectedRuleRows } =
+  policiesSlice.actions;
 
 export default policiesSlice.reducer;

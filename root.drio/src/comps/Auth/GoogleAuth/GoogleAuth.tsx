@@ -16,7 +16,7 @@ import {
 } from "@/state/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import { useSetGoogleAuthMutation } from "@/state/services/apiService";
+import { useSetGoogleAuthMutation } from "@/api/auth";
 
 const schema = z.object({
   authValue: z.string().nonempty("Please Enter a value").nullable().optional(),

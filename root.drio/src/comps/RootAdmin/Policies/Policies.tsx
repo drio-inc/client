@@ -1,17 +1,19 @@
 import Table from "@/comps/ui/Table";
+import { useRouter } from "next/router";
 
-import { setRows, setSelectedRows } from "@/state/slices/policiesSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import { setRows, setSelectedRows } from "@/state/slices/policiesSlice";
 
+import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
+import PolicyRules from "./PolicyRules";
 import PoliciesMenu from "./PoliciesMenu";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
-import { HiMinusSm, HiPlus, HiUpload } from "react-icons/hi";
-import { useRouter } from "next/router";
-import { useGetPoliciesQuery } from "@/api/resources/policies";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+import { HiMinusSm, HiPlus, HiUpload } from "react-icons/hi";
+import { useGetPoliciesQuery } from "@/api/resources/policies";
 
 const headers = [
   {
@@ -48,8 +50,9 @@ const headers = [
 const Policies = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { data, isLoading } = useGetPoliciesQuery();
   const policiesState = useAppSelector((state) => state.policies);
+
+  const { data, isLoading } = useGetPoliciesQuery();
 
   if (isLoading) return <StaticLoader />;
 
@@ -69,6 +72,10 @@ const Policies = () => {
 
   const clearSelectedRows = () => {
     dispatch(setSelectedRows([]));
+  };
+
+  const handleRowClick = (index: number) => {
+    dispatch(setOpenModal("policyRulesTable"));
   };
 
   return (
@@ -119,14 +126,20 @@ const Policies = () => {
               </div>
             </Button>
           </div>
+
+          <div className="hidden">
+            <Modal identifier="policyRulesTable">
+              <PolicyRules modal={true} />
+            </Modal>
+          </div>
         </div>
 
         <Table
           headers={headers}
           menu={PoliciesMenu}
           rows={policiesState.rows}
-          // editForm={EditOrgAccountForm}
           handleCheckbox={handleCheckbox}
+          handleRowClick={handleRowClick}
           selectedRows={policiesState.selectedRows}
         />
       </div>

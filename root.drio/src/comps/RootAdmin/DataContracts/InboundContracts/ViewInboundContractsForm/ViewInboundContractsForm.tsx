@@ -12,7 +12,7 @@ import { setCloseModal } from "@/state/slices/uiSlice";
 
 import { HiOutlineClock } from "react-icons/hi";
 import { MdOutlineCalendarMonth } from "react-icons/md";
-import { useUpdateDatasetMutation } from "@/state/services/apiService";
+import { useUpdateDatasetMutation } from "@/api/resources/datasets";
 
 import Image from "next/image";
 import { AiFillCaretRight } from "react-icons/ai";

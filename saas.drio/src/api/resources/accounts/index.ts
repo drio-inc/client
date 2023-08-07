@@ -41,7 +41,7 @@ export const accountApi = rootApi.injectEndpoints({
       invalidatesTags: ["Accounts"],
     }),
 
-    editAccount: builder.mutation<ApiResponse<any>, FormData>({
+    editAccount: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/saas/edit-account`,
         method: "POST",
@@ -50,7 +50,7 @@ export const accountApi = rootApi.injectEndpoints({
       invalidatesTags: ["Accounts"],
     }),
 
-    deleteAccount: builder.mutation<ApiResponse<any>, FormData>({
+    deleteAccount: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
         url: `/resources/delete`,
         method: "POST",

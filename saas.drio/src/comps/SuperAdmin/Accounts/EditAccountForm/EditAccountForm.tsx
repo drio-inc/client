@@ -10,7 +10,7 @@ import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { useEditAccountMutation } from "@/state/services/apiService";
+import { useEditAccountMutation } from "@/api/resources/accounts";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/adminAccountSlice";
 

@@ -12,7 +12,7 @@ export const orgApi = rootApi.injectEndpoints({
       }),
     }),
 
-    editOrgAccount: builder.mutation<ApiResponse<any>, any>({
+    editOrgAccount: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/resources/edit-org`,
         method: "POST",

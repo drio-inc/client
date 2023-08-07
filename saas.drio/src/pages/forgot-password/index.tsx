@@ -5,7 +5,7 @@ import AuthContainer from "@ui/Containers/AuthContainer";
 import { useZodForm, Form } from "@/comps/ui/Forms/Form";
 import { SubmitHandler } from "react-hook-form";
 
-import { useResetPasswordMutation } from "@/state/services/apiService";
+import { useResetPasswordMutation } from "@/api/auth";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 import { useRouter } from "next/router";
 import showAlert from "@/comps/ui/Alert";

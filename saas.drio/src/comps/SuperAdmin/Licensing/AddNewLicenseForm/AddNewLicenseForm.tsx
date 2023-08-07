@@ -13,7 +13,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import LicenseDetails from "../LicenseDetails/LicenseDetails";
 
-import { useCreateLicenseMutation } from "@/state/services/apiService";
+import { useCreateLicenseMutation } from "@/api/resources/ddx";
 import { setRows } from "@/state/slices/licensingSlice";
 
 const schema = z.object({

@@ -17,7 +17,7 @@ import {
 
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import { useSetOAuthMutation } from "@/state/services/apiService";
+import { useSetOAuthMutation } from "@/api/auth";
 import showAlert from "@ui/Alert";
 
 const schema = z.object({

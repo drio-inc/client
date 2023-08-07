@@ -18,7 +18,7 @@ import LicenseDetails from "../LicenseDetails/LicenseDetails";
 import {
   useUpdateLicenseMutation,
   useFetchLicenseMutation,
-} from "@/state/services/apiService";
+} from "@/api/resources/ddx";
 import { useState } from "react";
 
 const schema = z.object({

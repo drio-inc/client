@@ -23,6 +23,7 @@ type TableProps = {
   editForm?: React.FC | any;
   detailsWindow?: React.FC | any;
   clearSelectedRows?: () => void;
+  handleRowClick?: (index: number) => void;
   handleCheckbox?: (index: number) => void;
 };
 
@@ -31,6 +32,7 @@ const Table = ({
   headers,
   selectedRows,
   handleCheckbox,
+  handleRowClick,
   menu: TableMenu,
   noSelection = false,
   editForm: EditFormComponent,
@@ -102,17 +104,16 @@ const Table = ({
                 {headers?.map((header, index) => (
                   <>
                     {header.type === "array" ? (
-                      <>
-                        <MetaTags tags={row[header.accessor]} />
-                      </>
+                      <MetaTags tags={row[header.accessor]} />
                     ) : (
                       <td
                         key={index}
+                        onClick={() => handleRowClick?.(row.id)}
                         className={
-                          "border-t border-b text-gray-500 text-xs p-4 text-left "
+                          "cursor-pointer border-t border-b text-gray-500 text-xs p-4 text-left"
                         }
                       >
-                        <span
+                        <div
                           className={`${
                             header?.status?.[row[header.accessor]]
                           } inline-block`}
@@ -120,7 +121,7 @@ const Table = ({
                           <span className="capitalize">
                             {row[header.accessor] ?? "N/A"}
                           </span>
-                        </span>
+                        </div>
                       </td>
                     )}
                   </>

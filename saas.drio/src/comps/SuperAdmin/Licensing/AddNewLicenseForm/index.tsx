@@ -1,1 +1,1 @@
-export { default } from "./addNewLicenseForm";
+export { default } from "./AddNewLicenseForm";

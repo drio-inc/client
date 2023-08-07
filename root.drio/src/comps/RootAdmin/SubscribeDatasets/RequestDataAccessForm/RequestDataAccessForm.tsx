@@ -11,7 +11,7 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { useRequestDataAccessMutation } from "@/state/services/apiService";
+import { useRequestDataAccessMutation } from "@/api/resources/subscribe-datasets";
 
 const schema = z.object({
   ou: z.string({
@@ -36,7 +36,7 @@ type FormData = z.infer<typeof schema>;
 export default function RequestDataAccessForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [requestAccess, result] = useRequestDataAccessMutation();
-  const adminOrgState = useAppSelector((state) => state.adminOrgAccount);
+  const orgUnitState = useAppSelector((state) => state.orgUnit);
 
   const form = useZodForm({
     schema: schema,
@@ -52,7 +52,9 @@ export default function RequestDataAccessForm({ row }: TableRow) {
 
       showAlert("Request sent successfully", "success");
     } catch (err: any) {
-      showAlert(err?.data?.message ?? "Something went wrong. Please try again.");
+      showAlert(
+        err?.data?.message ?? "Something went wrong. Please try again."
+      );
     }
 
     form.reset();
@@ -63,7 +65,9 @@ export default function RequestDataAccessForm({ row }: TableRow) {
     <Layout>
       <Form form={form} onSubmit={onSubmit}>
         <div className="mx-auto bg-white p-6 rounded-lg max-w-[60vw]">
-          <h2 className="text-gray-700 text-2xl font-bold">Request Data Access</h2>
+          <h2 className="text-gray-700 text-2xl font-bold">
+            Request Data Access
+          </h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4 border bg-gray-50">
             <div className="px-4 py-2 w-1/2">
@@ -72,7 +76,7 @@ export default function RequestDataAccessForm({ row }: TableRow) {
                 label={"From Organization"}
                 registerName="ou"
                 className="md:text-sm 2xl:text-base"
-                options={adminOrgState.rows.map((row) => ({
+                options={orgUnitState.rows.map((row) => ({
                   label: row.ou,
                   value: row.ou.toLowerCase().replace(/\s/g, ""),
                 }))}
@@ -156,7 +160,11 @@ export default function RequestDataAccessForm({ row }: TableRow) {
           </div>
 
           <div className="px-2 py-2 flex gap-4 justify-end mt-4">
-            <Button type="button" intent={`secondary`} onClick={() => dispatch(setCloseModal("requestDataAccessForm"))}>
+            <Button
+              type="button"
+              intent={`secondary`}
+              onClick={() => dispatch(setCloseModal("requestDataAccessForm"))}
+            >
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>
 

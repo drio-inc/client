@@ -19,7 +19,7 @@ import {
   setAuthenticated,
 } from "@/state/slices/authSlice";
 
-import { useSetLDAPMutation } from "@/state/services/apiService";
+import { useSetLDAPMutation } from "@/api/auth";
 
 const schema = z.object({
   authValue: z.string().nonempty("Please Enter a value").optional(),

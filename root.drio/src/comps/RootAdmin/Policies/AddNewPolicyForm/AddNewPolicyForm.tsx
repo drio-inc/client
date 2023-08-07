@@ -8,12 +8,18 @@ import Button from "@/comps/ui/Button";
 import { HiPlus } from "react-icons/hi";
 import { setOpenModal } from "@/state/slices/uiSlice";
 
+import Image from "next/image";
+import Modal from "@/comps/ui/Modal";
 import { useRouter } from "next/router";
+import AddNewRuleForm from "../PolicyRules/AddNewRuleForm";
 import { Form, useZodForm } from "@/comps/ui/Forms/Form";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 import { useGetPoliciesQuery } from "@/api/resources/policies";
 import { SelectInput, TextInput } from "@/comps/ui/Forms/Inputs";
-import Image from "next/image";
+
+import { useAddPolicyMutation } from "@/api/resources/policies";
+import showAlert from "@/comps/ui/Alert";
+import PolicyRules from "../PolicyRules/PolicyRules";
 
 const policySchema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -35,25 +41,29 @@ type FormData = z.infer<typeof policySchema>;
 
 const headers = [
   {
-    header: "Name",
+    header: "Rule Name",
     accessor: "name",
   },
   {
-    header: "Type",
-    accessor: "type",
+    header: "Metadata Attribute",
+    accessor: "metadata",
   },
 
   {
-    header: "Scope",
-    accessor: "scope",
+    header: "Conditions",
+    accessor: "conditions",
   },
   {
-    header: "Date Created",
-    accessor: "dateCreated",
+    header: "Value",
+    accessor: "value",
   },
   {
-    header: "Created By",
-    accessor: "createdBy",
+    header: "Action",
+    accessor: "action",
+  },
+  {
+    header: "Subrule",
+    accessor: "subrule",
   },
   {
     header: "Date Last Modified",
@@ -68,19 +78,31 @@ const headers = [
 const AddNewPolicyForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { data, isLoading } = useGetPoliciesQuery();
+  const [addPolicy, result] = useAddPolicyMutation();
   const policiesState = useAppSelector((state) => state.policies);
 
   const form = useZodForm({
     schema: policySchema,
   });
 
-  if (isLoading) return <StaticLoader />;
+  const onSubmit = async (data: FormData) => {
+    try {
+      const res = await addPolicy({
+        ...data,
+      }).unwrap();
 
-  if (data) dispatch(setRows(data));
+      console.log(res);
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+      dispatch(setRows([res]));
+
+      console.log(policiesState.rows);
+
+      showAlert("Policy added successfully", "success");
+    } catch (err: any) {
+      showAlert(
+        err?.data?.message ?? "Something went wrong. Please try again."
+      );
+    }
   };
 
   return (
@@ -105,7 +127,10 @@ const AddNewPolicyForm = () => {
               label="Type"
               registerName="type"
               placeholder="Select type"
-              options={[]}
+              options={[
+                { label: "Type 1", value: "type1" },
+                { label: "Type 2", value: "type2" },
+              ]}
             />
           </div>
 
@@ -114,7 +139,10 @@ const AddNewPolicyForm = () => {
               label="For Contract"
               registerName="contract"
               placeholder="Select contract"
-              options={[]}
+              options={[
+                { label: "Contract 1", value: "contract1" },
+                { label: "Contract 2", value: "contract2" },
+              ]}
             />
           </div>
 
@@ -123,65 +151,25 @@ const AddNewPolicyForm = () => {
               label="Persona"
               registerName="persona"
               placeholder="Select persona"
-              options={[]}
+              options={[
+                { label: "Persona 1", value: "persona1" },
+                { label: "Persona 2", value: "persona2" },
+              ]}
             />
           </div>
         </div>
         <div className="px-4 py-2 flex">
-          <Button intent={"primary"} className="ml-auto">
+          <Button
+            intent={"primary"}
+            className="ml-auto"
+            isLoading={result.isLoading}
+          >
             Save Policy
           </Button>
         </div>
       </Form>
 
-      <div
-        className={`bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between border-t pt-16`}
-      >
-        <h2 className="text-gray-700 text-2xl font-bold">Service Record</h2>
-
-        <Button
-          intent={"tertiary"}
-          className="ml-auto"
-          onClick={() => router.push("/policies/new-policy")}
-        >
-          <div className="flex items-center gap-1">
-            <HiPlus />
-            <span className="inline-block">Add New Rule</span>
-          </div>
-        </Button>
-      </div>
-
-      <div className="w-full flex justify-around">
-        {headers?.map((header, index) => (
-          <div
-            key={index}
-            className={"font-medium uppercase text-gray-500 text-sm p-4"}
-          >
-            {header.header}
-          </div>
-        ))}
-      </div>
-
-      <div className="relative bg-gradient-to-t from-gray-100">
-        {[...Array(10)].map((_, i) => (
-          <div key={i} className="border-t border-b p-4 h-[64px]" />
-        ))}
-
-        <Image
-          width={50}
-          height={50}
-          alt="empty"
-          src="/document.svg"
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white"
-        />
-      </div>
-
-      {/* <Table
-        noSelection
-        headers={headers}
-        rows={policiesState.rows}
-        selectedRows={policiesState.selectedRows}
-      /> */}
+      <PolicyRules />
     </div>
   );
 };

@@ -22,6 +22,7 @@ const initialState: UIState = {
     accounts: "Accounts",
     licensing: "Licensing",
     ou: "Organization Units",
+    "new policy": "Policies",
   },
 };
 

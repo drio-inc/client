@@ -12,7 +12,7 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { useEditOrgAccountMutation } from "@/state/services/apiService";
+import { useEditOrgAccountMutation } from "@/api/resources/ous";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/orgUnitSlice";
 
@@ -35,7 +35,7 @@ type FormData = z.infer<typeof schema>;
 export default function EditOrgAccountForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [editOrgAccount, result] = useEditOrgAccountMutation();
-  const adminOrgState = useAppSelector((state) => state.adminOrgAccount);
+  const orgUnitState = useAppSelector((state) => state.orgUnit);
 
   const form = useZodForm({
     schema: schema,
@@ -49,9 +49,7 @@ export default function EditOrgAccountForm({ row }: TableRow) {
       }).unwrap();
 
       dispatch(
-        setRows(
-          adminOrgState.rows.map((row) => (row.id === res.id ? res : row))
-        )
+        setRows(orgUnitState.rows.map((row) => (row.id === res.id ? res : row)))
       );
 
       dispatch(setCloseModal("editOrgAccountForm"));
