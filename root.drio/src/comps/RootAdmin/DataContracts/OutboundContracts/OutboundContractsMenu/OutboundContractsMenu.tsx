@@ -40,7 +40,7 @@ const OutboundContractsMenu = ({ row, editForm, detailsWindow }: any) => {
             />
           </span>
 
-          <Link href={`/data-contracts/inbound-contracts`}>
+          <Link href={`/data-contracts/outbound-contracts`}>
             <span
               className={
                 "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
@@ -50,7 +50,7 @@ const OutboundContractsMenu = ({ row, editForm, detailsWindow }: any) => {
             </span>
           </Link>
 
-          <Link href={`/data-contracts/inbound-contracts`}>
+          <Link href={`/data-contracts/outbound-contracts`}>
             <span
               className={
                 "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"

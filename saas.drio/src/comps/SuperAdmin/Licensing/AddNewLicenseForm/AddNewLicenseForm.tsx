@@ -39,8 +39,8 @@ export default function UpdateLicenseForm({ row }: TableRow) {
 
   const options = adminAccountState.rows.map((row) => {
     return {
-      label: row.account,
-      value: row.account.split(" ").join("_").toLowerCase(),
+      label: row.name,
+      value: row.name.split(" ").join("_").toLowerCase(),
     };
   });
 

@@ -1,12 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 import { useRouter } from "next/router";
 
 import { setExpandedLinks } from "@/state/slices/uiSlice";
 
-import { IoGridOutline, IoLayersOutline } from "react-icons/io5";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
+import { IoGridOutline, IoLayersOutline } from "react-icons/io5";
 
 import {
   HiOutlineCog,
@@ -23,6 +22,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 interface NavLink {
   name: string;
   href: string;
+  default?: string;
   icon?: JSX.Element;
   children?: {
     name: string;
@@ -39,6 +39,7 @@ const NavLinks = [
   {
     name: "Datasets",
     href: "datasets",
+    default: "my-datasets",
     icon: <HiOutlineCloud className="inline-block w-6 h-6 mr-2" />,
     children: [
       {
@@ -59,6 +60,7 @@ const NavLinks = [
   {
     name: "Data Contracts",
     href: "data-contracts",
+    default: "inbound-contracts",
     icon: <IoLayersOutline className="inline-block w-6 h-6 mr-2" />,
     children: [
       {
@@ -89,7 +91,9 @@ const NavLinks = [
   {
     name: "Monitoring",
     href: "monitoring",
-    icon: <HiOutlinePresentationChartBar className="inline-block w-6 h-6 mr-2" />,
+    icon: (
+      <HiOutlinePresentationChartBar className="inline-block w-6 h-6 mr-2" />
+    ),
     children: [
       {
         name: "Alerts",
@@ -113,7 +117,9 @@ const NavLinks = [
   {
     name: "Troubleshooting",
     href: "troubleshooting",
-    icon: <HiOutlinePresentationChartLine className="inline-block w-6 h-6 mr-2" />,
+    icon: (
+      <HiOutlinePresentationChartLine className="inline-block w-6 h-6 mr-2" />
+    ),
   },
 
   {
@@ -125,6 +131,7 @@ const NavLinks = [
   {
     name: "My Org",
     href: "my-org",
+    default: "org-units",
     icon: <HiOutlineLibrary className="inline-block w-6 h-6 mr-2" />,
     children: [
       {
@@ -133,7 +140,7 @@ const NavLinks = [
       },
       {
         name: "Agreements and Assets",
-        href: "agreements",
+        href: "agreements-and-assets",
       },
       {
         name: "Authentication",
@@ -184,7 +191,7 @@ export default function Sidebar() {
           <ul className="md:flex-col md:min-w-full flex flex-col list-none">
             {NavLinks.map((link) => (
               <li key={link.name}>
-                <span
+                <div
                   className={`text-sm py-3 px-2 font-medium flex justify-between items-center 
                         ${
                           router.pathname.indexOf(link.href) !== -1
@@ -193,15 +200,23 @@ export default function Sidebar() {
                         }
                       `}
                 >
-                  <Link href={`/${link.href}`}>
+                  <Link
+                    href={`/${
+                      link.default ? `${link.href}/${link.default}` : link.href
+                    }`}
+                  >
                     <span
                       className={`                        ${
-                        router.pathname.indexOf(link.href) !== -1 ? "text-gray-600" : "text-gray-400"
+                        router.pathname.indexOf(link.href) !== -1
+                          ? "text-gray-600"
+                          : "text-gray-400"
                       }`}
                     >
                       {link.icon}
                     </span>
-                    <span className={`text-gray-500 hover:text-gray-600`}>{link.name}</span>
+                    <span className={`text-gray-500 hover:text-gray-600`}>
+                      {link.name}
+                    </span>
                   </Link>
                   {link.children && (
                     <span
@@ -217,27 +232,29 @@ export default function Sidebar() {
                       )}
                     </span>
                   )}
-                </span>
+                </div>
 
-                {link.children && expandedLinks[link.name] && link.children.length > 0 && (
-                  <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-4 my-2">
-                    {link.children.map((child) => (
-                      <li key={child.name}>
-                        <Link href={`/${link.href}/${child.href}`}>
-                          <span
-                            className={`text-sm py-3 px-2 font-medium block my-1 ${
-                              router.pathname.indexOf(child.href) !== -1
-                                ? "bg-gray-100 text-gray-600 hover:text-gray-500 rounded-lg"
-                                : "text-gray-500 hover:text-gray-600"
-                            }`}
-                          >
-                            {child.name}
-                          </span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                {link.children &&
+                  expandedLinks[link.name] &&
+                  link.children.length > 0 && (
+                    <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-4 my-2">
+                      {link.children.map((child) => (
+                        <li key={child.name}>
+                          <Link href={`/${link.href}/${child.href}`}>
+                            <span
+                              className={`text-sm py-3 px-2 font-medium block my-1 ${
+                                router.pathname.indexOf(child.href) !== -1
+                                  ? "bg-gray-100 text-gray-600 hover:text-gray-500 rounded-lg"
+                                  : "text-gray-500 hover:text-gray-600"
+                              }`}
+                            >
+                              {child.name}
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
               </li>
             ))}
           </ul>

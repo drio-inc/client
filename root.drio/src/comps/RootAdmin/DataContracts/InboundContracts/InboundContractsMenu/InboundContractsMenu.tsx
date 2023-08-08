@@ -35,7 +35,7 @@ const InboundContractsMenu = ({ row, editForm, detailsWindow }: any) => {
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <AlertModal
               row={row}
-              accessor={row.dataset}
+              accessor={row.ou}
               onClick={() => deleteRow(row.id)}
             />
           </span>

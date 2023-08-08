@@ -13,6 +13,7 @@ import AddNewPolicyForm from "../AddNewPolicyForm";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 
 import PolicyRulesMenu from "./PolicyRulesMenu";
+import AddNewRuleForm from "./AddNewRuleForm/AddNewRuleForm";
 
 const headers = [
   {
@@ -62,19 +63,34 @@ const PolicyRules = ({ modal = false }: { modal?: boolean }) => {
       >
         <h2 className="text-gray-700 text-2xl font-bold">Policy-Mktg Rules</h2>
 
-        <Button
-          intent={"primary"}
-          className="ml-auto"
-          onClick={() => {
-            dispatch(setCloseModal("policyRulesTable"));
-            router.push("/policies/new-policy");
-          }}
-        >
-          <div className="flex items-center gap-1">
-            <HiPlus />
-            <span className="inline-block">Add New Policy</span>
-          </div>
-        </Button>
+        {modal ? (
+          <Button
+            intent={"primary"}
+            className="ml-auto"
+            onClick={() => {
+              dispatch(setCloseModal("policyRulesTable"));
+              router.push("/policies/new-policy");
+            }}
+          >
+            <div className="flex items-center gap-1">
+              <HiPlus />
+              <span className="inline-block">Add New Policy</span>
+            </div>
+          </Button>
+        ) : (
+          <Button
+            intent={"tertiary"}
+            className="ml-auto"
+            onClick={() => {
+              dispatch(setOpenModal("addNewRuleForm"));
+            }}
+          >
+            <div className="flex items-center gap-1">
+              <HiPlus />
+              <span className="inline-block">Add New Rule</span>
+            </div>
+          </Button>
+        )}
 
         {modal && (
           <span>
@@ -88,7 +104,7 @@ const PolicyRules = ({ modal = false }: { modal?: boolean }) => {
 
       <div className="hidden">
         <Modal identifier="addNewRuleForm">
-          <AddNewPolicyForm />
+          <AddNewRuleForm />
         </Modal>
       </div>
 

@@ -26,7 +26,7 @@ const AlertModal = ({ row, accessor, onClick }: IModalProps) => {
             <HiX className="text-[#FF4D4D] w-10 h-10 mx-auto" />
           </div>
           <AlertDialog.Title className="text-[#223354] text-2xl font-bold text-center">
-            Are you sure you want to permanently delete {accessor} account?
+            Are you sure you want to permanently delete {accessor} entity?
           </AlertDialog.Title>
           <AlertDialog.Description className="text-[#223354] opacity-50 mt-4 mb-5 text-center">
             Once completed, this action cannot be reverted.

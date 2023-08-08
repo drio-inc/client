@@ -145,7 +145,7 @@ export default function AddAccountForm() {
       console.log(res);
 
       dispatch(setRows([...rows, res]));
-      dispatch(setCloseModal("addAccountForm"));
+      // dispatch(setCloseModal("addAccountForm"));
       showAlert("Account added successfully", "success");
 
       form.reset();

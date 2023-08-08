@@ -5,7 +5,7 @@ import withAuth from "@/comps/HOC/withAuth";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-const DashboardPage = () => {
+const SettingsPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -13,11 +13,11 @@ const DashboardPage = () => {
     <Layout>
       <DashboardContainer>
         <section className="relative flex h-[80vh] flex-col items-center justify-center">
-          <h1 className="text-8xl font-semibold">Dashboard</h1>
+          <h1 className="text-8xl font-semibold">Settings</h1>
         </section>
       </DashboardContainer>
     </Layout>
   );
 };
 
-export default DashboardPage;
+export default SettingsPage;

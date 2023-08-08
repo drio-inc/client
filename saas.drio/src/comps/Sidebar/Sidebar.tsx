@@ -62,12 +62,6 @@ const NavLinks = [
     name: "Licensing",
     href: "licensing",
     icon: <HiOutlineClipboardCheck className="inline-block w-6 h-6 mr-2" />,
-    children: [
-      {
-        name: "Licenses",
-        href: "licenses",
-      },
-    ],
   },
 
   {

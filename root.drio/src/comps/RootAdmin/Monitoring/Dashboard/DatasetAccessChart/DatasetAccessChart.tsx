@@ -209,7 +209,7 @@ const DatasetAccessChart = () => {
               className="py-2 px-8 rounded-md"
               style={{ backgroundColor: dataset.backgroundColor }}
             >
-              <span className="inline-block text-gray-800 font-medium">
+              <span className="inline-block text-white font-medium">
                 {dataset.label}
               </span>
             </div>

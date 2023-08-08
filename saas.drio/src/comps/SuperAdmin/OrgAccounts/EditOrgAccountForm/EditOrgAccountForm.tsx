@@ -48,13 +48,15 @@ export default function EditOrgAccountForm({ row }: TableRow) {
         id: row.id,
       }).unwrap();
 
+      console.log(res);
+
       dispatch(
         setRows(
           adminOrgState.rows.map((row) => (row.id === res.id ? res : row))
         )
       );
 
-      dispatch(setCloseModal("editOrgAccountForm"));
+      // dispatch(setCloseModal("editOrgAccountForm"));
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",

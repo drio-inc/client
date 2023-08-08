@@ -49,11 +49,11 @@ const Accounts = () => {
   const dispatch = useAppDispatch();
   const adminAccountState = useAppSelector((state) => state.adminAccount);
 
-  const { data, isLoading } = useGetAccountsQuery();
+  // const { data, isLoading } = useGetAccountsQuery();
 
-  if (isLoading) return <StaticLoader />;
+  // if (isLoading) return <StaticLoader />;
 
-  if (data) dispatch(setRows(data));
+  // if (data) dispatch(setRows(data));
 
   const handleCheckbox = (index: number) => {
     if (adminAccountState.selectedRows.includes(index)) {

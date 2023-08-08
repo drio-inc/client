@@ -5,19 +5,19 @@ import withAuth from "@/comps/HOC/withAuth";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-const DashboardPage = () => {
+const SystemSettingsPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
   return (
     <Layout>
       <DashboardContainer>
-        <section className="relative flex h-[80vh] flex-col items-center justify-center">
-          <h1 className="text-8xl font-semibold">Dashboard</h1>
+        <section className="relative flex h-full flex-col items-center justify-center">
+          <h1 className="text-8xl font-semibold">System Settings</h1>
         </section>
       </DashboardContainer>
     </Layout>
   );
 };
 
-export default DashboardPage;
+export default withAuth(SystemSettingsPage);
