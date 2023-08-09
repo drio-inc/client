@@ -110,20 +110,15 @@ const Policies = () => {
 
           <div className="flex gap-4 ml-auto">
             <Button
+              icon={<HiPlus />}
               intent={"primary"}
               onClick={() => router.push("/policies/new-policy")}
             >
-              <div className="flex items-center gap-1">
-                <HiPlus />
-                <span className="inline-block">Add New Policy</span>
-              </div>
+              Add New Policy
             </Button>
 
-            <Button intent={"primary"}>
-              <div className="flex items-center gap-1">
-                <HiUpload />
-                <span className="inline-block">Import Text/PDF</span>
-              </div>
+            <Button intent={"primary"} icon={<HiUpload />}>
+              Import Text/PDF
             </Button>
           </div>
 

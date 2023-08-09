@@ -1,8 +1,6 @@
-import { cva, VariantProps } from "class-variance-authority";
-
 import styles from "./Button.module.scss";
-import React from "react";
 import { RiLoader4Fill } from "react-icons/ri";
+import { cva, VariantProps } from "class-variance-authority";
 
 const buttonStyles = cva(`${styles[`ui-button`]}`, {
   variants: {
@@ -22,20 +20,35 @@ export interface IButtonProps
   extends React.ComponentProps<"button">,
     VariantProps<typeof buttonStyles> {
   isLoading?: boolean;
+  icon?: React.ReactNode;
   children: React.ReactNode;
+  iconPosition?: "left" | "right";
 }
 
 const Button = ({
+  icon,
   intent,
+  children,
   isLoading,
   className,
-  children,
+  iconPosition = "left",
   ...props
 }: IButtonProps) => {
   return (
     <button className={`${buttonStyles({ intent })} ${className}`} {...props}>
-      <div className="flex justify-center w-full">
+      <div className="flex justify-center w-full items-center gap-1">
+        {!isLoading && icon && (
+          <span
+            className={`inline-flex ${
+              iconPosition === "left" ? "order-first" : "order-last"
+            }`}
+          >
+            {icon}
+          </span>
+        )}
+
         {children}
+
         {isLoading && (
           <RiLoader4Fill className="inline-flex animate-spin h-5 w-5 ml-2" />
         )}

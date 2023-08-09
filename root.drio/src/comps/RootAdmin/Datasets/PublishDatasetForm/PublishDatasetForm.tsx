@@ -86,7 +86,8 @@ export default function PublishDatasetForm() {
       showAlert("Dataset published successfully", "success");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
 
@@ -251,7 +252,7 @@ export default function PublishDatasetForm() {
               className="w-full"
               onClick={() => dispatch(setCloseModal("publishDatasetForm"))}
             >
-              <span className="inline-flex justify-center w-full">Cancel</span>
+              <span className="inline-flex justify-center">Cancel</span>
             </Button>
 
             <Button
@@ -261,7 +262,7 @@ export default function PublishDatasetForm() {
               className="w-full"
               isLoading={result.isLoading}
             >
-              <span className="inline-flex justify-center w-full">Publish</span>
+              <span className="inline-flex justify-center">Publish</span>
             </Button>
           </div>
         </div>

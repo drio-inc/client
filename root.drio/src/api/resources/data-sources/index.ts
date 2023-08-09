@@ -5,7 +5,7 @@ export const dataSourcesApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     addDataSource: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/data-source/add`,
+        url: `/resources/accounts/:accountId/data-source`,
         method: "POST",
         body: credentials,
       }),
@@ -13,8 +13,8 @@ export const dataSourcesApi = rootApi.injectEndpoints({
 
     editDataSource: builder.mutation<any, any>({
       query: (credentials) => ({
-        url: `/data-source/update`,
-        method: "POST",
+        url: `/resources/accounts/:accountId/data-source`,
+        method: "PUT",
         body: credentials,
       }),
     }),

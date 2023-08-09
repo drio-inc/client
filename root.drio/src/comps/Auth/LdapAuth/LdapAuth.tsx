@@ -75,7 +75,8 @@ export default function LdapAuth() {
       router.push("/dashboard");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
   };

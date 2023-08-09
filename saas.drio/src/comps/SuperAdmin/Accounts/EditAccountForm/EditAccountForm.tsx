@@ -54,7 +54,8 @@ export default function EditAccountForm({ row }: TableRow) {
       dispatch(setCloseModal("editAccountForm"));
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
   };

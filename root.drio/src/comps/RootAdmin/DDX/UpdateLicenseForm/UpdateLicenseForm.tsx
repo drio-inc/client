@@ -134,11 +134,13 @@ export default function UpdateLicenseForm() {
               <Button
                 type="button"
                 intent={`primary`}
-                className="mt-5 md:ml-4"
                 isLoading={fetchResult.isLoading}
                 onClick={() => form.handleSubmit(onFetchLicense)()}
+                className={`md:ml-4 ${
+                  form.formState.errors.licenseKey ? "mt-0" : "mt-5"
+                }`}
               >
-                <span className="py-[3px] px-4">Go</span>
+                Go
               </Button>
             </div>
           </div>

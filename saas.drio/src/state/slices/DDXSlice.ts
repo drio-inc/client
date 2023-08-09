@@ -60,6 +60,7 @@ const initialState: DDXState = {
     },
   ],
   selectedRows: [],
+
   licenseDetails: {
     datasets: "100",
     contract: "100",

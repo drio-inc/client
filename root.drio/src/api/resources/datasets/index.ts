@@ -5,7 +5,7 @@ export const datasetsApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     publishDataset: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/dataset/publish`,
+        url: `/resources/accounts/:accountId/dataset`,
         method: "POST",
         body: credentials,
       }),
@@ -13,8 +13,8 @@ export const datasetsApi = rootApi.injectEndpoints({
 
     updateDataset: builder.mutation<any, any>({
       query: (credentials) => ({
-        url: `/dataset/update`,
-        method: "POST",
+        url: `/resources/accounts/:accountId/dataset`,
+        method: "PUT",
         body: credentials,
       }),
     }),

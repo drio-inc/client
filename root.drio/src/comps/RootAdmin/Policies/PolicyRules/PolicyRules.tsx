@@ -79,7 +79,7 @@ const PolicyRules = ({ modal = false }: { modal?: boolean }) => {
           </Button>
         ) : (
           <Button
-            intent={"tertiary"}
+            intent={"primaryOutline"}
             className="ml-auto"
             onClick={() => {
               dispatch(setOpenModal("addNewRuleForm"));

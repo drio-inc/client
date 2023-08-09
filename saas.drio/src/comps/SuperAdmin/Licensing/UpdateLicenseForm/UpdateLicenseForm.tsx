@@ -18,7 +18,8 @@ import LicenseDetails from "../LicenseDetails/LicenseDetails";
 import {
   useUpdateLicenseMutation,
   useFetchLicenseMutation,
-} from "@/api/resources/ddx";
+} from "@/api/resources/licenses";
+
 import { useState } from "react";
 
 const schema = z.object({
@@ -43,6 +44,8 @@ export default function UpdateLicenseForm({ row }: TableRow) {
 
   const ddxSstate = useAppSelector((state) => state.DDX);
 
+  console.log(ddxSstate.licenseDetails);
+
   const form = useZodForm({
     schema: schema,
   });
@@ -61,7 +64,8 @@ export default function UpdateLicenseForm({ row }: TableRow) {
       }
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
   };
@@ -77,7 +81,8 @@ export default function UpdateLicenseForm({ row }: TableRow) {
       }
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
 
@@ -123,7 +128,7 @@ export default function UpdateLicenseForm({ row }: TableRow) {
                 />
               </div>
 
-              <div className="px-4 py-2 w-full flex flex-col md:flex-row md:items-center">
+              <div className="px-4 py-2 w-full flex flex-col md:flex-row md:items-center border">
                 <TextInput
                   label={"License Key"}
                   {...form.register("licenseKey")}
@@ -134,11 +139,13 @@ export default function UpdateLicenseForm({ row }: TableRow) {
                 <Button
                   type="button"
                   intent={`primary`}
-                  className="mt-5 md:ml-4"
                   isLoading={fetchResult.isLoading}
                   onClick={() => form.handleSubmit(onFetchLicense)()}
+                  className={`md:ml-4 ${
+                    form.formState.errors.licenseKey ? "mt-0" : "mt-5"
+                  }`}
                 >
-                  <span className="py-[3px] px-4">Go</span>
+                  Go
                 </Button>
               </div>
             </div>

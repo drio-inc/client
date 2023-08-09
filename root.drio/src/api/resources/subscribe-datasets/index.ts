@@ -5,7 +5,7 @@ export const subscribeDatasetsApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     requestDataAccess: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/subscribe-datasets/request-access`,
+        url: `/resources/accounts/:accountId/subscribe-datasets/request-access`,
         method: "POST",
         body: credentials,
       }),

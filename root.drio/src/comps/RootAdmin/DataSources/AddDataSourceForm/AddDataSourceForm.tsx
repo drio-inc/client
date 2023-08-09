@@ -57,7 +57,8 @@ export default function AddDataSourceForm() {
       showAlert("Data Source Added Successfully", "success");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
 
@@ -147,7 +148,7 @@ export default function AddDataSourceForm() {
               className="w-full"
               onClick={() => dispatch(setCloseModal("addDataSourceForm"))}
             >
-              <span className="inline-flex justify-center w-full">Cancel</span>
+              <span className="inline-flex justify-center">Cancel</span>
             </Button>
 
             <Button
@@ -155,7 +156,7 @@ export default function AddDataSourceForm() {
               className="w-full"
               isLoading={result.isLoading}
             >
-              <span className="inline-flex justify-center w-full">Add</span>
+              <span className="inline-flex justify-center">Add</span>
             </Button>
           </div>
         </div>

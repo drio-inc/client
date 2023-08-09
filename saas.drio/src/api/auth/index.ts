@@ -21,7 +21,7 @@ export const authApi = rootApi.injectEndpoints({
 
     resetPassword: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/reset-password`,
+        url: `/auth/reset-password`,
         method: "POST",
         body: credentials,
       }),

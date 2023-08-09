@@ -67,7 +67,8 @@ export default function EditDatasetForm({ row }: TableRow) {
       showAlert("Dataset updated successfully", "success");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
 
@@ -230,9 +231,7 @@ export default function EditDatasetForm({ row }: TableRow) {
                 className="w-full"
                 onClick={() => dispatch(setCloseModal("editDatasetForm"))}
               >
-                <span className="inline-flex justify-center w-full">
-                  Cancel
-                </span>
+                <span className="inline-flex justify-center">Cancel</span>
               </Button>
 
               <Button
@@ -242,9 +241,7 @@ export default function EditDatasetForm({ row }: TableRow) {
                 className="w-full"
                 isLoading={result.isLoading}
               >
-                <span className="inline-flex justify-center w-full">
-                  update
-                </span>
+                <span className="inline-flex justify-center">Update</span>
               </Button>
             </div>
           </div>

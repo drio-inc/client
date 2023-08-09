@@ -6,7 +6,7 @@ export const policiesApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     getPolicies: builder.query<any, void>({
       query: () => ({
-        url: "/resources/policies",
+        url: "/resources/accounts/:accountId/policies",
         method: "GET",
       }),
       // providesTags: (result, error, arg) =>
@@ -23,23 +23,23 @@ export const policiesApi = rootApi.injectEndpoints({
 
     addPolicy: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/resources/policies`,
+        url: `/resources/accounts/:accountId/policies`,
         method: "POST",
         body: credentials,
       }),
     }),
 
-    editPolicy: builder.mutation<ApiResponse<any>, any>({
+    updatePolicy: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/resources/policies`,
-        method: "PATCH",
+        url: `/resources/accounts/:accountId/policies`,
+        method: "PUT",
         body: credentials,
       }),
     }),
 
     addRule: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/resources/policies/rule`,
+        url: `/resources/accounts/:accountId/policies/rule`,
         method: "POST",
         body: credentials,
       }),
@@ -51,5 +51,5 @@ export const {
   useAddRuleMutation,
   useGetPoliciesQuery,
   useAddPolicyMutation,
-  useEditPolicyMutation,
+  useUpdatePolicyMutation,
 } = policiesApi;

@@ -87,7 +87,7 @@ const Categories = () => {
                           {organization.name}
                         </span>
                         <Button
-                          intent="tertiary"
+                          intent="primaryOutline"
                           onClick={() =>
                             dispatch(
                               setOpenModal(

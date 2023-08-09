@@ -54,9 +54,11 @@ export default function AddDDXForm() {
       }).unwrap();
 
       dispatch(setRows([...ddxSstate.rows, res]));
+      showAlert("DDX Provisioned Successfully!", "success");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
 
@@ -155,7 +157,7 @@ export default function AddDDXForm() {
 
             <div className="px-4 pt-2 w-full">
               <Button
-                intent={`tertiary`}
+                intent={`primaryOutline`}
                 className="w-full"
                 isLoading={provisionResult.isLoading}
               >

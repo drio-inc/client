@@ -5,7 +5,7 @@ export const authApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     activate: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/activate`,
+        url: `/auth/activate`,
         method: "POST",
         body: credentials,
       }),
@@ -13,7 +13,7 @@ export const authApi = rootApi.injectEndpoints({
 
     login: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/login`,
+        url: `/auth/login`,
         method: "POST",
         body: credentials,
       }),

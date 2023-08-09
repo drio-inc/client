@@ -132,7 +132,7 @@ export default function DDXDetails({ row }: TableRow) {
           <div className="flex justify-between">
             <h3 className="text-gray-500 font-semibold">System Details</h3>
             <Button
-              intent={`tertiary`}
+              intent={`primaryOutline`}
               onClick={() => {
                 dispatch(setCloseModal("detailsWindow"));
                 dispatch(setOpenModal("addDDXForm"));
@@ -176,7 +176,7 @@ export default function DDXDetails({ row }: TableRow) {
           <div className="flex justify-between">
             <h2 className="text-gray-500 font-medium">Deployment details</h2>
             <Button
-              intent={`tertiary`}
+              intent={`primaryOutline`}
               onClick={() => {
                 dispatch(setCloseModal("detailsWindow"));
                 dispatch(setOpenModal("addDDXForm"));

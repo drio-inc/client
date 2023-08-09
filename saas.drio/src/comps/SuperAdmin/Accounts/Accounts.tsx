@@ -107,13 +107,11 @@ const Accounts = () => {
 
           <div className="flex gap-4 ml-auto">
             <Button
+              icon={<HiPlus />}
               intent={"primary"}
               onClick={() => dispatch(setOpenModal("addAccountForm"))}
             >
-              <div className="flex items-center gap-1">
-                <HiPlus />
-                <span className="inline-block">Add New Account</span>
-              </div>
+              Add New Account
             </Button>
           </div>
 

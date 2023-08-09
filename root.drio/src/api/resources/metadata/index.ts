@@ -5,7 +5,7 @@ export const metadataApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     addMetadata: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/dataset/${credentials.id}/metadata`,
+        url: `/resources/accounts/:accountId/dataset/:datasetId/metadata`,
         method: "POST",
         body: credentials,
       }),
@@ -13,8 +13,8 @@ export const metadataApi = rootApi.injectEndpoints({
 
     editMetadata: builder.mutation<any, any>({
       query: (credentials) => ({
-        url: `/dataset/${credentials.id}/metadata`,
-        method: "PATCH",
+        url: `/resources/accounts/:accountId/dataset/:datasetId/metadata`,
+        method: "PUT",
         body: credentials,
       }),
     }),

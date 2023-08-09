@@ -2,15 +2,13 @@ import Modal from "@/comps/ui/Modal";
 import AlertModal from "@ui/AlertModal";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
-
-import AddOrgAccountForm from "../../OrgAccounts/AddOrgAccountForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
+import CreateKeyForm from "../CreateKeyForm";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/licensingSlice";
-import CreateKeyForm from "../CreateKeyForm";
 
-const LicensingMenu = ({ row, editForm, detailsWindow }: any) => {
+const LicensingMenu = ({ row, editForm }: any) => {
   const dispatch = useAppDispatch();
   const licensingState = useAppSelector((state) => state.licensing);
 
@@ -18,6 +16,8 @@ const LicensingMenu = ({ row, editForm, detailsWindow }: any) => {
     dispatch(setRows(licensingState.rows.filter((row) => row.id !== id)));
     dispatch(setSelectedRows([]));
   };
+
+  console.log(row);
 
   return (
     <Popover.Root>
@@ -40,6 +40,16 @@ const LicensingMenu = ({ row, editForm, detailsWindow }: any) => {
             />
           </span>
 
+          <span className={"cursor-pointer block hover:bg-indigo-50"}>
+            <Modal
+              label="Create Key"
+              identifier="createKeyForm"
+              onClick={() => dispatch(setOpenModal("createKeyForm"))}
+            >
+              <CreateKeyForm />
+            </Modal>
+          </span>
+
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             {editForm && (
               <Modal
@@ -50,28 +60,6 @@ const LicensingMenu = ({ row, editForm, detailsWindow }: any) => {
                 {editForm}
               </Modal>
             )}
-          </span>
-
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {detailsWindow && (
-              <Modal
-                label="View"
-                identifier="detailsWindow"
-                onClick={() => dispatch(setOpenModal("detailsWindow"))}
-              >
-                {detailsWindow}
-              </Modal>
-            )}
-          </span>
-
-          <span className={"cursor-pointer block hover:bg-indigo-50"}>
-            <Modal
-              label="Create Key"
-              identifier="createKeyForm"
-              onClick={() => dispatch(setOpenModal("createKeyForm"))}
-            >
-              <CreateKeyForm />
-            </Modal>
           </span>
         </Popover.Content>
       </Popover.Portal>

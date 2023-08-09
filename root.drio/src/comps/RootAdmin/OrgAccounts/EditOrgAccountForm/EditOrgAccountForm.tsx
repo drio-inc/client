@@ -44,8 +44,12 @@ export default function EditOrgAccountForm({ row }: TableRow) {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const res = await editOrgAccount({
-        ...data,
         id: row.id,
+        ou: data.ou,
+        streetAddress: data.streetAddress,
+        country: data.country,
+        state: data.state,
+        city: data.city,
       }).unwrap();
 
       dispatch(

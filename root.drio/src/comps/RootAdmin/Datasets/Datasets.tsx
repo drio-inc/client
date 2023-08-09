@@ -99,15 +99,13 @@ const Dataset = () => {
             Top by Access Frequency
           </span>
 
-          <div className="flex gap-4 ml-auto">
+          <div className="ml-auto">
             <Button
               intent={"primary"}
+              icon={<HiUpload />}
               onClick={() => dispatch(setOpenModal("publishDatasetForm"))}
             >
-              <div className="flex items-center gap-1">
-                <HiUpload />
-                <span className="inline-block">Publish Dataset</span>
-              </div>
+              Publish Dataset
             </Button>
           </div>
 

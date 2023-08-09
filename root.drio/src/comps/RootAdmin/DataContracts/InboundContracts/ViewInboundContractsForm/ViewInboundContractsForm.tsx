@@ -38,7 +38,8 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
       showAlert("Dataset updated successfully", "success");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
   };
@@ -177,11 +178,12 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
                       Contains all the Privacy T&C related to this contract
                     </p>
                     <div>
-                      <Button intent={`primary`}>
-                        <span className="flex items-center">
-                          View Policy
-                          <AiFillCaretRight className="ml-2" />
-                        </span>
+                      <Button
+                        intent={`primary`}
+                        iconPosition="right"
+                        icon={<AiFillCaretRight className="ml-2" />}
+                      >
+                        View Policy
                       </Button>
                     </div>
                   </div>
@@ -194,11 +196,12 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
                       Contains all the Regulatory T&C related to this contract
                     </p>
                     <div>
-                      <Button intent={`primary`}>
-                        <span className="flex items-center">
-                          View Policy
-                          <AiFillCaretRight className="ml-2" />
-                        </span>
+                      <Button
+                        intent={`primary`}
+                        iconPosition="right"
+                        icon={<AiFillCaretRight className="ml-2" />}
+                      >
+                        View Policy
                       </Button>
                     </div>
                   </div>

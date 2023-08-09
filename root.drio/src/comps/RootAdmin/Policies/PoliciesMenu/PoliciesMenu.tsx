@@ -38,7 +38,7 @@ const PoliciesMenu = ({ row, editForm }: any) => {
             />
           </span>
 
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+          {/* <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             {editForm && (
               <Modal
                 label="Edit"
@@ -48,7 +48,7 @@ const PoliciesMenu = ({ row, editForm }: any) => {
                 {editForm}
               </Modal>
             )}
-          </span>
+          </span> */}
 
           <span
             className={

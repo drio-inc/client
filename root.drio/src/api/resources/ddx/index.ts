@@ -5,7 +5,7 @@ export const ddxApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     fetchLicense: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/license/create-license`,
+        url: `/resources/accounts/:accountId/license`,
         method: "POST",
         body: credentials,
       }),
@@ -13,22 +13,22 @@ export const ddxApi = rootApi.injectEndpoints({
 
     updateLicense: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/license/update-license`,
-        method: "POST",
+        url: `/resources/accounts/:accountId/license`,
+        method: "PUT",
         body: credentials,
       }),
     }),
 
     generateDDXKey: builder.mutation<any, any>({
       query: () => ({
-        url: `/ddx/generate-key`,
+        url: `/resources/accounts/:accountId/ddx/generate-key`,
         method: "GET",
       }),
     }),
 
     provisionDDX: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/ddx/provision`,
+        url: `/resources/accounts/:accountId/ddx/provision`,
         method: "POST",
         body: credentials,
       }),

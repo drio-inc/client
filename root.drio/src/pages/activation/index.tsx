@@ -63,10 +63,12 @@ export default function Activation() {
       }).unwrap();
 
       dispatch(setUser(res));
-      router.push("/activation/auth-mode");
+      router.push("/my-org/org-units");
+      // router.push("/activation/auth-mode");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
   };

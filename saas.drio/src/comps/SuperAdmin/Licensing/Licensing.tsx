@@ -99,13 +99,11 @@ const Licensing = () => {
 
           <div className="flex gap-4 ml-auto">
             <Button
+              icon={<HiPlus />}
               intent={"primary"}
               onClick={() => dispatch(setOpenModal("addNewLicenseForm"))}
             >
-              <div className="flex items-center gap-1">
-                <HiPlus />
-                <span className="inline-block">Add License</span>
-              </div>
+              Add License
             </Button>
           </div>
 

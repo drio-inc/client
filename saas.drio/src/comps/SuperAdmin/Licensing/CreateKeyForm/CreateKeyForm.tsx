@@ -11,7 +11,7 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { useGetLicenseKeyQuery } from "@/api/resources/ddx";
+import { useGetLicenseKeyQuery } from "@/api/resources/licenses";
 import { useEffect } from "react";
 
 const schema = z.object({

@@ -64,7 +64,8 @@ export default function EditInboundContractsForm({ row }: TableRow) {
       showAlert("Dataset updated successfully", "success");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
 
@@ -170,7 +171,7 @@ export default function EditInboundContractsForm({ row }: TableRow) {
                 </div>
 
                 <div>
-                  <Button intent={`tertiary`} className="w-full">
+                  <Button intent={`primaryOutline`} className="w-full">
                     <span className="inline-flex justify-center items-center w-full">
                       Add New Persona
                       <HiPlus className="ml-2" />
@@ -244,7 +245,7 @@ export default function EditInboundContractsForm({ row }: TableRow) {
                 </div>
 
                 <div>
-                  <Button intent={`tertiary`} className="w-full">
+                  <Button intent={`primaryOutline`} className="w-full">
                     <span className="inline-flex justify-center items-center w-full">
                       Add New Dataset
                       <HiPlus className="ml-2" />
@@ -279,7 +280,7 @@ export default function EditInboundContractsForm({ row }: TableRow) {
                 </div>
 
                 <div>
-                  <Button intent={`tertiary`} className="w-full">
+                  <Button intent={`primaryOutline`} className="w-full">
                     <span className="inline-flex justify-center items-center w-full">
                       Add New Addendum
                       <HiPlus className="ml-2" />
@@ -360,7 +361,7 @@ export default function EditInboundContractsForm({ row }: TableRow) {
               </div>
 
               <div>
-                <Button intent={`tertiary`} className="w-full">
+                <Button intent={`primaryOutline`} className="w-full">
                   <span className="inline-flex justify-center items-center w-full">
                     Add New Resource Definition
                     <HiPlus className="ml-2" />
@@ -398,7 +399,7 @@ export default function EditInboundContractsForm({ row }: TableRow) {
               </div>
 
               <div>
-                <Button intent={`tertiary`} className="w-full">
+                <Button intent={`primaryOutline`} className="w-full">
                   <span className="inline-flex justify-center items-center w-full">
                     Add New Auth Server
                     <HiPlus className="ml-2" />

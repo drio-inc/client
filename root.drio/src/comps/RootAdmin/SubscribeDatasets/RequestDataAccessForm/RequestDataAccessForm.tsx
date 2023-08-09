@@ -53,7 +53,8 @@ export default function RequestDataAccessForm({ row }: TableRow) {
       showAlert("Request sent successfully", "success");
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
 

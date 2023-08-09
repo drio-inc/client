@@ -13,7 +13,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import LicenseDetails from "../LicenseDetails/LicenseDetails";
 
-import { useCreateLicenseMutation } from "@/api/resources/ddx";
+import { useCreateLicenseMutation } from "@/api/resources/licenses";
 import { setRows } from "@/state/slices/licensingSlice";
 
 const schema = z.object({
@@ -54,6 +54,8 @@ export default function UpdateLicenseForm({ row }: TableRow) {
         ...data,
       }).unwrap();
 
+      console.log(res);
+
       if (res) {
         dispatch(setRows([...licenseState.rows, res]));
         showAlert("License created successfully", "success");
@@ -62,7 +64,8 @@ export default function UpdateLicenseForm({ row }: TableRow) {
       console.log(err);
 
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
 

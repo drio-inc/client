@@ -159,9 +159,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                 className="w-full"
                 onClick={() => dispatch(setCloseModal("editDataSourceForm"))}
               >
-                <span className="inline-flex justify-center w-full">
-                  Cancel
-                </span>
+                <span className="inline-flex justify-center">Cancel</span>
               </Button>
 
               <Button
@@ -169,9 +167,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                 className="w-full"
                 isLoading={updateResult.isLoading}
               >
-                <span className="inline-flex justify-center w-full">
-                  Update
-                </span>
+                <span className="inline-flex justify-center">Update</span>
               </Button>
             </div>
           </div>
