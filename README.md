@@ -1,3 +1,5 @@
+Install Node.js and Yarn on your machine. After that,
+
 Clone this repository and run the following command in the terminal while in the root directory of the project:
 
 ```
