@@ -73,7 +73,8 @@ export default function AddDDXForm() {
       );
     } catch (err: any) {
       showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again."
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
       );
     }
   };
@@ -86,130 +87,126 @@ export default function AddDDXForm() {
   };
 
   return (
-    <>
-      <Layout>
-        <Form form={form} onSubmit={onSubmit} className="">
-          <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
-            <h2 className="text-gray-700 text-2xl font-bold text-center">
-              Add DDX
-            </h2>
+    <Layout>
+      <Form form={form} onSubmit={onSubmit} className="">
+        <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
+          <h2 className="text-gray-700 text-2xl font-bold text-center">
+            Add DDX
+          </h2>
 
-            <div className="flex flex-wrap -m-2 rounded-lg my-4">
-              <div className="px-4 py-2 w-full">
-                <TextInput
-                  label={"Location"}
-                  placeholder={"Enter location"}
-                  {...form.register("location")}
-                  className="md:text-sm 2xl:text-base"
-                />
-              </div>
-
-              <div className="px-4 py-2 w-full">
-                <SelectInput
-                  registerName="ou"
-                  label={"Organization Unit"}
-                  placeholder={"Enter OU"}
-                  options={[
-                    { label: "Corp", value: "corp" },
-                    { label: "Dealer.com", value: "dealer.com" },
-                    { label: "KBB", value: "kbb" },
-                  ]}
-                  className="md:text-sm 2xl:text-base"
-                />
-              </div>
-
-              <div className="px-4 py-2 w-full">
-                <RadioGroup.Root
-                  value={visibility}
-                  aria-label="Set Visibility"
-                  onValueChange={setVisibility}
-                  className="flex flex-wrap gap-y-2 justify-between w-full"
-                >
-                  <div className="flex items-center gap-x-2">
-                    <RadioGroup.Item
-                      id="r1"
-                      value="addMFA"
-                      className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
-                    />
-                    <label
-                      htmlFor="r1"
-                      className="text-gray-500 text-sm font-medium"
-                    >
-                      Add MFA
-                    </label>
-                  </div>
-                </RadioGroup.Root>
-              </div>
-
-              {visibility === "addMFA" && (
-                <div className="px-4 py-2 w-full">
-                  <TextInput
-                    label={"MFA URL"}
-                    {...form.register("mfaURL")}
-                    placeholder={"validate.cox.com"}
-                    defaultValue={"validate.cox.com"}
-                    className="md:text-sm 2xl:text-base"
-                  />
-                </div>
-              )}
-
-              <div className="px-4 pt-2 w-full">
-                <Button
-                  intent={`tertiary`}
-                  className="w-full"
-                  isLoading={provisionResult.isLoading}
-                >
-                  Provision
-                </Button>
-              </div>
-
-              <div className="px-4 py-2 w-full relative">
-                <span className="text-xs text-gray-500 font-medium">
-                  Note:use this key when installing and bringing up the DDX
-                </span>
-                <TextInput
-                  disabled
-                  label={""}
-                  icon={
-                    <HiOutlineDuplicate
-                      className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 z-50 cursor-pointer block bg-gray-100"
-                      onClick={() => copyKey()}
-                    />
-                  }
-                  {...form.register("mfaKey")}
-                  className="md:text-sm 2xl:text-base"
-                  placeholder={"wJalrXUtnFEMIK7MDENGbPxRfiCY"}
-                />
-              </div>
+          <div className="flex flex-wrap -m-2 rounded-lg my-4">
+            <div className="px-4 py-2 w-full">
+              <TextInput
+                label={"Location"}
+                placeholder={"Enter location"}
+                {...form.register("location")}
+                className="md:text-sm 2xl:text-base"
+              />
             </div>
 
-            <div className="py-2 flex justify-center w-full mt-4">
-              <Button
-                type="button"
-                intent={`secondary`}
-                className="w-full md:w-auto mr-2 md:mr-6"
-                onClick={() => dispatch(setCloseModal("addDDXForm"))}
-              >
-                <span className="inline-flex justify-center w-full">
-                  Cancel
-                </span>
-              </Button>
+            <div className="px-4 py-2 w-full">
+              <SelectInput
+                registerName="ou"
+                label={"Organization Unit"}
+                placeholder={"Enter OU"}
+                options={[
+                  { label: "Corp", value: "corp" },
+                  { label: "Dealer.com", value: "dealer.com" },
+                  { label: "KBB", value: "kbb" },
+                ]}
+                className="md:text-sm 2xl:text-base"
+              />
+            </div>
 
-              <Button
-                type="button"
-                intent={`primary`}
-                className="w-full md:w-auto"
-                onClick={() => generateKey()}
-                isLoading={keyResult.isLoading}
+            <div className="px-4 py-2 w-full">
+              <RadioGroup.Root
+                value={visibility}
+                aria-label="Set Visibility"
+                onValueChange={setVisibility}
+                className="flex flex-wrap gap-y-2 justify-between w-full"
               >
-                <span className="inline-flex justify-center w-full">
-                  Generate New Key
-                </span>
+                <div className="flex items-center gap-x-2">
+                  <RadioGroup.Item
+                    id="r1"
+                    value="addMFA"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label
+                    htmlFor="r1"
+                    className="text-gray-500 text-sm font-medium"
+                  >
+                    Add MFA
+                  </label>
+                </div>
+              </RadioGroup.Root>
+            </div>
+
+            {visibility === "addMFA" && (
+              <div className="px-4 py-2 w-full">
+                <TextInput
+                  label={"MFA URL"}
+                  {...form.register("mfaURL")}
+                  placeholder={"validate.cox.com"}
+                  defaultValue={"validate.cox.com"}
+                  className="md:text-sm 2xl:text-base"
+                />
+              </div>
+            )}
+
+            <div className="px-4 pt-2 w-full">
+              <Button
+                intent={`tertiary`}
+                className="w-full"
+                isLoading={provisionResult.isLoading}
+              >
+                Provision
               </Button>
+            </div>
+
+            <div className="px-4 py-2 w-full relative">
+              <span className="text-xs text-gray-500 font-medium">
+                Note:use this key when installing and bringing up the DDX
+              </span>
+              <TextInput
+                disabled
+                label={""}
+                icon={
+                  <HiOutlineDuplicate
+                    className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 z-50 cursor-pointer block bg-gray-100"
+                    onClick={() => copyKey()}
+                  />
+                }
+                {...form.register("mfaKey")}
+                className="md:text-sm 2xl:text-base"
+                placeholder={"wJalrXUtnFEMIK7MDENGbPxRfiCY"}
+              />
             </div>
           </div>
-        </Form>
-      </Layout>
-    </>
+
+          <div className="py-2 flex justify-center w-full mt-4">
+            <Button
+              type="button"
+              intent={`secondary`}
+              className="w-full md:w-auto mr-2 md:mr-6"
+              onClick={() => dispatch(setCloseModal("addDDXForm"))}
+            >
+              <span className="inline-flex justify-center w-full">Cancel</span>
+            </Button>
+
+            <Button
+              type="button"
+              intent={`primary`}
+              className="w-full md:w-auto"
+              onClick={() => generateKey()}
+              isLoading={keyResult.isLoading}
+            >
+              <span className="inline-flex justify-center w-full">
+                Generate New Key
+              </span>
+            </Button>
+          </div>
+        </div>
+      </Form>
+    </Layout>
   );
 }

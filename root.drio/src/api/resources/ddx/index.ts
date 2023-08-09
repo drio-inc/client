@@ -5,7 +5,7 @@ export const ddxApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     fetchLicense: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/license/fetch-license`,
+        url: `/license/create-license`,
         method: "POST",
         body: credentials,
       }),
