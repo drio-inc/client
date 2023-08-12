@@ -24,3 +24,7 @@ a {
   color: inherit !important;
   text-decoration: none !important;
 }
+
+::file-selector-button {
+  display: none;
+}
