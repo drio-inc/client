@@ -7,11 +7,11 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import AddOrgAccountForm from "../../OrgAccounts/AddOrgAccountForm";
 
 import { setOpenModal } from "@/state/slices/uiSlice";
-import { setRows, setSelectedRows } from "@/state/slices/adminAccountSlice";
+import { setRows, setSelectedRows } from "@/state/slices/accountSlice";
 
 const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
   const dispatch = useAppDispatch();
-  const adminAccountState = useAppSelector((state) => state.adminAccount);
+  const adminAccountState = useAppSelector((state) => state.account);
 
   const deleteRow = (id: string) => {
     dispatch(setRows(adminAccountState.rows.filter((row) => row.id !== id)));

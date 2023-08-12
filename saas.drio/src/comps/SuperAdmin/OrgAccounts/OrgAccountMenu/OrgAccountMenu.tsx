@@ -6,11 +6,11 @@ import * as Popover from "@radix-ui/react-popover";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { setOpenModal } from "@/state/slices/uiSlice";
-import { setRows, setSelectedRows } from "@/state/slices/adminOrgAccountSlice";
+import { setRows, setSelectedRows } from "@/state/slices/orgUnitSlice";
 
 const AccountMenu = ({ row, editForm }: any) => {
   const dispatch = useAppDispatch();
-  const adminOrgAccountState = useAppSelector((state) => state.adminOrgAccount);
+  const adminOrgAccountState = useAppSelector((state) => state.orgUnit);
 
   const deleteRow = (id: any) => {
     dispatch(setRows(adminOrgAccountState.rows.filter((row) => row.id !== id)));

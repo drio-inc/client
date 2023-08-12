@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type AdminAccountState = {
+type AccountState = {
   rows: TableRow[];
   selectedRows: number[];
 };
 
-const initialState: AdminAccountState = {
+const initialState: AccountState = {
   rows: [],
   selectedRows: [],
 };
 
-const adminAccountSlice = createSlice({
-  name: "adminAccount",
+const accountSlice = createSlice({
+  name: "account",
   initialState,
   reducers: {
     setRows(state, action) {
@@ -26,6 +26,6 @@ const adminAccountSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = adminAccountSlice.actions;
+export const { setRows, setSelectedRows } = accountSlice.actions;
 
-export default adminAccountSlice.reducer;
+export default accountSlice.reducer;

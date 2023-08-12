@@ -1,6 +1,6 @@
 import Table from "@/comps/ui/Table";
 
-import { setSelectedRows } from "@/state/slices/adminOrgAccountSlice";
+import { setSelectedRows } from "@/state/slices/orgUnitSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import OrgAccountMenu from "./OrgAccountMenu";
@@ -44,7 +44,7 @@ const headers = [
 
 const OrgAccounts = ({ modal = false }: { modal?: boolean }) => {
   const dispatch = useAppDispatch();
-  const adminOrgAccountState = useAppSelector((state) => state.adminOrgAccount);
+  const adminOrgAccountState = useAppSelector((state) => state.orgUnit);
 
   const handleCheckbox = (index: number) => {
     if (adminOrgAccountState.selectedRows.includes(index)) {

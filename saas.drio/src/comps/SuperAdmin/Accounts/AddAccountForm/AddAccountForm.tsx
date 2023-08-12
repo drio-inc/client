@@ -13,7 +13,7 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { setRows } from "@/state/slices/adminAccountSlice";
+import { setRows } from "@/state/slices/accountSlice";
 import { useAddAccountMutation } from "@/api/resources/accounts";
 
 const nameFields = [
@@ -121,7 +121,7 @@ export default function AddAccountForm() {
 
   const dispatch = useAppDispatch();
   const [addAccount, result] = useAddAccountMutation();
-  const { rows } = useAppSelector((state) => state.adminAccount);
+  const { rows } = useAppSelector((state) => state.account);
 
   const form = useZodForm({
     schema: schema,

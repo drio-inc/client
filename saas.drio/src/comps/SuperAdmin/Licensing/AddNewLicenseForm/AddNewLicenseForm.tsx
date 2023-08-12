@@ -34,7 +34,7 @@ export default function UpdateLicenseForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [create, result] = useCreateLicenseMutation();
   const ddxSstate = useAppSelector((state) => state.DDX);
-  const adminAccountState = useAppSelector((state) => state.adminAccount);
+  const adminAccountState = useAppSelector((state) => state.account);
   const licenseState = useAppSelector((state) => state.licensing);
 
   const options = adminAccountState.rows.map((row) => {

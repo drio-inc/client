@@ -3,7 +3,7 @@ import Loader from "@ui/Loader/Loader";
 import { useRouter } from "next/router";
 
 import { useAppSelector } from "@/hooks/useStoreTypes";
-import OrgAccounts from "@/comps/RootAdmin/OrgAccounts";
+import OrgAccounts from "@/comps/RootAdmin/OrgUnits";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
 const MyOrg = () => {

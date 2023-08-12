@@ -12,7 +12,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { useEditAccountMutation } from "@/api/resources/accounts";
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { setRows } from "@/state/slices/adminAccountSlice";
+import { setRows } from "@/state/slices/accountSlice";
 
 const schema = z.object({
   account: z.string().nonempty("Please Enter a value"),
@@ -32,7 +32,7 @@ type FormData = z.infer<typeof schema>;
 export default function EditAccountForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [editAccount, result] = useEditAccountMutation();
-  const adminAccountState = useAppSelector((state) => state.adminAccount);
+  const adminAccountState = useAppSelector((state) => state.account);
 
   const form = useZodForm({
     schema: schema,

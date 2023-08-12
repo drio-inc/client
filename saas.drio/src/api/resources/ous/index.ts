@@ -6,7 +6,7 @@ export const orgApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     addOrgAccount: builder.mutation<ApiResponse<any>, any>({
       query: (credentials) => ({
-        url: `/add-org`,
+        url: `/resources/accounts/:accountId/ous`,
         method: "POST",
         body: credentials,
       }),
@@ -14,8 +14,8 @@ export const orgApi = rootApi.injectEndpoints({
 
     editOrgAccount: builder.mutation<any, any>({
       query: (credentials) => ({
-        url: `/edit-org`,
-        method: "POST",
+        url: `/resources/accounts/:accountId/ous`,
+        method: "PUT",
         body: credentials,
       }),
     }),
