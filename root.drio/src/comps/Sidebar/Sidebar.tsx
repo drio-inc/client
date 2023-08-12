@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { setExpandedLinks } from "@/state/slices/uiSlice";
-
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import { IoGridOutline, IoLayersOutline } from "react-icons/io5";
 
@@ -39,16 +38,16 @@ const NavLinks = [
   {
     name: "Datasets",
     href: "datasets",
-    default: "my-datasets",
+    default: "data-sources",
     icon: <HiOutlineCloud className="inline-block w-6 h-6 mr-2" />,
     children: [
       {
-        name: "My Datasets",
-        href: "/my-datasets",
-      },
-      {
         name: "My Data Sources",
         href: "/data-sources",
+      },
+      {
+        name: "My Datasets",
+        href: "/my-datasets",
       },
       {
         name: "Subscribe Datasets",
@@ -163,7 +162,6 @@ const NavLinks = [
 export default function Sidebar() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
   const { expandedLinks } = useAppSelector((state) => state.ui);
 
   const showNested = (link: NavLink) => {
@@ -200,10 +198,18 @@ export default function Sidebar() {
                         }
                       `}
                 >
-                  <Link
-                    href={`/${
-                      link.default ? `${link.href}/${link.default}` : link.href
-                    }`}
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      showNested(link);
+                      router.push(
+                        `/${
+                          link.default
+                            ? `${link.href}/${link.default}`
+                            : link.href
+                        }`
+                      );
+                    }}
                   >
                     <span
                       className={`                        ${
@@ -217,7 +223,7 @@ export default function Sidebar() {
                     <span className={`text-gray-500 hover:text-gray-600`}>
                       {link.name}
                     </span>
-                  </Link>
+                  </div>
                   {link.children && (
                     <span
                       className="ml-4"
