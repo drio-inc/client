@@ -2,10 +2,10 @@ import Table from "@/comps/ui/Table";
 import { setSelectedRows } from "@/state/slices/DDXSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
+import AddDDXForm from "./AddDDXForm";
+import EditDDXForm from "./EditDDXForm";
 import DDXDetails from "./DDXDetails/DDXDetails";
 import UpdateLicenseForm from "./UpdateLicenseForm";
-import AddDDXForm from "./AddDDXForm/AddDDXForm";
-
 import DDXMenu from "@/comps/RootAdmin/DDX/DDXMenu";
 
 import Modal from "@/comps/ui/Modal";
@@ -130,10 +130,10 @@ const DDX = () => {
           menu={DDXMenu}
           headers={headers}
           rows={DDXState.rows}
+          editForm={EditDDXForm}
           detailsWindow={DDXDetails}
-          editForm={UpdateLicenseForm}
-          selectedRows={DDXState.selectedRows}
           handleCheckbox={handleCheckbox}
+          selectedRows={DDXState.selectedRows}
         />
       </div>
     </div>
