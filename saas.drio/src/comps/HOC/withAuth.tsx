@@ -1,31 +1,29 @@
-import Loader from "@/comps/ui/Loader";
 import { useRouter } from "next/router";
-import { useAppSelector } from "@/hooks/useStoreTypes";
+import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
-import { logOut, setAuthenticated } from "@/state/slices/authSlice";
 
 function withAuth(OriginalComponent: React.FC) {
   function AuthenticatedComponent() {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const { isAuthenticated } = useAppSelector((state) => state.auth);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
       async function validateToken() {
         try {
           const res = await axios.get(`/api/resources/validate`);
           if (res.status === 200) {
-            dispatch(setAuthenticated(true));
+            setLoading(false);
             return;
           }
 
-          dispatch(logOut());
+          setLoading(false);
           router.push("/login");
         } catch (error) {
-          dispatch(logOut());
+          setLoading(false);
           router.push("/login");
         }
       }
@@ -33,8 +31,8 @@ function withAuth(OriginalComponent: React.FC) {
       validateToken();
     }, [dispatch, router]);
 
-    if (!isAuthenticated) {
-      return <Loader />;
+    if (loading) {
+      return <StaticLoader />;
     }
 
     return <OriginalComponent />;

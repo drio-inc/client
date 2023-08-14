@@ -8,7 +8,7 @@ import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { setRows } from "@/state/slices/adminAccountSlice";
+import { setRows } from "@/state/slices/accountSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import {
@@ -31,7 +31,7 @@ import { Account } from "@/api/resources/accounts/types";
 export default function EditAccountForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [updateAccount, result] = useUpdateAccountMutation();
-  const { rows } = useAppSelector((state) => state.adminAccount);
+  const { rows } = useAppSelector((state) => state.account);
   const { data, error, isLoading } = useGetAccountByIdQuery(row.id);
 
   const form = useZodForm({

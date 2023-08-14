@@ -3,7 +3,7 @@ import AccountDetails from "./AccountDetails";
 import EditAccountForm from "./EditAccountForm";
 import AddAccountForm from "./AddAccountForm/AddAccountForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import { setRows, setSelectedRows } from "@/state/slices/adminAccountSlice";
+import { setRows, setSelectedRows } from "@/state/slices/accountSlice";
 
 import AccountMenu from "./AccountMenu";
 
@@ -56,7 +56,7 @@ const headers = [
 
 const Accounts = () => {
   const dispatch = useAppDispatch();
-  const adminAccountState = useAppSelector((state) => state.adminAccount);
+  const accountState = useAppSelector((state) => state.account);
 
   const { data, isLoading } = useGetAccountsQuery();
 
@@ -65,14 +65,14 @@ const Accounts = () => {
   if (data) dispatch(setRows(data));
 
   const handleCheckbox = (index: number) => {
-    if (adminAccountState.selectedRows.includes(index)) {
+    if (accountState.selectedRows.includes(index)) {
       dispatch(
         setSelectedRows(
-          adminAccountState.selectedRows.filter((row) => row !== index)
+          accountState.selectedRows.filter((row) => row !== index)
         )
       );
     } else {
-      dispatch(setSelectedRows([...adminAccountState.selectedRows, index]));
+      dispatch(setSelectedRows([...accountState.selectedRows, index]));
     }
   };
 
@@ -90,11 +90,11 @@ const Accounts = () => {
         <div
           className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
         >
-          {adminAccountState.selectedRows.length > 0 && (
+          {accountState.selectedRows.length > 0 && (
             <div className="flex items-center">
               <Checkbox.Root
                 className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                checked={adminAccountState.selectedRows.length > 0}
+                checked={accountState.selectedRows.length > 0}
                 onCheckedChange={() => {
                   clearSelectedRows?.();
                 }}
@@ -104,7 +104,7 @@ const Accounts = () => {
                 </Checkbox.Indicator>
               </Checkbox.Root>
               <h3 className={"font-medium text-sm text-gray-700"}>
-                {adminAccountState.selectedRows.length} Item(s) Selected
+                {accountState.selectedRows.length} Item(s) Selected
               </h3>
 
               <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
@@ -116,6 +116,7 @@ const Accounts = () => {
 
           <div className="flex gap-4 ml-auto">
             <Button
+              role="addButton"
               icon={<HiPlus />}
               intent={"primary"}
               onClick={() => dispatch(setOpenModal("addAccountForm"))}
@@ -142,8 +143,8 @@ const Accounts = () => {
           detailsWindow={AccountDetails}
           handleCheckbox={handleCheckbox}
           handleRowClick={handleRowClick}
-          selectedRows={adminAccountState.selectedRows}
-          rows={adminAccountState.rows.map((row: TableRow) => {
+          selectedRows={accountState.selectedRows}
+          rows={accountState.rows.map((row: any) => {
             return {
               ...row,
               organization_units: row.organization_units ?? 0,

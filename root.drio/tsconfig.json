@@ -19,8 +19,10 @@
       "@api/*": ["./src/api/*"],
       "@lib/*": ["./src/lib/*"],
       "@ui/*": ["./src/comps/ui/*"],
+      "@mocks/*": ["./src/mocks/*"],
       "@state/*": ["./src/state/*"],
       "@hooks/*": ["./src/hooks/*"],
+      "@comps/*": ["./src/comps/*"],
       "react": ["../node_modules/@types/react"]
     }
   },

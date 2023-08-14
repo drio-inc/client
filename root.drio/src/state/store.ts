@@ -1,9 +1,24 @@
 import { rootApi } from "./services/apiService";
-
-import { configureStore } from "@reduxjs/toolkit";
-import { persistReducer, persistStore } from "redux-persist";
-
 import storage from "redux-persist/lib/storage";
+
+import {
+  PreloadedState,
+  configureStore,
+  combineReducers,
+} from "@reduxjs/toolkit";
+
+import {
+  FLUSH,
+  PAUSE,
+  PURGE,
+  PERSIST,
+  REGISTER,
+  REHYDRATE,
+  persistStore,
+  persistReducer,
+} from "redux-persist";
+
+import { setupListeners } from "@reduxjs/toolkit/query";
 import storageSession from "redux-persist/lib/storage/session";
 
 import uiReducer from "./slices/uiSlice";
@@ -29,30 +44,69 @@ const persistConfig = {
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
-export const store = configureStore({
-  reducer: {
-    ui: uiReducer,
-    DDX: DDXReducer,
-    alerts: alertsReducer,
-    orgUnit: orgUnitReducer,
-    dataset: datasetReducer,
-    metadata: metadataReducer,
-    policies: policiesReducer,
-    auth: persistedAuthReducer,
-    anomalies: anomaliesReducer,
-    auditLogs: auditLogsReducer,
-    dataSource: dataSourceReducer,
-    inboundContract: inboundContractReducer,
-    outboundContract: outboundContractReducer,
-    approvedContract: approvedContractReducer,
-    subscribeDataset: subscribeDatasetReducer,
-    [rootApi.reducerPath]: rootApi.reducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(rootApi.middleware),
+// export const store = configureStore({
+//   reducer: {
+//     ui: uiReducer,
+//     DDX: DDXReducer,
+//     alerts: alertsReducer,
+//     orgUnit: orgUnitReducer,
+//     dataset: datasetReducer,
+//     metadata: metadataReducer,
+//     policies: policiesReducer,
+//     auth: persistedAuthReducer,
+//     anomalies: anomaliesReducer,
+//     auditLogs: auditLogsReducer,
+//     dataSource: dataSourceReducer,
+//     inboundContract: inboundContractReducer,
+//     outboundContract: outboundContractReducer,
+//     approvedContract: approvedContractReducer,
+//     subscribeDataset: subscribeDatasetReducer,
+//     [rootApi.reducerPath]: rootApi.reducer,
+//   },
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware().concat(rootApi.middleware),
+// });
+
+const rootReducer = combineReducers({
+  ui: uiReducer,
+  DDX: DDXReducer,
+  alerts: alertsReducer,
+  orgUnit: orgUnitReducer,
+  dataset: datasetReducer,
+  metadata: metadataReducer,
+  policies: policiesReducer,
+  auth: persistedAuthReducer,
+  anomalies: anomaliesReducer,
+  auditLogs: auditLogsReducer,
+  dataSource: dataSourceReducer,
+  inboundContract: inboundContractReducer,
+  outboundContract: outboundContractReducer,
+  approvedContract: approvedContractReducer,
+  subscribeDataset: subscribeDatasetReducer,
+  [rootApi.reducerPath]: rootApi.reducer,
 });
 
-export type AppDispatch = typeof store.dispatch;
+export const setupStore = (preloadedState?: PreloadedState<RootState>) =>
+  configureStore({
+    reducer: rootReducer,
+    preloadedState,
+    middleware: (getDefaultMiddleware) => {
+      const defaultMiddleware = getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+      });
+      return defaultMiddleware.concat(rootApi.middleware);
+    },
+  });
+
+export const store = setupStore();
+
+setupListeners(store.dispatch);
+
+export type AppDispatch = AppStore["dispatch"];
+export type AppStore = ReturnType<typeof setupStore>;
+export type RootState = ReturnType<typeof rootReducer>;
 export type ApplicationState = ReturnType<typeof store.getState>;
 
 export const persistor = persistStore(store);

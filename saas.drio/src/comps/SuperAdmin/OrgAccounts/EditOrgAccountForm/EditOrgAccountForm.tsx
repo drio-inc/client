@@ -14,7 +14,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { useEditOrgAccountMutation } from "@/api/resources/ous";
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { setRows } from "@/state/slices/adminOrgAccountSlice";
+import { setRows } from "@/state/slices/orgUnitSlice";
 
 const schema = z.object({
   ou: z.string().nonempty("Please Enter a value"),
@@ -35,7 +35,7 @@ type FormData = z.infer<typeof schema>;
 export default function EditOrgAccountForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [editOrgAccount, result] = useEditOrgAccountMutation();
-  const adminOrgState = useAppSelector((state) => state.adminOrgAccount);
+  const adminOrgState = useAppSelector((state) => state.orgUnit);
 
   const form = useZodForm({
     schema: schema,
