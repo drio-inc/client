@@ -28,6 +28,15 @@ const headers = [
   },
 
   {
+    header: "Status",
+    accessor: "status",
+    status: {
+      Active: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      Pending: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+    },
+  },
+
+  {
     header: "Datasets Published",
     accessor: "datasetsPublished",
   },
@@ -49,11 +58,11 @@ const Accounts = () => {
   const dispatch = useAppDispatch();
   const adminAccountState = useAppSelector((state) => state.adminAccount);
 
-  // const { data, isLoading } = useGetAccountsQuery();
+  const { data, isLoading } = useGetAccountsQuery();
 
-  // if (isLoading) return <StaticLoader />;
+  if (isLoading) return <StaticLoader />;
 
-  // if (data) dispatch(setRows(data));
+  if (data) dispatch(setRows(data));
 
   const handleCheckbox = (index: number) => {
     if (adminAccountState.selectedRows.includes(index)) {
@@ -130,16 +139,16 @@ const Accounts = () => {
           headers={headers}
           menu={AccountMenu}
           editForm={EditAccountForm}
-          rows={adminAccountState.rows.map((row: any) => {
+          detailsWindow={AccountDetails}
+          handleCheckbox={handleCheckbox}
+          handleRowClick={handleRowClick}
+          selectedRows={adminAccountState.selectedRows}
+          rows={adminAccountState.rows.map((row: TableRow) => {
             return {
               ...row,
               organization_units: row.organization_units ?? 0,
             };
           })}
-          detailsWindow={AccountDetails}
-          handleCheckbox={handleCheckbox}
-          handleRowClick={handleRowClick}
-          selectedRows={adminAccountState.selectedRows}
         />
       </div>
     </div>

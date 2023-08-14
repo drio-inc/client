@@ -40,7 +40,6 @@ export default function Login() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [login, result] = useLoginMutation();
-
   const [rememberMe, setRememberMe] = useState(false);
 
   const form = useZodForm({
@@ -82,9 +81,10 @@ export default function Login() {
           <div className="px-4 py-2 w-full">
             <div className="relative">
               <TextInput
-                label="Password"
                 type="password"
+                label="Password"
                 {...form.register("password")}
+                defaultValue={"b0de3fbcbb79eaa891a8cb70"}
               />
             </div>
           </div>

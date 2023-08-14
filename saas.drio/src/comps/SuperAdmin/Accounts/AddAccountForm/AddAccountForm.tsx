@@ -4,9 +4,6 @@ import { Country, State, City } from "country-state-city";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
-import { useRouter } from "next/router";
-
-import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
@@ -16,109 +13,16 @@ import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/adminAccountSlice";
 import { useAddAccountMutation } from "@/api/resources/accounts";
 
-const nameFields = [
-  {
-    name: "accountName",
-    label: "Account Name*",
-    type: "text",
-    placeholder: "Enter account name",
-  },
-  {
-    name: "streetAddress",
-    label: "Street address",
-    type: "text",
-    placeholder: "Enter your street address",
-  },
-];
-
-const detailFields = [
-  {
-    name: "rootAdminFirstName",
-    label: "Root Admin First Name",
-    type: "text",
-    placeholder: "Enter root admin first name",
-  },
-  {
-    name: "rootAdminLastName",
-    label: "Root Admin Last Name",
-    type: "text",
-    placeholder: "Enter root admin last name",
-  },
-  {
-    name: "rootAdminID",
-    label: "Root Admin ID",
-    type: "text",
-    placeholder: "Enter your ID",
-  },
-  {
-    name: "rootAdminInitialPassword",
-    label: "Root Admin Initial Password",
-    type: "password",
-    placeholder: "Enter root admin password",
-  },
-];
-
-const contactFields = [
-  {
-    name: "firstName",
-    label: "First Name",
-    type: "text",
-    placeholder: "First name",
-  },
-  {
-    name: "lastName",
-    label: "Last Name",
-    type: "text",
-    placeholder: "Last name",
-  },
-  {
-    name: "email",
-    label: "Email",
-    type: "email",
-    placeholder: "Enter your email",
-  },
-  {
-    name: "contactNumber",
-    label: "Contact Number",
-    type: "text",
-    placeholder: "Enter your number",
-  },
-];
-
-const schema = z.object({
-  accountName: z.string().nonempty("Please Enter a value"),
-  streetAddress: z.string().nonempty("Please Enter a value"),
-  country: z.string({
-    required_error: "Please Enter a value",
-  }),
-  state: z.string({
-    required_error: "Please Enter a value",
-  }),
-  city: z
-    .string({
-      required_error: "Please Enter a value",
-    })
-    .optional(),
-  zipCode: z.string().nonempty("Please Enter a value"),
-  description: z.string().nonempty("Please Enter a value"),
-
-  rootAdminFirstName: z.string().nonempty("Please Enter a value"),
-  rootAdminLastName: z.string().nonempty("Please Enter a value"),
-  rootAdminID: z.string().nonempty("Please Enter a value"),
-  rootAdminInitialPassword: z.string().nonempty("Please Enter a value"),
-
-  firstName: z.string().nonempty("Please Enter a value"),
-  lastName: z.string().nonempty("Please Enter a value"),
-  email: z.string().nonempty("Please Enter a value"),
-  contactNumber: z.string().nonempty("Please Enter a value"),
-});
-
-type FormData = z.infer<typeof schema>;
-type FormKeyTypes = keyof FormData;
+import {
+  schema,
+  FormData,
+  nameFields,
+  detailFields,
+  FormKeyTypes,
+  contactFields,
+} from "@schema/AccountSchema";
 
 export default function AddAccountForm() {
-  const router = useRouter();
-
   const dispatch = useAppDispatch();
   const [addAccount, result] = useAddAccountMutation();
   const { rows } = useAppSelector((state) => state.adminAccount);
@@ -128,21 +32,21 @@ export default function AddAccountForm() {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    console.log(data);
+
     try {
       const res = await addAccount({
-        login_id: data.rootAdminID,
-        password: data.rootAdminInitialPassword,
-        email: data.email,
-        first_name: data.firstName,
-        last_name: data.lastName,
-        account_name: data.accountName,
         ou_name: "Corp",
+        email: data.email,
+        city: data.city ?? "",
         country: data.country,
-        state: data.state,
-        city: data.city,
+        state: data.state ?? "",
+        account_name: data.name,
+        login_id: data.rootAdminID,
+        last_name: data.rootAdminLastName ?? "",
+        password: data.rootAdminInitialPassword,
+        first_name: data.rootAdminFirstName ?? "",
       }).unwrap();
-
-      console.log(res);
 
       dispatch(setRows([...rows, res]));
       dispatch(setCloseModal("addAccountForm"));
@@ -150,6 +54,8 @@ export default function AddAccountForm() {
 
       form.reset();
     } catch (err: any) {
+      console.log(err);
+
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
         "error"
@@ -165,6 +71,8 @@ export default function AddAccountForm() {
         className="min-w-full overflow-auto"
       >
         <div className="w-full mx-auto bg-white p-8 rounded-lg">
+          <h2 className="text-gray-700 text-3xl font-bold my-4">Add Account</h2>
+
           <h2 className="text-gray-700 text-2xl font-bold my-4">
             Account Information
           </h2>
@@ -175,7 +83,9 @@ export default function AddAccountForm() {
                 <TextInput
                   type={field.type}
                   label={field.label}
+                  required={field.required}
                   placeholder={field.placeholder}
+                  autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
                   {...form.register(field.name as FormKeyTypes)}
                 />
@@ -185,6 +95,7 @@ export default function AddAccountForm() {
             <div className="px-4 py-2 w-1/2">
               <SelectInput
                 label="Country"
+                required={true}
                 registerName="country"
                 placeholder="Select country"
                 options={
@@ -198,8 +109,8 @@ export default function AddAccountForm() {
 
             <div className="px-4 py-2 w-1/2">
               <SelectInput
-                label="State / Province"
                 registerName="state"
+                label="State / Province"
                 placeholder="Select state"
                 options={
                   State.getStatesOfCountry(form.watch("country") as string).map(
@@ -258,7 +169,9 @@ export default function AddAccountForm() {
                 <TextInput
                   type={field.type}
                   label={field.label}
+                  required={field.required}
                   placeholder={field.placeholder}
+                  autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
                   {...form.register(field.name as FormKeyTypes)}
                 />
@@ -276,8 +189,17 @@ export default function AddAccountForm() {
                 <TextInput
                   type={field.type}
                   label={field.label}
+                  required={field.required}
                   placeholder={field.placeholder}
+                  autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
+                  defaultValue={
+                    field.name === "firstName"
+                      ? form.watch("rootAdminFirstName")
+                      : field.name === "lastName"
+                      ? form.watch("rootAdminLastName")
+                      : ""
+                  }
                   {...form.register(field.name as FormKeyTypes)}
                 />
               </div>

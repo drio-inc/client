@@ -21,6 +21,7 @@
       "@ui/*": ["./src/comps/ui/*"],
       "@state/*": ["./src/state/*"],
       "@hooks/*": ["./src/hooks/*"],
+      "@schema/*": ["./src/schema/*"],
       "react": ["../node_modules/@types/react"]
     }
   },

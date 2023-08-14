@@ -46,8 +46,6 @@ interface ITagInputProps extends ComponentProps<"input"> {
 interface InputProps extends ComponentProps<"input">, SharedProps {}
 
 interface SelectProps extends ComponentProps<"select">, SharedProps {
-  isMulti?: boolean;
-  redirect?: boolean;
   registerName: string;
   hasPlusIndicator?: boolean;
   onChangeCustomAction?: (selectedOption?: string) => void;
@@ -218,8 +216,6 @@ const CustomOption = (props: OptionProps) => {
 export const SelectInput = ({
   label,
   options,
-  isMulti,
-  redirect,
   className,
   registerName,
   hasPlusIndicator,
@@ -253,7 +249,6 @@ export const SelectInput = ({
             <Select
               unstyled
               {...field}
-              isMulti={isMulti}
               options={options}
               value={selectedValue}
               onBlur={field.onBlur}

@@ -41,11 +41,17 @@ export const accountApi = rootApi.injectEndpoints({
       invalidatesTags: ["Accounts"],
     }),
 
-    editAccount: builder.mutation<any, any>({
+    updateAccount: builder.mutation<
+      AccountCreationResponse,
+      AccountFormData & { id: string }
+    >({
       query: (credentials) => ({
-        url: `/resources/accounts/:accountId`,
+        url: `/resources/accounts/${credentials.id}`,
         method: "PUT",
-        body: credentials,
+        body: {
+          ...credentials,
+          id: undefined,
+        },
       }),
       invalidatesTags: ["Accounts"],
     }),
@@ -66,6 +72,6 @@ export const {
   useGetAccountByIdQuery,
 
   useAddAccountMutation,
-  useEditAccountMutation,
+  useUpdateAccountMutation,
   useDeleteAccountMutation,
 } = accountApi;
