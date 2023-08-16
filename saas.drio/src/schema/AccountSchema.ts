@@ -11,7 +11,7 @@ export const nameFields = [
   },
   {
     type: "text",
-    name: "streetAddress",
+    name: "street_address",
     label: "Street address",
     placeholder: "Enter your street address",
   },
@@ -21,20 +21,20 @@ export const detailFields = [
   {
     type: "text",
     required: true,
-    name: "rootAdminFirstName",
+    name: "first_name",
     label: "Root Admin First Name",
     placeholder: "Enter root admin first name",
   },
   {
     type: "text",
-    name: "rootAdminLastName",
+    name: "last_name",
     label: "Root Admin Last Name",
     placeholder: "Enter root admin last name",
   },
   {
     type: "text",
     required: true,
-    name: "rootAdminID",
+    name: "login_id",
     autoComplete: "nope",
     label: "Root Admin ID",
     placeholder: "Enter your ID",
@@ -42,7 +42,7 @@ export const detailFields = [
   {
     required: true,
     type: "password",
-    name: "rootAdminInitialPassword",
+    name: "password",
     label: "Root Admin Initial Password",
     placeholder: "Enter root admin password",
   },
@@ -51,14 +51,14 @@ export const detailFields = [
 export const contactFields = [
   {
     type: "text",
-    name: "firstName",
+    name: "first_name_2",
     autoComplete: "nope",
     label: "First Name",
     placeholder: "First name",
   },
   {
     type: "text",
-    name: "lastName",
+    name: "last_name_2",
     label: "Last Name",
     autoComplete: "nope",
     placeholder: "Last name",
@@ -73,14 +73,14 @@ export const contactFields = [
   {
     type: "text",
     required: true,
-    name: "contactNumber",
+    name: "contact_number",
     label: "Contact Number",
     placeholder: "Enter your number",
   },
 ];
 
 export const schema = z.object({
-  streetAddress: z.string().optional(),
+  street_address: z.string().optional(),
   name: z.string().nonempty("Please Enter a value"),
 
   country: z.string({
@@ -90,18 +90,18 @@ export const schema = z.object({
   city: z.string().optional(),
   state: z.string().optional(),
 
-  zipCode: z.string().optional(),
+  zip_code: z.string().optional(),
   description: z.string().optional(),
 
-  rootAdminLastName: z.string().optional(),
-  rootAdminID: z.string().nonempty("Please Enter a value"),
-  rootAdminFirstName: z.string().nonempty("Please Enter a value"),
-  rootAdminInitialPassword: z.string().nonempty("Please Enter a value"),
+  last_name: z.string().optional(),
+  login_id: z.string().nonempty("Please Enter a value"),
+  first_name: z.string().nonempty("Please Enter a value"),
+  password: z.string().nonempty("Please Enter a value"),
 
-  lastName: z.string().optional(),
-  firstName: z.string().optional(),
+  last_name_2: z.string().optional(),
+  first_name_2: z.string().optional(),
   email: z.string().nonempty("Please Enter a value"),
-  contactNumber: z.string().nonempty("Please Enter a value"),
+  contact_number: z.string().nonempty("Please Enter a value"),
 });
 
 export type FormData = z.infer<typeof schema>;

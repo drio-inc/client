@@ -3,7 +3,7 @@ import { rootApi } from "@/state/services/apiService";
 
 export const ddxApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
-    createLicense: builder.mutation<ApiResponse<any>, any>({
+    createLicense: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/resources/accounts/:accountId/license`,
         method: "POST",
@@ -11,7 +11,7 @@ export const ddxApi = rootApi.injectEndpoints({
       }),
     }),
 
-    updateLicense: builder.mutation<ApiResponse<any>, any>({
+    updateLicense: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/resources/accounts/:accountId/license`,
         method: "PUT",
@@ -19,7 +19,7 @@ export const ddxApi = rootApi.injectEndpoints({
       }),
     }),
 
-    fetchLicense: builder.mutation<ApiResponse<any>, any>({
+    fetchLicense: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/resources/accounts/:accountId/license/fetch`,
         method: "POST",

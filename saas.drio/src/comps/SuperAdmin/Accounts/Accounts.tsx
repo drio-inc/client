@@ -1,20 +1,27 @@
 import Table from "@/comps/ui/Table";
 import AccountDetails from "./AccountDetails";
+import AddAccountForm from "./AddAccountForm";
 import EditAccountForm from "./EditAccountForm";
-import AddAccountForm from "./AddAccountForm/AddAccountForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import { setRows, setSelectedRows } from "@/state/slices/accountSlice";
 
-import AccountMenu from "./AccountMenu";
+import {
+  setRows,
+  setAccountId,
+  setSelectedRows,
+} from "@/state/slices/accountSlice";
 
 import Button from "@ui/Button";
+import OrgUnits from "../OrgUnits";
 import Modal from "@/comps/ui/Modal";
-import OrgAccounts from "../OrgAccounts";
+import AccountMenu from "./AccountMenu";
 import { IoRefresh } from "react-icons/io5";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
+import DeleteOrgUnit from "../OrgUnits/DeleteOrgUnit";
 import { setOpenModal } from "@/state/slices/uiSlice";
+import AddOrgUnitForm from "../OrgUnits/AddOrgUnitForm";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+import EditOrgAccountForm from "../OrgUnits/EditOrgUnitForm";
 import { useGetAccountsQuery } from "@/api/resources/accounts";
 
 const headers = [
@@ -76,8 +83,9 @@ const Accounts = () => {
     }
   };
 
-  const handleRowClick = (index: number) => {
-    dispatch(setOpenModal("orgAccountTable"));
+  const handleRowClick = (id: string) => {
+    dispatch(setAccountId(id));
+    dispatch(setOpenModal("orgUnitTable"));
   };
 
   const clearSelectedRows = () => {
@@ -130,10 +138,28 @@ const Accounts = () => {
               <AddAccountForm />
             </Modal>
 
-            <Modal identifier="orgAccountTable">
-              <OrgAccounts modal={true} />
+            <Modal identifier="orgUnitTable">
+              <OrgUnits modal={true} accountId={accountState.accountId ?? ""} />
             </Modal>
           </div>
+        </div>
+
+        <div className="hidden">
+          <Modal identifier="addOrgUnitForm">
+            <AddOrgUnitForm />
+          </Modal>
+        </div>
+
+        <div className="hidden">
+          <Modal identifier="editOrgUnitForm">
+            <EditOrgAccountForm />
+          </Modal>
+        </div>
+
+        <div className="hidden">
+          <Modal identifier="deleteOrgUnit">
+            <DeleteOrgUnit />
+          </Modal>
         </div>
 
         <Table
@@ -144,7 +170,7 @@ const Accounts = () => {
           handleCheckbox={handleCheckbox}
           handleRowClick={handleRowClick}
           selectedRows={accountState.selectedRows}
-          rows={accountState.rows.map((row: any) => {
+          rows={accountState.rows.map((row: TableRow) => {
             return {
               ...row,
               organization_units: row.organization_units ?? 0,

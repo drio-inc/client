@@ -3,6 +3,7 @@ import {
   Account,
   Accounts,
   AccountFormData,
+  DeleteAccountResponse,
   AccountCreationResponse,
 } from "./types";
 
@@ -25,7 +26,7 @@ export const accountApi = rootApi.injectEndpoints({
           : ["Accounts"],
     }),
 
-    getAccountById: builder.query<Account, void>({
+    getAccountById: builder.query<Account, string>({
       query: (id) => ({
         url: `/resources/accounts/${id}`,
         method: "GET",
@@ -56,11 +57,10 @@ export const accountApi = rootApi.injectEndpoints({
       invalidatesTags: ["Accounts"],
     }),
 
-    deleteAccount: builder.mutation<ApiResponse<any>, any>({
-      query: (credentials) => ({
-        url: `/resources/accounts/:accountId`,
+    deleteAccount: builder.mutation<DeleteAccountResponse, string>({
+      query: (id) => ({
+        url: `/resources/accounts/${id}`,
         method: "DELETE",
-        body: credentials,
       }),
       invalidatesTags: ["Accounts"],
     }),

@@ -3,7 +3,7 @@ import { rootApi } from "@/state/services/apiService";
 
 export const dataSourcesApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
-    addDataSource: builder.mutation<ApiResponse<any>, any>({
+    addDataSource: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/resources/accounts/:accountId/data-source`,
         method: "POST",

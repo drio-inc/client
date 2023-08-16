@@ -19,8 +19,8 @@ type TableProps = {
   editForm?: React.FC | any;
   detailsWindow?: React.FC | any;
   clearSelectedRows?: () => void;
-  handleRowClick?: (index: number) => void;
   handleCheckbox?: (index: number) => void;
+  handleRowClick?: (id: string) => void;
 };
 
 const Table = ({
@@ -101,7 +101,7 @@ const Table = ({
                     <span
                       className={`${
                         header?.status?.[row[header.accessor]]
-                      } inline-block`}
+                      } inline-block capitalize`}
                     >
                       {row[header.accessor] ?? "N/A"}
                     </span>

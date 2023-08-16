@@ -3,7 +3,7 @@ import { rootApi } from "@/state/services/apiService";
 
 export const datasetsApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
-    publishDataset: builder.mutation<ApiResponse<any>, any>({
+    publishDataset: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/resources/accounts/:accountId/dataset`,
         method: "POST",

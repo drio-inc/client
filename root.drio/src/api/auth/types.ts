@@ -4,5 +4,5 @@ export type LoginFormData = {
   password: string;
 };
 
-export type LoginRespose = ApiResponse<{ message: string }>;
-export type LogoutResponse = ApiResponse<{ message: string }>;
+export type LoginRespose = { message: string };
+export type LogoutResponse = { message: string };

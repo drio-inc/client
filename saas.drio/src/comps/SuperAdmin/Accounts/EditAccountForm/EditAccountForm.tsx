@@ -16,6 +16,8 @@ import {
   useUpdateAccountMutation,
 } from "@/api/resources/accounts";
 
+import { useGetUsersQuery } from "@/api/resources/accounts/users";
+
 import {
   schema,
   FormData,
@@ -32,24 +34,37 @@ export default function EditAccountForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [updateAccount, result] = useUpdateAccountMutation();
   const { rows } = useAppSelector((state) => state.account);
-  const { data, error, isLoading } = useGetAccountByIdQuery(row.id);
+
+  const {
+    data: accountdata,
+    error: accountError,
+    isLoading: isAccountDataLoading,
+  } = useGetAccountByIdQuery(row.id);
+
+  const {
+    data: userData,
+    error: usersError,
+    isLoading: isUserDataLoading,
+  } = useGetUsersQuery(accountdata?.id ?? "", {
+    skip: !accountdata?.id,
+  });
 
   const form = useZodForm({
     schema: schema,
   });
 
   const defaultCountry = Country.getAllCountries().find(
-    (c) => c.isoCode === data?.country
+    (c) => c.isoCode === accountdata?.country
   );
 
-  const defaultState = State.getStatesOfCountry(data?.country ?? "").find(
-    (s) => s.isoCode === data?.state
-  );
+  const defaultState = State.getStatesOfCountry(
+    accountdata?.country ?? ""
+  ).find((s) => s.isoCode === accountdata?.state);
 
   const defaultCity = City.getCitiesOfState(
-    data?.country ?? "",
-    data?.state ?? ""
-  ).find((c) => c.name === data?.city);
+    accountdata?.country ?? "",
+    accountdata?.state ?? ""
+  ).find((c) => c.name === accountdata?.city);
 
   const onSubmit: SubmitHandler<FormData> = async (updatedData) => {
     try {
@@ -61,10 +76,10 @@ export default function EditAccountForm({ row }: TableRow) {
         country: updatedData.country,
         state: updatedData.state ?? "",
         account_name: updatedData.name,
-        login_id: updatedData.rootAdminID,
-        last_name: updatedData.lastName ?? "",
-        first_name: updatedData.firstName ?? "",
-        password: updatedData.rootAdminInitialPassword,
+        login_id: updatedData.login_id,
+        password: updatedData.password ?? "",
+        last_name: updatedData.last_name ?? "",
+        first_name: updatedData.first_name ?? "",
       }).unwrap();
 
       dispatch(setRows([...rows, res]));
@@ -80,13 +95,18 @@ export default function EditAccountForm({ row }: TableRow) {
     }
   };
 
-  if (isLoading) return <StaticLoader />;
-
   type AccountField = keyof Omit<
     Account,
     "id" | "status" | "organization_units" | "users"
   >;
 
+  if (isAccountDataLoading) return <StaticLoader />;
+
+  if (isUserDataLoading) return <StaticLoader />;
+
+  if (!userData) return <StaticLoader />;
+
+  console.log("userData", userData);
   return (
     <Layout>
       <Form
@@ -115,8 +135,8 @@ export default function EditAccountForm({ row }: TableRow) {
                   className="md:text-sm 2xl:text-base"
                   {...form.register(field.name as FormKeyTypes)}
                   defaultValue={
-                    data && field.name in data
-                      ? data[field.name as AccountField]
+                    accountdata && field.name in accountdata
+                      ? accountdata[field.name as AccountField]
                       : ""
                   }
                 />
@@ -153,7 +173,7 @@ export default function EditAccountForm({ row }: TableRow) {
                 }}
                 options={
                   State.getStatesOfCountry(
-                    form.watch("country") ?? data?.country ?? ""
+                    form.watch("country") ?? accountdata?.country ?? ""
                   ).map((state) => ({
                     label: state.name,
                     value: state.isoCode,
@@ -173,8 +193,8 @@ export default function EditAccountForm({ row }: TableRow) {
                 }}
                 options={
                   City.getCitiesOfState(
-                    form.watch("country") ?? data?.country ?? "",
-                    form.watch("state") ?? data?.state ?? ""
+                    form.watch("country") ?? accountdata?.country ?? "",
+                    form.watch("state") ?? accountdata?.state ?? ""
                   ).map((city) => ({
                     label: city.name,
                     value: city.name,
@@ -186,7 +206,7 @@ export default function EditAccountForm({ row }: TableRow) {
             <div className="px-4 py-2 w-1/2">
               <TextInput
                 label={"Zip Code"}
-                {...form.register("zipCode")}
+                {...form.register("zip_code")}
                 placeholder={"Enter zip code"}
                 className="md:text-sm 2xl:text-base"
               />
@@ -216,6 +236,13 @@ export default function EditAccountForm({ row }: TableRow) {
                   placeholder={field.placeholder}
                   autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
+                  defaultValue={
+                    userData[0] && field.name in userData[0]
+                      ? userData[0][
+                          field.name as unknown as keyof (typeof userData)[0]
+                        ]
+                      : ""
+                  }
                   {...form.register(field.name as FormKeyTypes)}
                 />
               </div>
@@ -237,10 +264,14 @@ export default function EditAccountForm({ row }: TableRow) {
                   className="md:text-sm 2xl:text-base"
                   {...form.register(field.name as FormKeyTypes)}
                   defaultValue={
-                    field.name === "firstName"
-                      ? ""
-                      : field.name === "lastName"
-                      ? ""
+                    field.name === "first_name_2"
+                      ? userData[0].first_name
+                      : field.name === "last_name_2"
+                      ? userData[0].last_name
+                      : userData[0] && field.name in userData[0]
+                      ? userData[0][
+                          field.name as unknown as keyof (typeof userData)[0]
+                        ]
                       : ""
                   }
                 />

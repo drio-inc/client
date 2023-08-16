@@ -2,9 +2,16 @@
 
 import { rootApi } from "@/state/services/apiService";
 
-export const orgApi = rootApi.injectEndpoints({
+export const userApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
-    addOrgAccount: builder.mutation<ApiResponse<any>, any>({
+    getUsers: builder.query<User[], string>({
+      query: (id) => ({
+        url: `/resources/accounts/${id}/users`,
+        method: "GET",
+      }),
+    }),
+
+    addUser: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/resources/accounts/:accountId/ous`,
         method: "POST",
@@ -12,7 +19,7 @@ export const orgApi = rootApi.injectEndpoints({
       }),
     }),
 
-    editOrgAccount: builder.mutation<any, any>({
+    updateUser: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/resources/accounts/:accountId/ous`,
         method: "PUT",
@@ -22,4 +29,5 @@ export const orgApi = rootApi.injectEndpoints({
   }),
 });
 
-export const { useAddOrgAccountMutation, useEditOrgAccountMutation } = orgApi;
+export const { useGetUsersQuery, useAddUserMutation, useUpdateUserMutation } =
+  userApi;

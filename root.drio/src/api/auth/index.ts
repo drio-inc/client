@@ -3,7 +3,7 @@ import { rootApi } from "@/state/services/apiService";
 
 export const authApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
-    activate: builder.mutation<ApiResponse<any>, any>({
+    activate: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/auth/activate`,
         method: "POST",
@@ -11,7 +11,7 @@ export const authApi = rootApi.injectEndpoints({
       }),
     }),
 
-    login: builder.mutation<ApiResponse<any>, any>({
+    login: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/auth/login`,
         method: "POST",
@@ -27,7 +27,7 @@ export const authApi = rootApi.injectEndpoints({
       }),
     }),
 
-    setPassword: builder.mutation<ApiResponse<any>, any>({
+    setPassword: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/auth/set-password`,
         method: "POST",
@@ -35,7 +35,7 @@ export const authApi = rootApi.injectEndpoints({
       }),
     }),
 
-    setLDAP: builder.mutation<ApiResponse<any>, any>({
+    setLDAP: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/auth/ldap`,
         method: "POST",
@@ -43,7 +43,7 @@ export const authApi = rootApi.injectEndpoints({
       }),
     }),
 
-    setGoogleAuth: builder.mutation<ApiResponse<any>, any>({
+    setGoogleAuth: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/auth/google-auth`,
         method: "POST",
@@ -51,7 +51,7 @@ export const authApi = rootApi.injectEndpoints({
       }),
     }),
 
-    setOAuth: builder.mutation<ApiResponse<any>, any>({
+    setOAuth: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/auth/oauth`,
         method: "POST",
@@ -59,7 +59,7 @@ export const authApi = rootApi.injectEndpoints({
       }),
     }),
 
-    resetPassword: builder.mutation<ApiResponse<any>, any>({
+    resetPassword: builder.mutation<any, any>({
       query: (credentials) => ({
         url: `/auth/reset-password`,
         method: "POST",

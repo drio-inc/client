@@ -11,32 +11,9 @@ export type AccountFormData = {
   account_name: string;
 };
 
-export type AccountCreationResponse = ApiResponse<{
+export type AccountCreationResponse = {
   message: string;
   account_id: string;
-}>;
-
-type User = {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  login_id: string;
-  state: string;
-  city?: string;
-  country: string;
-  created_at: string;
-  updated_at: string;
-};
-
-type OrganizationUnit = {
-  id: string;
-  name: string;
-  state: string;
-  city?: string;
-  country: string;
-  created_at: string;
-  updated_at: string;
 };
 
 export type Account = {
@@ -52,3 +29,8 @@ export type Account = {
 };
 
 export type Accounts = Account[];
+
+export type DeleteAccountResponse = {
+  message: string;
+  account: Account;
+};

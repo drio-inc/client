@@ -42,10 +42,10 @@ export default function AddAccountForm() {
         country: data.country,
         state: data.state ?? "",
         account_name: data.name,
-        login_id: data.rootAdminID,
-        last_name: data.rootAdminLastName ?? "",
-        password: data.rootAdminInitialPassword,
-        first_name: data.rootAdminFirstName ?? "",
+        login_id: data.login_id,
+        password: data.password,
+        last_name: data.last_name ?? "",
+        first_name: data.first_name ?? "",
       }).unwrap();
 
       dispatch(setRows([...rows, res]));
@@ -143,7 +143,7 @@ export default function AddAccountForm() {
             <div className="px-4 py-2 w-1/2">
               <TextInput
                 label={"Zip Code"}
-                {...form.register("zipCode")}
+                {...form.register("zip_code")}
                 placeholder={"Enter zip code"}
                 className="md:text-sm 2xl:text-base"
               />
@@ -193,14 +193,14 @@ export default function AddAccountForm() {
                   placeholder={field.placeholder}
                   autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
+                  {...form.register(field.name as FormKeyTypes)}
                   defaultValue={
-                    field.name === "firstName"
-                      ? form.watch("rootAdminFirstName")
-                      : field.name === "lastName"
-                      ? form.watch("rootAdminLastName")
+                    field.name === "first_name_2"
+                      ? form.watch("first_name")
+                      : field.name === "last_name_2"
+                      ? form.watch("last_name")
                       : ""
                   }
-                  {...form.register(field.name as FormKeyTypes)}
                 />
               </div>
             ))}

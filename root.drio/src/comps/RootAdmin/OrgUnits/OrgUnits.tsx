@@ -96,14 +96,14 @@ const OrgAccounts = () => {
             <Button
               icon={<HiPlus />}
               intent={"primary"}
-              onClick={() => dispatch(setOpenModal("addOrgAccountForm"))}
+              onClick={() => dispatch(setOpenModal("addOrgUnitForm"))}
             >
               Add Organization Unit
             </Button>
           </div>
 
           <div className="hidden">
-            <Modal identifier="addOrgAccountForm">
+            <Modal identifier="addOrgUnitForm">
               <AddOrgAccountForm />
             </Modal>
           </div>

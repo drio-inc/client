@@ -52,7 +52,7 @@ export default function AddOrgAccountForm() {
       }).unwrap();
 
       dispatch(setRows([...rows, res]));
-      dispatch(setCloseModal("addOrgAccountForm"));
+      dispatch(setCloseModal("addOrgUnitForm"));
       showAlert("Organization Unit added successfully", "success");
     } catch (err: any) {
       showAlert(
@@ -149,7 +149,7 @@ export default function AddOrgAccountForm() {
               type="button"
               intent={`secondary`}
               className="w-full mr-2 md:mr-6"
-              onClick={() => dispatch(setCloseModal("addOrgAccountForm"))}
+              onClick={() => dispatch(setCloseModal("addOrgUnitForm"))}
             >
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>

@@ -4,10 +4,11 @@ import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import AddOrgAccountForm from "../../OrgAccounts/AddOrgAccountForm";
+import AddOrgAccountForm from "../../OrgUnits/AddOrgUnitForm";
 
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/accountSlice";
+import DeleteAccount from "../DeleteAccount/DeleteAccount";
 
 const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
   const dispatch = useAppDispatch();
@@ -32,11 +33,13 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            <AlertModal
-              row={row}
-              accessor={row.account}
-              onClick={() => deleteRow(row.id)}
-            />
+            <Modal
+              label="Delete"
+              identifier="deleteAccountModal"
+              onClick={() => dispatch(setOpenModal("deleteAccountModal"))}
+            >
+              <DeleteAccount accountId={row.id} />
+            </Modal>
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
@@ -62,12 +65,11 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
               </Modal>
             )}
           </span>
-
           <span className={"cursor-pointer block hover:bg-indigo-50"}>
             <Modal
               label="Add New OU"
-              identifier="addOrgAccountForm"
-              onClick={() => dispatch(setOpenModal("addOrgAccountForm"))}
+              identifier="addOrgUnitForm"
+              onClick={() => dispatch(setOpenModal("addOrgUnitForm"))}
             >
               <AddOrgAccountForm />
             </Modal>

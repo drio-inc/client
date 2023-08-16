@@ -2,11 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type AccountState = {
   rows: TableRow[];
+  accountId: string;
   selectedRows: number[];
 };
 
 const initialState: AccountState = {
   rows: [],
+  accountId: "",
   selectedRows: [],
 };
 
@@ -21,11 +23,15 @@ const accountSlice = createSlice({
     setSelectedRows(state, action) {
       state.selectedRows = action.payload;
     },
+
+    setAccountId(state, action) {
+      state.accountId = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = accountSlice.actions;
+export const { setRows, setSelectedRows, setAccountId } = accountSlice.actions;
 
 export default accountSlice.reducer;

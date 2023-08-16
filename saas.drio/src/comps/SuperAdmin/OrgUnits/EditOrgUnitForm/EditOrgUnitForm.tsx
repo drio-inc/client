@@ -8,11 +8,9 @@ import Layout from "@/comps/Layout";
 import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-
-import { useAddOrgAccountMutation } from "@/api/resources/ous";
-
+import { useUpdateOrgUnitMutation } from "@/api/resources/accounts/ous";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/orgUnitSlice";
 
@@ -32,10 +30,10 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function AddOrgAccountForm() {
+export default function EditOrgAccountForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [addAccount, result] = useAddOrgAccountMutation();
-  const rows = useAppSelector((state) => state.orgUnit.rows);
+  const [update, result] = useUpdateOrgUnitMutation();
+  const orgUnitState = useAppSelector((state) => state.orgUnit);
 
   const form = useZodForm({
     schema: schema,
@@ -43,17 +41,18 @@ export default function AddOrgAccountForm() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const res = await addAccount({
-        ou: data.ou,
-        streetAddress: data.streetAddress,
-        country: data.country,
-        state: data.state,
-        city: data.city,
+      const res = await update({
+        ...data,
+        id: row.id,
       }).unwrap();
 
-      dispatch(setRows([...rows, res]));
-      dispatch(setCloseModal("addOrgAccountForm"));
-      showAlert("Organization Unit added successfully", "success");
+      console.log(res);
+
+      dispatch(
+        setRows(orgUnitState.rows.map((row) => (row.id === res.id ? res : row)))
+      );
+
+      dispatch(setCloseModal("editOrgUnitForm"));
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
@@ -67,14 +66,14 @@ export default function AddOrgAccountForm() {
       <Form form={form} onSubmit={onSubmit} className="min-w-full">
         <div className="max-w-md w-full mx-auto bg-white px-4 py-8 rounded-lg">
           <h2 className="text-gray-700 text-2xl font-bold mb-4 text-center">
-            Add New Organization Unit
+            Edit Organization Unit
           </h2>
           <div className="flex flex-wrap p-2 rounded-lg">
             <div className="px-4 py-2 w-full">
               <div className="relative">
                 <TextInput
                   label="Organization Unit"
-                  placeholder="Enter name"
+                  placeholder="Enter OU"
                   {...form.register("ou")}
                 />
               </div>
@@ -91,7 +90,7 @@ export default function AddOrgAccountForm() {
             </div>
 
             <div className="px-4 py-2 w-full">
-              <div className="">
+              <div className="relative">
                 <SelectInput
                   label="Country"
                   registerName="country"
@@ -113,12 +112,12 @@ export default function AddOrgAccountForm() {
                   registerName="state"
                   placeholder="Select state"
                   options={
-                    State.getStatesOfCountry(
-                      form.watch("country") as string
-                    ).map((state) => ({
-                      label: state.name,
-                      value: state.isoCode,
-                    })) ?? []
+                    State.getStatesOfCountry(form.watch("country")).map(
+                      (state) => ({
+                        label: state.name,
+                        value: state.isoCode,
+                      })
+                    ) ?? []
                   }
                 />
               </div>
@@ -132,8 +131,8 @@ export default function AddOrgAccountForm() {
                   placeholder="Select city"
                   options={
                     City.getCitiesOfState(
-                      form.watch("country") as string,
-                      form.watch("state") as string
+                      form.watch("country"),
+                      form.watch("state")
                     ).map((city) => ({
                       label: city.name,
                       value: city.name,
@@ -143,13 +142,12 @@ export default function AddOrgAccountForm() {
               </div>
             </div>
           </div>
-
-          <div className="px-6 flex justify-center w-full">
+          <div className="my-2 px-6 flex justify-center w-full">
             <Button
               type="button"
               intent={`secondary`}
+              onClick={() => dispatch(setCloseModal("editOrgUnitForm"))}
               className="w-full mr-2 md:mr-6"
-              onClick={() => dispatch(setCloseModal("addOrgAccountForm"))}
             >
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>

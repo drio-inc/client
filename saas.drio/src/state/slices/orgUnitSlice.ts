@@ -6,44 +6,7 @@ type OrgUnitState = {
 };
 
 const initialState: OrgUnitState = {
-  rows: [
-    {
-      id: "1",
-      ou: "Cox Automotive",
-      location: "San Diego, California, USA",
-      dsPublished: 25,
-      contract: "2/22",
-      frequency: "798/day",
-      alerts: 2,
-    },
-    {
-      id: "2",
-      ou: "Cox Automotive",
-      location: "San Diego, California, USA",
-      dsPublished: 25,
-      contract: "2/22",
-      frequency: "798/day",
-      alerts: 2,
-    },
-    {
-      id: "3",
-      ou: "Cox Automotive",
-      location: "San Diego, California, USA",
-      dsPublished: 25,
-      contract: "2/22",
-      frequency: "798/day",
-      alerts: 2,
-    },
-    {
-      id: "4",
-      ou: "Cox Automotive",
-      location: "San Diego, California, USA",
-      dsPublished: 25,
-      contract: "2/22",
-      frequency: "798/day",
-      alerts: 2,
-    },
-  ],
+  rows: [],
   selectedRows: [],
 };
 
