@@ -22,26 +22,26 @@ export const policiesApi = rootApi.injectEndpoints({
     }),
 
     addPolicy: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/policies`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     updatePolicy: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/policies`,
         method: "PUT",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     addRule: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/policies/rule`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
   }),

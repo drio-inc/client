@@ -2,7 +2,7 @@ import { rootApi } from "@/state/services/apiService";
 import {
   Account,
   Accounts,
-  AccountFormData,
+  RegisterFormData,
   DeleteAccountResponse,
   AccountCreationResponse,
 } from "./types";
@@ -33,24 +33,36 @@ export const accountApi = rootApi.injectEndpoints({
       }),
     }),
 
-    addAccount: builder.mutation<AccountCreationResponse, AccountFormData>({
-      query: (credentials) => ({
+    createAccount: builder.mutation<AccountCreationResponse, RegisterFormData>({
+      query: (payload) => ({
         url: `/resources/register`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
       invalidatesTags: ["Accounts"],
     }),
 
     updateAccount: builder.mutation<
       AccountCreationResponse,
-      AccountFormData & { id: string }
+      RegisterFormData & { id: string }
     >({
-      query: (credentials) => ({
-        url: `/resources/accounts/${credentials.id}`,
+      query: (payload) => ({
+        url: `/resources/accounts/${payload.id}`,
         method: "PUT",
         body: {
-          ...credentials,
+          ...payload,
+          id: undefined,
+        },
+      }),
+      invalidatesTags: ["Accounts"],
+    }),
+
+    patchAccount: builder.mutation<AccountCreationResponse, Partial<Account>>({
+      query: (payload) => ({
+        url: `/resources/accounts/${payload.id}`,
+        method: "PATCH",
+        body: {
+          ...payload,
           id: undefined,
         },
       }),
@@ -70,8 +82,8 @@ export const accountApi = rootApi.injectEndpoints({
 export const {
   useGetAccountsQuery,
   useGetAccountByIdQuery,
-
-  useAddAccountMutation,
+  usePatchAccountMutation,
+  useCreateAccountMutation,
   useUpdateAccountMutation,
   useDeleteAccountMutation,
 } = accountApi;

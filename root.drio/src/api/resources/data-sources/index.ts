@@ -4,18 +4,18 @@ import { rootApi } from "@/state/services/apiService";
 export const dataSourcesApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     addDataSource: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/data-source`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     editDataSource: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/data-source`,
         method: "PUT",
-        body: credentials,
+        body: payload,
       }),
     }),
   }),

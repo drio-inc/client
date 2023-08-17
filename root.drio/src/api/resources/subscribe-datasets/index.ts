@@ -4,10 +4,10 @@ import { rootApi } from "@/state/services/apiService";
 export const subscribeDatasetsApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     requestDataAccess: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/subscribe-datasets/request-access`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
   }),

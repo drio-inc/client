@@ -5,18 +5,18 @@ import { rootApi } from "@/state/services/apiService";
 export const orgApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     addOrgAccount: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accoundId/ous`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     editOrgAccount: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accoundId/ous`,
         method: "PUT",
-        body: credentials,
+        body: payload,
       }),
     }),
   }),

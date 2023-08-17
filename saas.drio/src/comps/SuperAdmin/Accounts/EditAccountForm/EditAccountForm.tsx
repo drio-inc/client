@@ -13,18 +13,19 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import {
   useGetAccountByIdQuery,
+  usePatchAccountMutation,
   useUpdateAccountMutation,
 } from "@/api/resources/accounts";
 
 import { useGetUsersQuery } from "@/api/resources/accounts/users";
 
 import {
-  schema,
-  FormData,
   nameFields,
   detailFields,
-  FormKeyTypes,
+  updateSchema,
   contactFields,
+  UpdateFormData,
+  UpdateFormKeyTypes,
 } from "@schema/AccountSchema";
 
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
@@ -32,25 +33,27 @@ import { Account } from "@/api/resources/accounts/types";
 
 export default function EditAccountForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [updateAccount, result] = useUpdateAccountMutation();
+  const [patch, result] = usePatchAccountMutation();
   const { rows } = useAppSelector((state) => state.account);
 
   const {
     data: accountdata,
     error: accountError,
+    refetch: refetchAccount,
     isLoading: isAccountDataLoading,
   } = useGetAccountByIdQuery(row.id);
 
   const {
     data: userData,
     error: usersError,
+    refetch: refetchUsers,
     isLoading: isUserDataLoading,
   } = useGetUsersQuery(accountdata?.id ?? "", {
     skip: !accountdata?.id,
   });
 
   const form = useZodForm({
-    schema: schema,
+    schema: updateSchema,
   });
 
   const defaultCountry = Country.getAllCountries().find(
@@ -66,21 +69,30 @@ export default function EditAccountForm({ row }: TableRow) {
     accountdata?.state ?? ""
   ).find((c) => c.name === accountdata?.city);
 
-  const onSubmit: SubmitHandler<FormData> = async (updatedData) => {
+  const onSubmit: SubmitHandler<UpdateFormData> = async (updatedData) => {
     try {
-      const res = await updateAccount({
-        id: row.id,
-        ou_name: "Corp",
-        email: updatedData.email,
-        city: updatedData.city ?? "",
+      const res = await patch({
+        id: accountdata?.id,
+        name: updatedData.name,
         country: updatedData.country,
-        state: updatedData.state ?? "",
-        account_name: updatedData.name,
-        login_id: updatedData.login_id,
-        password: updatedData.password ?? "",
-        last_name: updatedData.last_name ?? "",
-        first_name: updatedData.first_name ?? "",
+        state: updatedData.state,
+        city: updatedData.city,
+        users: [
+          {
+            city: updatedData.city,
+            email: updatedData.email,
+            state: updatedData.state,
+            country: updatedData.country,
+            login_id: updatedData.login_id,
+            first_name: updatedData.first_name,
+            last_name: updatedData.last_name ?? "",
+            id: (userData && userData[0]?.id) ?? "",
+          },
+        ],
       }).unwrap();
+
+      refetchAccount();
+      refetchUsers();
 
       dispatch(setRows([...rows, res]));
       dispatch(setCloseModal("editAccountForm"));
@@ -133,7 +145,7 @@ export default function EditAccountForm({ row }: TableRow) {
                   placeholder={field.placeholder}
                   autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
-                  {...form.register(field.name as FormKeyTypes)}
+                  {...form.register(field.name as UpdateFormKeyTypes)}
                   defaultValue={
                     accountdata && field.name in accountdata
                       ? accountdata[field.name as AccountField]
@@ -228,24 +240,28 @@ export default function EditAccountForm({ row }: TableRow) {
 
           <div className="flex flex-wrap -m-2 shadow-md p-2 rounded-lg bg-gray-50 my-4">
             {detailFields.map((field) => (
-              <div className="px-4 py-2 w-full md:w-1/2" key={field.name}>
-                <TextInput
-                  type={field.type}
-                  label={field.label}
-                  required={field.required}
-                  placeholder={field.placeholder}
-                  autoComplete={field.autoComplete}
-                  className="md:text-sm 2xl:text-base"
-                  defaultValue={
-                    userData[0] && field.name in userData[0]
-                      ? userData[0][
-                          field.name as unknown as keyof (typeof userData)[0]
-                        ]
-                      : ""
-                  }
-                  {...form.register(field.name as FormKeyTypes)}
-                />
-              </div>
+              <>
+                {field.name !== "password" && (
+                  <div className="px-4 py-2 w-full md:w-1/2" key={field.name}>
+                    <TextInput
+                      type={field.type}
+                      label={field.label}
+                      required={field.required}
+                      placeholder={field.placeholder}
+                      autoComplete={field.autoComplete}
+                      className="md:text-sm 2xl:text-base"
+                      defaultValue={
+                        userData[0] && field.name in userData[0]
+                          ? userData[0][
+                              field.name as unknown as keyof (typeof userData)[0]
+                            ]
+                          : ""
+                      }
+                      {...form.register(field.name as UpdateFormKeyTypes)}
+                    />
+                  </div>
+                )}
+              </>
             ))}
           </div>
 
@@ -262,7 +278,7 @@ export default function EditAccountForm({ row }: TableRow) {
                   required={field.required}
                   placeholder={field.placeholder}
                   className="md:text-sm 2xl:text-base"
-                  {...form.register(field.name as FormKeyTypes)}
+                  {...form.register(field.name as UpdateFormKeyTypes)}
                   defaultValue={
                     field.name === "first_name_2"
                       ? userData[0].first_name

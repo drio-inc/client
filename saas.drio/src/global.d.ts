@@ -4,15 +4,15 @@ type TableRow = {
 
 type User = {
   id: string;
-  first_name: string;
-  last_name: string;
   email: string;
-  login_id: string;
-  state: string;
+  state?: string;
   city?: string;
-  country: string;
-  created_at: string;
-  updated_at: string;
+  country?: string;
+  login_id?: string;
+  last_name: string;
+  first_name: string;
+  created_at?: string;
+  updated_at?: string;
 };
 
 type OrganizationUnit = {

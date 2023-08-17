@@ -1,5 +1,4 @@
-import React from "react";
-import Pagination from "../../Pagination/Pagination";
+import Pagination from "@ui/Pagination";
 
 interface Props {
   rows?: TableRow[];
@@ -10,10 +9,13 @@ export default function DashboardFooter(props: Props) {
     <div className="bg-gray-50 shadow-lg rounded-br-lg rounded-bl-lg flex justify-between p-4 text-xs">
       <Pagination />
       <div>
-        <span>
-          Showing {props.rows?.length && props.rows?.length > 0 ? "1" : "0"} to{" "}
-          {props.rows?.length} of {props.rows?.length} results
-        </span>
+        {props.rows && props.rows?.length > 0 ? (
+          <span>
+            Showing 1 to {props.rows?.length} of {props.rows?.length} results
+          </span>
+        ) : (
+          <span>No results</span>
+        )}
       </div>
 
       <div>

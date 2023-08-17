@@ -4,66 +4,66 @@ import { rootApi } from "@/state/services/apiService";
 export const authApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     activate: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/auth/activate`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     login: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/auth/login`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     logout: builder.mutation<LogoutResponse, void>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/auth/logout`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     setPassword: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/auth/set-password`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     setLDAP: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/auth/ldap`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     setGoogleAuth: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/auth/google-auth`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     setOAuth: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/auth/oauth`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     resetPassword: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/auth/reset-password`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
   }),

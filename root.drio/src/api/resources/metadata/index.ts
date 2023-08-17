@@ -4,18 +4,18 @@ import { rootApi } from "@/state/services/apiService";
 export const metadataApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     addMetadata: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/dataset/:datasetId/metadata`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     editMetadata: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/dataset/:datasetId/metadata`,
         method: "PUT",
-        body: credentials,
+        body: payload,
       }),
     }),
   }),

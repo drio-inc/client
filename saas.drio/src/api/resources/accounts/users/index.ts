@@ -12,18 +12,18 @@ export const userApi = rootApi.injectEndpoints({
     }),
 
     addUser: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/ous`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     updateUser: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/ous`,
         method: "PUT",
-        body: credentials,
+        body: payload,
       }),
     }),
   }),

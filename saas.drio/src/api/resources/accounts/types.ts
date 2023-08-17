@@ -1,9 +1,9 @@
-export type AccountFormData = {
+export type RegisterFormData = {
   email: string;
   state: string;
   city?: string;
   country: string;
-  ou_name: string;
+  ou_name?: string;
   password: string;
   login_id: string;
   last_name: string;

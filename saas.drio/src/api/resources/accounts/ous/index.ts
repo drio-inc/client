@@ -12,18 +12,18 @@ export const orgUnitApi = rootApi.injectEndpoints({
     }),
 
     addOrgUnit: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/ous`,
         method: "POST",
-        body: credentials,
+        body: payload,
       }),
     }),
 
     updateOrgUnit: builder.mutation<any, any>({
-      query: (credentials) => ({
+      query: (payload) => ({
         url: `/resources/accounts/:accountId/ous`,
         method: "PUT",
-        body: credentials,
+        body: payload,
       }),
     }),
   }),

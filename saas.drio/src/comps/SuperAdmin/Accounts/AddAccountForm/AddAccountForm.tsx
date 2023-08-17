@@ -11,31 +11,29 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/accountSlice";
-import { useAddAccountMutation } from "@/api/resources/accounts";
+import { useCreateAccountMutation } from "@/api/resources/accounts";
 
 import {
-  schema,
-  FormData,
   nameFields,
   detailFields,
-  FormKeyTypes,
+  createSchema,
   contactFields,
+  CreateFormData,
+  CreateFormKeyTypes,
 } from "@schema/AccountSchema";
 
 export default function AddAccountForm() {
   const dispatch = useAppDispatch();
-  const [addAccount, result] = useAddAccountMutation();
+  const [create, result] = useCreateAccountMutation();
   const { rows } = useAppSelector((state) => state.account);
 
   const form = useZodForm({
-    schema: schema,
+    schema: createSchema,
   });
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log(data);
-
+  const onSubmit: SubmitHandler<CreateFormData> = async (data) => {
     try {
-      const res = await addAccount({
+      const res = await create({
         ou_name: "Corp",
         email: data.email,
         city: data.city ?? "",
@@ -87,7 +85,7 @@ export default function AddAccountForm() {
                   placeholder={field.placeholder}
                   autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
-                  {...form.register(field.name as FormKeyTypes)}
+                  {...form.register(field.name as CreateFormKeyTypes)}
                 />
               </div>
             ))}
@@ -173,7 +171,7 @@ export default function AddAccountForm() {
                   placeholder={field.placeholder}
                   autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
-                  {...form.register(field.name as FormKeyTypes)}
+                  {...form.register(field.name as CreateFormKeyTypes)}
                 />
               </div>
             ))}
@@ -193,7 +191,7 @@ export default function AddAccountForm() {
                   placeholder={field.placeholder}
                   autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
-                  {...form.register(field.name as FormKeyTypes)}
+                  {...form.register(field.name as CreateFormKeyTypes)}
                   defaultValue={
                     field.name === "first_name_2"
                       ? form.watch("first_name")
