@@ -80,32 +80,7 @@ export const contactFields = [
   },
 ];
 
-export const createSchema = z.object({
-  street_address: z.string().optional(),
-  name: z.string().nonempty("Please Enter a value"),
-
-  country: z.string({
-    required_error: "Please Enter a value",
-  }),
-
-  city: z.string().optional(),
-  state: z.string().optional(),
-
-  zip_code: z.string().optional(),
-  description: z.string().optional(),
-
-  last_name: z.string().optional(),
-  login_id: z.string().nonempty("Please Enter a value"),
-  first_name: z.string().nonempty("Please Enter a value"),
-  password: z.string().nonempty("Please Enter a value"),
-
-  last_name_2: z.string().optional(),
-  first_name_2: z.string().optional(),
-  email: z.string().nonempty("Please Enter a value"),
-  contact_number: z.string().optional(),
-});
-
-export const updateSchema = z.object({
+export const schema = z.object({
   street_address: z.string().optional(),
   name: z.string().nonempty("Please Enter a value"),
 
@@ -128,6 +103,14 @@ export const updateSchema = z.object({
   email: z.string().nonempty("Please Enter a value"),
   contact_number: z.string().optional(),
 });
+
+export const createSchema = z
+  .object({
+    password: z.string().nonempty("Please Enter a value"),
+  })
+  .merge(schema);
+
+export const updateSchema = schema;
 
 export type CreateFormData = z.infer<typeof createSchema>;
 export type CreateFormKeyTypes = keyof CreateFormData;

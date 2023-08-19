@@ -32,6 +32,8 @@ export default function AddAccountForm() {
   });
 
   const onSubmit: SubmitHandler<CreateFormData> = async (data) => {
+    console.log(data);
+
     try {
       const res = await create({
         ou_name: "Corp",
@@ -171,7 +173,13 @@ export default function AddAccountForm() {
                   placeholder={field.placeholder}
                   autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
-                  {...form.register(field.name as CreateFormKeyTypes)}
+                  {...form.register(field.name as CreateFormKeyTypes, {
+                    onChange: (e) =>
+                      form.setValue(
+                        (field.name as CreateFormKeyTypes) ?? "",
+                        e.target.value
+                      ),
+                  })}
                 />
               </div>
             ))}
@@ -191,7 +199,13 @@ export default function AddAccountForm() {
                   placeholder={field.placeholder}
                   autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
-                  {...form.register(field.name as CreateFormKeyTypes)}
+                  {...form.register(field.name as CreateFormKeyTypes, {
+                    onChange: (e) =>
+                      form.setValue(
+                        (field.name as CreateFormKeyTypes) ?? "",
+                        e.target.value
+                      ),
+                  })}
                   defaultValue={
                     field.name === "first_name_2"
                       ? form.watch("first_name")
@@ -217,6 +231,7 @@ export default function AddAccountForm() {
             <Button
               intent={`primary`}
               className="w-full md:w-auto"
+              disabled={result.isLoading}
               isLoading={result.isLoading}
             >
               <span className="inline-flex justify-center w-full">

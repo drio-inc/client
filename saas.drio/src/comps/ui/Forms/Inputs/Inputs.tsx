@@ -65,7 +65,7 @@ export const TextInput = forwardRef<HTMLInputElement, ITextInputProps>(
     const {
       setValue,
       clearErrors,
-      formState: { errors },
+      formState: { errors, isDirty, dirtyFields },
     } = useFormContext();
 
     if (!props.name) return null;
@@ -86,10 +86,6 @@ export const TextInput = forwardRef<HTMLInputElement, ITextInputProps>(
         <input
           ref={ref}
           {...props}
-          onChange={(e) => {
-            clearErrors(props.name);
-            setValue(props.name ?? "", e.target.value);
-          }}
           type={isPasswordVisible ? "text" : props.type}
           className={`transition-colors ease-in-out duration-200 border py-2 px-3 my-1 rounded-md focus:outline-none shadow-sm ${
             error

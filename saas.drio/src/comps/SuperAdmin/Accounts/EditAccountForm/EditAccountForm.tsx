@@ -118,7 +118,6 @@ export default function EditAccountForm({ row }: TableRow) {
 
   if (!userData) return <StaticLoader />;
 
-  console.log("userData", userData);
   return (
     <Layout>
       <Form
@@ -309,6 +308,7 @@ export default function EditAccountForm({ row }: TableRow) {
               intent={`primary`}
               className="w-full md:w-auto"
               isLoading={result.isLoading}
+              disabled={!form.formState.isDirty}
             >
               <span className="inline-flex justify-center w-full">Update</span>
             </Button>
