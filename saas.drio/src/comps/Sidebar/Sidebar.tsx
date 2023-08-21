@@ -21,6 +21,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 interface NavLink {
   name: string;
   href: string;
+  default?: string;
   icon?: JSX.Element;
   children?: {
     name: string;
@@ -46,7 +47,7 @@ const NavLinks = [
     icon: <HiOutlineDocumentDuplicate className="inline-block w-6 h-6 mr-2" />,
     children: [
       {
-        name: "Organizational Units",
+        name: "Organization Units",
         href: "ou",
       },
     ],
@@ -75,6 +76,7 @@ const NavLinks = [
   {
     name: "System Settings",
     href: "system-settings",
+    default: "system-settings",
     icon: <HiOutlinePuzzle className="inline-block w-6 h-6 mr-2" />,
   },
 
@@ -88,11 +90,17 @@ const NavLinks = [
 export default function Sidebar() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
   const { expandedLinks } = useAppSelector((state) => state.ui);
 
   const showNested = (link: NavLink) => {
     const expanded = !expandedLinks[link.name];
+
+    NavLinks.forEach((link) => {
+      if (link.children) {
+        dispatch(setExpandedLinks({ linkName: link.name, expanded: false }));
+      }
+    });
+
     dispatch(setExpandedLinks({ linkName: link.name, expanded }));
   };
 
@@ -109,8 +117,8 @@ export default function Sidebar() {
           <ul className="md:flex-col md:min-w-full flex flex-col list-none">
             {NavLinks.map((link) => (
               <li key={link.name}>
-                <span
-                  className={`text-sm py-3 px-2 font-medium flex justify-between items-center
+                <div
+                  className={`text-sm py-3 px-2 font-medium flex justify-between items-center 
                         ${
                           router.pathname.indexOf(link.href) !== -1
                             ? "bg-gray-100 text-gray-600 hover:text-gray-500 rounded-lg"
@@ -118,7 +126,19 @@ export default function Sidebar() {
                         }
                       `}
                 >
-                  <Link href={`/${link.href}`}>
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      showNested(link);
+                      router.push(
+                        `/${
+                          link.default
+                            ? `${link.href}/${link.default}`
+                            : link.href
+                        }`
+                      );
+                    }}
+                  >
                     <span
                       className={`                        ${
                         router.pathname.indexOf(link.href) !== -1
@@ -128,8 +148,10 @@ export default function Sidebar() {
                     >
                       {link.icon}
                     </span>
-                    {link.name}
-                  </Link>
+                    <span className={`text-gray-500 hover:text-gray-600`}>
+                      {link.name}
+                    </span>
+                  </div>
                   {link.children && (
                     <span
                       className="ml-4"
@@ -144,7 +166,7 @@ export default function Sidebar() {
                       )}
                     </span>
                   )}
-                </span>
+                </div>
 
                 {link.children &&
                   expandedLinks[link.name] &&
@@ -154,8 +176,8 @@ export default function Sidebar() {
                         <li key={child.name}>
                           <Link href={`/${link.href}/${child.href}`}>
                             <span
-                              className={`text-sm py-3 px-2 font-medium block ${
-                                router.pathname.split("/").includes(child.href)
+                              className={`text-sm py-3 px-2 font-medium block my-1 ${
+                                router.pathname.indexOf(child.href) !== -1
                                   ? "bg-gray-100 text-gray-600 hover:text-gray-500 rounded-lg"
                                   : "text-gray-500 hover:text-gray-600"
                               }`}
