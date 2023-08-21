@@ -4,9 +4,10 @@ import * as Popover from "@radix-ui/react-popover";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import { setOpenModal } from "@/state/slices/uiSlice";
 import Link from "next/link";
 import AlertModal from "@/comps/ui/AlertModal";
+import UpdateLicenseForm from "../UpdateLicenseForm";
+import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/DDXSlice";
 
 const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
@@ -32,9 +33,21 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {detailsWindow && (
+            {editForm && (
               <Modal
                 label="Edit"
+                identifier="editDDXForm"
+                onClick={() => dispatch(setOpenModal("editDDXForm"))}
+              >
+                {editForm}
+              </Modal>
+            )}
+          </span>
+
+          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            {detailsWindow && (
+              <Modal
+                label="View"
                 identifier="detailsWindow"
                 onClick={() => dispatch(setOpenModal("detailsWindow"))}
               >
@@ -51,25 +64,22 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
             />
           </span>
 
-          <span
+          {/* <span
             className={
               "cursor-pointer hover:bg-indigo-50 w-full block text-drio-red-dark py-2 px-4"
             }
           >
-            {/* <Link href={`/ddx/${row.account}/dashboard`}>View Dashboard</Link> */}
-            View Dashboard
-          </span>
+            <Link href={`/ddx/${row.account}/dashboard`}>View Dashboard</Link>
+          </span> */}
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {editForm && (
-              <Modal
-                label="Update License"
-                identifier="updateLicenseForm"
-                onClick={() => dispatch(setOpenModal("updateLicenseForm"))}
-              >
-                {editForm}
-              </Modal>
-            )}
+            <Modal
+              label="Update License"
+              identifier="updateLicenseForm"
+              onClick={() => dispatch(setOpenModal("updateLicenseForm"))}
+            >
+              <UpdateLicenseForm />
+            </Modal>
           </span>
         </Popover.Content>
       </Popover.Portal>

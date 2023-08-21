@@ -1,10 +1,12 @@
 import Layout from "@/comps/Layout";
+import { HiX, HiPlus } from "react-icons/hi";
 import Button from "@/comps/ui/Button/Button";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
+import { useState } from "react";
 
-import { HiX } from "react-icons/hi";
+import KeyForm from "../KeyForm";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 const SystemDetails = [
   {
@@ -121,90 +123,101 @@ const DeploymentDetails = [
 
 export default function DDXDetails({ row }: TableRow) {
   const dispatch = useAppDispatch();
+  const [showKey, setShowKey] = useState(false);
+
   return (
-    <>
-      <Layout>
-        <div className="min-w-[60vw] relative w-full mx-auto bg-white p-8 rounded-lg">
-          <h2 className="text-gray-700 text-base font-bold mb-4">
-            {row.account}
-          </h2>
+    <Layout>
+      <div className="min-w-[60vw] relative w-full mx-auto bg-white p-8 rounded-lg">
+        <h2 className="text-gray-700 text-lg font-bold mb-4">
+          {row.ou}, {row.location ?? "US"}
+        </h2>
 
-          <div className="flex justify-between">
-            <h3 className="text-gray-500 font-semibold">System Details</h3>
-            <Button
-              intent={`primaryOutline`}
-              onClick={() => {
-                dispatch(setCloseModal("detailsWindow"));
-                dispatch(setOpenModal("addDDXForm"));
-              }}
-            >
-              + Add DDX
-            </Button>
-          </div>
+        <span
+          onClick={() => dispatch(setCloseModal("detailsWindow"))}
+          className="absolute top-0 right-1 p-6 cursor-pointer"
+        >
+          <HiX className="w-6 h-6" />
+        </span>
 
-          <div className="flex justify-between gap-x-4 my-4 shadow-md p-2 rounded-lg bg-gray-50 text-gray-500">
-            <div className="flex flex-col w-2/3">
-              {SystemDetails[0].defaults.map((field) => (
-                <div className="flex my-2" key={field.name}>
-                  <span className="block w-1/2 font-bold">{field.label}</span>
-                  <span className="block">:{field.value}</span>
-                </div>
-              ))}
-            </div>
+        <hr className="mb-4" />
 
-            <div className="flex flex-col w-1/3">
-              <h3 className="my-2 font-bold">Cluster Provisioning</h3>
-              {SystemDetails[0].provisioning.map((field) => (
-                <div className="flex my-2" key={field.name}>
-                  <span className="block w-1/2 font-bold">{field.label}</span>
-                  <span className="block">:{field.value}</span>
-                </div>
-              ))}
-            </div>
+        <div className="flex justify-between">
+          <h3 className="text-gray-500 font-semibold">System Details</h3>
 
-            <div className="flex flex-col w-1/3">
-              <h3 className="my-2 font-bold">System Utilization</h3>
-              {SystemDetails[0].utilization.map((field) => (
-                <div className="flex my-2" key={field.name}>
-                  <span className="block w-1/2 font-bold">{field.label}</span>
-                  <span className="block">:{field.value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <h3 className="text-gray-500 font-semibold">
+            Status:{" "}
+            <span className="font-extrabold text-green-700">Active</span>
+          </h3>
 
-          <div className="flex justify-between">
-            <h2 className="text-gray-500 font-medium">Deployment details</h2>
-            <Button
-              intent={`primaryOutline`}
-              onClick={() => {
-                dispatch(setCloseModal("detailsWindow"));
-                dispatch(setOpenModal("addDDXForm"));
-              }}
-            >
-              + Rollover Key
-            </Button>
-          </div>
-
-          <div className="flex my-4 shadow-md p-2 rounded-lg bg-gray-50 text-gray-500">
-            <div className="flex flex-col w-1/3">
-              {DeploymentDetails.map((field) => (
-                <div className="flex my-2" key={field.name}>
-                  <span className="block w-1/2 font-bold">{field.label}</span>
-                  <span className="block">:{field.value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <span
-            onClick={() => dispatch(setCloseModal("detailsWindow"))}
-            className="absolute top-0 right-0 p-6 cursor-pointer"
+          <Button
+            className="invisible"
+            intent={`primaryOutline`}
+            onClick={() => {
+              dispatch(setCloseModal("detailsWindow"));
+              dispatch(setOpenModal("addDDXForm"));
+            }}
           >
-            <HiX className="w-6 h-6" />
-          </span>
+            + Add DDX
+          </Button>
         </div>
-      </Layout>
-    </>
+
+        <div className="flex justify-between gap-x-4 my-4 shadow-sm border p-2 rounded-lg bg-gray-50 text-gray-500">
+          <div className="flex flex-col w-2/3">
+            {SystemDetails[0].defaults.map((field) => (
+              <div className="flex my-2" key={field.name}>
+                <span className="block w-1/2 font-bold">{field.label}</span>
+                <span className="block">:{field.value}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col w-1/3">
+            <h3 className="my-2 font-bold">Cluster Provisioning</h3>
+            {SystemDetails[0].provisioning.map((field) => (
+              <div className="flex my-2" key={field.name}>
+                <span className="block w-1/2 font-bold">{field.label}</span>
+                <span className="block">:{field.value}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col w-1/3">
+            <h3 className="my-2 font-bold">System Utilization</h3>
+            {SystemDetails[0].utilization.map((field) => (
+              <div className="flex my-2" key={field.name}>
+                <span className="block w-1/2 font-bold">{field.label}</span>
+                <span className="block">:{field.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-between">
+          <h2 className="text-gray-500 font-semibold">Deployment details</h2>
+          <Button
+            intent={`primaryOutline`}
+            onClick={() => setShowKey(!showKey)}
+            icon={!showKey ? <HiPlus /> : <HiX />}
+          >
+            Rollover Key
+          </Button>
+        </div>
+
+        <div className={`${showKey ? `flex justify-end` : `hidden`}`}>
+          <KeyForm />
+        </div>
+
+        <div className="flex my-4 shadow-sm border p-2 rounded-lg bg-gray-50 text-gray-500">
+          <div className="flex flex-col w-1/3">
+            {DeploymentDetails.map((field) => (
+              <div className="flex my-2" key={field.name}>
+                <span className="block w-1/2 font-bold">{field.label}</span>
+                <span className="block">:{field.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 }

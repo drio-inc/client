@@ -35,7 +35,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function AddDDXForm() {
+export default function EditDDXForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [visibility, setVisibility] = useState("");
   const [key, keyResult] = useGenerateDDXKeyMutation();
@@ -63,13 +63,12 @@ export default function AddDDXForm() {
     }
 
     form.reset();
-    dispatch(setCloseModal("addDDXForm"));
+    dispatch(setCloseModal("editDDXForm"));
   };
 
   const generateKey = async () => {
     try {
       const res = await key({}).unwrap();
-
       form.setValue(
         "mfaKey",
         res.key.substring(0, 30).split("-").join("").toUpperCase()
@@ -86,6 +85,7 @@ export default function AddDDXForm() {
     navigator.clipboard.writeText(
       form.getValues("mfaKey") ?? "wJalrXUtnFEMIK7MDENGbPxRfiCY"
     );
+
     showAlert("Rollover Key Successfully Copied!", "success");
   };
 
@@ -94,7 +94,7 @@ export default function AddDDXForm() {
       <Form form={form} onSubmit={onSubmit} className="">
         <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
           <h2 className="text-gray-700 text-2xl font-bold text-center">
-            Add DDX
+            Edit DDX
           </h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
@@ -156,6 +156,16 @@ export default function AddDDXForm() {
               </div>
             )}
 
+            <div className="px-4 pt-2 w-full">
+              <Button
+                intent={`primaryOutline`}
+                className="w-full"
+                isLoading={provisionResult.isLoading}
+              >
+                Provision
+              </Button>
+            </div>
+
             <div className="px-4 py-2 w-full relative">
               <span className="text-xs text-gray-500 font-medium">
                 Note:use this key when installing and bringing up the DDX
@@ -193,7 +203,7 @@ export default function AddDDXForm() {
               type="button"
               intent={`secondary`}
               className="w-full"
-              onClick={() => dispatch(setCloseModal("addDDXForm"))}
+              onClick={() => dispatch(setCloseModal("editDDXForm"))}
             >
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>
@@ -204,7 +214,7 @@ export default function AddDDXForm() {
               isLoading={provisionResult.isLoading}
             >
               <span className="inline-flex justify-center w-full">
-                Provision DDX
+                Update DDX
               </span>
             </Button>
           </div>
