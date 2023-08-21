@@ -156,55 +156,55 @@ export default function AddDDXForm() {
               </div>
             )}
 
-            <div className="px-4 pt-2 w-full">
-              <Button
-                intent={`primaryOutline`}
-                className="w-full"
-                isLoading={provisionResult.isLoading}
-              >
-                Provision
-              </Button>
-            </div>
-
             <div className="px-4 py-2 w-full relative">
               <span className="text-xs text-gray-500 font-medium">
                 Note:use this key when installing and bringing up the DDX
               </span>
-              <TextInput
-                disabled
-                label={""}
-                {...form.register("mfaKey")}
-                className="md:text-sm 2xl:text-base"
-                placeholder={"wJalrXUtnFEMIK7MDENGbPxRfiCY"}
-                icon={
-                  <HiOutlineDuplicate
-                    className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 z-50 cursor-pointer block bg-gray-100"
-                    onClick={() => copyKey()}
-                  />
-                }
-              />
+
+              <div className="flex items-center">
+                <TextInput
+                  disabled
+                  label={""}
+                  {...form.register("mfaKey")}
+                  className="md:text-sm 2xl:text-base w-1/2 flex-grow"
+                  placeholder={"wJalrXUtnFEMIK7MDENGbPxRfiCY"}
+                  icon={
+                    <HiOutlineDuplicate
+                      className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 z-50 cursor-pointer block bg-gray-100"
+                      onClick={() => copyKey()}
+                    />
+                  }
+                />
+                <Button
+                  type="button"
+                  className="ml-2"
+                  intent={`primaryOutline`}
+                  onClick={() => generateKey()}
+                  isLoading={keyResult.isLoading}
+                >
+                  New Key
+                </Button>
+              </div>
             </div>
           </div>
 
-          <div className="py-2 flex justify-center w-full mt-4">
+          <div className="p-2 flex gap-x-2 justify-center w-full mt-4">
             <Button
               type="button"
               intent={`secondary`}
-              className="w-full md:w-auto mr-2 md:mr-6"
+              className="w-full"
               onClick={() => dispatch(setCloseModal("addDDXForm"))}
             >
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>
 
             <Button
-              type="button"
               intent={`primary`}
-              className="w-full md:w-auto"
-              onClick={() => generateKey()}
-              isLoading={keyResult.isLoading}
+              className="w-full"
+              isLoading={provisionResult.isLoading}
             >
               <span className="inline-flex justify-center w-full">
-                Generate New Key
+                Provision DDX
               </span>
             </Button>
           </div>
