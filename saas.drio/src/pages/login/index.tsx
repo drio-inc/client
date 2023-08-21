@@ -84,7 +84,6 @@ export default function Login() {
                 type="password"
                 label="Password"
                 {...form.register("password")}
-                defaultValue={"3c4413f4e544f1791322ff66"}
               />
             </div>
           </div>
