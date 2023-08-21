@@ -112,11 +112,11 @@ export default function EditAccountForm({ row }: TableRow) {
     "id" | "status" | "organization_units" | "users"
   >;
 
-  if (isAccountDataLoading) return <StaticLoader />;
-
-  if (isUserDataLoading) return <StaticLoader />;
-
-  if (!userData) return <StaticLoader />;
+  if (process.env.DEVELOPMENT_MODE === "controller") {
+    if (isAccountDataLoading) return <StaticLoader />;
+    if (isUserDataLoading) return <StaticLoader />;
+    if (!userData) return <StaticLoader />;
+  }
 
   return (
     <Layout>
@@ -250,7 +250,7 @@ export default function EditAccountForm({ row }: TableRow) {
                       autoComplete={field.autoComplete}
                       className="md:text-sm 2xl:text-base"
                       defaultValue={
-                        userData[0] && field.name in userData[0]
+                        userData?.[0] && field.name in userData[0]
                           ? userData[0][
                               field.name as unknown as keyof (typeof userData)[0]
                             ]
@@ -280,11 +280,11 @@ export default function EditAccountForm({ row }: TableRow) {
                   {...form.register(field.name as UpdateFormKeyTypes)}
                   defaultValue={
                     field.name === "first_name_2"
-                      ? userData[0].first_name
+                      ? userData?.[0].first_name
                       : field.name === "last_name_2"
-                      ? userData[0].last_name
-                      : userData[0] && field.name in userData[0]
-                      ? userData[0][
+                      ? userData?.[0].last_name
+                      : userData?.[0] && field.name in userData[0]
+                      ? userData?.[0][
                           field.name as unknown as keyof (typeof userData)[0]
                         ]
                       : ""
