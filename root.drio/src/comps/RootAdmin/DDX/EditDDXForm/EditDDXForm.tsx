@@ -156,16 +156,6 @@ export default function EditDDXForm({ row }: TableRow) {
               </div>
             )}
 
-            <div className="px-4 pt-2 w-full">
-              <Button
-                intent={`primaryOutline`}
-                className="w-full"
-                isLoading={provisionResult.isLoading}
-              >
-                Provision
-              </Button>
-            </div>
-
             <div className="px-4 py-2 w-full relative">
               <span className="text-xs text-gray-500 font-medium">
                 Note:use this key when installing and bringing up the DDX
