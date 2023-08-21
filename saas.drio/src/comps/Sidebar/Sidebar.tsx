@@ -47,7 +47,7 @@ const NavLinks = [
     icon: <HiOutlineDocumentDuplicate className="inline-block w-6 h-6 mr-2" />,
     children: [
       {
-        name: "Organizational Units",
+        name: "Organization Units",
         href: "ou",
       },
     ],
