@@ -12,7 +12,7 @@ const initialState: DDXState = {
   rows: [
     {
       id: "1",
-      account: "Cox Automotive",
+      name: "Cox Cluster 2",
       ou: "Corp",
       status: "Active",
       clusterVCPU: 25,
@@ -24,7 +24,7 @@ const initialState: DDXState = {
     },
     {
       id: "2",
-      account: "VISA",
+      name: "DT DDX Cluster 7",
       ou: "Corp",
       status: "Pending",
       clusterVCPU: 25,
@@ -36,7 +36,7 @@ const initialState: DDXState = {
     },
     {
       id: "3",
-      account: "Paypal",
+      name: "KBB DDX Cluster 1",
       ou: "Corp",
       status: "Not Configured",
       clusterVCPU: 25,
@@ -48,7 +48,7 @@ const initialState: DDXState = {
     },
     {
       id: "4",
-      account: "KKB",
+      name: "Cox Cluster 1",
       ou: "Corp",
       status: "Active",
       clusterVCPU: 25,

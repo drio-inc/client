@@ -17,6 +17,10 @@ import { setOpenModal } from "@/state/slices/uiSlice";
 
 const headers = [
   {
+    header: "DDX Name",
+    accessor: "name",
+  },
+  {
     header: "Organization Unit",
     accessor: "ou",
   },
