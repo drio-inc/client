@@ -131,8 +131,8 @@ export default function PublishDatasetForm() {
 
             <div className="px-4 py-2 w-full">
               <SelectInput
+                registerName="topic"
                 placeholder={"Select"}
-                registerName="dataSource"
                 label={"Select Topic Dataset"}
                 className="md:text-sm 2xl:text-base"
                 options={[
