@@ -69,7 +69,9 @@ const Accounts = () => {
 
   if (isLoading) return <StaticLoader />;
 
-  if (data) dispatch(setRows(data));
+  if (process.env.DEVELOPMENT_MODE !== "mock") {
+    if (data) dispatch(setRows(data));
+  }
 
   const handleCheckbox = (index: number) => {
     if (accountState.selectedRows.includes(index)) {

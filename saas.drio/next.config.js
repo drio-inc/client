@@ -13,9 +13,9 @@ const nextConfig = {
       {
         source: "/api/:path*",
         destination: `${
-          process.env.DEVELOPMENT_MODE === "controller"
-            ? process.env.API_URL
-            : process.env.MOCK_URL
+          process.env.DEVELOPMENT_MODE === "mock"
+            ? process.env.MOCK_URL
+            : process.env.API_URL
         }/:path*`,
       },
     ];

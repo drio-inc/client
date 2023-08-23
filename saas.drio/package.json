@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "DEVELOPMENT_MODE=development next dev",
-    "dev:controller": "DEVELOPMENT_MODE=controller next dev",
-    "build": "next build",
+    "dev:mock": "DEVELOPMENT_MODE=mock next dev",
+    "build": "DEVELOPMENT_MODE=mock next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch"

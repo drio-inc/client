@@ -1,12 +1,11 @@
 {
   "private": true,
   "scripts": {
-    "root": "yarn workspace root.drio dev",
-    "saas": "yarn workspace saas.drio dev",
-    "test": "yarn workspace saas.drio test && yarn workspace root.drio test",
     "build": "yarn workspace root.drio build && yarn workspace saas.drio build",
     "start": "yarn workspace root.drio start && yarn workspace saas.drio start",
-    "dev": "concurrently \"yarn workspace root.drio dev\" \"yarn workspace saas.drio dev\""
+    "dev": "concurrently \"yarn workspace root.drio dev\" \"yarn workspace saas.drio dev\"",
+    "test": "concurrently \"yarn workspace root.drio test\" \"yarn workspace saas.drio test\"",
+    "dev:mock": "concurrently \"yarn workspace root.drio dev:mock\" \"yarn workspace saas.drio dev:mock\""
   },
   "workspaces": [
     "root.drio",

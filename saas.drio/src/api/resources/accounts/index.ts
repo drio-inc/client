@@ -57,7 +57,7 @@ export const accountApi = rootApi.injectEndpoints({
       invalidatesTags: ["Accounts"],
     }),
 
-    patchAccount: builder.mutation<AccountCreationResponse, Partial<Account>>({
+    patchAccount: builder.mutation<Account, Partial<Account>>({
       query: (payload) => ({
         url: `/resources/accounts/${payload.id}`,
         method: "PATCH",

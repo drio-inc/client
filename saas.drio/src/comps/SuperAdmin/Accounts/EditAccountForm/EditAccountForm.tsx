@@ -52,27 +52,51 @@ export default function EditAccountForm({ row }: TableRow) {
     skip: !accountdata?.id,
   });
 
+  const getField = (field: AccountField) => {
+    if (process.env.DEVELOPMENT_MODE === "mock") {
+      return row[field];
+    } else {
+      return accountdata && field in accountdata
+        ? accountdata[field]
+        : userData?.[0] && field in userData[0]
+        ? userData[0][field as unknown as keyof (typeof userData)[0]]
+        : "";
+    }
+  };
+
   const form = useZodForm({
     schema: updateSchema,
   });
 
   const defaultCountry = Country.getAllCountries().find(
-    (c) => c.isoCode === accountdata?.country
+    (c) =>
+      c.isoCode ===
+      (process.env.DEVELOPMENT_MODE === "mock"
+        ? row.country
+        : accountdata?.country)
   );
 
   const defaultState = State.getStatesOfCountry(
     accountdata?.country ?? ""
-  ).find((s) => s.isoCode === accountdata?.state);
+  ).find((s) =>
+    process.env.DEVELOPMENT_MODE === "mock"
+      ? row.state
+      : s.isoCode === accountdata?.state
+  );
 
   const defaultCity = City.getCitiesOfState(
     accountdata?.country ?? "",
     accountdata?.state ?? ""
-  ).find((c) => c.name === accountdata?.city);
+  ).find((c) =>
+    process.env.DEVELOPMENT_MODE === "mock"
+      ? row.city
+      : c.name === accountdata?.city
+  );
 
   const onSubmit: SubmitHandler<UpdateFormData> = async (updatedData) => {
     try {
       const res = await patch({
-        id: accountdata?.id,
+        id: process.env.DEVELOPMENT_MODE === "mock" ? row.id : accountdata?.id,
         name: updatedData.name,
         country: updatedData.country,
         state: updatedData.state,
@@ -86,7 +110,10 @@ export default function EditAccountForm({ row }: TableRow) {
             login_id: updatedData.login_id,
             first_name: updatedData.first_name,
             last_name: updatedData.last_name ?? "",
-            id: (userData && userData[0]?.id) ?? "",
+            id:
+              process.env.DEVELOPMENT_MODE === "mock"
+                ? row.id
+                : (userData && userData[0]?.id) ?? "",
           },
         ],
       }).unwrap();
@@ -94,7 +121,8 @@ export default function EditAccountForm({ row }: TableRow) {
       refetchAccount();
       refetchUsers();
 
-      dispatch(setRows([...rows, res]));
+      dispatch(setRows(rows.map((row) => (row.name === res.name ? res : row))));
+
       dispatch(setCloseModal("editAccountForm"));
       showAlert("Account updated successfully", "success");
 
@@ -112,7 +140,7 @@ export default function EditAccountForm({ row }: TableRow) {
     "id" | "status" | "organization_units" | "users"
   >;
 
-  if (process.env.DEVELOPMENT_MODE === "controller") {
+  if (process.env.DEVELOPMENT_MODE !== "mock") {
     if (isAccountDataLoading) return <StaticLoader />;
     if (isUserDataLoading) return <StaticLoader />;
     if (!userData) return <StaticLoader />;
@@ -145,11 +173,7 @@ export default function EditAccountForm({ row }: TableRow) {
                   autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
                   {...form.register(field.name as UpdateFormKeyTypes)}
-                  defaultValue={
-                    accountdata && field.name in accountdata
-                      ? accountdata[field.name as AccountField]
-                      : ""
-                  }
+                  defaultValue={getField(field.name as AccountField)}
                 />
               </div>
             ))}
@@ -249,13 +273,7 @@ export default function EditAccountForm({ row }: TableRow) {
                       placeholder={field.placeholder}
                       autoComplete={field.autoComplete}
                       className="md:text-sm 2xl:text-base"
-                      defaultValue={
-                        userData?.[0] && field.name in userData[0]
-                          ? userData[0][
-                              field.name as unknown as keyof (typeof userData)[0]
-                            ]
-                          : ""
-                      }
+                      defaultValue={getField(field.name as AccountField)}
                       {...form.register(field.name as UpdateFormKeyTypes)}
                     />
                   </div>
@@ -279,7 +297,9 @@ export default function EditAccountForm({ row }: TableRow) {
                   className="md:text-sm 2xl:text-base"
                   {...form.register(field.name as UpdateFormKeyTypes)}
                   defaultValue={
-                    field.name === "first_name_2"
+                    process.env.DEVELOPMENT_MODE === "mock"
+                      ? row[field.name as keyof typeof row]
+                      : field.name === "first_name_2"
                       ? userData?.[0].first_name
                       : field.name === "last_name_2"
                       ? userData?.[0].last_name
