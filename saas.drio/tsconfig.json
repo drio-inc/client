@@ -18,6 +18,7 @@
       "@/*": ["./src/*"],
       "@api/*": ["./src/api/*"],
       "@lib/*": ["./src/lib/*"],
+      "@comps/*": ["./src/comps/*"],
       "@ui/*": ["./src/comps/ui/*"],
       "@mocks/*": ["./src/mocks/*"],
       "@state/*": ["./src/state/*"],

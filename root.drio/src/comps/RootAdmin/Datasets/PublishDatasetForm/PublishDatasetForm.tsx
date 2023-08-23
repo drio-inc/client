@@ -35,16 +35,15 @@ const schema = z.object({
     .url("Please enter a valid URL"),
 
   name: z.string().nonempty("Please Enter a value"),
-
-  file: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
 
 export default function PublishDatasetForm() {
   const dispatch = useAppDispatch();
-  const [visibility, setVisibility] = useState("");
   const [publish, result] = usePublishDatasetMutation();
+  const [visibility, setVisibility] = useState("private");
+  const [selectedJSON, setSelectedJSON] = useState<Blob | File | null>(null);
 
   const datasetState = useAppSelector((state) => state.dataset);
   const dataSourceState = useAppSelector((state) => state.dataSource);
@@ -76,10 +75,16 @@ export default function PublishDatasetForm() {
       return;
     }
 
+    if (!selectedJSON) {
+      showAlert("Please select a JSON file", "error");
+      return;
+    }
+
     try {
       const res = await publish({
         ...data,
         visibility,
+        json: selectedJSON,
       }).unwrap();
 
       dispatch(setRows([...datasetState.rows, res]));
@@ -126,15 +131,14 @@ export default function PublishDatasetForm() {
 
             <div className="px-4 py-2 w-full">
               <SelectInput
-                registerName="dataSource"
-                label={"Select Topic Dataset "}
-                placeholder={"All"}
-                options={[
-                  { label: "All", value: "all" },
-                  { label: "Purchase", value: "purchase" },
-                  { label: "MySQL", value: "mysql" },
-                ]}
+                registerName="topic"
+                placeholder={"Select"}
+                label={"Select Topic Dataset"}
                 className="md:text-sm 2xl:text-base"
+                options={[
+                  { label: "MySQL", value: "mysql" },
+                  { label: "Purchase", value: "purchase" },
+                ]}
               />
             </div>
 
@@ -142,8 +146,8 @@ export default function PublishDatasetForm() {
               <TextInput
                 label={"Base URL"}
                 placeholder={"Enter URL"}
-                defaultValue={`https://example.com`}
                 {...form.register("baseURL")}
+                defaultValue={`https://example.com`}
                 className="md:text-sm 2xl:text-base"
               />
             </div>
@@ -209,38 +213,36 @@ export default function PublishDatasetForm() {
               </RadioGroup.Root>
             </div>
 
-            <div className="px-4 py-2 w-full">
-              <TextInput
-                label={"Set Public View"}
-                {...form.register("file")}
-                className="md:text-sm 2xl:text-base"
-                placeholder={"Select A json or csv file with example data"}
+            <div className="px-4 py-2 w-full flex flex-col gap-y-2">
+              <label className="inline-block text-gray-700 text-sm font-medium">
+                Set Subscriber View
+              </label>
+
+              <span className="border py-2 px-3 my-1 rounded-md shadow-sm border-gray-300 text-gray-400">
+                {selectedJSON?.name ?? "Select a json file with example data"}
+              </span>
+
+              <input
+                hidden
+                type="file"
+                id="upload-json"
+                accept=".json,application/json"
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setSelectedJSON(
+                    event?.target?.files && event?.target?.files[0]
+                  );
+                }}
               />
             </div>
 
             <div className="flex flex-wrap gap-y-2 w-full justify-between px-4 py-2">
               <button
                 type="button"
+                onClick={() => document.getElementById("upload-json")?.click()}
                 className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
               >
                 <HiOutlineDownload className="mr-1 font-bold rotate-180" />
                 <span className="text-sm font-medium">Upload</span>
-              </button>
-
-              <button
-                type="button"
-                className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
-              >
-                <IoRefresh className="mr-1 font-bold" />
-                <span className="text-sm font-medium">Swagger</span>
-              </button>
-
-              <button
-                type="button"
-                className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
-              >
-                <HiOutlinePaperClip className="mr-1 font-bold" />
-                <span className="text-sm font-medium">GraphQL</span>
               </button>
             </div>
           </div>
@@ -248,16 +250,14 @@ export default function PublishDatasetForm() {
           <div className="px-2 py-2 flex gap-4 justify-center w-full mt-4">
             <Button
               type="button"
-              intent={`secondary`}
               className="w-full"
+              intent={`secondary`}
               onClick={() => dispatch(setCloseModal("publishDatasetForm"))}
             >
               <span className="inline-flex justify-center">Cancel</span>
             </Button>
 
             <Button
-              type="button"
-              onClick={() => onSubmit(form.getValues())}
               intent={`primary`}
               className="w-full"
               isLoading={result.isLoading}

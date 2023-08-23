@@ -11,7 +11,7 @@ const initialState: datasetState = {
     {
       id: "1",
       dataset: "Service Record",
-      ou: "98",
+      ou: "Corp",
       sixMonthsAccess: 25,
       visibility: "Private",
       frequency: "25",
@@ -21,7 +21,7 @@ const initialState: datasetState = {
     {
       id: "2",
       dataset: "Accidents",
-      ou: "98",
+      ou: "Corp",
       sixMonthsAccess: 25,
       visibility: "Contractual",
       frequency: "25",
@@ -31,7 +31,7 @@ const initialState: datasetState = {
     {
       id: "3",
       dataset: "Dealer Sales",
-      ou: "98",
+      ou: "Corp",
       sixMonthsAccess: 25,
       visibility: "Public",
       frequency: "25",
@@ -41,7 +41,7 @@ const initialState: datasetState = {
     {
       id: "4",
       dataset: "Customer Sales",
-      ou: "98",
+      ou: "Corp",
       sixMonthsAccess: 25,
       visibility: "Private",
       frequency: "25",
