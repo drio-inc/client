@@ -21,6 +21,8 @@ jobs:
       - run: yarn test
   build:
     runs-on: ubuntu-latest
+    env:
+      API_URL: ${{ secrets.API_URL }} 
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node and Yarn
@@ -30,3 +32,5 @@ jobs:
           cache: "yarn"
       - run: yarn install --frozen-lockfile
       - run: yarn build
+        env:
+          API_URL: ${{ env.API_URL }}
