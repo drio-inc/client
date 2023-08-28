@@ -1,11 +1,7 @@
 import Table from "@/comps/ui/Table";
+import DDXMenu from "@/comps/SuperAdmin/DDX/DDXMenu";
 import { setSelectedRows } from "@/state/slices/DDXSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-
-import DDXDetails from "./DDXDetails/DDXDetails";
-import UpdateLicenseForm from "../Licensing/UpdateLicenseForm";
-
-import DDXMenu from "@/comps/SuperAdmin/DDX/DDXMenu";
 
 import { HiMinusSm } from "react-icons/hi";
 import { IoRefresh } from "react-icons/io5";
@@ -13,12 +9,12 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 
 const headers = [
   {
-    header: "Account Name",
-    accessor: "account",
+    header: "Name",
+    accessor: "name",
   },
   {
-    header: "Organization Unit",
-    accessor: "ou",
+    header: "Location",
+    accessor: "location",
   },
   {
     header: "Status",

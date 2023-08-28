@@ -12,8 +12,8 @@ const initialState: DDXState = {
   rows: [
     {
       id: "1",
-      account: "Cox Automotive",
-      ou: "Corp",
+      name: "DDX 1",
+      location: "Abbeville, AL, US",
       status: "Active",
       clusterVCPU: 25,
       clusterMemory: "2 GB",
@@ -24,8 +24,8 @@ const initialState: DDXState = {
     },
     {
       id: "2",
-      account: "VISA",
-      ou: "Corp",
+      name: "DDX 2",
+      location: "Abbeville, AL, US",
       status: "Pending",
       clusterVCPU: 25,
       clusterMemory: "2 GB",
@@ -36,8 +36,8 @@ const initialState: DDXState = {
     },
     {
       id: "3",
-      account: "Paypal",
-      ou: "Corp",
+      name: "DDX 3",
+      location: "Abbeville, AL, US",
       status: "Not Configured",
       clusterVCPU: 25,
       clusterMemory: "2 GB",
@@ -48,8 +48,8 @@ const initialState: DDXState = {
     },
     {
       id: "4",
-      account: "KKB",
-      ou: "Corp",
+      name: "DDX 4",
+      location: "Abbeville, AL, US",
       status: "Active",
       clusterVCPU: 25,
       clusterMemory: "2 GB",

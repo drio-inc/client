@@ -1,6 +1,7 @@
 import { rest } from "msw";
 import "@testing-library/jest-dom";
 import { setupServer } from "msw/node";
+import { DDXData } from "@/mocks/DDXData";
 import { accountData } from "@mocks/accountData";
 import { orgUnitData } from "@mocks/orgUnitData";
 import { fetch, Headers, Request, Response } from "cross-fetch";
@@ -15,8 +16,12 @@ export const handlers = [
     return res(ctx.json(accountData));
   }),
 
-  rest.get(`/api/resources/*/ous`, (_req, res, ctx) => {
+  rest.get(`/api/resources/accounts/*/ous`, (_req, res, ctx) => {
     return res(ctx.json(orgUnitData));
+  }),
+
+  rest.get(`/api/resources/accounts/*/ous/*/ddx-clusters`, (_req, res, ctx) => {
+    return res(ctx.json(DDXData));
   }),
 ];
 
