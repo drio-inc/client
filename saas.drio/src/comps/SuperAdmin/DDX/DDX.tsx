@@ -109,8 +109,6 @@ const DDX = () => {
           menu={DDXMenu}
           headers={headers}
           rows={DDXState.rows}
-          detailsWindow={DDXDetails}
-          editForm={UpdateLicenseForm}
           handleCheckbox={handleCheckbox}
           selectedRows={DDXState.selectedRows}
         />

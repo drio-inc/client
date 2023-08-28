@@ -118,8 +118,6 @@ const Licensing = () => {
           headers={headers}
           menu={LicensingMenu}
           rows={licensingState.rows}
-          editForm={UpdateLicenseForm}
-          detailsWindow={LicenseDetails}
           handleCheckbox={handleCheckbox}
           selectedRows={licensingState.selectedRows}
         />

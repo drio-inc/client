@@ -7,8 +7,9 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import CreateKeyForm from "../CreateKeyForm";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/licensingSlice";
+import UpdateLicenseForm from "../UpdateLicenseForm/UpdateLicenseForm";
 
-const LicensingMenu = ({ row, editForm }: any) => {
+const LicensingMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const licensingState = useAppSelector((state) => state.licensing);
 
@@ -33,6 +34,16 @@ const LicensingMenu = ({ row, editForm }: any) => {
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            <Modal
+              label="Edit"
+              identifier="updateLicenseForm"
+              onClick={() => dispatch(setOpenModal("updateLicenseForm"))}
+            >
+              <UpdateLicenseForm row={row} />
+            </Modal>
+          </span>
+
+          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <AlertModal
               row={row}
               accessor={row.account}
@@ -48,18 +59,6 @@ const LicensingMenu = ({ row, editForm }: any) => {
             >
               <CreateKeyForm />
             </Modal>
-          </span>
-
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {editForm && (
-              <Modal
-                label="Edit"
-                identifier="updateLicenseForm"
-                onClick={() => dispatch(setOpenModal("updateLicenseForm"))}
-              >
-                {editForm}
-              </Modal>
-            )}
           </span>
         </Popover.Content>
       </Popover.Portal>

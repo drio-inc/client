@@ -5,54 +5,79 @@ import { Country, State, City } from "country-state-city";
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 
-import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { useUpdateOrgUnitMutation } from "@/api/resources/accounts/ous";
-import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/orgUnitSlice";
+import { setCloseModal } from "@/state/slices/uiSlice";
+import { usePatchOrgUnitMutation } from "@/api/resources/accounts/ous";
 
-const schema = z.object({
-  ou: z.string().nonempty("Please Enter a value"),
-  streetAddress: z.string().nonempty("Please Enter a value"),
-  country: z.string({
-    required_error: "Please select a country",
-  }),
-  state: z.string({
-    required_error: "Please select a state",
-  }),
-  city: z.string({
-    required_error: "Please select a city",
-  }),
-});
+import {
+  updateOrgUnitSchema,
+  UpdateOrgUnitFormData,
+} from "@/schema/OrgUnitSchema";
 
-type FormData = z.infer<typeof schema>;
+import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+import { useEffect, useState } from "react";
 
-export default function EditOrgAccountForm({ row }: TableRow) {
+export default function EditOrgUnitForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [update, result] = useUpdateOrgUnitMutation();
-  const orgUnitState = useAppSelector((state) => state.orgUnit);
+  const [patch, result] = usePatchOrgUnitMutation();
+  const { rows, row: orgUnitRow } = useAppSelector((state) => state.orgUnit);
+
+  const [defaultCountry, setDefaultCountry] = useState(
+    Country.getAllCountries().find((c) => c.isoCode === orgUnitRow?.country)
+  );
+  const [defaultState, setDefaultState] = useState(
+    State.getStatesOfCountry(orgUnitRow?.country).find(
+      (s) => s.isoCode === orgUnitRow?.state
+    )
+  );
+  const [defaultCity, setDefaultCity] = useState(
+    City.getCitiesOfState(
+      orgUnitRow?.country ?? "",
+      orgUnitRow?.state ?? ""
+    ).find((c) => c.name === orgUnitRow?.city)
+  );
 
   const form = useZodForm({
-    schema: schema,
+    schema: updateOrgUnitSchema,
   });
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  useEffect(() => {
+    setDefaultCountry(
+      Country.getAllCountries().find((c) => c.isoCode === orgUnitRow?.country)
+    );
+    setDefaultState(
+      State.getStatesOfCountry(orgUnitRow?.country).find(
+        (s) => s.isoCode === orgUnitRow?.state
+      )
+    );
+    setDefaultCity(
+      City.getCitiesOfState(
+        orgUnitRow?.country ?? "",
+        orgUnitRow?.state ?? ""
+      ).find((c) => c.name === orgUnitRow?.city)
+    );
+  }, [orgUnitRow]);
+
+  const onSubmit: SubmitHandler<UpdateOrgUnitFormData> = async (data) => {
     try {
-      const res = await update({
-        ...data,
-        id: row.id,
+      const res = await patch({
+        name: data.ou,
+        city: data.city,
+        state: data.state,
+        country: data.country,
+        ou_id: orgUnitRow?.id ?? "",
+        street_address: data.streetAddress,
+        account_id: orgUnitRow?.account_id ?? "",
       }).unwrap();
 
-      console.log(res);
-
-      dispatch(
-        setRows(orgUnitState.rows.map((row) => (row.id === res.id ? res : row)))
-      );
-
+      dispatch(setRows(rows.map((row) => (row.id === res.id ? res : row))));
       dispatch(setCloseModal("editOrgUnitForm"));
+
+      showAlert("Organization unit updated successfully", "success");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
@@ -75,6 +100,7 @@ export default function EditOrgAccountForm({ row }: TableRow) {
                   label="Organization Unit"
                   placeholder="Enter OU"
                   {...form.register("ou")}
+                  defaultValue={orgUnitRow?.name ?? ""}
                 />
               </div>
             </div>
@@ -95,6 +121,10 @@ export default function EditOrgAccountForm({ row }: TableRow) {
                   label="Country"
                   registerName="country"
                   placeholder="Select country"
+                  defaultSelectedValue={{
+                    label: defaultCountry?.name ?? "",
+                    value: defaultCountry?.isoCode ?? "",
+                  }}
                   options={
                     Country.getAllCountries().map((country) => ({
                       label: country.name,
@@ -111,13 +141,17 @@ export default function EditOrgAccountForm({ row }: TableRow) {
                   label="State / Province"
                   registerName="state"
                   placeholder="Select state"
+                  defaultSelectedValue={{
+                    label: defaultState?.name ?? "",
+                    value: defaultState?.isoCode ?? "",
+                  }}
                   options={
-                    State.getStatesOfCountry(form.watch("country")).map(
-                      (state) => ({
-                        label: state.name,
-                        value: state.isoCode,
-                      })
-                    ) ?? []
+                    State.getStatesOfCountry(
+                      form.watch("country") ?? orgUnitRow?.country ?? ""
+                    ).map((state) => ({
+                      label: state.name,
+                      value: state.isoCode,
+                    })) ?? []
                   }
                 />
               </div>
@@ -129,10 +163,14 @@ export default function EditOrgAccountForm({ row }: TableRow) {
                   label="City"
                   registerName="city"
                   placeholder="Select city"
+                  defaultSelectedValue={{
+                    label: defaultCity?.name ?? "",
+                    value: defaultCity?.name ?? "",
+                  }}
                   options={
                     City.getCitiesOfState(
-                      form.watch("country"),
-                      form.watch("state")
+                      form.watch("country") ?? orgUnitRow?.country ?? "",
+                      form.watch("state") ?? orgUnitRow?.state ?? ""
                     ).map((city) => ({
                       label: city.name,
                       value: city.name,

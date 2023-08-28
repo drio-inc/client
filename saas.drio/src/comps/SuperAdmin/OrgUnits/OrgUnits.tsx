@@ -3,19 +3,26 @@ import Table from "@/comps/ui/Table";
 import { setSelectedRows } from "@/state/slices/orgUnitSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import OrgAccountMenu from "./OrgUnitMenu";
-import AddOrgAccountForm from "./AddOrgUnitForm";
-import EditOrgAccountForm from "./EditOrgUnitForm";
+import OrgUnitMenu from "./OrgUnitMenu";
+import AddOrgUnitForm from "./AddOrgUnitForm";
+
+import { useEffect } from "react";
+import { IoRefresh } from "react-icons/io5";
+import { setRows } from "@/state/slices/orgUnitSlice";
+import { HiMinusSm, HiPlus, HiX } from "react-icons/hi";
 
 import Button from "@ui/Button";
 import Modal from "@/comps/ui/Modal";
-import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { setRows } from "@/state/slices/orgUnitSlice";
-import { HiMinusSm, HiPlus, HiX } from "react-icons/hi";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+
+import { useGetOrgUnitsQuery } from "@/api/resources/accounts/ous";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
-import { useGetOrganizationUnitsQuery } from "@/api/resources/accounts/ous";
+
+type OrgUnitProps = {
+  modal?: boolean;
+  accountId?: string;
+};
 
 const headers = [
   {
@@ -45,24 +52,16 @@ const headers = [
   },
 ];
 
-const OrgUnits = ({
-  modal = false,
-  accountId,
-}: {
-  modal?: boolean;
-  accountId?: string;
-}) => {
+const OrgUnits = ({ modal = false, accountId }: OrgUnitProps) => {
   const dispatch = useAppDispatch();
   const orgUnitState = useAppSelector((state) => state.orgUnit);
-  const { data, error, isLoading } = useGetOrganizationUnitsQuery(
-    accountId ?? ""
-  );
+  const { data, isLoading } = useGetOrgUnitsQuery(accountId ?? "");
 
-  if (isLoading) return <StaticLoader />;
-
-  if (data) dispatch(setRows(data));
-
-  console.log(data);
+  useEffect(() => {
+    if (process.env.DEVELOPMENT_MODE !== "mock") {
+      dispatch(setRows(data));
+    }
+  }, [data, dispatch]);
 
   const handleCheckbox = (index: number) => {
     if (orgUnitState.selectedRows.includes(index)) {
@@ -76,12 +75,12 @@ const OrgUnits = ({
     }
   };
 
-  const clearSelectedRows = () => {
-    dispatch(setSelectedRows([]));
-  };
+  const clearSelectedRows = () => dispatch(setSelectedRows([]));
+
+  if (isLoading) return <StaticLoader />;
 
   return (
-    <div className={`${!modal && `py-2`} w-full`}>
+    <div className={`${!modal ? `py-2 w-full` : `xl:w-[64vw]`}`}>
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div
           className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
@@ -134,18 +133,17 @@ const OrgUnits = ({
 
           <div className="hidden">
             <Modal identifier="addOrgUnitForm">
-              <AddOrgAccountForm />
+              <AddOrgUnitForm />
             </Modal>
           </div>
         </div>
 
         <Table
           headers={headers}
-          menu={OrgAccountMenu}
-          editForm={EditOrgAccountForm}
+          menu={OrgUnitMenu}
           handleCheckbox={handleCheckbox}
           selectedRows={orgUnitState.selectedRows}
-          rows={orgUnitState.rows.map((row) => {
+          rows={data?.map((row) => {
             return {
               ...row,
               location: ` ${row.city}, ${row.state}, ${row.country}`,

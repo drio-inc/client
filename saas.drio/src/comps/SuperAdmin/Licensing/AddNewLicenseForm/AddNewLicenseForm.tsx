@@ -30,7 +30,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function UpdateLicenseForm({ row }: TableRow) {
+export default function AddNewLicenseForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [create, result] = useCreateLicenseMutation();
   const ddxSstate = useAppSelector((state) => state.DDX);

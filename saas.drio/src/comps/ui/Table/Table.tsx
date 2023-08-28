@@ -16,11 +16,9 @@ type TableProps = {
   noSelection?: boolean;
   selectedRows?: number[];
   headers?: TableHeader[];
-  editForm?: React.FC | any;
-  detailsWindow?: React.FC | any;
   clearSelectedRows?: () => void;
-  handleCheckbox?: (index: number) => void;
   handleRowClick?: (id: string) => void;
+  handleCheckbox?: (index: number) => void;
 };
 
 const Table = ({
@@ -31,8 +29,6 @@ const Table = ({
   handleCheckbox,
   handleRowClick,
   noSelection = false,
-  editForm: EditFormComponent,
-  detailsWindow: DetailsWindow,
 }: TableProps) => {
   return (
     <div className="block w-full overflow-x-auto bg-white rounded-lg">
@@ -113,13 +109,7 @@ const Table = ({
                     "border-t border-b text-gray-500 text-xs p-4 text-left"
                   }
                 >
-                  {TableMenu && (
-                    <TableMenu
-                      row={row}
-                      editForm={<EditFormComponent row={row} />}
-                      detailsWindow={<DetailsWindow row={row} />}
-                    />
-                  )}
+                  {TableMenu && <TableMenu row={row} />}
                 </td>
               </tr>
             );

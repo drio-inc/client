@@ -1,4 +1,3 @@
-import axios from "axios";
 import Button from "@ui/Button";
 import { useRouter } from "next/router";
 import { FaLock } from "react-icons/fa";
@@ -84,6 +83,7 @@ export default function Login() {
                 type="password"
                 label="Password"
                 {...form.register("password")}
+                defaultValue={"0105e89176b67bffa807c5ea"}
               />
             </div>
           </div>

@@ -1,7 +1,5 @@
 import Table from "@/comps/ui/Table";
-import AccountDetails from "./AccountDetails";
 import AddAccountForm from "./AddAccountForm";
-import EditAccountForm from "./EditAccountForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import {
@@ -21,8 +19,9 @@ import DeleteOrgUnit from "../OrgUnits/DeleteOrgUnit";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import AddOrgUnitForm from "../OrgUnits/AddOrgUnitForm";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
-import EditOrgAccountForm from "../OrgUnits/EditOrgUnitForm";
+import EditOrgUnitForm from "../OrgUnits/EditOrgUnitForm";
 import { useGetAccountsQuery } from "@/api/resources/accounts";
+import { useEffect } from "react";
 
 const headers = [
   {
@@ -63,15 +62,14 @@ const headers = [
 
 const Accounts = () => {
   const dispatch = useAppDispatch();
+  const { data, isLoading } = useGetAccountsQuery();
   const accountState = useAppSelector((state) => state.account);
 
-  const { data, isLoading } = useGetAccountsQuery();
-
-  if (isLoading) return <StaticLoader />;
-
-  if (process.env.DEVELOPMENT_MODE !== "mock") {
-    if (data) dispatch(setRows(data));
-  }
+  useEffect(() => {
+    if (process.env.DEVELOPMENT_MODE !== "mock") {
+      dispatch(setRows(data));
+    }
+  }, [data, dispatch]);
 
   const handleCheckbox = (index: number) => {
     if (accountState.selectedRows.includes(index)) {
@@ -90,9 +88,9 @@ const Accounts = () => {
     dispatch(setOpenModal("orgUnitTable"));
   };
 
-  const clearSelectedRows = () => {
-    dispatch(setSelectedRows([]));
-  };
+  const clearSelectedRows = () => dispatch(setSelectedRows([]));
+
+  if (isLoading) return <StaticLoader />;
 
   return (
     <div className="py-2 w-full">
@@ -154,7 +152,7 @@ const Accounts = () => {
 
         <div className="hidden">
           <Modal identifier="editOrgUnitForm">
-            <EditOrgAccountForm />
+            <EditOrgUnitForm />
           </Modal>
         </div>
 
@@ -167,17 +165,19 @@ const Accounts = () => {
         <Table
           headers={headers}
           menu={AccountMenu}
-          editForm={EditAccountForm}
-          detailsWindow={AccountDetails}
           handleCheckbox={handleCheckbox}
           handleRowClick={handleRowClick}
           selectedRows={accountState.selectedRows}
-          rows={accountState.rows.map((row: TableRow) => {
-            return {
-              ...row,
-              organization_units: row.organization_units ?? 0,
-            };
-          })}
+          rows={
+            process.env.DEVELOPMENT_MODE === "mock"
+              ? accountState.rows
+              : data?.map((row: TableRow) => {
+                  return {
+                    ...row,
+                    organization_units: row.organization_units ?? 0,
+                  };
+                })
+          }
         />
       </div>
     </div>

@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
 import showAlert from "@/comps/ui/Alert/Alert";
+import { setRows, setSelectedRows } from "@/state/slices/accountSlice";
 
 const DeleteAccount = ({ accountId }: { accountId?: string }) => {
   const dispatch = useAppDispatch();
@@ -13,6 +14,10 @@ const DeleteAccount = ({ accountId }: { accountId?: string }) => {
   const handleDelete = async () => {
     try {
       const res = await deleteAccount(accountId ?? "");
+
+      dispatch(setRows([]));
+      dispatch(setSelectedRows([]));
+
       dispatch(setCloseModal("deleteAccountModal"));
       showAlert("Account deleted successfully", "success");
     } catch (e) {

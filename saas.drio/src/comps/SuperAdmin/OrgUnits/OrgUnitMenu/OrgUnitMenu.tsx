@@ -1,14 +1,16 @@
 import Modal from "@/comps/ui/Modal";
-import AlertModal from "@ui/AlertModal";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 
 import DeleteOrgUnit from "../DeleteOrgUnit";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
-import { setRows, setSelectedRows } from "@/state/slices/orgUnitSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-const OrgUnitMenu = ({ row, editForm }: any) => {
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import { setRow, setRows, setSelectedRows } from "@/state/slices/orgUnitSlice";
+
+import EditOrgUnitForm from "../EditOrgUnitForm";
+
+const OrgUnitMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const orgUnitState = useAppSelector((state) => state.orgUnit);
 
@@ -36,6 +38,7 @@ const OrgUnitMenu = ({ row, editForm }: any) => {
               label="Delete"
               identifier="deleteOrgUnit"
               onClick={() => {
+                dispatch(setRow(row));
                 dispatch(setCloseModal("orgUnitTable"));
                 dispatch(setOpenModal("deleteOrgUnit"));
               }}
@@ -45,18 +48,18 @@ const OrgUnitMenu = ({ row, editForm }: any) => {
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {editForm && (
-              <Modal
-                label="Edit"
-                identifier="editOrgUnitForm"
-                onClick={() => {
-                  dispatch(setCloseModal("orgUnitTable"));
-                  dispatch(setOpenModal("editOrgUnitForm"));
-                }}
-              >
-                {editForm}
-              </Modal>
-            )}
+            <Modal
+              row={row}
+              label="Edit"
+              identifier="editOrgUnitForm"
+              onClick={() => {
+                dispatch(setRow(row));
+                dispatch(setCloseModal("orgUnitTable"));
+                dispatch(setOpenModal("editOrgUnitForm"));
+              }}
+            >
+              <EditOrgUnitForm row={row} />
+            </Modal>
           </span>
         </Popover.Content>
       </Popover.Portal>

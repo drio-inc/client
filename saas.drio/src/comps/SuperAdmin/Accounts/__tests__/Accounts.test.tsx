@@ -1,6 +1,5 @@
 import "whatwg-fetch";
 import "@testing-library/jest-dom";
-import { server } from "@/lib/mswSetup";
 import Accounts from "@comps/SuperAdmin/Accounts";
 import { renderWithProviders } from "@/lib/testUtils";
 import { screen, waitFor } from "@testing-library/react";
@@ -13,6 +12,8 @@ it("renders the Accounts component", async () => {
   expect(screen.getByTestId("loading-svg")).toBeInTheDocument();
 
   await waitFor(() => {
+    const rgxName = new RegExp(accountData[0].name, "i");
+    expect(getByText(rgxName)).toBeInTheDocument();
     expect(queryByText(/Add New Account/i)).toBeInTheDocument();
   });
 

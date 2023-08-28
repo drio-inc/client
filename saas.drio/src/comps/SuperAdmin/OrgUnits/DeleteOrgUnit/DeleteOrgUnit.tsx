@@ -1,13 +1,35 @@
 import { HiX } from "react-icons/hi";
 import Button from "@/comps/ui/Button";
-import {} from "@/api/resources/accounts/ous";
+import showAlert from "@/comps/ui/Alert/Alert";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import { useDeleteOrgUnitMutation } from "@/api/resources/accounts/ous";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
+import { setRows, setSelectedRows } from "@/state/slices/orgUnitSlice";
 
-const DeleteOrgUnit = ({ orgId }: { orgId?: string }) => {
+const DeleteOrgUnit = () => {
   const dispatch = useAppDispatch();
-  //   const [deleteAccount, result] = useDeleteAccountMutation();
+  const [deleteOrgUnit, result] = useDeleteOrgUnitMutation();
+  const { rows, row: orgUnitRow } = useAppSelector((state) => state.orgUnit);
+
+  const handleDelete = async () => {
+    console.log(orgUnitRow?.id, orgUnitRow?.account_id);
+
+    try {
+      const res = await deleteOrgUnit({
+        ou_id: orgUnitRow?.id ?? "",
+        account_id: orgUnitRow?.account_id ?? "",
+      });
+
+      dispatch(setRows([]));
+      dispatch(setSelectedRows([]));
+
+      dispatch(setCloseModal("deleteOrgUnit"));
+      showAlert("Organization unit deleted successfully", "success");
+    } catch (error) {
+      showAlert("Something went wrong", "error");
+    }
+  };
 
   return (
     <div className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white py-12 px-8 shadow-sm focus:outline-none">
@@ -28,10 +50,7 @@ const DeleteOrgUnit = ({ orgId }: { orgId?: string }) => {
           Cancel
         </button>
 
-        <Button
-        //   isLoading={result.isLoading}
-        //   onClick={() => deleteAccount(orgId ?? "")}
-        >
+        <Button isLoading={result.isLoading} onClick={() => handleDelete()}>
           Delete
         </Button>
       </div>

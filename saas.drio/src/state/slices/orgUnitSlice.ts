@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type OrgUnitState = {
   rows: TableRow[];
+  row: TableRow | null;
   selectedRows: number[];
 };
 
 const initialState: OrgUnitState = {
+  row: null,
   rows: [],
   selectedRows: [],
 };
@@ -21,11 +23,15 @@ const orgUnitSlice = createSlice({
     setSelectedRows(state, action) {
       state.selectedRows = action.payload;
     },
+
+    setRow(state, action) {
+      state.row = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = orgUnitSlice.actions;
+export const { setRows, setSelectedRows, setRow } = orgUnitSlice.actions;
 
 export default orgUnitSlice.reducer;

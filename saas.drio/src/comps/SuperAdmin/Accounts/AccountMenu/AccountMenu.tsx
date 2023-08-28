@@ -1,23 +1,19 @@
 import Modal from "@/comps/ui/Modal";
-import AlertModal from "@ui/AlertModal";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import AddOrgAccountForm from "../../OrgUnits/AddOrgUnitForm";
+import AddOrgAccountForm from "@comps/SuperAdmin/OrgUnits/AddOrgUnitForm";
 
+import DeleteAccount from "../DeleteAccount";
+import AccountDetails from "../AccountDetails";
+import EditAccountForm from "../EditAccountForm";
 import { setOpenModal } from "@/state/slices/uiSlice";
-import { setRows, setSelectedRows } from "@/state/slices/accountSlice";
-import DeleteAccount from "../DeleteAccount/DeleteAccount";
 
-const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
+import { setAccountId } from "@/state/slices/accountSlice";
+
+const AccountMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
-  const adminAccountState = useAppSelector((state) => state.account);
-
-  const deleteRow = (id: string) => {
-    dispatch(setRows(adminAccountState.rows.filter((row) => row.id !== id)));
-    dispatch(setSelectedRows([]));
-  };
 
   return (
     <Popover.Root>
@@ -43,33 +39,33 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {editForm && (
-              <Modal
-                label="Edit"
-                identifier="editAccountForm"
-                onClick={() => dispatch(setOpenModal("editAccountForm"))}
-              >
-                {editForm}
-              </Modal>
-            )}
+            <Modal
+              label="Edit"
+              identifier="editAccountForm"
+              onClick={() => dispatch(setOpenModal("editAccountForm"))}
+            >
+              <EditAccountForm row={row} />
+            </Modal>
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {detailsWindow && (
-              <Modal
-                label="View"
-                identifier="detailsWindow"
-                onClick={() => dispatch(setOpenModal("detailsWindow"))}
-              >
-                {detailsWindow}
-              </Modal>
-            )}
+            <Modal
+              label="View"
+              identifier="detailsWindow"
+              onClick={() => dispatch(setOpenModal("detailsWindow"))}
+            >
+              <AccountDetails />
+            </Modal>
           </span>
+
           <span className={"cursor-pointer block hover:bg-indigo-50"}>
             <Modal
               label="Add New OU"
               identifier="addOrgUnitForm"
-              onClick={() => dispatch(setOpenModal("addOrgUnitForm"))}
+              onClick={() => {
+                dispatch(setAccountId(row.id));
+                dispatch(setOpenModal("addOrgUnitForm"));
+              }}
             >
               <AddOrgAccountForm />
             </Modal>
