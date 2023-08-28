@@ -22,7 +22,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      MOCK_URL: ${{ secrets.MOCK_URL }} 
+      MOCK_URL: ${{ secrets.MOCK_URL }}
+      API_URL: ${{ secrets.API_URL }} 
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node and Yarn
@@ -34,3 +35,4 @@ jobs:
       - run: yarn build
         env:
           MOCK_URL: ${{ env.MOCK_URL }}
+          API_URL: ${{ env.API_URL }} 
