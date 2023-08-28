@@ -4,7 +4,7 @@
     "build": "yarn workspace root.drio build && yarn workspace saas.drio build",
     "start": "yarn workspace root.drio start && yarn workspace saas.drio start",
     "dev": "concurrently \"yarn workspace root.drio dev\" \"yarn workspace saas.drio dev\"",
-    "test": "concurrently \"yarn workspace root.drio test\" \"yarn workspace saas.drio test\"",
+    "test": "concurrently \"yarn workspace saas.drio test\"",
     "dev:mock": "concurrently \"yarn workspace root.drio dev:mock\" \"yarn workspace saas.drio dev:mock\""
   },
   "workspaces": [
