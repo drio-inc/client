@@ -2,6 +2,7 @@ import { rest } from "msw";
 import "@testing-library/jest-dom";
 import { setupServer } from "msw/node";
 import { accountData } from "@mocks/accountData";
+import { orgUnitData } from "@mocks/orgUnitData";
 import { fetch, Headers, Request, Response } from "cross-fetch";
 
 global.fetch = fetch;
@@ -12,6 +13,10 @@ global.Response = Response;
 export const handlers = [
   rest.get("/api/resources/accounts", (_req, res, ctx) => {
     return res(ctx.json(accountData));
+  }),
+
+  rest.get(`/api/resources/*/ous`, (_req, res, ctx) => {
+    return res(ctx.json(orgUnitData));
   }),
 ];
 

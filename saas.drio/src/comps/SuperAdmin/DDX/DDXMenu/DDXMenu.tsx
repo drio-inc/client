@@ -3,10 +3,10 @@ import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 
+import Link from "next/link";
 import DDXDetails from "../DDXDetails";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import UpdateLicenseForm from "../../Licensing/UpdateLicenseForm";
-import Link from "next/link";
 
 const AccountMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
