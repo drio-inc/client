@@ -14,7 +14,10 @@ function withAuth(OriginalComponent: React.FC) {
     useEffect(() => {
       async function validateToken() {
         try {
-          const res = await axios.get(`/api/resources/validate`);
+          const res = await axios.get(
+            `${process.env.API_URL}/resources/validate`
+          );
+
           if (res.status === 200) {
             setLoading(false);
             return;

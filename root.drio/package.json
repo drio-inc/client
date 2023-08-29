@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "DEVELOPMENT_MODE=development next dev -p 3001",
     "dev:mock": "DEVELOPMENT_MODE=mock next dev -p 3001",
-    "build": "DEVELOPMENT_MODE=mock next build",
-    "start": "next start",
+    "build:mock": "DEVELOPMENT_MODE=mock next build",
+    "build": "next build",
+    "start": "next start -p 3001",
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watchAll"

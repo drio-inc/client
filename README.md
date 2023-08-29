@@ -34,3 +34,22 @@ This will start the development server for both the SaaS admin and Root admin on
 
 - SaaS admin: http://localhost:3000
 - Root admin: http://localhost:3001
+
+To build the project for production, run the following command:
+
+```
+yarn build
+```
+
+This will build the project for both the SaaS admin and Root admin.
+
+To start the production server, run the following command:
+
+```
+yarn start
+```
+
+This will start the production server for both the SaaS admin and Root admin on the following ports:
+
+- SaaS admin: http://localhost:3000
+- Root admin: http://localhost:3001

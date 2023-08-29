@@ -8,18 +8,18 @@ const nextConfig = {
     DEVELOPMENT_MODE: process.env.DEVELOPMENT_MODE,
   },
 
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: `${
-          process.env.DEVELOPMENT_MODE === "mock"
-            ? process.env.MOCK_URL
-            : process.env.API_URL
-        }/:path*`,
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/api/:path*",
+  //       destination: `${
+  //         process.env.DEVELOPMENT_MODE === "mock"
+  //           ? process.env.MOCK_URL
+  //           : process.env.API_URL
+  //       }/:path*`,
+  //     },
+  //   ];
+  // },
 };
 
 module.exports = nextConfig;

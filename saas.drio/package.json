@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "DEVELOPMENT_MODE=development next dev",
     "dev:mock": "DEVELOPMENT_MODE=mock next dev",
-    "build": "DEVELOPMENT_MODE=mock next build",
+    "build:mock": "DEVELOPMENT_MODE=mock next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
