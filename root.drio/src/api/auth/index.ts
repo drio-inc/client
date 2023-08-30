@@ -3,7 +3,7 @@ import { rootApi } from "@/state/services/apiService";
 
 export const authApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
-    activate: builder.mutation<any, any>({
+    activate: builder.mutation<unknown, unknown>({
       query: (payload) => ({
         url: `/auth/activate`,
         method: "POST",
@@ -11,7 +11,7 @@ export const authApi = rootApi.injectEndpoints({
       }),
     }),
 
-    login: builder.mutation<any, any>({
+    login: builder.mutation<LoginRespose, LoginFormData>({
       query: (payload) => ({
         url: `/auth/login`,
         method: "POST",

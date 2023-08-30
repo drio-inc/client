@@ -17,3 +17,17 @@ export const rootApi = createApi({
 });
 
 export const {} = rootApi;
+
+// export const rootApi = createApi({
+//   reducerPath: "rootApi",
+//   baseQuery: fetchBaseQuery({
+//     baseUrl: `/api`,
+//     credentials: "include",
+//   }),
+
+//   endpoints: (builder) => {
+//     return {};
+//   },
+// });
+
+// export const {} = rootApi;

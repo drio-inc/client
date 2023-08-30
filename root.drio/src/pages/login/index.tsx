@@ -2,7 +2,7 @@ import Button from "@ui/Button";
 import { useRouter } from "next/router";
 import { FaLock } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { TextInput, SelectInput } from "@ui/Forms/Inputs";
+import { TextInput } from "@ui/Forms/Inputs";
 
 import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
@@ -19,11 +19,12 @@ import { HiCheck } from "react-icons/hi";
 import { useLoginMutation } from "@/api/auth";
 import * as CheckBox from "@radix-ui/react-checkbox";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
-import { setUser, setAuthenticated } from "@/state/slices/authSlice";
 
 const schema = z.object({
-  organization: z.string().nonempty("Please Enter a value").max(1024),
+  account: z.string().nonempty("Please Enter a value").max(1024),
+
   username: z.string().nonempty("Please Enter a value").max(1024),
+
   password: z
     .string()
     .nonempty("Please Enter a value")
@@ -36,7 +37,6 @@ export default function Login() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [login, result] = useLoginMutation();
-
   const [rememberMe, setRememberMe] = useState(false);
 
   const form = useZodForm({
@@ -46,14 +46,14 @@ export default function Login() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const res = await login({
-        organization: data.organization,
+        account: data.account,
         username: data.username,
         password: data.password,
       }).unwrap();
 
-      dispatch(setUser(res));
-      dispatch(setAuthenticated(true));
-      router.push("/my-org/org-units");
+      if (res?.message === "Authentication successful") {
+        router.push("/my-org/org-units");
+      }
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
@@ -66,16 +66,10 @@ export default function Login() {
       <AuthContainer authText="Sign in to your account" maxWidth="xl">
         <Form form={form} onSubmit={onSubmit}>
           <div className="px-4 py-2 w-full">
-            <SelectInput
-              registerName="organization"
-              label={"Organization/Company"}
-              placeholder={"Select your organization"}
-              options={[
-                { label: "KBB", value: "kbb" },
-                { label: "VISA", value: "visa" },
-                { label: "Paypal", value: "paypal" },
-              ]}
-              className="md:text-sm 2xl:text-base"
+            <TextInput
+              label="Account Name"
+              placeholder="Account"
+              {...form.register("account")}
             />
           </div>
 

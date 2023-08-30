@@ -15,17 +15,22 @@ function withAuth(OriginalComponent: React.FC) {
       async function validateToken() {
         try {
           const res = await axios.get(
-            `${process.env.API_URL}/resources/validate`
+            `${process.env.API_URL}/resources/validate`,
+            {
+              withCredentials: true,
+            }
           );
 
           if (res.status === 200) {
             setLoading(false);
             return;
+          } else {
+            setLoading(false);
+            router.push("/login");
           }
-
-          setLoading(false);
-          router.push("/login");
         } catch (error) {
+          console.log(error);
+
           setLoading(false);
           router.push("/login");
         }
