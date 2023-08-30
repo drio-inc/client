@@ -16,8 +16,6 @@ export const rootApi = createApi({
   },
 });
 
-export const {} = rootApi;
-
 // export const rootApi = createApi({
 //   reducerPath: "rootApi",
 //   baseQuery: fetchBaseQuery({
@@ -30,4 +28,4 @@ export const {} = rootApi;
 //   },
 // });
 
-// export const {} = rootApi;
+export const {} = rootApi;

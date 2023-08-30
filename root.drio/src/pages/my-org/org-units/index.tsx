@@ -1,10 +1,9 @@
 import Layout from "@/comps/Layout";
+import withAuth from "@/comps/HOC/withAuth";
 import OrgAccounts from "@/comps/RootAdmin/OrgUnits";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
-import withAuth from "@/comps/HOC/withAuth";
-
-const MyOrg = () => {
+const OrgUnitPage = () => {
   return (
     <Layout>
       <DashboardContainer>
@@ -14,4 +13,4 @@ const MyOrg = () => {
   );
 };
 
-export default withAuth(MyOrg);
+export default withAuth(OrgUnitPage);

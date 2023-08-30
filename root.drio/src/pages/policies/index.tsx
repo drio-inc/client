@@ -7,14 +7,6 @@ import { useAppSelector } from "@/hooks/useStoreTypes";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
 const PoliciesPage = () => {
-  const router = useRouter();
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
-
-  if (!isAuthenticated) {
-    router.push("/login");
-    return <Loader />;
-  }
-
   return (
     <Layout>
       <DashboardContainer>

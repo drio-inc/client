@@ -13,3 +13,17 @@ export const rootApi = createApi({
   tagTypes: ["Accounts", "Organization_Units"],
   endpoints: () => ({}),
 });
+
+// export const rootApi = createApi({
+//   reducerPath: "rootApi",
+//   baseQuery: fetchBaseQuery({
+//     baseUrl: `/api`,
+//     credentials: "include",
+//   }),
+
+//   endpoints: (builder) => {
+//     return {};
+//   },
+// });
+
+export const {} = rootApi;

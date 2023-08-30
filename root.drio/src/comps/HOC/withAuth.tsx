@@ -11,15 +11,15 @@ function withAuth(OriginalComponent: React.FC) {
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
 
+    // const url = `/api`;
+    const url = process.env.API_URL;
+
     useEffect(() => {
       async function validateToken() {
         try {
-          const res = await axios.get(
-            `${process.env.API_URL}/resources/validate`,
-            {
-              withCredentials: true,
-            }
-          );
+          const res = await axios.get(`${url}/resources/validate`, {
+            withCredentials: true,
+          });
 
           if (res.status === 200) {
             setLoading(false);
@@ -37,7 +37,7 @@ function withAuth(OriginalComponent: React.FC) {
       }
 
       validateToken();
-    }, [dispatch, router]);
+    }, [dispatch, router, url]);
 
     if (loading) {
       return <StaticLoader />;
