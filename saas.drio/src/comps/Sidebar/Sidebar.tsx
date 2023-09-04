@@ -48,7 +48,7 @@ const NavLinks = [
     children: [
       {
         name: "Organization Units",
-        href: "ou",
+        href: "ous",
       },
     ],
   },

@@ -44,7 +44,7 @@ const authSlice = createSlice({
       state.role = action.payload;
     },
 
-    logOut: (state) => {
+    logout: (state) => {
       state.role = "";
       state.user = null;
       state.authMode = "";
@@ -55,7 +55,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { setUser, setAuthMode, setAuthenticated, setRole, logOut } =
+export const { setUser, setAuthMode, setAuthenticated, setRole, logout } =
   authSlice.actions;
 
 export default authSlice.reducer;

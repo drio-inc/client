@@ -5,7 +5,7 @@ import { HiSearch } from "react-icons/hi";
 import Button from "../Button";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { logOut } from "@/state/slices/authSlice";
+import { logout } from "@/state/slices/authSlice";
 
 export default function Header() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function Header() {
   const { pageTitles } = useAppSelector((state) => state.ui);
 
   const handleLogout = () => {
-    dispatch(logOut());
+    dispatch(logout());
   };
 
   const path = router.pathname
