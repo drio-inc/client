@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/orgUnitSlice";
 
-const AccountMenu = ({ row, editForm }: any) => {
+const OrgUnitMenu = ({ row, editForm }: any) => {
   const dispatch = useAppDispatch();
   const orgUnitState = useAppSelector((state) => state.orgUnit);
 
@@ -55,4 +55,4 @@ const AccountMenu = ({ row, editForm }: any) => {
   );
 };
 
-export default AccountMenu;
+export default OrgUnitMenu;

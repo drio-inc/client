@@ -10,8 +10,11 @@ export const rootApi = createApi({
         : process.env.API_URL
     }`,
 
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers, { getState, endpoint }) => {
+      if (endpoint?.includes("login")) return headers;
+
       const token = getToken();
+
       if (token) headers.set("authorization", `Bearer ${token}`);
 
       return headers;

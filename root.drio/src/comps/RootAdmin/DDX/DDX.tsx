@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import AddDDXForm from "./AddDDXForm";
 import EditDDXForm from "./EditDDXForm";
 import DDXDetails from "./DDXDetails/DDXDetails";
-import UpdateLicenseForm from "./UpdateLicenseForm";
 import DDXMenu from "@/comps/RootAdmin/DDX/DDXMenu";
 
 import Modal from "@/comps/ui/Modal";
@@ -14,6 +13,11 @@ import { IoRefresh } from "react-icons/io5";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
+
+import { useGetOrgUnitsQuery } from "@/api/resources/ous";
+import { useGetDDXClustersQuery } from "@/api/resources/ddx";
+import { useEffect } from "react";
+import axios from "axios";
 
 const headers = [
   {
@@ -30,12 +34,13 @@ const headers = [
   },
 
   {
-    header: "Status",
-    accessor: "status",
+    header: "State",
+    accessor: "state",
     status: {
-      Active: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
-      Pending: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
-      "Not Configured": "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
+      failed: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
+      stopped: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
+      running: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      upgrading: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -68,6 +73,8 @@ const headers = [
 const DDX = () => {
   const dispatch = useAppDispatch();
   const DDXState = useAppSelector((state) => state.DDX);
+  const { user } = useAppSelector((state) => state.auth);
+  const orgUnitState = useAppSelector((state) => state.orgUnit);
 
   const handleCheckbox = (index: number) => {
     if (DDXState.selectedRows.includes(index)) {

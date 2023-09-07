@@ -1,23 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type User = {
-  id: string;
-  userName: string;
-  email: string;
-  role?: string;
+  username: string;
+  user_type: number;
+  account_id: string;
 };
 
 type AuthState = {
+  token?: string;
   user: User | null;
   isAuthenticated: boolean;
-  role: string;
-  authMode: "ldap" | "google" | "oauth" | "";
 };
 
 const initialState: AuthState = {
-  role: "",
+  token: "",
   user: null,
-  authMode: "",
   isAuthenticated: false,
 };
 
@@ -32,30 +29,26 @@ const authSlice = createSlice({
       };
     },
 
-    setAuthMode: (state, action) => {
-      state.authMode = action.payload;
-    },
-
     setAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload;
     },
 
-    setRole: (state, action) => {
-      state.role = action.payload;
+    setToken(state, action) {
+      state.token = action.payload;
     },
 
     logout: (state) => {
-      state.role = "";
+      state.token = "";
       state.user = null;
-      state.authMode = "";
       state.isAuthenticated = false;
+      window.sessionStorage.clear();
     },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setUser, setAuthMode, setAuthenticated, setRole, logout } =
+export const { setUser, setAuthenticated, setToken, logout } =
   authSlice.actions;
 
 export default authSlice.reducer;

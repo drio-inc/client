@@ -1,5 +1,6 @@
 import Layout from "@/comps/Layout";
 import DDX from "@/comps/RootAdmin/DDX";
+import withAuth from "@/comps/HOC/withAuth";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
 const DDXPage = () => {
@@ -12,4 +13,4 @@ const DDXPage = () => {
   );
 };
 
-export default DDXPage;
+export default withAuth(DDXPage);

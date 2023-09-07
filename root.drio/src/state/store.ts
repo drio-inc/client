@@ -37,12 +37,18 @@ import outboundContractReducer from "./slices/outboundContractSlice";
 import approvedContractReducer from "./slices/approvedContractSlice";
 import subscribeDatasetReducer from "./slices/subscribeDatasetsSlice";
 
-const persistConfig = {
+const persistAuthConfig = {
   key: "auth",
   storage: storageSession,
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+const persistDDXConfig = {
+  key: "ddx",
+  storage: storageSession,
+};
+
+const persistedDDXReducer = persistReducer(persistDDXConfig, DDXReducer);
+const persistedAuthReducer = persistReducer(persistAuthConfig, authReducer);
 
 // export const store = configureStore({
 //   reducer: {
@@ -69,7 +75,7 @@ const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
 const rootReducer = combineReducers({
   ui: uiReducer,
-  DDX: DDXReducer,
+  DDX: persistedDDXReducer,
   alerts: alertsReducer,
   orgUnit: orgUnitReducer,
   dataset: datasetReducer,

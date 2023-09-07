@@ -2,7 +2,9 @@ import { useRouter } from "next/router";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 
 import axios from "axios";
+import { getToken } from "@/utils/token";
 import { useEffect, useState } from "react";
+import { logout } from "@/state/slices/authSlice";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 
 function withAuth(OriginalComponent: React.FC) {
@@ -18,7 +20,9 @@ function withAuth(OriginalComponent: React.FC) {
       async function validateToken() {
         try {
           const res = await axios.get(`${url}/resources/validate`, {
-            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
           });
 
           if (res.status === 200) {
@@ -26,12 +30,12 @@ function withAuth(OriginalComponent: React.FC) {
             return;
           } else {
             setLoading(false);
+            dispatch(logout());
             router.push("/login");
           }
         } catch (error) {
-          console.log(error);
-
           setLoading(false);
+          dispatch(logout());
           router.push("/login");
         }
       }

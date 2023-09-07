@@ -4,17 +4,28 @@ import { HiSearch } from "react-icons/hi";
 
 import Button from "../Button";
 import { useLogoutMutation } from "@/api/auth";
-import { useAppSelector } from "@/hooks/useStoreTypes";
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { logout as stateLogout } from "@/state/slices/authSlice";
 
 export default function Header() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [logout, { isLoading }] = useLogoutMutation();
   const { user } = useAppSelector((state) => state.auth);
   const { pageTitles } = useAppSelector((state) => state.ui);
 
   const handleLogout = async () => {
-    await logout();
-    router.push("/login");
+    try {
+      const res = await logout().unwrap();
+      if (res.message === "Logout successful") {
+        dispatch(stateLogout());
+        router.push("/login");
+        router.reload();
+      }
+    } catch (error) {
+      router.push("/login");
+      router.reload();
+    }
   };
 
   const path = router.pathname
@@ -31,7 +42,7 @@ export default function Header() {
           {pageTitles[path] ?? path}
         </Link>
         <div className="flex items-center">
-          {user && <span className="mr-3">{user.role}</span>}
+          {user && <span className="mr-3">{user.userName}</span>}
           <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
             <div className="relative flex w-full flex-wrap items-center">
               <HiSearch className="text-gray-400 inline-flex h-full absolute items-center justify-center w-8 pl-2 py-2" />

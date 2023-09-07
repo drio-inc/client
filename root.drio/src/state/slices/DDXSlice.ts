@@ -3,70 +3,29 @@ import { createSlice } from "@reduxjs/toolkit";
 type DDXState = {
   rows: TableRow[];
   selectedRows: number[];
+  clusterToken: string;
+  currentDDXCluster: DDXCluster | null;
   licenseDetails: {
     [key: string]: string;
   };
 };
 
 const initialState: DDXState = {
-  rows: [
-    {
-      id: "1",
-      name: "Cox Cluster 2",
-      ou: "Corp",
-      status: "Active",
-      clusterVCPU: 25,
-      clusterMemory: "2 GB",
-      clusterStorage: "1 TB",
-      infraProvider: "AWS",
-      country: "Armenia",
-      swVersion: "1.0.2.03232023",
-    },
-    {
-      id: "2",
-      name: "DT DDX Cluster 7",
-      ou: "Corp",
-      status: "Pending",
-      clusterVCPU: 25,
-      clusterMemory: "2 GB",
-      clusterStorage: "1 TB",
-      infraProvider: "GCP",
-      country: "Belarus",
-      swVersion: "1.0.2.03232023",
-    },
-    {
-      id: "3",
-      name: "KBB DDX Cluster 1",
-      ou: "Corp",
-      status: "Not Configured",
-      clusterVCPU: 25,
-      clusterMemory: "2 GB",
-      clusterStorage: "1 TB",
-      infraProvider: "Azure",
-      country: "Russia",
-      swVersion: "1.0.2.03232023",
-    },
-    {
-      id: "4",
-      name: "Cox Cluster 1",
-      ou: "Corp",
-      status: "Active",
-      clusterVCPU: 25,
-      clusterMemory: "2 GB",
-      clusterStorage: "1 TB",
-      infraProvider: "AWS",
-      country: "Ukraine",
-      swVersion: "1.0.2.03232023",
-    },
-  ],
+  rows: [],
   selectedRows: [],
+  clusterToken: "",
   licenseDetails: {},
+  currentDDXCluster: null,
 };
 
 const DDXSlice = createSlice({
   name: "DDX",
   initialState,
   reducers: {
+    setCurrentDDXCluster(state, action) {
+      state.currentDDXCluster = action.payload;
+    },
+
     setRows(state, action) {
       state.rows = action.payload;
     },
@@ -78,11 +37,21 @@ const DDXSlice = createSlice({
     setLicenseDetails(state, action) {
       state.licenseDetails = action.payload;
     },
+
+    setClusterToken(state, action) {
+      state.clusterToken = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows, setLicenseDetails } = DDXSlice.actions;
+export const {
+  setRows,
+  setClusterToken,
+  setSelectedRows,
+  setLicenseDetails,
+  setCurrentDDXCluster,
+} = DDXSlice.actions;
 
 export default DDXSlice.reducer;

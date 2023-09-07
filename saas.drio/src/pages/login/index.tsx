@@ -53,8 +53,6 @@ export default function Login() {
         password: data.password,
       }).unwrap();
 
-      console.log(res);
-
       dispatch(setToken(res.token));
       window.sessionStorage.setItem("token", res.token);
       router.push("/accounts");
