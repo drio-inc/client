@@ -12,7 +12,7 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { useEditOrgAccountMutation } from "@/api/resources/ous";
+import { useUpdateOrgUnitMutation } from "@/api/resources/ous";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/orgUnitSlice";
 
@@ -34,7 +34,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function EditOrgAccountForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [editOrgAccount, result] = useEditOrgAccountMutation();
+  const [editOrgAccount, result] = useUpdateOrgUnitMutation();
   const orgUnitState = useAppSelector((state) => state.orgUnit);
 
   const form = useZodForm({
@@ -44,9 +44,10 @@ export default function EditOrgAccountForm({ row }: TableRow) {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const res = await editOrgAccount({
-        id: row.id,
-        ou: data.ou,
-        streetAddress: data.streetAddress,
+        account_id: row.id,
+        ou_id: row.ou_id,
+        name: data.ou,
+        street_address: data.streetAddress,
         country: data.country,
         state: data.state,
         city: data.city,
