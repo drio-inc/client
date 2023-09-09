@@ -32,6 +32,7 @@ import policiesReducer from "./slices/policiesSlice";
 import anomaliesReducer from "./slices/anomaliesSlice";
 import auditLogsReducer from "./slices/auditLogsSlice";
 import dataSourceReducer from "./slices/dataSourceSlice";
+import DDXInstanceReducer from "./slices/DDXInstanceSlice";
 import inboundContractReducer from "./slices/inboundContractSlice";
 import outboundContractReducer from "./slices/outboundContractSlice";
 import approvedContractReducer from "./slices/approvedContractSlice";
@@ -85,6 +86,7 @@ const rootReducer = combineReducers({
   anomalies: anomaliesReducer,
   auditLogs: auditLogsReducer,
   dataSource: dataSourceReducer,
+  DDXInstance: DDXInstanceReducer,
   inboundContract: inboundContractReducer,
   outboundContract: outboundContractReducer,
   approvedContract: approvedContractReducer,

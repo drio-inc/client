@@ -1,5 +1,10 @@
+import { useEffect } from "react";
 import Table from "@/comps/ui/Table";
-import { setSelectedRows } from "@/state/slices/DDXSlice";
+import {
+  setSelectedRows,
+  setRows,
+  setCurrentDDXCluster,
+} from "@/state/slices/DDXSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import AddDDXForm from "./AddDDXForm";
@@ -14,10 +19,9 @@ import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
 
-import { useGetOrgUnitsQuery } from "@/api/resources/ous";
-import { useGetDDXClustersQuery } from "@/api/resources/ddx";
-import { useEffect } from "react";
-import axios from "axios";
+import TokenPopup from "./TokenPopup";
+import DDXInstances from "./DDXInstances";
+import { Country } from "country-state-city";
 
 const headers = [
   {
@@ -34,13 +38,11 @@ const headers = [
   },
 
   {
-    header: "State",
-    accessor: "state",
+    header: "Status",
+    accessor: "status",
     status: {
-      failed: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
-      stopped: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
-      running: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
-      upgrading: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      active: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      inactive: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -73,8 +75,29 @@ const headers = [
 const DDX = () => {
   const dispatch = useAppDispatch();
   const DDXState = useAppSelector((state) => state.DDX);
-  const { user } = useAppSelector((state) => state.auth);
-  const orgUnitState = useAppSelector((state) => state.orgUnit);
+  const { recursiveRows } = useAppSelector((state) => state.orgUnit);
+
+  useEffect(() => {
+    dispatch(
+      setRows(
+        recursiveRows.reduce((acc: TableRow[], row) => {
+          console.log(acc, row.ddx_clusters);
+
+          const ddxClusterWithInfo = row.ddx_clusters.map((ddx: DDXCluster) => {
+            return {
+              ...ddx,
+              ou: row.name,
+              location: `${row.city}, ${row.state}, ${row.country}`,
+              country: Country.getCountryByCode(row.country)?.name,
+              status: ddx.ddx_instances.length > 0 ? "active" : "inactive",
+            };
+          });
+
+          return [...acc, ...ddxClusterWithInfo];
+        }, [])
+      )
+    );
+  }, [dispatch, recursiveRows]);
 
   const handleCheckbox = (index: number) => {
     if (DDXState.selectedRows.includes(index)) {
@@ -84,6 +107,11 @@ const DDX = () => {
     } else {
       dispatch(setSelectedRows([...DDXState.selectedRows, index]));
     }
+  };
+
+  const handleRowClick = (row: TableRow) => {
+    dispatch(setCurrentDDXCluster(row));
+    dispatch(setOpenModal("ddxInstanceTable"));
   };
 
   const clearSelectedRows = () => {
@@ -126,13 +154,25 @@ const DDX = () => {
               intent={"primary"}
               onClick={() => dispatch(setOpenModal("addDDXForm"))}
             >
-              Add DDX
+              Add DDX Cluster
             </Button>
           </div>
 
           <div className="hidden">
             <Modal identifier="addDDXForm">
               <AddDDXForm />
+            </Modal>
+          </div>
+
+          <div className="hidden">
+            <Modal identifier="tokenPopup">
+              <TokenPopup />
+            </Modal>
+          </div>
+
+          <div className="hidden">
+            <Modal identifier="ddxInstanceTable">
+              <DDXInstances />
             </Modal>
           </div>
         </div>
@@ -144,6 +184,7 @@ const DDX = () => {
           editForm={EditDDXForm}
           detailsWindow={DDXDetails}
           handleCheckbox={handleCheckbox}
+          handleRowClick={handleRowClick}
           selectedRows={DDXState.selectedRows}
         />
       </div>

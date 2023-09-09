@@ -23,7 +23,7 @@ type TableProps = {
   editForm?: React.FC | any;
   detailsWindow?: React.FC | any;
   clearSelectedRows?: () => void;
-  handleRowClick?: (index: number) => void;
+  handleRowClick?: (row: TableRow) => void;
   handleCheckbox?: (index: number) => void;
 };
 
@@ -108,7 +108,7 @@ const Table = ({
                     ) : (
                       <td
                         key={index}
-                        onClick={() => handleRowClick?.(row.id)}
+                        onClick={() => handleRowClick?.(row)}
                         className={
                           "cursor-pointer border-t border-b text-gray-500 text-xs p-4 text-left"
                         }

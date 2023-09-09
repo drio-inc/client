@@ -24,6 +24,7 @@ type OrganizationUnit = {
   created_at: string;
   updated_at: string;
   account_id: string;
+  ddx_clusters: DDXCluster[];
 };
 
 type DDXCluster = {
@@ -33,6 +34,10 @@ type DDXCluster = {
   twofaurl: string;
   created_at: string;
   updated_at: string;
+  ddx_instances: DDXInstance[];
+
+  account_id?: string;
+  ou_id?: string;
 };
 
 type DDXInstance = {
@@ -43,6 +48,9 @@ type DDXInstance = {
   created_at: string;
   updated_at: string;
   state: "running" | "stopped" | "upgrading" | "failed";
+
+  account_id?: string;
+  ou_id?: string;
 };
 
 interface JwtPayload {

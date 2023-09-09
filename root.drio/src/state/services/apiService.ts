@@ -19,7 +19,13 @@ export const rootApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Organization_Units", "DDX_Clusters", "DDX_Instances"],
+  tagTypes: [
+    "Accounts",
+    "Account",
+    "Organization_Units",
+    "DDX_Clusters",
+    "DDX_Instances",
+  ],
   endpoints: (builder) => {
     return {};
   },

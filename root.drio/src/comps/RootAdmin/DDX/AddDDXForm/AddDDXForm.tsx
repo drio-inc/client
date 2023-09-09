@@ -10,20 +10,16 @@ import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
 import { useEffect, useState } from "react";
-import { setRows, setCurrentDDXCluster } from "@/state/slices/DDXSlice";
-import { setCloseModal } from "@/state/slices/uiSlice";
+import { setRows, setClusterToken } from "@/state/slices/DDXSlice";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { HiOutlineDuplicate } from "react-icons/hi";
 import { useGetOrgUnitsQuery } from "@/api/resources/ous";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 
-import {
-  useProvisionDDXMutation,
-  useCreateDDXClusterMutation,
-} from "@/api/resources/ddx";
+import { useCreateDDXClusterMutation } from "@/api/resources/ddx";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
-import axios from "axios";
+import { useRouter } from "next/router";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -38,20 +34,16 @@ const schema = z.object({
     .string()
     .nonempty("Please Enter a value")
     .url("Please Enter a valid URL"),
-
-  mfaKey: z.string().nonempty("Please Enter a value").optional(),
 });
 
 type FormData = z.infer<typeof schema>;
 
 export default function AddDDXForm() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
-  const [ipaddress, setipaddress] = useState("");
   const [visibility, setVisibility] = useState("");
-  const [provision, provisionResult] = useProvisionDDXMutation();
-  const [cluster, clusterResult] = useCreateDDXClusterMutation();
+  const [createCluster, clusterResult] = useCreateDDXClusterMutation();
 
-  const ddxSstate = useAppSelector((state) => state.DDX);
   const { user } = useAppSelector((state) => state.auth);
   const { data: orgUnitRows } = useGetOrgUnitsQuery(user?.account_id ?? "");
 
@@ -59,63 +51,26 @@ export default function AddDDXForm() {
     schema: schema,
   });
 
-  useEffect(() => {
-    async function fetchIpAddress() {
-      const res = await axios.get(`${process.env.API_URL}/ping`);
-      setipaddress(res.data.clientip);
-    }
-    fetchIpAddress();
-  }, []);
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const res = await provision({
-        ou_id: data.ou,
-        name: data.name,
-        state: "running",
-        token: data.mfaKey,
-        ipaddress: ipaddress,
-        account_id: user?.account_id ?? "",
-        cluster_id: ddxSstate.currentDDXCluster?.id ?? "",
-      }).unwrap();
-
-      dispatch(setRows([...ddxSstate.rows, res.ddx_instance]));
-      showAlert("DDX Provisioned Successfully!", "success");
-
-      form.reset();
-      dispatch(setCloseModal("addDDXForm"));
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
-  };
-
-  const createCluster: SubmitHandler<FormData> = async (data) => {
-    try {
-      const res = await cluster({
+      const res = await createCluster({
         ou_id: data.ou,
         name: data.name,
         twofaurl: data.twofaurl,
         account_id: user?.account_id ?? "",
       }).unwrap();
 
-      if (res.ddx_cluster) {
-        dispatch(setCurrentDDXCluster(res.ddx_cluster));
-        form.setValue("mfaKey", res.ddx_cluster.token);
-      }
+      dispatch(setClusterToken(res.ddx_cluster.token));
+
+      showAlert("DDX Provisioned Successfully!", "success");
+      dispatch(setCloseModal("addDDXForm"));
+      dispatch(setOpenModal("tokenPopup"));
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
         "error"
       );
     }
-  };
-
-  const copyKey = () => {
-    navigator.clipboard.writeText(form.getValues("mfaKey") ?? "");
-    showAlert("Rollover Key Successfully Copied!", "success");
   };
 
   if (!orgUnitRows) return <StaticLoader />;
@@ -125,7 +80,7 @@ export default function AddDDXForm() {
       <Form form={form} onSubmit={onSubmit} className="">
         <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[24vw]">
           <h2 className="text-gray-700 text-2xl font-bold text-center">
-            Add DDX
+            Add DDX Cluster
           </h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
@@ -198,7 +153,7 @@ export default function AddDDXForm() {
             </div>
             {/* )} */}
 
-            <div className="px-4 py-2 w-full relative">
+            {/* <div className="px-4 py-2 w-full relative">
               <span className="text-xs text-gray-500 font-medium mb-2 block">
                 Please copy this{" "}
                 <span className="font-bold text-drio-red-dark">ONE TIME</span>{" "}
@@ -209,7 +164,7 @@ export default function AddDDXForm() {
                 <TextInput
                   disabled
                   label={""}
-                  {...form.register("mfaKey")}
+                  {...form.register("jwtToken")}
                   className="md:text-sm 2xl:text-base w-1/2 flex-grow"
                   icon={
                     <HiOutlineDuplicate
@@ -231,7 +186,7 @@ export default function AddDDXForm() {
                   Generate key
                 </Button>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="p-2 flex gap-x-2 justify-center w-full mt-4">
@@ -244,12 +199,7 @@ export default function AddDDXForm() {
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>
 
-            <Button
-              intent={`primary`}
-              className="w-full"
-              isLoading={provisionResult.isLoading}
-              disabled={ddxSstate.currentDDXCluster === null}
-            >
+            <Button intent={`primary`} className="w-full">
               <span className="inline-flex justify-center w-full">
                 Provision DDX
               </span>

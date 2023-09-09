@@ -32,7 +32,7 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
           align="center"
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+          {/* <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             {editForm && (
               <Modal
                 label="Edit"
@@ -42,7 +42,7 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
                 {editForm}
               </Modal>
             )}
-          </span>
+          </span> */}
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             {detailsWindow && (
@@ -56,13 +56,13 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
             )}
           </span>
 
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+          {/* <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <AlertModal
               row={row}
               accessor={row.ou}
               onClick={() => deleteRow(row.id)}
             />
-          </span>
+          </span> */}
 
           {/* <span
             className={
@@ -72,7 +72,7 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
             <Link href={`/ddx/${row.account}/dashboard`}>View Dashboard</Link>
           </span> */}
 
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+          {/* <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <Modal
               label="Update License"
               identifier="updateLicenseForm"
@@ -80,7 +80,7 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
             >
               <UpdateLicenseForm />
             </Modal>
-          </span>
+          </span> */}
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

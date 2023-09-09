@@ -4,11 +4,13 @@ import { orgUnitApi } from "@/api/resources/ous";
 type OrgUnitState = {
   rows: TableRow[];
   selectedRows: number[];
+  recursiveRows: TableRow[];
 };
 
 const initialState: OrgUnitState = {
   rows: [],
   selectedRows: [],
+  recursiveRows: [],
 };
 
 const orgUnitSlice = createSlice({
@@ -22,6 +24,10 @@ const orgUnitSlice = createSlice({
     setSelectedRows(state, action) {
       state.selectedRows = action.payload;
     },
+
+    setRecursiveRows(state, action) {
+      state.recursiveRows = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
@@ -34,6 +40,7 @@ const orgUnitSlice = createSlice({
   },
 });
 
-export const { setRows, setSelectedRows } = orgUnitSlice.actions;
+export const { setRows, setSelectedRows, setRecursiveRows } =
+  orgUnitSlice.actions;
 
 export default orgUnitSlice.reducer;
