@@ -181,8 +181,6 @@ const DDX = () => {
           menu={DDXMenu}
           headers={headers}
           rows={DDXState.rows}
-          editForm={EditDDXForm}
-          detailsWindow={DDXDetails}
           handleCheckbox={handleCheckbox}
           handleRowClick={handleRowClick}
           selectedRows={DDXState.selectedRows}
