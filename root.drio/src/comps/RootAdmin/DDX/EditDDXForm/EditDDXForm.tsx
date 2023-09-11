@@ -16,7 +16,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 import { useGetOrgUnitsQuery } from "@/api/resources/ous";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 
-import { useCreateDDXClusterMutation } from "@/api/resources/ddx";
+import { usePatchDDXClusterMutation } from "@/api/resources/ddx";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 import { useRouter } from "next/router";
 
@@ -37,11 +37,11 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function EditDDXForm() {
+export default function EditDDXForm({ row }: TableRow) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [visibility, setVisibility] = useState("");
-  const [createCluster, clusterResult] = useCreateDDXClusterMutation();
+  const [patchCluster, clusterResult] = usePatchDDXClusterMutation();
 
   const { user } = useAppSelector((state) => state.auth);
   const { data: orgUnitRows } = useGetOrgUnitsQuery(user?.account_id ?? "");
@@ -52,18 +52,16 @@ export default function EditDDXForm() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const res = await createCluster({
+      const res = await patchCluster({
         ou_id: data.ou,
         name: data.name,
+        cluster_id: row.id,
         twofaurl: data.twofaurl,
         account_id: user?.account_id ?? "",
       }).unwrap();
 
-      dispatch(setClusterToken(res.ddx_cluster.token));
-
-      showAlert("DDX Updated Successfully!", "success");
+      showAlert("DDX Cluster Updated Successfully!", "success");
       dispatch(setCloseModal("editDDXForm"));
-      dispatch(setOpenModal("tokenPopup"));
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
@@ -73,6 +71,8 @@ export default function EditDDXForm() {
   };
 
   if (!orgUnitRows) return <StaticLoader />;
+
+  console.log(row);
 
   return (
     <Layout>
@@ -86,6 +86,7 @@ export default function EditDDXForm() {
             <div className="px-4 py-2 w-full">
               <TextInput
                 label={"Name"}
+                defaultValue={row.name}
                 placeholder={"Enter name"}
                 {...form.register("name")}
                 className="md:text-sm 2xl:text-base"
@@ -104,8 +105,12 @@ export default function EditDDXForm() {
             <div className="px-4 py-2 w-full">
               <SelectInput
                 registerName="ou"
-                label={"Organization Unit"}
                 placeholder={"Enter OU"}
+                label={"Organization Unit"}
+                defaultSelectedValue={{
+                  label: row?.ou ?? "",
+                  value: row?.ou_id ?? "",
+                }}
                 options={
                   orgUnitRows &&
                   orgUnitRows.map((row) => ({

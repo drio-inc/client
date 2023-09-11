@@ -9,8 +9,9 @@ import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/datasetSlice";
 
 import Link from "next/link";
+import EditDatasetForm from "../EditDatasetForm";
 
-const DatasetMenu = ({ row, editForm, detailsWindow }: any) => {
+const DatasetMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const datasetState = useAppSelector((state) => state.dataset);
 
@@ -41,15 +42,13 @@ const DatasetMenu = ({ row, editForm, detailsWindow }: any) => {
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {editForm && (
-              <Modal
-                label="Edit"
-                identifier="editDatasetForm"
-                onClick={() => dispatch(setOpenModal("editDatasetForm"))}
-              >
-                {editForm}
-              </Modal>
-            )}
+            <Modal
+              label="Edit"
+              identifier="editDatasetForm"
+              onClick={() => dispatch(setOpenModal("editDatasetForm"))}
+            >
+              <EditDatasetForm row={row} />
+            </Modal>
           </span>
 
           <Link href={`/datasets/${row.id}`}>

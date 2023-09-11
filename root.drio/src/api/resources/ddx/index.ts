@@ -86,17 +86,17 @@ export const ddxApi = rootApi.injectEndpoints({
       ],
     }),
 
-    provisionDDX: builder.mutation<
-      DDXInstanceResponse,
-      DDXInstanceFormData & {
-        ou_id: string;
+    patchDDXCluster: builder.mutation<
+      DDXClusterResponse,
+      DDXClusterFormData & {
         account_id: string;
+        ou_id: string;
         cluster_id: string;
       }
     >({
       query: (payload) => ({
-        url: `/resources/accounts/${payload.account_id}/ous/${payload.ou_id}/ddx-clusters/${payload.cluster_id}/ddx-instances`,
-        method: "POST",
+        url: `/resources/accounts/${payload.account_id}/ous/${payload.ou_id}/ddx-clusters/${payload.cluster_id}`,
+        method: "PATCH",
         body: {
           ...payload,
           ou_id: undefined,
@@ -104,6 +104,58 @@ export const ddxApi = rootApi.injectEndpoints({
           cluster_id: undefined,
         },
       }),
+      invalidatesTags: [
+        "Account",
+        "DDX_Clusters",
+        "DDX_Instances",
+        "Organization_Units",
+      ],
+    }),
+
+    updateDDXCluster: builder.mutation<
+      DDXClusterResponse,
+      DDXClusterFormData & {
+        account_id: string;
+        ou_id: string;
+        cluster_id: string;
+      }
+    >({
+      query: (payload) => ({
+        url: `/resources/accounts/${payload.account_id}/ous/${payload.ou_id}/ddx-clusters/${payload.cluster_id}`,
+        method: "PUT",
+        body: {
+          ...payload,
+          ou_id: undefined,
+          account_id: undefined,
+          cluster_id: undefined,
+        },
+      }),
+      invalidatesTags: [
+        "Account",
+        "DDX_Clusters",
+        "DDX_Instances",
+        "Organization_Units",
+      ],
+    }),
+
+    deleteDDXCluster: builder.mutation<
+      DDXClusterResponse,
+      {
+        account_id: string;
+        ou_id: string;
+        cluster_id: string;
+      }
+    >({
+      query: (payload) => ({
+        url: `/resources/accounts/${payload.account_id}/ous/${payload.ou_id}/ddx-clusters/${payload.cluster_id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [
+        "Account",
+        "DDX_Clusters",
+        "DDX_Instances",
+        "Organization_Units",
+      ],
     }),
   }),
 });
@@ -111,9 +163,11 @@ export const ddxApi = rootApi.injectEndpoints({
 export const {
   useGetDDXClustersQuery,
   useFetchLicenseMutation,
-  useProvisionDDXMutation,
   useGetDDXInstancesQuery,
   useUpdateLicenseMutation,
+  usePatchDDXClusterMutation,
   useGenerateDDXTokenMutation,
   useCreateDDXClusterMutation,
+  useUpdateDDXClusterMutation,
+  useDeleteDDXClusterMutation,
 } = ddxApi;

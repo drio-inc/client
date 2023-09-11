@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/policiesSlice";
 
-const PoliciesMenu = ({ row, editForm }: any) => {
+const PoliciesMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const policiesState = useAppSelector((state) => state.policies);
 
@@ -42,8 +42,8 @@ const PoliciesMenu = ({ row, editForm }: any) => {
             {editForm && (
               <Modal
                 label="Edit"
-                identifier="editOrgAccountForm"
-                onClick={() => dispatch(setOpenModal("editOrgAccountForm"))}
+                identifier="editOrgUnitForm"
+                onClick={() => dispatch(setOpenModal("editOrgUnitForm"))}
               >
                 {editForm}
               </Modal>

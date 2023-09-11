@@ -5,59 +5,76 @@ import { Country, State, City } from "country-state-city";
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 
-import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
-
-import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { useUpdateOrgUnitMutation } from "@/api/resources/ous";
-import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/orgUnitSlice";
+import { setCloseModal } from "@/state/slices/uiSlice";
+import { usePatchOrgUnitMutation } from "@/api/resources/ous";
 
-const schema = z.object({
-  ou: z.string().nonempty("Please Enter a value"),
-  streetAddress: z.string().nonempty("Please Enter a value"),
-  country: z.string({
-    required_error: "Please select a country",
-  }),
-  state: z.string({
-    required_error: "Please select a state",
-  }),
-  city: z.string({
-    required_error: "Please select a city",
-  }),
-});
+import {
+  updateOrgUnitSchema,
+  UpdateOrgUnitFormData,
+} from "@/schema/OrgUnitSchema";
 
-type FormData = z.infer<typeof schema>;
+import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+import { useEffect, useState } from "react";
 
-export default function EditOrgAccountForm({ row }: TableRow) {
+export default function EditOrgUnitForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [editOrgAccount, result] = useUpdateOrgUnitMutation();
-  const orgUnitState = useAppSelector((state) => state.orgUnit);
+  const [patch, result] = usePatchOrgUnitMutation();
+  const { rows } = useAppSelector((state) => state.orgUnit);
+
+  const [defaultCountry, setDefaultCountry] = useState(
+    Country.getAllCountries().find((c) => c.isoCode === row?.country)
+  );
+  const [defaultState, setDefaultState] = useState(
+    State.getStatesOfCountry(row?.country).find((s) => s.isoCode === row?.state)
+  );
+
+  const [defaultCity, setDefaultCity] = useState(
+    City.getCitiesOfState(row?.country ?? "", row?.state ?? "").find(
+      (c) => c.name === row?.city
+    )
+  );
 
   const form = useZodForm({
-    schema: schema,
+    schema: updateOrgUnitSchema,
   });
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  useEffect(() => {
+    setDefaultCountry(
+      Country.getAllCountries().find((c) => c.isoCode === row?.country)
+    );
+    setDefaultState(
+      State.getStatesOfCountry(row?.country).find(
+        (s) => s.isoCode === row?.state
+      )
+    );
+    setDefaultCity(
+      City.getCitiesOfState(row?.country ?? "", row?.state ?? "").find(
+        (c) => c.name === row?.city
+      )
+    );
+  }, [row?.city, row?.country, row?.state]);
+
+  const onSubmit: SubmitHandler<UpdateOrgUnitFormData> = async (data) => {
     try {
-      const res = await editOrgAccount({
-        account_id: row.id,
-        ou_id: row.ou_id,
+      const res = await patch({
         name: data.ou,
-        street_address: data.streetAddress,
-        country: data.country,
-        state: data.state,
         city: data.city,
+        state: data.state,
+        country: data.country,
+        ou_id: row?.id ?? "",
+        street_address: data.streetAddress,
+        account_id: row?.account_id ?? "",
       }).unwrap();
 
-      dispatch(
-        setRows(orgUnitState.rows.map((row) => (row.id === res.id ? res : row)))
-      );
+      dispatch(setRows(rows.map((row) => (row.id === res.id ? res : row))));
+      dispatch(setCloseModal("editOrgUnitForm"));
 
-      dispatch(setCloseModal("editOrgAccountForm"));
+      showAlert("Organization unit updated successfully", "success");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
@@ -66,11 +83,13 @@ export default function EditOrgAccountForm({ row }: TableRow) {
     }
   };
 
+  console.log(row);
+
   return (
     <Layout>
       <Form form={form} onSubmit={onSubmit} className="min-w-full">
-        <div className="max-w-md w-full mx-auto bg-white p-4 rounded-lg">
-          <h2 className="text-gray-700 text-2xl font-bold my-4 text-center">
+        <div className="max-w-md w-full mx-auto bg-white px-4 py-8 rounded-lg">
+          <h2 className="text-gray-700 text-2xl font-bold mb-4 text-center">
             Edit Organization Unit
           </h2>
           <div className="flex flex-wrap p-2 rounded-lg">
@@ -79,8 +98,8 @@ export default function EditOrgAccountForm({ row }: TableRow) {
                 <TextInput
                   label="Organization Unit"
                   placeholder="Enter OU"
-                  defaultValue={row.ou}
                   {...form.register("ou")}
+                  defaultValue={row?.name ?? ""}
                 />
               </div>
             </div>
@@ -101,6 +120,10 @@ export default function EditOrgAccountForm({ row }: TableRow) {
                   label="Country"
                   registerName="country"
                   placeholder="Select country"
+                  defaultSelectedValue={{
+                    label: defaultCountry?.name ?? "",
+                    value: defaultCountry?.isoCode ?? "",
+                  }}
                   options={
                     Country.getAllCountries().map((country) => ({
                       label: country.name,
@@ -117,9 +140,13 @@ export default function EditOrgAccountForm({ row }: TableRow) {
                   label="State / Province"
                   registerName="state"
                   placeholder="Select state"
+                  defaultSelectedValue={{
+                    label: defaultState?.name ?? "",
+                    value: defaultState?.isoCode ?? "",
+                  }}
                   options={
                     State.getStatesOfCountry(
-                      row.country ?? form.watch("country")
+                      form.watch("country") ?? row?.country ?? ""
                     ).map((state) => ({
                       label: state.name,
                       value: state.isoCode,
@@ -135,10 +162,14 @@ export default function EditOrgAccountForm({ row }: TableRow) {
                   label="City"
                   registerName="city"
                   placeholder="Select city"
+                  defaultSelectedValue={{
+                    label: defaultCity?.name ?? "",
+                    value: defaultCity?.name ?? "",
+                  }}
                   options={
                     City.getCitiesOfState(
-                      row.country ?? form.watch("country"),
-                      row.state ?? form.watch("state")
+                      form.watch("country") ?? row?.country ?? "",
+                      form.watch("state") ?? row?.state ?? ""
                     ).map((city) => ({
                       label: city.name,
                       value: city.name,
@@ -152,7 +183,7 @@ export default function EditOrgAccountForm({ row }: TableRow) {
             <Button
               type="button"
               intent={`secondary`}
-              onClick={() => dispatch(setCloseModal("editOrgAccountForm"))}
+              onClick={() => dispatch(setCloseModal("editOrgUnitForm"))}
               className="w-full mr-2 md:mr-6"
             >
               <span className="inline-flex justify-center w-full">Cancel</span>

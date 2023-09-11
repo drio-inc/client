@@ -120,7 +120,6 @@ const DataSources = () => {
           headers={headers}
           menu={DataSourcesMenu}
           rows={dataSourceState.rows}
-          editForm={EditDataSourceForm}
           handleCheckbox={handleCheckbox}
           selectedRows={dataSourceState.selectedRows}
         />
