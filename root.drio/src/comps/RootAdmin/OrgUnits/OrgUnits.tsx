@@ -3,21 +3,24 @@ import Table from "@/comps/ui/Table";
 import { setSelectedRows } from "@/state/slices/orgUnitSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import OrgAccountMenu from "./OrgAccountMenu";
-import AddOrgAccountForm from "./AddOrgAccountForm";
-import EditOrgAccountForm from "./EditOrgAccountForm";
+import OrgUnitMenu from "./OrgUnitMenu";
+import AddOrgUnitForm from "./AddOrgUnitForm";
 
-import Modal from "@/comps/ui/Modal";
-import Button from "@/comps/ui/Button";
 import { IoRefresh } from "react-icons/io5";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
+
+import Button from "@ui/Button";
+import Modal from "@/comps/ui/Modal";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { setOpenModal } from "@/state/slices/uiSlice";
+import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+
+import { useGetOrgUnitsQuery } from "@/api/resources/ous";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 const headers = [
   {
-    header: "Organizational Unit",
-    accessor: "ou",
+    header: "Organization Unit",
+    accessor: "name",
   },
   {
     header: "Location",
@@ -42,9 +45,11 @@ const headers = [
   },
 ];
 
-const OrgAccounts = () => {
+const OrgUnits = () => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   const orgUnitState = useAppSelector((state) => state.orgUnit);
+  const { data, isLoading } = useGetOrgUnitsQuery(user?.account_id ?? "");
 
   const handleCheckbox = (index: number) => {
     if (orgUnitState.selectedRows.includes(index)) {
@@ -58,12 +63,12 @@ const OrgAccounts = () => {
     }
   };
 
-  const clearSelectedRows = () => {
-    dispatch(setSelectedRows([]));
-  };
+  const clearSelectedRows = () => dispatch(setSelectedRows([]));
+
+  if (isLoading) return <StaticLoader />;
 
   return (
-    <div className="w-full" data-testid="parent">
+    <div className={`py-2 w-full`}>
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div
           className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
@@ -92,11 +97,14 @@ const OrgAccounts = () => {
             </div>
           )}
 
-          <div className="flex gap-4 ml-auto">
+          <div className="flex items-center gap-4 ml-auto">
             <Button
               icon={<HiPlus />}
               intent={"primary"}
-              onClick={() => dispatch(setOpenModal("addOrgUnitForm"))}
+              onClick={() => {
+                dispatch(setCloseModal("orgUnitTable"));
+                dispatch(setOpenModal("addOrgUnitForm"));
+              }}
             >
               Add Organization Unit
             </Button>
@@ -104,22 +112,26 @@ const OrgAccounts = () => {
 
           <div className="hidden">
             <Modal identifier="addOrgUnitForm">
-              <AddOrgAccountForm />
+              <AddOrgUnitForm />
             </Modal>
           </div>
         </div>
 
         <Table
           headers={headers}
-          menu={OrgAccountMenu}
-          rows={orgUnitState.rows}
-          editForm={EditOrgAccountForm}
+          menu={OrgUnitMenu}
           handleCheckbox={handleCheckbox}
           selectedRows={orgUnitState.selectedRows}
+          rows={data?.map((row) => {
+            return {
+              ...row,
+              location: ` ${row.city}, ${row.state}, ${row.country}`,
+            };
+          })}
         />
       </div>
     </div>
   );
 };
 
-export default OrgAccounts;
+export default OrgUnits;

@@ -74,7 +74,7 @@ const Policies = () => {
     dispatch(setSelectedRows([]));
   };
 
-  const handleRowClick = (index: number) => {
+  const handleRowClick = (row: TableRow) => {
     dispatch(setOpenModal("policyRulesTable"));
   };
 

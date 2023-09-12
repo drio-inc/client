@@ -3,5 +3,5 @@ export type LoginFormData = {
   password: string;
 };
 
-export type LoginRespose = { message: string };
 export type LogoutResponse = { message: string };
+export type LoginRespose = { message: string; token: string };

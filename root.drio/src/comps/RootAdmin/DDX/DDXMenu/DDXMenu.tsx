@@ -9,15 +9,13 @@ import AlertModal from "@/comps/ui/AlertModal";
 import UpdateLicenseForm from "../UpdateLicenseForm";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/DDXSlice";
+import EditDDXForm from "../EditDDXForm";
+import DDXDetails from "../DDXDetails";
+import DeleteDDX from "../DeleteDDX";
 
-const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
+const AccountMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const ddxState = useAppSelector((state) => state.DDX);
-
-  const deleteRow = (id: number | string) => {
-    dispatch(setRows(ddxState.rows.filter((row) => row.id !== id)));
-    dispatch(setSelectedRows([]));
-  };
 
   return (
     <Popover.Root>
@@ -33,35 +31,33 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {editForm && (
-              <Modal
-                label="Edit"
-                identifier="editDDXForm"
-                onClick={() => dispatch(setOpenModal("editDDXForm"))}
-              >
-                {editForm}
-              </Modal>
-            )}
+            <Modal
+              label="Edit"
+              identifier="editDDXForm"
+              onClick={() => dispatch(setOpenModal("editDDXForm"))}
+            >
+              <EditDDXForm row={row} />
+            </Modal>
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {detailsWindow && (
-              <Modal
-                label="View"
-                identifier="detailsWindow"
-                onClick={() => dispatch(setOpenModal("detailsWindow"))}
-              >
-                {detailsWindow}
-              </Modal>
-            )}
+            <Modal
+              label="View"
+              identifier="detailsWindow"
+              onClick={() => dispatch(setOpenModal("detailsWindow"))}
+            >
+              <DDXDetails row={row} />
+            </Modal>
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            <AlertModal
-              row={row}
-              accessor={row.ou}
-              onClick={() => deleteRow(row.id)}
-            />
+            <Modal
+              label="Delete"
+              identifier="deleteDDX"
+              onClick={() => dispatch(setOpenModal("deleteDDX"))}
+            >
+              <DeleteDDX row={row} />
+            </Modal>
           </span>
 
           {/* <span
@@ -72,7 +68,7 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
             <Link href={`/ddx/${row.account}/dashboard`}>View Dashboard</Link>
           </span> */}
 
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+          {/* <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <Modal
               label="Update License"
               identifier="updateLicenseForm"
@@ -80,7 +76,7 @@ const AccountMenu = ({ row, editForm, detailsWindow }: any) => {
             >
               <UpdateLicenseForm />
             </Modal>
-          </span>
+          </span> */}
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

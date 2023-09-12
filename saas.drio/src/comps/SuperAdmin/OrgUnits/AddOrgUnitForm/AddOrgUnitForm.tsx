@@ -25,8 +25,6 @@ export default function AddOrgUnitForm() {
   const rows = useAppSelector((state) => state.orgUnit.rows);
   const { accountId } = useAppSelector((state) => state.account);
 
-  console.log(accountId);
-
   const form = useZodForm({
     schema: createOrgUnitSchema,
   });

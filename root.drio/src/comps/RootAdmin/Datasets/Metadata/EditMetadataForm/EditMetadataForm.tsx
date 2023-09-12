@@ -72,8 +72,6 @@ export default function EditMetadataForm({ row }: TableRow) {
         tags: tags,
       }).unwrap();
 
-      console.log(res);
-
       dispatch(
         setRows(
           metadataState.rows.map((row) => (row.id === res.id ? res : row))
@@ -135,7 +133,6 @@ export default function EditMetadataForm({ row }: TableRow) {
 
   const handleTagChange = useCallback(
     (tag: string) => {
-      console.log(tags);
       setTags([
         ...tags,
         { id: Math.random().toString(), name: tag, status: "Pending" },

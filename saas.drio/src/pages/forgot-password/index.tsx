@@ -33,8 +33,6 @@ const ForgotPassword = () => {
         email: data.email,
       }).unwrap();
 
-      console.log(res);
-
       // router.push("/dashboard");
     } catch (err: any) {
       showAlert(

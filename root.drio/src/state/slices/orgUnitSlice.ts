@@ -1,50 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { orgUnitApi } from "@/api/resources/ous";
 
 type OrgUnitState = {
   rows: TableRow[];
   selectedRows: number[];
+  recursiveRows: TableRow[];
 };
 
 const initialState: OrgUnitState = {
-  rows: [
-    {
-      id: "1",
-      ou: "Cox Automotive",
-      location: "San Diego, California, USA",
-      dsPublished: 25,
-      contract: "2/22",
-      frequency: "798/day",
-      alerts: 2,
-    },
-    {
-      id: "2",
-      ou: "Cox Automotive",
-      location: "San Diego, California, USA",
-      dsPublished: 25,
-      contract: "2/22",
-      frequency: "798/day",
-      alerts: 2,
-    },
-    {
-      id: "3",
-      ou: "Cox Automotive",
-      location: "San Diego, California, USA",
-      dsPublished: 25,
-      contract: "2/22",
-      frequency: "798/day",
-      alerts: 2,
-    },
-    {
-      id: "4",
-      ou: "Cox Automotive",
-      location: "San Diego, California, USA",
-      dsPublished: 25,
-      contract: "2/22",
-      frequency: "798/day",
-      alerts: 2,
-    },
-  ],
+  rows: [],
   selectedRows: [],
+  recursiveRows: [],
 };
 
 const orgUnitSlice = createSlice({
@@ -58,11 +24,23 @@ const orgUnitSlice = createSlice({
     setSelectedRows(state, action) {
       state.selectedRows = action.payload;
     },
+
+    setRecursiveRows(state, action) {
+      state.recursiveRows = action.payload;
+    },
   },
 
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      orgUnitApi.endpoints.getOrgUnits.matchFulfilled,
+      (state, action) => {
+        state.rows = action.payload;
+      }
+    );
+  },
 });
 
-export const { setRows, setSelectedRows } = orgUnitSlice.actions;
+export const { setRows, setSelectedRows, setRecursiveRows } =
+  orgUnitSlice.actions;
 
 export default orgUnitSlice.reducer;

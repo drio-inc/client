@@ -5,50 +5,39 @@ import { Country, State, City } from "country-state-city";
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 
-import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import { useCreateOrgUnitMutation } from "@/api/resources/ous";
 
-import { useAddOrgAccountMutation } from "@/api/resources/ous";
-
-import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRows } from "@/state/slices/orgUnitSlice";
+import { setCloseModal } from "@/state/slices/uiSlice";
 
-const schema = z.object({
-  ou: z.string().nonempty("Please Enter a value"),
-  streetAddress: z.string().nonempty("Please Enter a value"),
-  country: z.string({
-    required_error: "Please select a country",
-  }),
-  state: z.string({
-    required_error: "Please select a state",
-  }),
-  city: z.string({
-    required_error: "Please select a city",
-  }),
-});
+import {
+  createOrgUnitSchema,
+  CreateOrgUnitFormData,
+} from "@/schema/OrgUnitSchema";
 
-type FormData = z.infer<typeof schema>;
-
-export default function AddOrgAccountForm() {
+export default function AddOrgUnitForm() {
   const dispatch = useAppDispatch();
-  const [addAccount, result] = useAddOrgAccountMutation();
+  const [create, result] = useCreateOrgUnitMutation({});
   const rows = useAppSelector((state) => state.orgUnit.rows);
+  const { user } = useAppSelector((state) => state.auth);
 
   const form = useZodForm({
-    schema: schema,
+    schema: createOrgUnitSchema,
   });
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  const onSubmit: SubmitHandler<CreateOrgUnitFormData> = async (data) => {
     try {
-      const res = await addAccount({
-        ou: data.ou,
-        streetAddress: data.streetAddress,
-        country: data.country,
-        state: data.state,
+      const res = await create({
+        name: data.ou,
         city: data.city,
+        state: data.state,
+        id: user?.account_id ?? "",
+        country: data.country,
+        street_address: data.streetAddress,
       }).unwrap();
 
       dispatch(setRows([...rows, res]));
@@ -91,7 +80,7 @@ export default function AddOrgAccountForm() {
             </div>
 
             <div className="px-4 py-2 w-full">
-              <div className="relative">
+              <div className="">
                 <SelectInput
                   label="Country"
                   registerName="country"

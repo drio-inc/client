@@ -56,8 +56,6 @@ export default function EditDatasourceForm({ row }: TableRow) {
         id: row.id,
       }).unwrap();
 
-      console.log(res);
-
       dispatch(
         setRows(
           dataSourceState.rows.map((row) => (row.id === res.id ? res : row))

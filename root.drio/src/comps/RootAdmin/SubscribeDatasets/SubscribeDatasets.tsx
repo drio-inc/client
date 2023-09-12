@@ -176,10 +176,8 @@ const Dataset = () => {
         {tab === "organizations" ? (
           <Table
             headers={headers}
-            editForm={EditDatasetForm}
             menu={SubscribeDatasetMenu}
             rows={subscribeDatasets.rows}
-            detailsWindow={DatasetDetails}
             handleCheckbox={handleCheckbox}
             selectedRows={subscribeDatasets.selectedRows}
           />

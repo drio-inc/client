@@ -1,8 +1,6 @@
 import Layout from "@/comps/Layout";
 
 export default function LicenseDetails({ details }: TableRow) {
-  console.log(details);
-
   return (
     <Layout>
       <div className="min-w-[50vw] relative w-full mx-auto p-4 rounded-lg">

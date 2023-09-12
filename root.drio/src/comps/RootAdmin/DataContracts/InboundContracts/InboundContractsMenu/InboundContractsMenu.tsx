@@ -10,7 +10,7 @@ import { setRows, setSelectedRows } from "@/state/slices/inboundContractSlice";
 
 import Link from "next/link";
 
-const InboundContractsMenu = ({ row, editForm, detailsWindow }: any) => {
+const InboundContractsMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const dataContractState = useAppSelector((state) => state.inboundContract);
 

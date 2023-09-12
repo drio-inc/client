@@ -114,9 +114,8 @@ const InboundContracts = () => {
         <Table
           headers={headers}
           menu={InboundContractsMenu}
-          rows={inboundContractState.rows}
-          editForm={EditInboundContractsForm}
           handleCheckbox={handleCheckbox}
+          rows={inboundContractState.rows}
           selectedRows={inboundContractState.selectedRows}
         />
       </div>

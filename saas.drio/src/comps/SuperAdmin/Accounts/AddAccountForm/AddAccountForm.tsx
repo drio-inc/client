@@ -32,8 +32,6 @@ export default function AddAccountForm() {
   });
 
   const onSubmit: SubmitHandler<CreateFormData> = async (data) => {
-    console.log(data);
-
     try {
       const res = await create({
         ou_name: "Corp",
@@ -54,8 +52,6 @@ export default function AddAccountForm() {
 
       form.reset();
     } catch (err: any) {
-      console.log(err);
-
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
         "error"

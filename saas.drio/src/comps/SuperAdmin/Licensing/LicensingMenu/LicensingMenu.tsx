@@ -18,8 +18,6 @@ const LicensingMenu = ({ row }: TableRow) => {
     dispatch(setSelectedRows([]));
   };
 
-  console.log(row);
-
   return (
     <Popover.Root>
       <Popover.Trigger>

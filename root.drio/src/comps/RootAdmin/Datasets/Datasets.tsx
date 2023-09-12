@@ -148,8 +148,6 @@ const Dataset = () => {
           headers={headers}
           menu={DatasetMenu}
           rows={datasetState.rows}
-          editForm={EditDatasetForm}
-          detailsWindow={DatasetDetails}
           handleCheckbox={handleCheckbox}
           selectedRows={datasetState.selectedRows}
         />

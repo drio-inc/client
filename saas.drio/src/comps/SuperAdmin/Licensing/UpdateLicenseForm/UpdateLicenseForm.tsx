@@ -36,15 +36,12 @@ type FormData = z.infer<typeof schema>;
 
 export default function UpdateLicenseForm({ row }: TableRow) {
   const [showLicenseDetails, setShowLicenseDetails] = useState(false);
-  console.log(row);
 
   const dispatch = useAppDispatch();
   const [updateLicense, updateResult] = useUpdateLicenseMutation();
   const [fetchLicense, fetchResult] = useFetchLicenseMutation();
 
   const ddxSstate = useAppSelector((state) => state.DDX);
-
-  console.log(ddxSstate.licenseDetails);
 
   const form = useZodForm({
     schema: schema,
@@ -55,8 +52,6 @@ export default function UpdateLicenseForm({ row }: TableRow) {
       const res = await fetchLicense({
         ...data,
       }).unwrap();
-
-      console.log(res);
 
       if (res) {
         setShowLicenseDetails(true);

@@ -13,8 +13,6 @@ const DeleteOrgUnit = () => {
   const { rows, row: orgUnitRow } = useAppSelector((state) => state.orgUnit);
 
   const handleDelete = async () => {
-    console.log(orgUnitRow?.id, orgUnitRow?.account_id);
-
     try {
       const res = await deleteOrgUnit({
         ou_id: orgUnitRow?.id ?? "",

@@ -7,8 +7,9 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import AlertModal from "@/comps/ui/AlertModal";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/dataSourceSlice";
+import EditDataSourceForm from "../EditDataSourceForm";
 
-const DataSourcesMenu = ({ row, editForm, detailsWindow }: any) => {
+const DataSourcesMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const dataSourceState = useAppSelector((state) => state.dataSource);
 
@@ -31,15 +32,13 @@ const DataSourcesMenu = ({ row, editForm, detailsWindow }: any) => {
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {editForm && (
-              <Modal
-                label="Edit"
-                identifier="editDataSourceForm"
-                onClick={() => dispatch(setOpenModal("editDataSourceForm"))}
-              >
-                {editForm}
-              </Modal>
-            )}
+            <Modal
+              label="Edit"
+              identifier="editDataSourceForm"
+              onClick={() => dispatch(setOpenModal("editDataSourceForm"))}
+            >
+              <EditDataSourceForm row={row} />
+            </Modal>
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>

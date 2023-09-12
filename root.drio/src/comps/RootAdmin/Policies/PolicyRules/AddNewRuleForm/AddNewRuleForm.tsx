@@ -59,7 +59,6 @@ export default function AddNewRuleForm() {
         ...data,
       }).unwrap();
 
-      console.log(res);
       dispatch(setRuleRows([...policyState.ruleRows, res]));
 
       showAlert("Rule added successfully", "success");

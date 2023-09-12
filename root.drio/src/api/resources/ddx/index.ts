@@ -1,4 +1,9 @@
-import { LicenseKeyResponse } from "./types";
+import {
+  DDXClusterFormData,
+  DDXClusterResponse,
+  DDXInstanceFormData,
+  DDXInstanceResponse,
+} from "./types";
 import { rootApi } from "@/state/services/apiService";
 
 export const ddxApi = rootApi.injectEndpoints({
@@ -19,26 +24,150 @@ export const ddxApi = rootApi.injectEndpoints({
       }),
     }),
 
-    generateDDXKey: builder.mutation<any, any>({
-      query: () => ({
-        url: `/resources/accounts/:accountId/ddx/generate-key`,
+    generateDDXToken: builder.mutation<
+      DDXClusterResponse,
+      {
+        ou_id: string;
+        account_id: string;
+        cluster_id: string;
+      }
+    >({
+      query: ({ account_id, ou_id, cluster_id }) => ({
+        url: `/resources/accounts/${account_id}/ous/${ou_id}/ddx-clusters/${cluster_id}/token`,
         method: "GET",
       }),
     }),
 
-    provisionDDX: builder.mutation<any, any>({
+    getDDXClusters: builder.query<
+      DDXClusterResponse,
+      {
+        ou_id: string;
+        account_id: string;
+      }
+    >({
       query: (payload) => ({
-        url: `/resources/accounts/:accountId/ddx/provision`,
-        method: "POST",
-        body: payload,
+        url: `/resources/accounts/${payload.account_id}/ous/${payload.ou_id}/ddx-clusters`,
+        method: "GET",
       }),
+    }),
+
+    getDDXInstances: builder.query<
+      DDXInstanceResponse[],
+      {
+        account_id: string;
+        ou_id: string;
+        cluster_id: string;
+      }
+    >({
+      query: (payload) => ({
+        url: `/resources/accounts/${payload.account_id}/ous/${payload.ou_id}/ddx-clusters/${payload.cluster_id}/ddx-instances`,
+        method: "GET",
+      }),
+    }),
+
+    createDDXCluster: builder.mutation<
+      DDXClusterResponse,
+      DDXClusterFormData & { account_id: string; ou_id: string }
+    >({
+      query: (payload) => ({
+        url: `/resources/accounts/${payload.account_id}/ous/${payload.ou_id}/ddx-clusters`,
+        method: "POST",
+        body: {
+          ...payload,
+          ou_id: undefined,
+          account_id: undefined,
+        },
+      }),
+      invalidatesTags: [
+        "Account",
+        "DDX_Clusters",
+        "DDX_Instances",
+        "Organization_Units",
+      ],
+    }),
+
+    patchDDXCluster: builder.mutation<
+      DDXClusterResponse,
+      DDXClusterFormData & {
+        account_id: string;
+        ou_id: string;
+        cluster_id: string;
+      }
+    >({
+      query: (payload) => ({
+        url: `/resources/accounts/${payload.account_id}/ous/${payload.ou_id}/ddx-clusters/${payload.cluster_id}`,
+        method: "PATCH",
+        body: {
+          ...payload,
+          ou_id: undefined,
+          account_id: undefined,
+          cluster_id: undefined,
+        },
+      }),
+      invalidatesTags: [
+        "Account",
+        "DDX_Clusters",
+        "DDX_Instances",
+        "Organization_Units",
+      ],
+    }),
+
+    updateDDXCluster: builder.mutation<
+      DDXClusterResponse,
+      DDXClusterFormData & {
+        account_id: string;
+        ou_id: string;
+        cluster_id: string;
+      }
+    >({
+      query: (payload) => ({
+        url: `/resources/accounts/${payload.account_id}/ous/${payload.ou_id}/ddx-clusters/${payload.cluster_id}`,
+        method: "PUT",
+        body: {
+          ...payload,
+          ou_id: undefined,
+          account_id: undefined,
+          cluster_id: undefined,
+        },
+      }),
+      invalidatesTags: [
+        "Account",
+        "DDX_Clusters",
+        "DDX_Instances",
+        "Organization_Units",
+      ],
+    }),
+
+    deleteDDXCluster: builder.mutation<
+      DDXClusterResponse,
+      {
+        account_id: string;
+        ou_id: string;
+        cluster_id: string;
+      }
+    >({
+      query: (payload) => ({
+        url: `/resources/accounts/${payload.account_id}/ous/${payload.ou_id}/ddx-clusters/${payload.cluster_id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [
+        "Account",
+        "DDX_Clusters",
+        "DDX_Instances",
+        "Organization_Units",
+      ],
     }),
   }),
 });
 
 export const {
+  useGetDDXClustersQuery,
   useFetchLicenseMutation,
-  useProvisionDDXMutation,
+  useGetDDXInstancesQuery,
   useUpdateLicenseMutation,
-  useGenerateDDXKeyMutation,
+  usePatchDDXClusterMutation,
+  useGenerateDDXTokenMutation,
+  useCreateDDXClusterMutation,
+  useUpdateDDXClusterMutation,
+  useDeleteDDXClusterMutation,
 } = ddxApi;

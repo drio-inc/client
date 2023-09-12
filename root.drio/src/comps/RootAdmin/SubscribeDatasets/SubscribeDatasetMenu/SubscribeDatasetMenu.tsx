@@ -9,7 +9,7 @@ import Link from "next/link";
 import RequestDataAccessForm from "../RequestDataAccessForm/RequestDataAccessForm";
 import ExportAppLink from "../ExportAppLink/ExportAppLink";
 
-const SubscribeDatasetMenu = ({ row, detailsWindow }: any) => {
+const SubscribeDatasetMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const datasetState = useAppSelector((state) => state.dataset);
 

@@ -32,17 +32,24 @@ import policiesReducer from "./slices/policiesSlice";
 import anomaliesReducer from "./slices/anomaliesSlice";
 import auditLogsReducer from "./slices/auditLogsSlice";
 import dataSourceReducer from "./slices/dataSourceSlice";
+import DDXInstanceReducer from "./slices/DDXInstanceSlice";
 import inboundContractReducer from "./slices/inboundContractSlice";
 import outboundContractReducer from "./slices/outboundContractSlice";
 import approvedContractReducer from "./slices/approvedContractSlice";
 import subscribeDatasetReducer from "./slices/subscribeDatasetsSlice";
 
-const persistConfig = {
+const persistAuthConfig = {
   key: "auth",
   storage: storageSession,
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+const persistDDXConfig = {
+  key: "ddx",
+  storage: storageSession,
+};
+
+const persistedDDXReducer = persistReducer(persistDDXConfig, DDXReducer);
+const persistedAuthReducer = persistReducer(persistAuthConfig, authReducer);
 
 // export const store = configureStore({
 //   reducer: {
@@ -69,7 +76,7 @@ const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
 const rootReducer = combineReducers({
   ui: uiReducer,
-  DDX: DDXReducer,
+  DDX: persistedDDXReducer,
   alerts: alertsReducer,
   orgUnit: orgUnitReducer,
   dataset: datasetReducer,
@@ -79,6 +86,7 @@ const rootReducer = combineReducers({
   anomalies: anomaliesReducer,
   auditLogs: auditLogsReducer,
   dataSource: dataSourceReducer,
+  DDXInstance: DDXInstanceReducer,
   inboundContract: inboundContractReducer,
   outboundContract: outboundContractReducer,
   approvedContract: approvedContractReducer,
