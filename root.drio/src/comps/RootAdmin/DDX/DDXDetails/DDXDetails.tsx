@@ -143,7 +143,6 @@ export default function DDXDetails({ row }: TableRow) {
         showAlert("Token Successfully Generated!", "success");
       }
     } catch (err: any) {
-      console.log(err);
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
         "error"

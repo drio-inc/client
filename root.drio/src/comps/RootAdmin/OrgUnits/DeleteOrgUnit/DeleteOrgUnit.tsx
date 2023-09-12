@@ -12,8 +12,6 @@ const DeleteOrgUnit = ({ row }: TableRow) => {
   const [deleteOrgUnit, result] = useDeleteOrgUnitMutation();
 
   const handleDelete = async () => {
-    console.log(row?.id, row?.account_id);
-
     try {
       const res = await deleteOrgUnit({
         ou_id: row?.id ?? "",

@@ -72,8 +72,6 @@ export default function EditDDXForm({ row }: TableRow) {
 
   if (!orgUnitRows) return <StaticLoader />;
 
-  console.log(row);
-
   return (
     <Layout>
       <Form form={form} onSubmit={onSubmit} className="">

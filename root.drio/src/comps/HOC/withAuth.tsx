@@ -37,8 +37,6 @@ function withAuth(OriginalComponent: React.FC) {
             },
           });
 
-          console.log(res);
-
           if (res.status === 200) {
             setSkip(false);
 

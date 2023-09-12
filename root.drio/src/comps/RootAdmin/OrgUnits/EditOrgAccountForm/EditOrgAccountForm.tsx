@@ -83,8 +83,6 @@ export default function EditOrgUnitForm({ row }: TableRow) {
     }
   };
 
-  console.log(row);
-
   return (
     <Layout>
       <Form form={form} onSubmit={onSubmit} className="min-w-full">

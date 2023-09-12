@@ -57,7 +57,6 @@ export default function Login() {
       window.sessionStorage.setItem("token", res.token);
       router.push("/accounts");
     } catch (err: any) {
-      console.log(err);
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
         "error"

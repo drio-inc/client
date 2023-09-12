@@ -1,12 +1,10 @@
 import Table from "@/comps/ui/Table";
-import { setRows } from "@/state/slices/DDXInstanceSlice";
-import { setCurrentDDXCluster } from "@/state/slices/DDXSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { HiX } from "react-icons/hi";
+import { setCloseModal } from "@/state/slices/uiSlice";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 import { useGetDDXInstancesQuery } from "@/api/resources/ddx";
-import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 const headers = [
   {
@@ -31,7 +29,6 @@ const headers = [
 
 const DDXInstances = () => {
   const dispatch = useAppDispatch();
-  const { rows } = useAppSelector((state) => state.DDXInstance);
   const { currentDDXCluster } = useAppSelector((state) => state.DDX);
 
   const { data: ddxInstances, isLoading } = useGetDDXInstancesQuery({
@@ -40,16 +37,9 @@ const DDXInstances = () => {
     cluster_id: currentDDXCluster?.id ?? "",
   });
 
-  if (ddxInstances) {
-    dispatch(setRows(ddxInstances));
-  }
-
-  const handleRowClick = (row: TableRow) => {
-    dispatch(setCurrentDDXCluster(row));
-    dispatch(setOpenModal("ddxInstanceTable"));
-  };
-
   if (isLoading) return <StaticLoader />;
+
+  console.log(ddxInstances);
 
   return (
     <div className="w-[80vw]">
@@ -69,12 +59,7 @@ const DDXInstances = () => {
           </span>
         </div>
 
-        <Table
-          rows={rows}
-          noSelection
-          headers={headers}
-          handleRowClick={handleRowClick}
-        />
+        <Table noSelection headers={headers} rows={ddxInstances ?? []} />
       </div>
     </div>
   );

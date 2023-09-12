@@ -54,14 +54,12 @@ export default function AddNewLicenseForm({ row }: TableRow) {
         ...data,
       }).unwrap();
 
-      console.log(res);
-
       if (res) {
         dispatch(setRows([...licenseState.rows, res]));
         showAlert("License created successfully", "success");
       }
     } catch (err: any) {
-      console.log(err);
+      (err);
 
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",

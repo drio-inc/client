@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import Table from "@/comps/ui/Table";
+
 import {
-  setSelectedRows,
   setRows,
+  setSelectedRows,
   setCurrentDDXCluster,
 } from "@/state/slices/DDXSlice";
+
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import AddDDXForm from "./AddDDXForm";
-import EditDDXForm from "./EditDDXForm";
-import DDXDetails from "./DDXDetails/DDXDetails";
 import DDXMenu from "@/comps/RootAdmin/DDX/DDXMenu";
 
 import Modal from "@/comps/ui/Modal";
@@ -81,18 +81,21 @@ const DDX = () => {
     dispatch(
       setRows(
         recursiveRows.reduce((acc: TableRow[], row) => {
-          console.log(acc, row.ddx_clusters);
-
           const ddxClusterWithInfo = row.ddx_clusters.map((ddx: DDXCluster) => {
             return {
               ...ddx,
               ou: row.name,
               location: `${row.city}, ${row.state}, ${row.country}`,
               country: Country.getCountryByCode(row.country)?.name,
-              status: ddx.ddx_instances.length > 0 ? "active" : "inactive",
+              status:
+                ddx.ddx_instances.length > 0 &&
+                ddx.ddx_instances.some(
+                  (instance) => instance.state === "running"
+                )
+                  ? "active"
+                  : "inactive",
             };
           });
-
           return [...acc, ...ddxClusterWithInfo];
         }, [])
       )

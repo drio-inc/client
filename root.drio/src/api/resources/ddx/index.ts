@@ -52,7 +52,7 @@ export const ddxApi = rootApi.injectEndpoints({
     }),
 
     getDDXInstances: builder.query<
-      DDXInstanceResponse,
+      DDXInstanceResponse[],
       {
         account_id: string;
         ou_id: string;

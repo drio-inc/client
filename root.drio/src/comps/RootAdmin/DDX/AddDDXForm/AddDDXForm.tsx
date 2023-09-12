@@ -5,11 +5,10 @@ import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 
 import { z } from "zod";
-import { RiKey2Line } from "react-icons/ri";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { setRows, setClusterToken } from "@/state/slices/DDXSlice";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
@@ -17,9 +16,8 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 import { useGetOrgUnitsQuery } from "@/api/resources/ous";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 
-import { useCreateDDXClusterMutation } from "@/api/resources/ddx";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
-import { useRouter } from "next/router";
+import { useCreateDDXClusterMutation } from "@/api/resources/ddx";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -39,7 +37,6 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function AddDDXForm() {
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const [visibility, setVisibility] = useState("");
   const [createCluster, clusterResult] = useCreateDDXClusterMutation();
@@ -86,7 +83,7 @@ export default function AddDDXForm() {
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             <div className="px-4 py-2 w-full">
               <TextInput
-                label={"Name"}
+                label={"Cluster Name"}
                 placeholder={"Enter name"}
                 {...form.register("name")}
                 className="md:text-sm 2xl:text-base"
@@ -105,8 +102,9 @@ export default function AddDDXForm() {
             <div className="px-4 py-2 w-full">
               <SelectInput
                 registerName="ou"
-                label={"Organization Unit"}
                 placeholder={"Enter OU"}
+                label={"Organization Unit"}
+                className="md:text-sm 2xl:text-base"
                 options={
                   orgUnitRows &&
                   orgUnitRows.map((row) => ({
@@ -114,7 +112,6 @@ export default function AddDDXForm() {
                     value: row.id,
                   }))
                 }
-                className="md:text-sm 2xl:text-base"
               />
             </div>
 
@@ -141,65 +138,34 @@ export default function AddDDXForm() {
               </RadioGroup.Root>
             </div> */}
 
-            {/* {visibility === "addTFA" && ( */}
-            <div className="px-4 py-2 w-full">
-              <TextInput
-                label={"TFA URL"}
-                {...form.register("twofaurl")}
-                placeholder={"https://validate.cox.com"}
-                defaultValue={"https://validate.cox.com"}
-                className="md:text-sm 2xl:text-base"
-              />
-            </div>
-            {/* )} */}
-
-            {/* <div className="px-4 py-2 w-full relative">
-              <span className="text-xs text-gray-500 font-medium mb-2 block">
-                Please copy this{" "}
-                <span className="font-bold text-drio-red-dark">ONE TIME</span>{" "}
-                token and use it when provisioning DDX
-              </span>
-
-              <div className="flex items-center">
+            {/* {visibility === "addTFA" && (
+              <div className="px-4 py-2 w-full">
                 <TextInput
-                  disabled
-                  label={""}
-                  {...form.register("jwtToken")}
-                  className="md:text-sm 2xl:text-base w-1/2 flex-grow"
-                  icon={
-                    <HiOutlineDuplicate
-                      className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 z-50 cursor-pointer block bg-gray-100"
-                      onClick={() => copyKey()}
-                    />
-                  }
+                  label={"TFA URL"}
+                  {...form.register("twofaurl")}
+                  className="md:text-sm 2xl:text-base"
+                  placeholder={"https://validate.example.com"}
+                  defaultValue={"https://validate.example.com"}
                 />
-                <Button
-                  type="button"
-                  className="ml-2"
-                  intent={`primaryOutline`}
-                  isLoading={clusterResult.isLoading}
-                  icon={<RiKey2Line className="w-5 h-5" />}
-                  onClick={() =>
-                    createCluster(form.getValues() as unknown as FormData)
-                  }
-                >
-                  Generate key
-                </Button>
               </div>
-            </div> */}
+            )} */}
           </div>
 
           <div className="p-2 flex gap-x-2 justify-center w-full mt-4">
             <Button
               type="button"
-              intent={`secondary`}
               className="w-full"
+              intent={`secondary`}
               onClick={() => dispatch(setCloseModal("addDDXForm"))}
             >
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>
 
-            <Button intent={`primary`} className="w-full">
+            <Button
+              intent={`primary`}
+              className="w-full"
+              isLoading={clusterResult.isLoading}
+            >
               <span className="inline-flex justify-center w-full">
                 Provision DDX
               </span>

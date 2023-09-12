@@ -12,17 +12,23 @@ global.Request = Request;
 global.Response = Response;
 
 export const handlers = [
-  rest.get("/api/resources/accounts", (_req, res, ctx) => {
+  rest.get(`${process.env.API_URL}/resources/accounts`, (_req, res, ctx) => {
     return res(ctx.json(accountData));
   }),
 
-  rest.get(`/api/resources/accounts/*/ous`, (_req, res, ctx) => {
-    return res(ctx.json(orgUnitData));
-  }),
+  rest.get(
+    `${process.env.API_URL}/resources/accounts/*/ous`,
+    (_req, res, ctx) => {
+      return res(ctx.json(orgUnitData));
+    }
+  ),
 
-  rest.get(`/api/resources/accounts/*/ous/*/ddx-clusters`, (_req, res, ctx) => {
-    return res(ctx.json(DDXData));
-  }),
+  rest.get(
+    `${process.env.API_URL}/resources/accounts/*/ous/*/ddx-clusters`,
+    (_req, res, ctx) => {
+      return res(ctx.json(DDXData));
+    }
+  ),
 ];
 
 export const server = setupServer(...handlers);

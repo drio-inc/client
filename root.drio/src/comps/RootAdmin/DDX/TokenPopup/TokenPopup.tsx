@@ -14,7 +14,7 @@ const TokenPopup = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="px-4 py-6">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-gray-700">DDX Cluster Token</h2>
         <HiX
@@ -32,6 +32,7 @@ const TokenPopup = () => {
         bring up a DDX instance. If you lose this token, <br /> you will need to
         generate a new one from the cluster details screen.
       </p>
+
       <div className="bg-indigo-100 flex items-center rounded-md">
         <input
           disabled
