@@ -10,6 +10,21 @@ function withAuth(OriginalComponent: React.FC) {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
+    const { user } = useAppSelector((state) => state.auth);
+
+    const {
+      data: account,
+      error,
+      isUninitialized,
+    } = useGetAccountByIdQuery(
+      {
+        id: user?.account_id ?? "",
+        recurse: true,
+      },
+      {
+        skip,
+      }
+    );
 
     // const url = `/api`;
     const url = process.env.API_URL;

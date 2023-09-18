@@ -2,6 +2,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { HiSearch } from "react-icons/hi";
 
+import { MdLogout, MdOutlinePeopleOutline } from "react-icons/md";
+
 import Button from "../Button";
 import { useLogoutMutation } from "@/api/auth";
 import { useAppSelector } from "@/hooks/useStoreTypes";
@@ -31,7 +33,6 @@ export default function Header() {
           {pageTitles[path] ?? path}
         </Link>
         <div className="flex items-center">
-          {user && <span className="mr-3">{user.role}</span>}
           <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
             <div className="relative flex w-full flex-wrap items-center">
               <HiSearch className="text-gray-400 inline-flex h-full absolute items-center justify-center w-8 pl-2 py-2" />
@@ -41,11 +42,16 @@ export default function Header() {
               />
             </div>
           </form>
+          <span className="mr-3 flex items-center gap-x-2 bg-neutral-50 rounded-md py-3 px-8 text-[#4C566A]">
+            <MdOutlinePeopleOutline className="w-5 h-5" />
+            {user?.username ?? "Demo User"}
+          </span>
           <Button
             intent={"primary"}
             isLoading={isLoading}
             className="text-sm mx-2"
             onClick={() => handleLogout()}
+            icon={<MdLogout className="w-5 h-5" />}
           >
             Logout
           </Button>
