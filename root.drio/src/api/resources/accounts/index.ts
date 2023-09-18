@@ -21,9 +21,15 @@ export const accountApi = rootApi.injectEndpoints({
           : ["Accounts"],
     }),
 
-    getAccountById: builder.query<Account, string>({
-      query: (id) => ({
-        url: `/resources/accounts/${id}?recurse=true`,
+    getAccountById: builder.query<
+      Account,
+      {
+        id: string;
+        recurse: boolean;
+      }
+    >({
+      query: ({ id, recurse }) => ({
+        url: `/resources/accounts/${id}?recurse=${recurse ?? false}`,
         method: "GET",
       }),
       providesTags: ["Account"],

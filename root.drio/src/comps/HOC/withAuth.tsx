@@ -21,9 +21,15 @@ function withAuth(OriginalComponent: React.FC) {
       data: account,
       error,
       isUninitialized,
-    } = useGetAccountByIdQuery(user?.account_id ?? "", {
-      skip,
-    });
+    } = useGetAccountByIdQuery(
+      {
+        id: user?.account_id ?? "",
+        recurse: true,
+      },
+      {
+        skip,
+      }
+    );
 
     // const url = `/api`;
     const url = process.env.API_URL;

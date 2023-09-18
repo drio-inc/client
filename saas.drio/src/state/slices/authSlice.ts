@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type User = {
-  id: string;
-  email: string;
-  userName: string;
+  username: string;
+  user_type: string;
 };
 
 type AuthState = {

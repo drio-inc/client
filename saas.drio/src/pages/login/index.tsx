@@ -1,4 +1,4 @@
-import axios from "axios";
+import jwt from "jsonwebtoken";
 import Button from "@ui/Button";
 import { useRouter } from "next/router";
 import { FaLock } from "react-icons/fa";
@@ -53,9 +53,21 @@ export default function Login() {
         password: data.password,
       }).unwrap();
 
-      dispatch(setToken(res.token));
-      window.sessionStorage.setItem("token", res.token);
-      router.push("/accounts");
+      if (res.token) {
+        dispatch(setToken(res.token));
+        window.sessionStorage.setItem("token", res.token);
+        const decoded = jwt.decode(res.token) as JwtPayload | null;
+
+        if (decoded) {
+          dispatch(
+            setUser({
+              username: decoded.sub,
+              user_type: decoded.user_type,
+            })
+          );
+        }
+        router.push("/accounts");
+      }
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
