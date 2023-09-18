@@ -6,16 +6,14 @@ type User = {
 };
 
 type AuthState = {
+  token?: string;
   user: User | null;
   isAuthenticated: boolean;
-  role: string;
-  authMode: "ldap" | "google" | "oauth" | "";
 };
 
 const initialState: AuthState = {
-  role: "",
+  token: "",
   user: null,
-  authMode: "",
   isAuthenticated: false,
 };
 
@@ -30,30 +28,26 @@ const authSlice = createSlice({
       };
     },
 
-    setAuthMode: (state, action) => {
-      state.authMode = action.payload;
+    setToken(state, action) {
+      state.token = action.payload;
     },
 
     setAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload;
     },
 
-    setRole: (state, action) => {
-      state.role = action.payload;
-    },
-
-    logOut: (state) => {
-      state.role = "";
+    logout: (state) => {
+      state.token = "";
       state.user = null;
-      state.authMode = "";
       state.isAuthenticated = false;
+      window.sessionStorage.clear();
     },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setUser, setAuthMode, setAuthenticated, setRole, logOut } =
+export const { setUser, setAuthenticated, logout, setToken } =
   authSlice.actions;
 
 export default authSlice.reducer;

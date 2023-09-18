@@ -52,8 +52,6 @@ export default function UpdateLicenseForm() {
         ...data,
       }).unwrap();
 
-      console.log(res);
-
       if (res) {
         setShowLicenseDetails(true);
         dispatch(setLicenseDetails(res));

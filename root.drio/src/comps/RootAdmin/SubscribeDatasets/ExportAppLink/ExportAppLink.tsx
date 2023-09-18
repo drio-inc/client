@@ -14,8 +14,6 @@ export default function ExportAppLink({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [publish, result] = usePublishDatasetMutation();
 
-  console.log("row", row);
-
   const datasetState = useAppSelector((state) => state.dataset);
   const dataSourceState = useAppSelector((state) => state.dataSource);
 

@@ -32,9 +32,6 @@ const ForgotPassword = () => {
       const res = await resetPassword({
         email: data.email,
       }).unwrap();
-
-      console.log(res);
-
       // router.push("/dashboard");
     } catch (err: any) {
       showAlert(

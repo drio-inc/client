@@ -8,7 +8,7 @@ import { setRows, setSelectedRows } from "@/state/slices/inboundContractSlice";
 
 import Link from "next/link";
 
-const ApprovedContractsMenu = ({ row }: any) => {
+const ApprovedContractsMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const dataContractState = useAppSelector((state) => state.inboundContract);
 

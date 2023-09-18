@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
 import { HiOutlineCheckCircle, HiOutlineXCircle } from "react-icons/hi";
 
-import { formatHourAgo } from "@/lib/formatTime";
+import { formatHourAgo } from "@/utils/formatTime";
 
 interface IAlertProps {
   timeStamp?: number;

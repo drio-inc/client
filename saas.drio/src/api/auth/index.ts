@@ -8,6 +8,9 @@ export const authApi = rootApi.injectEndpoints({
         url: `/auth/admin-login`,
         method: "POST",
         body: payload,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }),
     }),
 

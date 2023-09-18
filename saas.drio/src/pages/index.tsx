@@ -6,8 +6,6 @@ import Button from "@ui/Button";
 import { HiArrowRight } from "react-icons/hi";
 
 export default function Home() {
-  console.log(process.env.DEVELOPMENT_MODE);
-
   return (
     <Layout>
       <section className="flex min-h-screen flex-col items-center justify-center relative w-full">

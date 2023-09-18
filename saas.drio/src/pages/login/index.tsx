@@ -18,7 +18,7 @@ import { useState } from "react";
 
 import { HiCheck } from "react-icons/hi";
 import { useLoginMutation } from "@/api/auth";
-import { setUser } from "@/state/slices/authSlice";
+import { setUser, setToken } from "@/state/slices/authSlice";
 import * as CheckBox from "@radix-ui/react-checkbox";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 
@@ -69,7 +69,6 @@ export default function Login() {
         router.push("/accounts");
       }
     } catch (err: any) {
-      console.log(err);
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
         "error"

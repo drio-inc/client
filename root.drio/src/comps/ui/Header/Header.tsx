@@ -18,6 +18,7 @@ import { useGetAccountByIdQuery } from "@/api/resources/accounts";
 export default function Header() {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [logout, result] = useLogoutMutation();
   const { user } = useAppSelector((state) => state.auth);
   const { pageTitles } = useAppSelector((state) => state.ui);
 
@@ -82,6 +83,7 @@ export default function Header() {
           <Button
             intent={"primary"}
             className="text-sm mx-2"
+            isLoading={result.isLoading}
             onClick={() => handleLogout()}
             icon={<MdLogout className="w-5 h-5" />}
           >

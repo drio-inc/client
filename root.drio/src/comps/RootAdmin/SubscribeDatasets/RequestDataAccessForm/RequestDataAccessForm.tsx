@@ -48,8 +48,6 @@ export default function RequestDataAccessForm({ row }: TableRow) {
         ...data,
       }).unwrap();
 
-      console.log(res);
-
       showAlert("Request sent successfully", "success");
     } catch (err: any) {
       showAlert(

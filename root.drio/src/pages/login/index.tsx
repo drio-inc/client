@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { TextInput } from "@ui/Forms/Inputs";
 
 import { z } from "zod";
+import jwt from "jsonwebtoken";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
@@ -19,6 +20,7 @@ import { HiCheck } from "react-icons/hi";
 import { useLoginMutation } from "@/api/auth";
 import * as CheckBox from "@radix-ui/react-checkbox";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
+import { setToken, setUser } from "@/state/slices/authSlice";
 
 const schema = z.object({
   account: z.string().nonempty("Please Enter a value").max(1024),
@@ -51,7 +53,21 @@ export default function Login() {
         password: data.password,
       }).unwrap();
 
-      if (res?.message === "Authentication successful") {
+      if (res.token) {
+        dispatch(setToken(res.token));
+        window.sessionStorage.setItem("token", res.token);
+        const decoded = jwt.decode(res.token) as JwtPayload | null;
+
+        if (decoded) {
+          dispatch(
+            setUser({
+              username: decoded.sub,
+              user_type: decoded.user_type,
+              account_id: decoded.account_id,
+            })
+          );
+        }
+
         router.push("/my-org/org-units");
       }
     } catch (err: any) {

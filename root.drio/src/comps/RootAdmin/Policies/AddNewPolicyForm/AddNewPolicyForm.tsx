@@ -91,12 +91,7 @@ const AddNewPolicyForm = () => {
         ...data,
       }).unwrap();
 
-      console.log(res);
-
       dispatch(setRows([res]));
-
-      console.log(policiesState.rows);
-
       showAlert("Policy added successfully", "success");
     } catch (err: any) {
       showAlert(

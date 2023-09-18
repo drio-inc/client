@@ -66,8 +66,6 @@ export default function AddMetaDataForm({ row }: TableRow) {
         tags: tags,
       }).unwrap();
 
-      console.log(res);
-
       dispatch(setRows([...metadataState.rows, res]));
       showAlert("Metadata added successfully", "success");
     } catch (err: any) {

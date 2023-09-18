@@ -6,17 +6,28 @@ import { MdLogout, MdOutlinePeopleOutline } from "react-icons/md";
 
 import Button from "../Button";
 import { useLogoutMutation } from "@/api/auth";
-import { useAppSelector } from "@/hooks/useStoreTypes";
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { logout as stateLogout } from "@/state/slices/authSlice";
 
 export default function Header() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [logout, { isLoading }] = useLogoutMutation();
   const { user } = useAppSelector((state) => state.auth);
   const { pageTitles } = useAppSelector((state) => state.ui);
 
   const handleLogout = async () => {
-    await logout();
-    router.push("/login");
+    try {
+      const res = await logout().unwrap();
+      if (res.message === "Logout successful") {
+        dispatch(stateLogout());
+        router.push("/login");
+        router.reload();
+      }
+    } catch (error) {
+      router.push("/login");
+      router.reload();
+    }
   };
 
   const path = router.pathname

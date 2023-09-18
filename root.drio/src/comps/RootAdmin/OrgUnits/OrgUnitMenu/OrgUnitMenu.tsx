@@ -5,17 +5,14 @@ import * as Popover from "@radix-ui/react-popover";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
+import EditOrgUnitForm from "../EditOrgAccountForm";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/orgUnitSlice";
+import DeleteOrgUnit from "../DeleteOrgUnit";
 
-const AccountMenu = ({ row, editForm }: any) => {
+const OrgUnitMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const orgUnitState = useAppSelector((state) => state.orgUnit);
-
-  const deleteRow = (id: number | string) => {
-    dispatch(setRows(orgUnitState.rows.filter((row) => row.id !== id)));
-    dispatch(setSelectedRows([]));
-  };
 
   return (
     <Popover.Root>
@@ -31,23 +28,23 @@ const AccountMenu = ({ row, editForm }: any) => {
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            <AlertModal
-              row={row}
-              accessor={row.ou}
-              onClick={() => deleteRow(row.id)}
-            />
+            <Modal
+              label="Edit"
+              identifier="editOrgUnitForm"
+              onClick={() => dispatch(setOpenModal("editOrgUnitForm"))}
+            >
+              <EditOrgUnitForm row={row} />
+            </Modal>
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {editForm && (
-              <Modal
-                label="Edit"
-                identifier="editOrgAccountForm"
-                onClick={() => dispatch(setOpenModal("editOrgAccountForm"))}
-              >
-                {editForm}
-              </Modal>
-            )}
+            <Modal
+              label="Delete"
+              identifier="deleteOrgUnit"
+              onClick={() => dispatch(setOpenModal("deleteOrgUnit"))}
+            >
+              <DeleteOrgUnit row={row} />
+            </Modal>
           </span>
         </Popover.Content>
       </Popover.Portal>
@@ -55,4 +52,4 @@ const AccountMenu = ({ row, editForm }: any) => {
   );
 };
 
-export default AccountMenu;
+export default OrgUnitMenu;

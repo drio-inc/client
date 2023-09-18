@@ -44,8 +44,8 @@ const PolicyRulesMenu = ({ row, editForm }: any) => {
             {editForm && (
               <Modal
                 label="Edit"
-                identifier="editOrgAccountForm"
-                onClick={() => dispatch(setOpenModal("editOrgAccountForm"))}
+                identifier="editOrgUnitForm"
+                onClick={() => dispatch(setOpenModal("editOrgUnitForm"))}
               >
                 {editForm}
               </Modal>
