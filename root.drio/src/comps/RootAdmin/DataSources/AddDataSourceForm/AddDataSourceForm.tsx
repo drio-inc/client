@@ -22,19 +22,28 @@ import { useAddDataSourceMutation } from "@/api/resources/data-sources";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
+
+  ddx: z.string({
+    required_error: "Please select an option",
+  }),
+
   type: z.string({
     required_error: "Please select an option",
   }),
+
   endpoint: z.string().nonempty("Please Enter a value"),
-  schemaURL: z.string().optional(),
+
+  schemaURL: z.string().url().optional(),
+  catalogURL: z.string().url().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
 
 export default function AddDataSourceForm() {
   const dispatch = useAppDispatch();
-  const [visibility, setVisibility] = useState(false);
   const [addDataSource, result] = useAddDataSourceMutation();
+  const [catalogBoxVisibility, setCatalogBoxVisibility] = useState(false);
+  const [schemaBoxVisibility, setSchemaBoxVisibility] = useState(false);
 
   const datasetState = useAppSelector((state) => state.dataset);
   const dataSourceState = useAppSelector((state) => state.dataSource);
@@ -69,7 +78,7 @@ export default function AddDataSourceForm() {
   return (
     <Layout>
       <Form form={form} onSubmit={onSubmit}>
-        <div className="mx-auto bg-white p-4 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
+        <div className="mx-auto bg-white py-8 px-6 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
           <h2 className="text-gray-700 text-2xl font-bold text-center">
             Add New Data Source
           </h2>
@@ -86,15 +95,27 @@ export default function AddDataSourceForm() {
 
             <div className="px-4 py-2 w-full">
               <SelectInput
-                label={"Type"}
-                registerName="type"
-                placeholder={"Enter Type"}
+                label={"Select DDX"}
+                registerName="ddx"
+                placeholder={"Enter DDX name"}
                 className="md:text-sm 2xl:text-base"
                 options={[
-                  { label: "RabbitMQ", value: "rabbitmq" },
-                  { label: "MongoDB", value: "mongodb" },
+                  { label: "DDX 1 (Corp)", value: "ddx1_corp" },
+                  { label: "DDX 2 (Corp)", value: "ddx2_corp" },
+                  { label: "DDX 3 (Corp)", value: "ddx3_corp" },
+                ]}
+              />
+            </div>
+
+            <div className="px-4 py-2 w-full">
+              <SelectInput
+                label={"Type"}
+                registerName="type"
+                placeholder={"Enter type"}
+                className="md:text-sm 2xl:text-base"
+                options={[
                   { label: "Kafka", value: "kafka" },
-                  { label: "Cassandra", value: "cassandra" },
+                  { label: "AWS Kinesis", value: "aws_kinesis" },
                 ]}
               />
             </div>
@@ -110,32 +131,63 @@ export default function AddDataSourceForm() {
             </div>
 
             <div className="px-4 py-2 w-full">
-              <div className="relative flex">
+              <div className="relative flex items-center gap-x-2">
                 <Checkbox.Root
-                  className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                  checked={visibility}
+                  className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+                  checked={schemaBoxVisibility}
                   onCheckedChange={() => {
-                    setVisibility(!visibility);
+                    setSchemaBoxVisibility(!schemaBoxVisibility);
                   }}
                 >
                   <Checkbox.Indicator className="text-white">
                     <HiCheck />
                   </Checkbox.Indicator>
                 </Checkbox.Root>
-                <span className="text-xs">
+                <span className="text-sm">
                   Is there any Schema-Registry available?
                 </span>
               </div>
             </div>
 
-            {visibility && (
+            <div className="px-4 py-2 w-full">
+              <div className="relative flex items-center gap-x-2">
+                <Checkbox.Root
+                  className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+                  checked={catalogBoxVisibility}
+                  onCheckedChange={() => {
+                    setCatalogBoxVisibility(!catalogBoxVisibility);
+                  }}
+                >
+                  <Checkbox.Indicator className="text-white">
+                    <HiCheck />
+                  </Checkbox.Indicator>
+                </Checkbox.Root>
+                <span className="text-sm">
+                  Is there any Catalog Manager available?
+                </span>
+              </div>
+            </div>
+
+            {schemaBoxVisibility && (
               <div className="px-4 py-2 w-full">
                 <TextInput
-                  label={"Enter Schema-Registry URL"}
-                  {...form.register("schemaURL")}
                   placeholder={"Enter URL"}
-                  defaultValue={"https://my-schema-registry:8081"}
+                  {...form.register("schemaURL")}
+                  label={"Enter Schema-Registry URL"}
                   className="md:text-sm 2xl:text-base"
+                  defaultValue={"https://my-schema-registry:8081"}
+                />
+              </div>
+            )}
+
+            {catalogBoxVisibility && (
+              <div className="px-4 py-2 w-full">
+                <TextInput
+                  placeholder={"Enter URL"}
+                  {...form.register("catalogURL")}
+                  label={"Enter Catalog Manager URL"}
+                  className="md:text-sm 2xl:text-base"
+                  defaultValue={"https://my-catalogue-mgr.com"}
                 />
               </div>
             )}

@@ -22,26 +22,50 @@ import { useEditDataSourceMutation } from "@/api/resources/data-sources";
 
 const options = [
   { label: "Kafka", value: "kafka" },
-  { label: "RabbitMQ", value: "rabbitmq" },
-  { label: "MongoDB", value: "mongodb" },
-  { label: "Cassandra", value: "cassandra" },
+  { label: "AWS Kinesis", value: "aws_kinesis" },
+];
+
+const encodingOptions = [
+  { label: "Unknown", value: "unknown" },
+  { label: "Avro", value: "avro" },
+  { label: "JSON", value: "json" },
+  { label: "protobuf", value: "protobuf" },
+];
+
+const ddxOptions = [
+  { label: "DDX 1 (Corp)", value: "ddx1_corp" },
+  { label: "DDX 2 (Corp)", value: "ddx2_corp" },
+  { label: "DDX 3 (Corp)", value: "ddx3_corp" },
 ];
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
+
+  ddx: z.string({
+    required_error: "Please select an option",
+  }),
+
   type: z.string({
     required_error: "Please select an option",
   }),
+
   endpoint: z.string().nonempty("Please Enter a value"),
-  schemaURL: z.string().optional(),
+
+  encoding: z.string({
+    required_error: "Please select an option",
+  }),
+
+  schemaURL: z.string().url().optional(),
+  catalogURL: z.string().url().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
 
 export default function EditDatasourceForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [visibility, setVisibility] = useState(false);
   const [update, updateResult] = useEditDataSourceMutation();
+  const [schemaBoxVisibility, setSchemaBoxVisibility] = useState(false);
+  const [catalogBoxVisibility, setCatalogBoxVisibility] = useState(false);
 
   const dataSourceState = useAppSelector((state) => state.dataSource);
 
@@ -50,25 +74,27 @@ export default function EditDatasourceForm({ row }: TableRow) {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      const res = await update({
-        ...data,
-        id: row.id,
-      }).unwrap();
+    console.log(data);
 
-      dispatch(
-        setRows(
-          dataSourceState.rows.map((row) => (row.id === res.id ? res : row))
-        )
-      );
+    // try {
+    //   const res = await update({
+    //     ...data,
+    //     id: row.id,
+    //   }).unwrap();
 
-      showAlert("Data Source updated successfully.", "success");
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
+    //   dispatch(
+    //     setRows(
+    //       dataSourceState.rows.map((row) => (row.id === res.id ? res : row))
+    //     )
+    //   );
+
+    //   showAlert("Data Source updated successfully.", "success");
+    // } catch (err: any) {
+    //   showAlert(
+    //     err?.data?.message ?? "Something went wrong. Please try again.",
+    //     "error"
+    //   );
+    // }
 
     form.reset();
     dispatch(setCloseModal("editDataSourceForm"));
@@ -77,8 +103,8 @@ export default function EditDatasourceForm({ row }: TableRow) {
   return (
     <>
       <Layout>
-        <Form form={form} onSubmit={onSubmit} className="">
-          <div className="mx-auto bg-white p-4 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
+        <Form form={form} onSubmit={onSubmit}>
+          <div className="mx-auto bg-white px-6 py-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
             <h2 className="text-gray-700 text-2xl font-bold text-center">
               Edit Data Source
             </h2>
@@ -87,10 +113,23 @@ export default function EditDatasourceForm({ row }: TableRow) {
               <div className="px-4 py-2 w-full">
                 <TextInput
                   label={"Name"}
+                  defaultValue={row.name}
                   {...form.register("name")}
                   placeholder={"Enter name"}
-                  defaultValue={row.sourceName}
                   className="md:text-sm 2xl:text-base"
+                />
+              </div>
+
+              <div className="px-4 py-2 w-full">
+                <SelectInput
+                  registerName="ddx"
+                  label={"Select DDX"}
+                  placeholder={"Enter DDX name"}
+                  className="md:text-sm 2xl:text-base"
+                  defaultSelectedValue={ddxOptions.find(
+                    (option) => option.value === row.ddx.toLowerCase()
+                  )}
+                  options={ddxOptions}
                 />
               </div>
 
@@ -101,9 +140,9 @@ export default function EditDatasourceForm({ row }: TableRow) {
                   registerName="type"
                   defaultValue={row.type}
                   className="md:text-sm 2xl:text-base"
-                  placeholder={row.type ?? "Enter Type"}
+                  placeholder={row.type ?? "Enter type"}
                   defaultSelectedValue={options.find(
-                    (option) => option.value === row.type.toLowerCase()
+                    (option) => option.label === row.type
                   )}
                 />
               </div>
@@ -119,32 +158,74 @@ export default function EditDatasourceForm({ row }: TableRow) {
               </div>
 
               <div className="px-4 py-2 w-full">
-                <div className="relative flex">
+                <SelectInput
+                  label={"Encoding"}
+                  registerName="encoding"
+                  options={encodingOptions}
+                  placeholder={"Enter Encoding"}
+                  className="md:text-sm 2xl:text-base"
+                  defaultSelectedValue={encodingOptions[0]}
+                />
+              </div>
+
+              <div className="px-4 py-2 w-full">
+                <div className="relative flex items-center gap-x-2">
                   <Checkbox.Root
-                    className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                    checked={visibility || row.schemaRegistry !== ""}
+                    className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+                    checked={schemaBoxVisibility}
                     onCheckedChange={() => {
-                      setVisibility(!visibility);
+                      setSchemaBoxVisibility(!schemaBoxVisibility);
                     }}
                   >
                     <Checkbox.Indicator className="text-white">
                       <HiCheck />
                     </Checkbox.Indicator>
                   </Checkbox.Root>
-                  <span className="text-xs">
+                  <span className="text-sm">
                     Is there any Schema-Registry available?
                   </span>
                 </div>
               </div>
 
-              {(visibility || row.schemaRegistry !== "") && (
+              <div className="px-4 py-2 w-full">
+                <div className="relative flex items-center gap-x-2">
+                  <Checkbox.Root
+                    className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+                    checked={catalogBoxVisibility}
+                    onCheckedChange={() => {
+                      setCatalogBoxVisibility(!catalogBoxVisibility);
+                    }}
+                  >
+                    <Checkbox.Indicator className="text-white">
+                      <HiCheck />
+                    </Checkbox.Indicator>
+                  </Checkbox.Root>
+                  <span className="text-sm">
+                    Is there any Catalog Manager available?
+                  </span>
+                </div>
+              </div>
+
+              {schemaBoxVisibility && (
                 <div className="px-4 py-2 w-full">
                   <TextInput
-                    label={"Enter Schema-Registry URL"}
-                    {...form.register("schemaURL")}
                     placeholder={"Enter URL"}
-                    defaultValue={"https://my-schema-registry:8081"}
+                    {...form.register("schemaURL")}
+                    label={"Enter Schema-Registry URL"}
                     className="md:text-sm 2xl:text-base"
+                    defaultValue={"https://my-schema-registry:8081"}
+                  />
+                </div>
+              )}
+
+              {catalogBoxVisibility && (
+                <div className="px-4 py-2 w-full">
+                  <TextInput
+                    placeholder={"Enter URL"}
+                    {...form.register("catalogURL")}
+                    label={"Enter Catalog Manager URL"}
+                    className="md:text-sm 2xl:text-base"
+                    defaultValue={"https://my-catalogue-mgr.com"}
                   />
                 </div>
               )}

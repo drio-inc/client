@@ -17,9 +17,15 @@ import Modal from "@/comps/ui/Modal";
 
 const headers = [
   {
-    header: "Source Name",
-    accessor: "sourceName",
+    header: "Name",
+    accessor: "name",
   },
+
+  {
+    header: "Organization Unit",
+    accessor: "ou",
+  },
+
   {
     header: "Type",
     accessor: "type",
@@ -31,7 +37,7 @@ const headers = [
   },
 
   {
-    header: "# Datasets",
+    header: "#Datasets",
     accessor: "datasets",
   },
 
@@ -44,8 +50,8 @@ const headers = [
     accessor: "metadataManagement",
   },
   {
-    header: "API Documentation",
-    accessor: "apiDocumentation",
+    header: "Documentation",
+    accessor: "documentation",
   },
 ];
 
