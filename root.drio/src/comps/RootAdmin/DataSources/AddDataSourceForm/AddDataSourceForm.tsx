@@ -103,6 +103,7 @@ export default function AddDataSourceForm() {
                   { label: "DDX 1 (Corp)", value: "ddx1_corp" },
                   { label: "DDX 2 (Corp)", value: "ddx2_corp" },
                   { label: "DDX 3 (Corp)", value: "ddx3_corp" },
+                  { label: "DDX 4 (Corp)", value: "ddx4_corp" },
                 ]}
               />
             </div>

@@ -97,31 +97,42 @@ const Table = ({
                   </td>
                 )}
 
-                {headers?.map((header, index) => (
-                  <>
-                    {header.type === "array" ? (
-                      <MetaTags tags={row[header.accessor]} />
-                    ) : (
-                      <td
-                        key={index}
-                        onClick={() => handleRowClick?.(row)}
-                        className={
-                          "cursor-pointer border-t border-b text-gray-500 text-xs p-4 text-left"
-                        }
-                      >
-                        <div
-                          className={`${
-                            header?.status?.[row[header.accessor]]
-                          } inline-block`}
+                {headers?.map((header, index) => {
+                  const value = row[header.accessor];
+                  return (
+                    <>
+                      {header.type === "array" ? (
+                        <MetaTags tags={row[header.accessor]} />
+                      ) : (
+                        <td
+                          key={index}
+                          onClick={() => handleRowClick?.(row)}
+                          className={
+                            "cursor-pointer border-t border-b text-gray-500 text-xs p-4 text-left"
+                          }
                         >
-                          <span className="capitalize">
-                            {row[header.accessor] ?? "N/A"}
-                          </span>
-                        </div>
-                      </td>
-                    )}
-                  </>
-                ))}
+                          <div
+                            className={`${
+                              header?.status?.[row[header.accessor]]
+                            } inline-block`}
+                          >
+                            <span
+                              className={`${
+                                typeof value === "string" &&
+                                (value.includes("http") ||
+                                  value.includes(".com"))
+                                  ? ``
+                                  : `capitalize`
+                              }`}
+                            >
+                              {row[header.accessor] ?? "N/A"}
+                            </span>
+                          </div>
+                        </td>
+                      )}
+                    </>
+                  );
+                })}
 
                 {TableMenu && (
                   <td

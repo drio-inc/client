@@ -36,6 +36,7 @@ const ddxOptions = [
   { label: "DDX 1 (Corp)", value: "ddx1_corp" },
   { label: "DDX 2 (Corp)", value: "ddx2_corp" },
   { label: "DDX 3 (Corp)", value: "ddx3_corp" },
+  { label: "DDX 4 (Corp)", value: "ddx4_corp" },
 ];
 
 const schema = z.object({
@@ -74,27 +75,25 @@ export default function EditDatasourceForm({ row }: TableRow) {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log(data);
+    try {
+      const res = await update({
+        ...data,
+        id: row.id,
+      }).unwrap();
 
-    // try {
-    //   const res = await update({
-    //     ...data,
-    //     id: row.id,
-    //   }).unwrap();
+      dispatch(
+        setRows(
+          dataSourceState.rows.map((row) => (row.id === res.id ? res : row))
+        )
+      );
 
-    //   dispatch(
-    //     setRows(
-    //       dataSourceState.rows.map((row) => (row.id === res.id ? res : row))
-    //     )
-    //   );
-
-    //   showAlert("Data Source updated successfully.", "success");
-    // } catch (err: any) {
-    //   showAlert(
-    //     err?.data?.message ?? "Something went wrong. Please try again.",
-    //     "error"
-    //   );
-    // }
+      showAlert("Data Source updated successfully.", "success");
+    } catch (err: any) {
+      showAlert(
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
+      );
+    }
 
     form.reset();
     dispatch(setCloseModal("editDataSourceForm"));

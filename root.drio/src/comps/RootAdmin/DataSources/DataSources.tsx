@@ -46,8 +46,8 @@ const headers = [
     accessor: "schemaRegistry",
   },
   {
-    header: "Metadata Management",
-    accessor: "metadataManagement",
+    header: "Catalog Management",
+    accessor: "catalogManagement",
   },
   {
     header: "Documentation",
