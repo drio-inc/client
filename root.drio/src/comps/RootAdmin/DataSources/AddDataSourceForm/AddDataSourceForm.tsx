@@ -42,8 +42,8 @@ type FormData = z.infer<typeof schema>;
 export default function AddDataSourceForm() {
   const dispatch = useAppDispatch();
   const [addDataSource, result] = useAddDataSourceMutation();
-  const [catalogBoxVisibility, setCatalogBoxVisibility] = useState(false);
   const [schemaBoxVisibility, setSchemaBoxVisibility] = useState(false);
+  const [catalogBoxVisibility, setCatalogBoxVisibility] = useState(false);
 
   const datasetState = useAppSelector((state) => state.dataset);
   const dataSourceState = useAppSelector((state) => state.dataSource);
@@ -51,6 +51,11 @@ export default function AddDataSourceForm() {
   const form = useZodForm({
     schema: schema,
   });
+
+  const ddxOptions = dataSourceState.rows.map((row) => ({
+    label: `${row.ddx.split("_").join(" ").toUpperCase()} (${row.ou})`,
+    value: row.ddx,
+  }));
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
@@ -95,16 +100,11 @@ export default function AddDataSourceForm() {
 
             <div className="px-4 py-2 w-full">
               <SelectInput
-                label={"Select DDX"}
                 registerName="ddx"
+                label={"Select DDX"}
+                options={ddxOptions}
                 placeholder={"Enter DDX name"}
                 className="md:text-sm 2xl:text-base"
-                options={[
-                  { label: "DDX 1 (Corp)", value: "ddx1_corp" },
-                  { label: "DDX 2 (Corp)", value: "ddx2_corp" },
-                  { label: "DDX 3 (Corp)", value: "ddx3_corp" },
-                  { label: "DDX 4 (Corp)", value: "ddx4_corp" },
-                ]}
               />
             </div>
 
@@ -163,9 +163,7 @@ export default function AddDataSourceForm() {
                     <HiCheck />
                   </Checkbox.Indicator>
                 </Checkbox.Root>
-                <span className="text-sm">
-                  Is there any Catalog Manager available?
-                </span>
+                <span className="text-sm">Is there a Catalog Manager?</span>
               </div>
             </div>
 

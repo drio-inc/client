@@ -32,13 +32,6 @@ const encodingOptions = [
   { label: "protobuf", value: "protobuf" },
 ];
 
-const ddxOptions = [
-  { label: "DDX 1 (Corp)", value: "ddx1_corp" },
-  { label: "DDX 2 (Corp)", value: "ddx2_corp" },
-  { label: "DDX 3 (Corp)", value: "ddx3_corp" },
-  { label: "DDX 4 (Corp)", value: "ddx4_corp" },
-];
-
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
 
@@ -73,6 +66,11 @@ export default function EditDatasourceForm({ row }: TableRow) {
   const form = useZodForm({
     schema: schema,
   });
+
+  const ddxOptions = dataSourceState.rows.map((row) => ({
+    label: `${row.ddx.split("_").join(" ").toUpperCase()} (${row.ou})`,
+    value: row.ddx,
+  }));
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
@@ -122,13 +120,13 @@ export default function EditDatasourceForm({ row }: TableRow) {
               <div className="px-4 py-2 w-full">
                 <SelectInput
                   registerName="ddx"
+                  options={ddxOptions}
                   label={"Select DDX"}
                   placeholder={"Enter DDX name"}
                   className="md:text-sm 2xl:text-base"
                   defaultSelectedValue={ddxOptions.find(
                     (option) => option.value === row.ddx.toLowerCase()
                   )}
-                  options={ddxOptions}
                 />
               </div>
 
@@ -199,9 +197,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                       <HiCheck />
                     </Checkbox.Indicator>
                   </Checkbox.Root>
-                  <span className="text-sm">
-                    Is there any Catalog Manager available?
-                  </span>
+                  <span className="text-sm">Is there a Catalog Manager?</span>
                 </div>
               </div>
 

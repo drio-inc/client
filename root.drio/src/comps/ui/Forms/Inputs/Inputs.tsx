@@ -196,7 +196,7 @@ const CustomOption = (props: OptionProps) => {
   return (
     <Option {...props}>
       <div
-        className={`cursor-pointer hover:bg-gray-50 flex justify-between items-center p-2 w-full ${
+        className={`cursor-pointer hover:bg-gray-50 flex justify-between items-center p-2 w-full capitalize ${
           props.label === "Add New"
             ? `text-drio-red border-t block`
             : `text-gray-900 `
