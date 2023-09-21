@@ -29,10 +29,10 @@ const schema = z.object({
     required_error: "Please select an option",
   }),
 
-  twofaurl: z
-    .string()
-    .nonempty("Please Enter a value")
-    .url("Please Enter a valid URL"),
+  // twofaurl: z
+  //   .string()
+  //   .nonempty("Please Enter a value")
+  //   .url("Please Enter a valid URL"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -56,8 +56,8 @@ export default function EditDDXForm({ row }: TableRow) {
         ou_id: data.ou,
         name: data.name,
         cluster_id: row.id,
-        twofaurl: data.twofaurl,
         account_id: user?.account_id ?? "",
+        twofaurl: `http://validate.example.com`,
       }).unwrap();
 
       showAlert("DDX Cluster Updated Successfully!", "success");
@@ -143,7 +143,7 @@ export default function EditDDXForm({ row }: TableRow) {
               </RadioGroup.Root>
             </div> */}
 
-            {/* {visibility === "addTFA" && ( */}
+            {/* {visibility === "addTFA" && (
             <div className="px-4 py-2 w-full">
               <TextInput
                 label={"TFA URL"}
@@ -153,7 +153,7 @@ export default function EditDDXForm({ row }: TableRow) {
                 className="md:text-sm 2xl:text-base"
               />
             </div>
-            {/* )} */}
+            )} */}
 
             {/* <div className="px-4 py-2 w-full relative">
               <span className="text-xs text-gray-500 font-medium mb-2 block">

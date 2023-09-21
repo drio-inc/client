@@ -28,10 +28,10 @@ const schema = z.object({
     required_error: "Please select an option",
   }),
 
-  twofaurl: z
-    .string()
-    .nonempty("Please Enter a value")
-    .url("Please Enter a valid URL"),
+  // twofaurl: z
+  //   .string()
+  //   .nonempty("Please Enter a value")
+  //   .url("Please Enter a valid URL"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -53,8 +53,8 @@ export default function AddDDXForm() {
       const res = await createCluster({
         ou_id: data.ou,
         name: data.name,
-        twofaurl: data.twofaurl,
         account_id: user?.account_id ?? "",
+        twofaurl: `http://validate.example.com`,
       }).unwrap();
 
       dispatch(setClusterToken(res.ddx_cluster.token));
