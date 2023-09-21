@@ -1,11 +1,9 @@
 import Table from "@/comps/ui/Table";
-import { setSelectedRows } from "@/state/slices/dataSourceSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-
-import EditDataSourceForm from "./EditDataSourceForm";
 import AddDataSourceForm from "./AddDataSourceForm";
-
 import DataSourcesMenu from "./DataSourcesMenu/DataSourcesMenu";
+import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import { setSelectedRows as setSelectedDataSourceRows } from "@/state/slices/dataSourceSlice";
 
 import Button from "@ui/Button";
 import { IoRefresh } from "react-icons/io5";
@@ -14,6 +12,8 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
 
 import Modal from "@/comps/ui/Modal";
+import { mergedDDXData } from "@/functions/mergeDDXData";
+import { useEffect } from "react";
 
 const headers = [
   {
@@ -58,21 +58,28 @@ const headers = [
 const DataSources = () => {
   const dispatch = useAppDispatch();
   const dataSourceState = useAppSelector((state) => state.dataSource);
+  const { recursiveRows } = useAppSelector((state) => state.orgUnit);
+
+  useEffect(() => {
+    dispatch(setDDXRows(mergedDDXData()));
+  }, [dispatch, recursiveRows]);
 
   const handleCheckbox = (index: number) => {
     if (dataSourceState.selectedRows.includes(index)) {
       dispatch(
-        setSelectedRows(
+        setSelectedDataSourceRows(
           dataSourceState.selectedRows.filter((row) => row !== index)
         )
       );
     } else {
-      dispatch(setSelectedRows([...dataSourceState.selectedRows, index]));
+      dispatch(
+        setSelectedDataSourceRows([...dataSourceState.selectedRows, index])
+      );
     }
   };
 
   const clearSelectedRows = () => {
-    dispatch(setSelectedRows([]));
+    dispatch(setSelectedDataSourceRows([]));
   };
 
   return (

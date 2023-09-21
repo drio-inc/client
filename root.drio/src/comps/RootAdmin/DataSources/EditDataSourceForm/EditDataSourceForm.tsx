@@ -58,14 +58,24 @@ type FormData = z.infer<typeof schema>;
 export default function EditDatasourceForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [update, updateResult] = useEditDataSourceMutation();
-  const [schemaBoxVisibility, setSchemaBoxVisibility] = useState(false);
-  const [catalogBoxVisibility, setCatalogBoxVisibility] = useState(false);
+  const [schemaBoxVisibility, setSchemaBoxVisibility] = useState(
+    !!(row.schemaRegistry !== "None")
+  );
+  const [catalogBoxVisibility, setCatalogBoxVisibility] = useState(
+    !!(row.catalogManagement !== "None")
+  );
 
+  const ddxState = useAppSelector((state) => state.DDX);
   const dataSourceState = useAppSelector((state) => state.dataSource);
 
   const form = useZodForm({
     schema: schema,
   });
+
+  // const ddxOptions = ddxState.rows.map((row) => ({
+  //   label: `${row.name} (${row.ou})`,
+  //   value: row.id,
+  // }));
 
   const ddxOptions = dataSourceState.rows.map((row) => ({
     label: `${row.ddx.split("_").join(" ").toUpperCase()} (${row.ou})`,
@@ -85,7 +95,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
         )
       );
 
-      showAlert("Data Source updated successfully.", "success");
+      showAlert("Data source updated successfully.", "success");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
@@ -208,7 +218,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                     {...form.register("schemaURL")}
                     label={"Enter Schema-Registry URL"}
                     className="md:text-sm 2xl:text-base"
-                    defaultValue={"https://my-schema-registry:8081"}
+                    defaultValue={row.schemaRegistry}
                   />
                 </div>
               )}
@@ -220,7 +230,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                     {...form.register("catalogURL")}
                     label={"Enter Catalog Manager URL"}
                     className="md:text-sm 2xl:text-base"
-                    defaultValue={"https://my-catalogue-mgr.com"}
+                    defaultValue={row.catalogManagement}
                   />
                 </div>
               )}

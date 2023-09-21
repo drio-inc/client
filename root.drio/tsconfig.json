@@ -23,6 +23,7 @@
       "@state/*": ["./src/state/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@comps/*": ["./src/comps/*"],
+      "@functions/*": ["./src/functions/*"],
       "react": ["../node_modules/@types/react"]
     }
   },

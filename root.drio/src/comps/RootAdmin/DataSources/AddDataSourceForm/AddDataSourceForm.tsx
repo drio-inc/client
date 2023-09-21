@@ -45,6 +45,7 @@ export default function AddDataSourceForm() {
   const [schemaBoxVisibility, setSchemaBoxVisibility] = useState(false);
   const [catalogBoxVisibility, setCatalogBoxVisibility] = useState(false);
 
+  const ddxState = useAppSelector((state) => state.DDX);
   const datasetState = useAppSelector((state) => state.dataset);
   const dataSourceState = useAppSelector((state) => state.dataSource);
 
@@ -52,9 +53,9 @@ export default function AddDataSourceForm() {
     schema: schema,
   });
 
-  const ddxOptions = dataSourceState.rows.map((row) => ({
-    label: `${row.ddx.split("_").join(" ").toUpperCase()} (${row.ou})`,
-    value: row.ddx,
+  const ddxOptions = ddxState.rows.map((row) => ({
+    label: `${row.name} (${row.ou})`,
+    value: row.id,
   }));
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -68,7 +69,7 @@ export default function AddDataSourceForm() {
       }
 
       dispatch(setRows([...dataSourceState.rows, res]));
-      showAlert("Data Source Added Successfully", "success");
+      showAlert("Data source added successfully", "success");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",
@@ -102,7 +103,7 @@ export default function AddDataSourceForm() {
               <SelectInput
                 registerName="ddx"
                 label={"Select DDX"}
-                options={ddxOptions}
+                options={ddxOptions ?? []}
                 placeholder={"Enter DDX name"}
                 className="md:text-sm 2xl:text-base"
               />

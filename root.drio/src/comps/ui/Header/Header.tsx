@@ -45,8 +45,6 @@ export default function Header() {
     .split("/")
     [router.pathname.split("/").length - 1].replace(/-/g, " ");
 
-  console.log(account);
-
   return (
     <nav className="shadow-sm h-24">
       <div className="flex items-center justify-between md:px-8 px-4 h-full">
