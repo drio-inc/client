@@ -19,13 +19,15 @@ import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
 
+import DDXTooltip from "./DDXTooltip";
 import TokenPopup from "./TokenPopup";
+import Tooltip from "@/comps/ui/Tooltip";
 import DDXInstances from "./DDXInstances";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 
 const headers = [
   {
-    header: "DDX Name",
+    header: "DDX Cluster Name",
     accessor: "name",
   },
   {
@@ -36,7 +38,10 @@ const headers = [
     header: "Location",
     accessor: "location",
   },
-
+  {
+    header: "Instances",
+    accessor: "instances",
+  },
   {
     header: "Status",
     accessor: "status",
@@ -45,30 +50,13 @@ const headers = [
       inactive: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
     },
   },
-
-  {
-    header: "Cluster #VCPU",
-    accessor: "clusterVCPU",
-  },
-  {
-    header: "Cluster Memory",
-    accessor: "clusterMemory",
-  },
-  {
-    header: "Cluster Storage",
-    accessor: "clusterStorage",
-  },
   {
     header: "Infra Provider",
     accessor: "infraProvider",
   },
   {
-    header: "Country",
-    accessor: "country",
-  },
-  {
-    header: "SW Version",
-    accessor: "swVersion",
+    header: "DDX Version",
+    accessor: "ddxVersion",
   },
 ];
 
@@ -97,9 +85,12 @@ const DDX = () => {
     dispatch(setOpenModal("ddxInstanceTable"));
   };
 
-  const clearSelectedRows = () => {
-    dispatch(setSelectedRows([]));
-  };
+  const clearSelectedRows = () => dispatch(setSelectedRows([]));
+
+  const transformedRows = DDXState.rows.map((row) => ({
+    ...row,
+    instances: row.ddx_instances.length,
+  }));
 
   return (
     <div className="w-full">
@@ -112,9 +103,7 @@ const DDX = () => {
               <Checkbox.Root
                 className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                 checked={DDXState.selectedRows.length > 0}
-                onCheckedChange={() => {
-                  clearSelectedRows?.();
-                }}
+                onCheckedChange={() => clearSelectedRows?.()}
               >
                 <Checkbox.Indicator className="text-white">
                   <HiMinusSm />
@@ -163,7 +152,8 @@ const DDX = () => {
         <Table
           menu={DDXMenu}
           headers={headers}
-          rows={DDXState.rows}
+          tooltip={DDXTooltip}
+          rows={transformedRows}
           handleCheckbox={handleCheckbox}
           handleRowClick={handleRowClick}
           selectedRows={DDXState.selectedRows}

@@ -1,8 +1,10 @@
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
+import Tooltip from "@/comps/ui/Tooltip";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import DashboardFooter from "@ui/Footer/DashbaordFooter";
 import { HiOutlinePencil, HiCheck } from "react-icons/hi";
 import MetaTags from "@/comps/RootAdmin/Datasets/Metadata/MetaTags";
+import DDXTooltip from "@/comps/RootAdmin/DDX/DDXTooltip";
 
 type TableHeader = {
   type?: string;
@@ -20,6 +22,7 @@ type TableProps = {
   noSelection?: boolean;
   selectedRows?: number[];
   headers?: TableHeader[];
+  tooltip?: React.FC | any;
   clearSelectedRows?: () => void;
   handleRowClick?: (row: TableRow) => void;
   handleCheckbox?: (index: number) => void;
@@ -32,6 +35,7 @@ const Table = ({
   handleCheckbox,
   handleRowClick,
   menu: TableMenu,
+  tooltip: TableTooltip,
   noSelection = false,
 }: TableProps) => {
   return (
@@ -108,7 +112,7 @@ const Table = ({
                           key={index}
                           onClick={() => handleRowClick?.(row)}
                           className={
-                            "cursor-pointer border-t border-b text-gray-500 text-xs p-4 text-left"
+                            "cursor-pointer border-t border-b text-gray-500 text-xs p-4"
                           }
                         >
                           <div
@@ -116,17 +120,24 @@ const Table = ({
                               header?.status?.[row[header.accessor]]
                             } inline-block`}
                           >
-                            <span
-                              className={`${
-                                typeof value === "string" &&
-                                (value.includes("http") ||
-                                  value.includes(".com"))
-                                  ? ``
-                                  : `capitalize`
-                              }`}
+                            <Tooltip
+                              key={index}
+                              content={
+                                TableTooltip && <TableTooltip row={row} />
+                              }
                             >
-                              {row[header.accessor] ?? "N/A"}
-                            </span>
+                              <span
+                                className={`${
+                                  typeof value === "string" &&
+                                  (value.includes("http") ||
+                                    value.includes(".com"))
+                                    ? ``
+                                    : `capitalize`
+                                }`}
+                              >
+                                {row[header.accessor] ?? "N/A"}
+                              </span>
+                            </Tooltip>
                           </div>
                         </td>
                       )}

@@ -28,7 +28,7 @@ const schema = z.object({
     required_error: "Please select an option",
   }),
 
-  // twofaurl: z
+  // mfaurl: z
   //   .string()
   //   .nonempty("Please Enter a value")
   //   .url("Please Enter a valid URL"),
@@ -125,7 +125,7 @@ export default function AddDDXForm() {
                 <div className="flex items-center gap-x-2">
                   <RadioGroup.Item
                     id="r1"
-                    value="addTFA"
+                    value="addMFA"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
                   <label
@@ -138,11 +138,11 @@ export default function AddDDXForm() {
               </RadioGroup.Root>
             </div> */}
 
-            {/* {visibility === "addTFA" && (
+            {/* {visibility === "addMFA" && (
               <div className="px-4 py-2 w-full">
                 <TextInput
-                  label={"TFA URL"}
-                  {...form.register("twofaurl")}
+                  label={"MFA URL"}
+                  {...form.register("mfaurl")}
                   className="md:text-sm 2xl:text-base"
                   placeholder={"https://validate.example.com"}
                   defaultValue={"https://validate.example.com"}

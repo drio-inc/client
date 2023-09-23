@@ -29,10 +29,10 @@ const schema = z.object({
     required_error: "Please select an option",
   }),
 
-  // twofaurl: z
-  //   .string()
-  //   .nonempty("Please Enter a value")
-  //   .url("Please Enter a valid URL"),
+  mfaurl: z
+    .string()
+    .nonempty("Please Enter a value")
+    .url("Please Enter a valid URL"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -40,8 +40,10 @@ type FormData = z.infer<typeof schema>;
 export default function EditDDXForm({ row }: TableRow) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [visibility, setVisibility] = useState("");
   const [patchCluster, clusterResult] = usePatchDDXClusterMutation();
+  const [visibility, setVisibility] = useState(row.twofa ? "addMFA" : "");
+
+  console.log(row);
 
   const { user } = useAppSelector((state) => state.auth);
   const { data: orgUnitRows } = useGetOrgUnitsQuery(user?.account_id ?? "");
@@ -120,7 +122,7 @@ export default function EditDDXForm({ row }: TableRow) {
               />
             </div>
 
-            {/* <div className="px-4 py-2 w-full">
+            <div className="px-4 py-2 w-full">
               <RadioGroup.Root
                 value={visibility}
                 aria-label="Set Visibility"
@@ -130,7 +132,7 @@ export default function EditDDXForm({ row }: TableRow) {
                 <div className="flex items-center gap-x-2">
                   <RadioGroup.Item
                     id="r1"
-                    value="addTFA"
+                    value="addMFA"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
                   <label
@@ -141,54 +143,19 @@ export default function EditDDXForm({ row }: TableRow) {
                   </label>
                 </div>
               </RadioGroup.Root>
-            </div> */}
-
-            {/* {visibility === "addTFA" && (
-            <div className="px-4 py-2 w-full">
-              <TextInput
-                label={"TFA URL"}
-                {...form.register("twofaurl")}
-                placeholder={"https://validate.cox.com"}
-                defaultValue={"https://validate.cox.com"}
-                className="md:text-sm 2xl:text-base"
-              />
             </div>
-            )} */}
 
-            {/* <div className="px-4 py-2 w-full relative">
-              <span className="text-xs text-gray-500 font-medium mb-2 block">
-                Please copy this{" "}
-                <span className="font-bold text-drio-red-dark">ONE TIME</span>{" "}
-                token and use it when provisioning DDX
-              </span>
-
-              <div className="flex items-center">
+            {visibility === "addMFA" && (
+              <div className="px-4 py-2 w-full">
                 <TextInput
-                  disabled
-                  label={""}
-                  {...form.register("jwtToken")}
-                  className="md:text-sm 2xl:text-base w-1/2 flex-grow"
-                  icon={
-                    <HiOutlineDuplicate
-                      className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 z-50 cursor-pointer block bg-gray-100"
-                      onClick={() => copyKey()}
-                    />
-                  }
+                  label={"MFA URL"}
+                  {...form.register("mfaurl")}
+                  className="md:text-sm 2xl:text-base"
+                  placeholder={"https://validate.example.com"}
+                  defaultValue={"https://validate.example.com"}
                 />
-                <Button
-                  type="button"
-                  className="ml-2"
-                  intent={`primaryOutline`}
-                  isLoading={clusterResult.isLoading}
-                  icon={<RiKey2Line className="w-5 h-5" />}
-                  onClick={() =>
-                    createCluster(form.getValues() as unknown as FormData)
-                  }
-                >
-                  Generate key
-                </Button>
               </div>
-            </div> */}
+            )}
           </div>
 
           <div className="p-2 flex gap-x-2 justify-center w-full mt-4">

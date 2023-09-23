@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import Link from "next/link";
 import AlertModal from "@/comps/ui/AlertModal";
-import UpdateLicenseForm from "../UpdateLicenseForm";
+import UpdateLicenseForm from "../../Licensing/UpdateLicenseForm";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/DDXSlice";
 import EditDDXForm from "../EditDDXForm";

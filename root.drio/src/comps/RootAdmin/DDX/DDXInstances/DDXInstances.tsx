@@ -25,6 +25,18 @@ const headers = [
       upgrading: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
     },
   },
+  {
+    header: "Cluster #VCPU",
+    accessor: "clusterVCPU",
+  },
+  {
+    header: "Cluster Memory",
+    accessor: "clusterMemory",
+  },
+  {
+    header: "Cluster Storage",
+    accessor: "clusterStorage",
+  },
 ];
 
 const DDXInstances = () => {

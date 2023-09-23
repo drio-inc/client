@@ -42,12 +42,18 @@ const uiSlice = createSlice({
       const { linkName, expanded } = action.payload;
       state.expandedLinks[linkName] = expanded;
     },
+
+    closeAllModals(state) {
+      Object.keys(state.modalBoolObject).forEach((key) => {
+        state.modalBoolObject[key] = false;
+      });
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setOpenModal, setCloseModal, setExpandedLinks } =
+export const { setOpenModal, setCloseModal, closeAllModals, setExpandedLinks } =
   uiSlice.actions;
 
 export default uiSlice.reducer;
