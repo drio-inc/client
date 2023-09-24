@@ -60,6 +60,16 @@ const AccountMenu = ({ row }: TableRow) => {
             </Modal>
           </span>
 
+          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            <Modal
+              label="View Reg Info"
+              identifier="viewRegInfo"
+              onClick={() => dispatch(setOpenModal("viewRegInfo"))}
+            >
+              <DeleteDDX row={row} />
+            </Modal>
+          </span>
+
           {/* <span
             className={
               "cursor-pointer hover:bg-indigo-50 w-full block text-drio-red-dark py-2 px-4"
