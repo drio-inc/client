@@ -152,7 +152,6 @@ const DDX = () => {
         <Table
           menu={DDXMenu}
           headers={headers}
-          tooltip={DDXTooltip}
           rows={transformedRows}
           handleCheckbox={handleCheckbox}
           handleRowClick={handleRowClick}

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { HiSearch } from "react-icons/hi";
 
-import { MdLogout, MdOutlinePeopleOutline } from "react-icons/md";
+import { MdLogout, MdOutlineAccountCircle } from "react-icons/md";
 
 import Button from "../Button";
 import { useLogoutMutation } from "@/api/auth";
@@ -54,7 +54,7 @@ export default function Header() {
             </div>
           </form>
           <span className="mr-3 flex items-center gap-x-2 bg-neutral-50 rounded-md py-3 px-8 text-[#4C566A]">
-            <MdOutlinePeopleOutline className="w-5 h-5" />
+            <MdOutlineAccountCircle className="w-5 h-5" />
             {user?.username ?? "Demo User"}
           </span>
           <Button

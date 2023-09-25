@@ -9,7 +9,7 @@ import { useLogoutMutation } from "@/api/auth";
 import { logout as stateLogout } from "@/state/slices/authSlice";
 import {
   MdLogout,
-  MdOutlineBusiness,
+  MdOutlineAccountCircle,
   MdOutlinePeopleOutline,
 } from "react-icons/md";
 
@@ -72,7 +72,7 @@ export default function Header() {
               </span>
 
               <span className="mr-3 flex items-center gap-x-2 bg-neutral-50 rounded-md py-3 px-8">
-                <MdOutlineBusiness className="w-5 h-5 rounded-md" />
+                <MdOutlineAccountCircle className="w-5 h-5 rounded-md" />
                 {account?.name ?? "Demo Account"}
               </span>
             </div>

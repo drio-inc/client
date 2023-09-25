@@ -12,6 +12,7 @@ import { setRows, setSelectedRows } from "@/state/slices/DDXSlice";
 import EditDDXForm from "../EditDDXForm";
 import DDXDetails from "../DDXDetails";
 import DeleteDDX from "../DeleteDDX";
+import RegInfoPopup from "../RegInfoPopup";
 
 const AccountMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
@@ -66,7 +67,7 @@ const AccountMenu = ({ row }: TableRow) => {
               identifier="viewRegInfo"
               onClick={() => dispatch(setOpenModal("viewRegInfo"))}
             >
-              <DeleteDDX row={row} />
+              <RegInfoPopup row={row} />
             </Modal>
           </span>
 

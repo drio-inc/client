@@ -67,20 +67,6 @@ const DDXTooltip = ({ row }: TableRow) => {
           </span>
         </div>
 
-        {/* <pre className="bg-neutral-50 p-4 rounded tooltip">
-          <code>
-            {`{
-    "name": "<instance name>",
-    "account_id": "${row.account_id ?? ""}",
-    "ou_id": "${row.ou_id ?? ""}",
-    "cluster_id": "${row.id ?? ""}",
-    "ip_address": "<ip address>",
-    "state": "running",
-    "token": "<cluster_token>"
-}`}
-          </code>
-        </pre> */}
-
         <div className="border-t border-gray-500 pt-2 mt-2 flex items-center">
           <span>Copy JSON Payload</span>
           <HiOutlineDuplicate
