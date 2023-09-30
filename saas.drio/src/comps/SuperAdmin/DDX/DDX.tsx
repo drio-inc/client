@@ -1,26 +1,34 @@
 import Table from "@/comps/ui/Table";
+import { faker } from "@faker-js/faker";
+import { Country } from "country-state-city";
 import DDXMenu from "@/comps/SuperAdmin/DDX/DDXMenu";
-import { setSelectedRows } from "@/state/slices/DDXSlice";
+import { setRows, setSelectedRows } from "@/state/slices/DDXSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { HiMinusSm } from "react-icons/hi";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
 
+import { useAccounts } from "@/hooks/useAccounts";
+import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+
 const headers = [
   {
     header: "Name",
     accessor: "name",
   },
+
   {
-    header: "Location",
-    accessor: "location",
+    header: "Account",
+    accessor: "account",
   },
+
   {
     header: "Status",
     accessor: "status",
     status: {
       Active: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      Inactive: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
       Pending: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
       "Not Configured": "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
     },
@@ -30,30 +38,40 @@ const headers = [
     header: "Cluster #VCPU",
     accessor: "clusterVCPU",
   },
+
   {
     header: "Cluster Memory",
     accessor: "clusterMemory",
   },
+
   {
     header: "Cluster Storage",
     accessor: "clusterStorage",
   },
+
   {
     header: "Infra Provider",
     accessor: "infraProvider",
   },
+
+  {
+    header: "Location",
+    accessor: "location",
+  },
+
   {
     header: "Country",
     accessor: "country",
   },
   {
-    header: "SW Version",
-    accessor: "swVersion",
+    header: "DDX Version",
+    accessor: "ddxVersion",
   },
 ];
 
 const DDX = () => {
   const dispatch = useAppDispatch();
+  const { rows, isLoading } = useAccounts();
   const DDXState = useAppSelector((state) => state.DDX);
 
   const handleCheckbox = (index: number) => {
@@ -66,8 +84,46 @@ const DDX = () => {
     }
   };
 
-  const clearSelectedRows = () => {
-    dispatch(setSelectedRows([]));
+  const clearSelectedRows = () => dispatch(setSelectedRows([]));
+
+  if (isLoading) return <StaticLoader />;
+
+  const transformData = () => {
+    const transformedData = [];
+
+    for (const account of rows) {
+      const accountData = {
+        account: account.name,
+        country: Country.getCountryByCode(account.country)?.name,
+        location: `${account.city}, ${account.state}, ${account.country}`,
+      };
+
+      if (account.organization_units) {
+        for (const orgUnit of account.organization_units) {
+          if (orgUnit.ddx_clusters) {
+            for (const ddxCluster of orgUnit.ddx_clusters) {
+              const clusterData = {
+                name: ddxCluster.name,
+                status: `Inactive`,
+                clusterMemory: `1 GB`,
+                clusterStorage: `1 TB`,
+                ddxVersion: "1.0.2.03232023",
+                clusterVCPU: faker.number.int({ min: 25, max: 25 }),
+                infraProvider: faker.helpers.arrayElement([
+                  "AWS",
+                  "Azure",
+                  "Data Center",
+                ]),
+              };
+
+              const combinedData = { ...accountData, ...clusterData };
+              transformedData.push(combinedData);
+            }
+          }
+        }
+      }
+    }
+    return transformedData;
   };
 
   return (
@@ -104,7 +160,7 @@ const DDX = () => {
         <Table
           menu={DDXMenu}
           headers={headers}
-          rows={DDXState.rows}
+          rows={transformData()}
           handleCheckbox={handleCheckbox}
           selectedRows={DDXState.selectedRows}
         />

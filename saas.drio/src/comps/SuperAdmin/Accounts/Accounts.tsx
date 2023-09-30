@@ -15,6 +15,7 @@ import OrgUnits from "../OrgUnits";
 import Modal from "@/comps/ui/Modal";
 import AccountMenu from "./AccountMenu";
 import { IoRefresh } from "react-icons/io5";
+import getAccounts from "@/functions/getAccounts";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import DeleteOrgUnit from "../OrgUnits/DeleteOrgUnit";
@@ -22,9 +23,7 @@ import { setOpenModal } from "@/state/slices/uiSlice";
 import AddOrgUnitForm from "../OrgUnits/AddOrgUnitForm";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 import EditOrgUnitForm from "../OrgUnits/EditOrgUnitForm";
-import getRecusriveData from "@/functions/getRecursiveData";
 import { useGetAccountsQuery } from "@/api/resources/accounts";
-import { Account } from "@/api/resources/accounts/types";
 
 const headers = [
   {
@@ -84,7 +83,7 @@ const Accounts = () => {
     if (process.env.DEVELOPMENT_MODE !== "mock") {
       if (!isLoading && data) {
         const accountIds = data.map((account: TableRow) => account.id);
-        getRecusriveData(accountIds).then((res) => {
+        getAccounts(accountIds).then((res) => {
           dispatch(setRows(res));
         });
       }
