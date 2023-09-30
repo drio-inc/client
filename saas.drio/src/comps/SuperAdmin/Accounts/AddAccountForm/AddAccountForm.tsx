@@ -46,7 +46,6 @@ export default function AddAccountForm() {
         first_name: data.first_name ?? "",
       }).unwrap();
 
-      dispatch(setRows([...rows, res]));
       dispatch(setCloseModal("addAccountForm"));
       showAlert("Account added successfully", "success");
 

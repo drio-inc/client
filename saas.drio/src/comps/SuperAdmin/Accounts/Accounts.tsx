@@ -1,6 +1,7 @@
 import Table from "@/comps/ui/Table";
-import AddAccountForm from "./AddAccountForm";
+import { faker } from "@faker-js/faker";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import AddAccountForm from "./AddAccountForm";
 
 import {
   setRows,
@@ -9,6 +10,7 @@ import {
 } from "@/state/slices/accountSlice";
 
 import Button from "@ui/Button";
+import { useEffect } from "react";
 import OrgUnits from "../OrgUnits";
 import Modal from "@/comps/ui/Modal";
 import AccountMenu from "./AccountMenu";
@@ -20,17 +22,29 @@ import { setOpenModal } from "@/state/slices/uiSlice";
 import AddOrgUnitForm from "../OrgUnits/AddOrgUnitForm";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 import EditOrgUnitForm from "../OrgUnits/EditOrgUnitForm";
+import getRecusriveData from "@/functions/getRecursiveData";
 import { useGetAccountsQuery } from "@/api/resources/accounts";
-import { useEffect } from "react";
+import { Account } from "@/api/resources/accounts/types";
 
 const headers = [
   {
     header: "Account",
     accessor: "name",
   },
+
   {
-    header: "Organization Units",
+    header: "OUs",
     accessor: "organization_units",
+  },
+
+  {
+    header: "Users",
+    accessor: "users",
+  },
+
+  {
+    header: "DDX Clusters",
+    accessor: "ddxClusters",
   },
 
   {
@@ -38,7 +52,8 @@ const headers = [
     accessor: "status",
     status: {
       Active: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
-      Pending: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      Inactive: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
+      Stalled: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -47,8 +62,8 @@ const headers = [
     accessor: "datasetsPublished",
   },
   {
-    header: "Public Contract Datasets",
-    accessor: "publicContractDatasets",
+    header: "Contracts",
+    accessor: "contracts",
   },
   {
     header: "Daily Usage Frequency",
@@ -67,9 +82,14 @@ const Accounts = () => {
 
   useEffect(() => {
     if (process.env.DEVELOPMENT_MODE !== "mock") {
-      dispatch(setRows(data));
+      if (!isLoading && data) {
+        const accountIds = data.map((account: TableRow) => account.id);
+        getRecusriveData(accountIds).then((res) => {
+          dispatch(setRows(res));
+        });
+      }
     }
-  }, [data, dispatch]);
+  }, [data, dispatch, isLoading]);
 
   const handleCheckbox = (index: number) => {
     if (accountState.selectedRows.includes(index)) {
@@ -89,8 +109,27 @@ const Accounts = () => {
   };
 
   const clearSelectedRows = () => dispatch(setSelectedRows([]));
+  if (isLoading && !accountState.rows.length) return <StaticLoader />;
 
-  if (isLoading) return <StaticLoader />;
+  const transformData = () => {
+    return accountState.rows?.map((row) => {
+      const ddxClusters = row.organization_units
+        .map((unit) => unit.ddx_clusters.length)
+        .reduce((a, b) => a + b, 0);
+
+      return {
+        ...row,
+        ddxClusters,
+        status: "Inactive",
+        users: row.users.length,
+        alerts: faker.number.int({ min: 0, max: 7 }),
+        contracts: faker.number.int({ min: 5, max: 20 }),
+        organization_units: row.organization_units.length,
+        datasetsPublished: faker.number.int({ min: 5, max: 30 }),
+        dailyUsageFrequency: faker.number.int({ min: 10, max: 400 }),
+      };
+    });
+  };
 
   return (
     <div className="w-full">
@@ -165,19 +204,10 @@ const Accounts = () => {
         <Table
           headers={headers}
           menu={AccountMenu}
+          rows={transformData()}
           handleCheckbox={handleCheckbox}
           handleRowClick={handleRowClick}
           selectedRows={accountState.selectedRows}
-          rows={
-            process.env.DEVELOPMENT_MODE === "mock"
-              ? accountState.rows
-              : data?.map((row: TableRow) => {
-                  return {
-                    ...row,
-                    organization_units: row.organization_units ?? 0,
-                  };
-                })
-          }
         />
       </div>
     </div>

@@ -54,7 +54,7 @@ const AccountMenu = ({ row }: TableRow) => {
               identifier="detailsWindow"
               onClick={() => dispatch(setOpenModal("detailsWindow"))}
             >
-              <AccountDetails />
+              <AccountDetails row={row} />
             </Modal>
           </span>
 

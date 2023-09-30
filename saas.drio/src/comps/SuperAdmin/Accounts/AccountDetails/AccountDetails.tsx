@@ -1,55 +1,69 @@
 import Layout from "@/comps/Layout";
 import { HiX } from "react-icons/hi";
-import { useAppDispatch } from "@/hooks/useStoreTypes";
 import { setCloseModal } from "@/state/slices/uiSlice";
+import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+import { useGetAccountByIdQuery } from "@/api/resources/accounts";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 export default function AccountDetails({ row }: TableRow) {
   const dispatch = useAppDispatch();
+  const { data, isLoading, isError } = useGetAccountByIdQuery(row.id);
+
+  if (isLoading) return <StaticLoader />;
+
+  console.log(data);
+
   return (
     <Layout>
-      <div className="min-w-[50vw] relative w-full mx-auto bg-white p-8 rounded-lg">
+      <div className="xl:w-[50vw] relative w-[90vw] mx-auto bg-white p-8 rounded-lg">
         <h2 className="text-gray-700 text-2xl font-bold mb-4">
           Account Information
         </h2>
-        <div className="flex my-4 shadow-md p-2 rounded-lg bg-gray-50 text-gray-500">
+
+        <div className="flex flex-col md:flex-row my-4 shadow-md p-2 rounded-lg bg-gray-50 text-gray-500 text-xs md:text-base">
           <div className="w-full">
             <div className="flex my-2">
               <span className="block w-1/2 font-semibold">Account Status </span>
-              <span className="block">:Not Activated</span>
+              <span className="block">: {row.status}</span>
             </div>
 
             <div className="flex">
               <span className="block w-1/2 font-semibold">Address </span>
-              <span className="block">:311 Stone Rd, CA 92211</span>
+              <span className="block">
+                : {row.country}, {row.state}, {row.city}
+              </span>
             </div>
 
             <div className="flex my-2">
               <span className="block w-1/2 font-semibold">Contact Number </span>
-              <span className="block">:408-555-1212</span>
+              <span className="block">: 408-555-1212</span>
             </div>
 
             <div className="flex my-2">
-              <span className="block w-1/2 font-semibold">Contact Email </span>
-              <span className="block">:contact@ymail.com</span>
+              <span className="block w-1/2 font-semibold">Contact Email</span>
+              <span className="block">: {data?.users[0].email}</span>
             </div>
           </div>
 
-          <div className="w-full">
+          <div className="w-full border-t md:border-none border-gray-200 mt-4 md:mt-0">
             <div className="flex my-2">
               <span className="block w-1/2 font-semibold">
                 Root Admin Name{" "}
               </span>
-              <span className="block">:Dilip K</span>
+              <span className="block">
+                : {data?.users[0].first_name}{" "}
+                {data?.users[0].last_name.substring(0, 1)}.
+              </span>
             </div>
 
-            <div className="flex my-2">
+            {/* <div className="flex my-2">
               <span className="block w-1/2 font-semibold">
                 Admin Activation Link
               </span>
               <span className="block w-1/2">
                 :http://activate.drio.com/ 54AC783041944DAB21
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -57,34 +71,34 @@ export default function AccountDetails({ row }: TableRow) {
           Account Resources
         </h2>
 
-        <div className="flex my-4 shadow-md p-2 rounded-lg bg-gray-50 text-gray-500">
+        <div className="flex flex-col md:flex-row my-4 shadow-md p-2 rounded-lg bg-gray-50 text-gray-500 text-xs md:text-base">
           <div className="w-full">
             <div className="flex my-2">
               <span className="block w-1/2 font-semibold">
                 #Organization Units{" "}
               </span>
-              <span className="block">:25</span>
+              <span className="block">: {data?.organization_units.length}</span>
             </div>
 
             <div className="flex">
-              <span className="block w-1/2 font-semibold">#DDXs </span>
-              <span className="block">:5</span>
+              <span className="block w-1/2 font-semibold">#DDX Clusters</span>
+              <span className="block">: {row.ddxClusters}</span>
             </div>
 
             <div className="flex my-2">
               <span className="block w-1/2 font-semibold">Cluster Size </span>
-              <span className="block">:2</span>
+              <span className="block">: {row.ddxClusters}</span>
             </div>
 
             <div className="flex my-2">
               <span className="block w-1/2 font-semibold">
                 #Legal Agreements
               </span>
-              <span className="block">:4</span>
+              <span className="block">: 4</span>
             </div>
           </div>
 
-          <div className="w-full">
+          <div className="w-full border-t md:border-none border-gray-200 mt-4 md:mt-0">
             <div className="flex my-2">
               <span className="block w-1/2 font-semibold">
                 License Expire Date
@@ -96,12 +110,12 @@ export default function AccountDetails({ row }: TableRow) {
               <span className="block w-1/2 font-semibold">
                 #Datasets Published
               </span>
-              <span className="block w-1/2">:57</span>
+              <span className="block w-1/2">: {row.datasetsPublished}</span>
             </div>
 
             <div className="flex my-2">
-              <span className="block w-1/2 font-semibold">#Subscribers</span>
-              <span className="block w-1/2">:256</span>
+              <span className="block w-1/2 font-semibold">#Contracts</span>
+              <span className="block w-1/2">: {row.contracts}</span>
             </div>
           </div>
         </div>

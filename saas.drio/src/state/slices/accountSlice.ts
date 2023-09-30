@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { Account } from "@/api/resources/accounts/types";
 
 type AccountState = {
-  rows: TableRow[];
+  rows: Account[];
   accountId: string;
   selectedRows: number[];
 };

@@ -29,7 +29,7 @@ export const accountApi = rootApi.injectEndpoints({
 
     getAccountById: builder.query<Account, string>({
       query: (id) => ({
-        url: `/resources/accounts/${id}`,
+        url: `/resources/accounts/${id}?recurse=true`,
         method: "GET",
       }),
     }),
