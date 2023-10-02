@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* * {
+  border: 1px solid black !important;
+} */
+
+:root {
+  --drio-accent: #9c0001;
+  --drio-accent-dark: #6b0405;
+}
+
+.custom-container {
+  height: calc(100vh - 6rem);
+}
