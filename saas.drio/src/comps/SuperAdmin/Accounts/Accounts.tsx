@@ -108,6 +108,7 @@ const Accounts = () => {
   };
 
   const clearSelectedRows = () => dispatch(setSelectedRows([]));
+
   if (isLoading && !accountState.rows.length) return <StaticLoader />;
 
   const transformData = () => {

@@ -16,6 +16,7 @@ import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 
 import { useGetOrgUnitsQuery } from "@/api/resources/ous";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
+import { faker } from "@faker-js/faker";
 
 const headers = [
   {
@@ -29,15 +30,15 @@ const headers = [
 
   {
     header: "Datasets Published",
-    accessor: "dsPublished",
+    accessor: "datasetsPublished",
   },
   {
-    header: "Public Contract Datasets",
-    accessor: "contract",
+    header: "Contracts",
+    accessor: "contracts",
   },
   {
     header: "Daily Usage Frequency",
-    accessor: "frequency",
+    accessor: "dailyUsageFrequency",
   },
   {
     header: "Alert ( 7 days)",
@@ -66,6 +67,16 @@ const OrgUnits = () => {
   const clearSelectedRows = () => dispatch(setSelectedRows([]));
 
   if (isLoading) return <StaticLoader />;
+
+  const transformData = () =>
+    data?.map((row) => ({
+      ...row,
+      alerts: faker.number.int({ min: 0, max: 7 }),
+      contracts: faker.number.int({ min: 5, max: 20 }),
+      location: ` ${row.city}, ${row.state}, ${row.country}`,
+      datasetsPublished: faker.number.int({ min: 5, max: 30 }),
+      dailyUsageFrequency: faker.number.int({ min: 10, max: 400 }),
+    }));
 
   return (
     <div className={`py-2 w-full`}>
@@ -120,14 +131,9 @@ const OrgUnits = () => {
         <Table
           headers={headers}
           menu={OrgUnitMenu}
+          rows={transformData()}
           handleCheckbox={handleCheckbox}
           selectedRows={orgUnitState.selectedRows}
-          rows={data?.map((row) => {
-            return {
-              ...row,
-              location: ` ${row.city}, ${row.state}, ${row.country}`,
-            };
-          })}
         />
       </div>
     </div>

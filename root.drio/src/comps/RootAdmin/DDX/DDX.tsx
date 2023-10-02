@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Table from "@/comps/ui/Table";
+import { faker } from "@faker-js/faker";
 
 import {
   setRows,
@@ -7,10 +8,9 @@ import {
   setCurrentDDXCluster,
 } from "@/state/slices/DDXSlice";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-
 import AddDDXForm from "./AddDDXForm";
 import DDXMenu from "@/comps/RootAdmin/DDX/DDXMenu";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
@@ -89,7 +89,9 @@ const DDX = () => {
 
   const transformedRows = DDXState.rows.map((row) => ({
     ...row,
+    ddxVersion: "1.0.2.03232023",
     instances: row.ddx_instances.length,
+    infraProvider: faker.helpers.arrayElement(["AWS", "Azure", "Data Center"]),
   }));
 
   return (

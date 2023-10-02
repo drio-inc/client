@@ -12,7 +12,7 @@ type PayloadObject = {
   token: string;
   account_id: string;
   cluster_id: string;
-  ip_address: string;
+  ipaddress: string;
 };
 
 export default function RegInfoPopup({ row }: TableRow) {
@@ -77,7 +77,7 @@ export default function RegInfoPopup({ row }: TableRow) {
                 account_id: row.account_id ?? "",
                 ou_id: row.ou_id ?? "",
                 cluster_id: row.id ?? "",
-                ip_address: "<ip address>",
+                ipaddress: "<ip address>",
                 state: "running",
                 token: "<cluster_token>",
               })
