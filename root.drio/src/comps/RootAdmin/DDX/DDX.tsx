@@ -66,7 +66,6 @@ const DDX = () => {
   const { recursiveRows } = useAppSelector((state) => state.orgUnit);
 
   useEffect(() => {
-    console.log(mergedDDXData());
     dispatch(setRows(mergedDDXData()));
   }, [dispatch, recursiveRows]);
 
@@ -90,7 +89,7 @@ const DDX = () => {
   const transformedRows = DDXState.rows.map((row) => ({
     ...row,
     ddxVersion: "1.0.2.03232023",
-    instances: row.ddx_instances.length,
+    instances: (row.ddx_instances && row.ddx_instances.length) || 0,
     infraProvider: faker.helpers.arrayElement(["AWS", "Azure", "Data Center"]),
   }));
 

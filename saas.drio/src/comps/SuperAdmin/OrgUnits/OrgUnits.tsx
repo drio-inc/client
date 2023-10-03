@@ -1,5 +1,5 @@
 import Table from "@/comps/ui/Table";
-
+import { faker } from "@faker-js/faker";
 import { setSelectedRows } from "@/state/slices/orgUnitSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
@@ -16,6 +16,7 @@ import Modal from "@/comps/ui/Modal";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 
+import { useAccounts } from "@/hooks/useAccounts";
 import { useGetOrgUnitsQuery } from "@/api/resources/accounts/ous";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
@@ -36,15 +37,15 @@ const headers = [
 
   {
     header: "Datasets Published",
-    accessor: "dsPublished",
+    accessor: "datasetsPublished",
   },
   {
-    header: "Public Contract Datasets",
-    accessor: "contract",
+    header: "Contracts",
+    accessor: "contracts",
   },
   {
     header: "Daily Usage Frequency",
-    accessor: "frequency",
+    accessor: "dailyUsageFrequency",
   },
   {
     header: "Alert ( 7 days)",
@@ -56,6 +57,7 @@ const OrgUnits = ({ modal = false, accountId }: OrgUnitProps) => {
   const dispatch = useAppDispatch();
   const orgUnitState = useAppSelector((state) => state.orgUnit);
   const { data, isLoading } = useGetOrgUnitsQuery(accountId ?? "");
+  const { rows: accountRows, isLoading: isAccountsLoading } = useAccounts();
 
   useEffect(() => {
     if (process.env.DEVELOPMENT_MODE !== "mock") {
@@ -79,6 +81,22 @@ const OrgUnits = ({ modal = false, accountId }: OrgUnitProps) => {
 
   if (isLoading) return <StaticLoader />;
 
+  const transformedData = accountRows?.reduce((acc: TableRow[], curr) => {
+    const orgUnits = curr.organization_units.map((ou) => {
+      return {
+        ...ou,
+        location: `${ou.city}, ${ou.state}, ${ou.country}`,
+        alerts: faker.number.int({ min: 0, max: 7 }),
+        contracts: faker.number.int({ min: 5, max: 20 }),
+        datasetsPublished: faker.number.int({ min: 5, max: 30 }),
+        dailyUsageFrequency: faker.number.int({ min: 10, max: 400 }),
+      };
+    });
+
+    return [...acc, ...orgUnits];
+  }, []);
+
+  console.log(transformedData);
   return (
     <div className={`${!modal ? `py-2 w-full` : `xl:w-[64vw]`}`}>
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
@@ -143,12 +161,23 @@ const OrgUnits = ({ modal = false, accountId }: OrgUnitProps) => {
           menu={OrgUnitMenu}
           handleCheckbox={handleCheckbox}
           selectedRows={orgUnitState.selectedRows}
-          rows={data?.map((row) => {
-            return {
-              ...row,
-              location: ` ${row.city}, ${row.state}, ${row.country}`,
-            };
-          })}
+          rows={
+            !modal
+              ? transformedData
+              : data?.map((row) => {
+                  return {
+                    ...row,
+                    location: ` ${row.city}, ${row.state}, ${row.country}`,
+                    alerts: faker.number.int({ min: 0, max: 7 }),
+                    contracts: faker.number.int({ min: 5, max: 20 }),
+                    datasetsPublished: faker.number.int({ min: 5, max: 30 }),
+                    dailyUsageFrequency: faker.number.int({
+                      min: 10,
+                      max: 400,
+                    }),
+                  };
+                })
+          }
         />
       </div>
     </div>
