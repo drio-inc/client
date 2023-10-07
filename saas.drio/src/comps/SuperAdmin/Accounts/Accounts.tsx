@@ -1,7 +1,7 @@
 import Table from "@/comps/ui/Table";
 import { faker } from "@faker-js/faker";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import AddAccountForm from "./AddAccountForm";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import {
   setRows,
@@ -114,7 +114,7 @@ const Accounts = () => {
   const transformData = () => {
     return accountState.rows?.map((row) => {
       const ddxClusters = row.organization_units
-        .map((unit) => unit.ddx_clusters.length)
+        .map((unit) => (unit.ddx_clusters && unit.ddx_clusters.length) || 0)
         .reduce((a, b) => a + b, 0);
 
       return {
