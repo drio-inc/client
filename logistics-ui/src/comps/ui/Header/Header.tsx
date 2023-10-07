@@ -39,13 +39,13 @@ export default function Header() {
             <MdOutlineAccountCircle className="w-5 h-5" />
             Demo User
           </span>
-          <Button
+          {/* <Button
             intent={"primary"}
             className="text-sm mx-2"
             icon={<MdLogout className="w-5 h-5" />}
           >
             Logout
-          </Button>
+          </Button> */}
         </div>
       </div>
     </nav>

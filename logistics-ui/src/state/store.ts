@@ -17,12 +17,17 @@ import {
 } from "redux-persist";
 
 import { setupListeners } from "@reduxjs/toolkit/query";
-import storageSession from "redux-persist/lib/storage/session";
 
 import uiReducer from "./slices/uiSlice";
+import quotesReducer from "./slices/quotesSlice";
+import productsReducer from "./slices/productsSlice";
+import trackingReducer from "./slices/trackingSlice";
 
 const rootReducer = combineReducers({
   ui: uiReducer,
+  quotes: quotesReducer,
+  products: productsReducer,
+  tracking: trackingReducer,
   [rootApi.reducerPath]: rootApi.reducer,
 });
 
