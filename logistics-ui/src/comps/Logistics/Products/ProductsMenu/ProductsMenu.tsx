@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
@@ -18,13 +19,20 @@ const ProductsMenu = ({ row }: TableRow) => {
           align="center"
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700 flex flex-col"
         >
-          <span
-            className={
-              "inline-block py-2 px-4 cursor-pointer hover:bg-indigo-50 "
-            }
+          <Link
+            href={{
+              pathname: `/quotes`,
+              query: {
+                id: row.id,
+                sku: row.sku,
+                name: row.name,
+                from: row.inventoryLocation,
+              },
+            }}
+            className="inline-block py-2 px-4 cursor-pointer hover:bg-indigo-50"
           >
             Get Quote
-          </span>
+          </Link>
 
           <span
             className={

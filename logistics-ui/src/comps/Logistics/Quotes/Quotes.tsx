@@ -12,6 +12,7 @@ import { IoRefresh } from "react-icons/io5";
 import { useGetQuotesQuery } from "@/api/quotes";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+import ShipmentDetails from "./ShipmentDetails";
 
 const headers = [
   {
@@ -79,6 +80,8 @@ const Quotes = () => {
 
   return (
     <div className="w-full">
+      <ShipmentDetails />
+
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div
           className={`rounded-lg bg-gray-50 ${
