@@ -9,7 +9,8 @@
   },
   "workspaces": [
     "root.drio",
-    "saas.drio"
+    "saas.drio",
+    "logistics-ui"
   ],
   "dependencies": {
     "concurrently": "^8.0.1"
