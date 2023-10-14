@@ -113,19 +113,19 @@ const DDX = () => {
                 ddxVersion: "1.0.2.03232023",
 
                 location: INDICES_TO_CHANGE.includes(index)
-                  ? `N/A`
+                  ? `NA`
                   : `${account.city}, ${account.state}, ${account.country}`,
 
                 clusterMemory: INDICES_TO_CHANGE.includes(index)
-                  ? `N/A`
+                  ? `NA`
                   : `1 GB`,
 
                 clusterStorage: INDICES_TO_CHANGE.includes(index)
-                  ? `N/A`
+                  ? `NA`
                   : `1 TB`,
 
                 clusterVCPU: INDICES_TO_CHANGE.includes(index)
-                  ? `N/A`
+                  ? `NA`
                   : faker.number.int({ min: 25, max: 25 }),
 
                 status: INDICES_TO_CHANGE.includes(index)
@@ -133,7 +133,7 @@ const DDX = () => {
                   : "Active",
 
                 infraProvider: INDICES_TO_CHANGE.includes(index)
-                  ? `N/A`
+                  ? `NA`
                   : faker.helpers.arrayElement(["AWS", "Azure", "Data Center"]),
               };
 

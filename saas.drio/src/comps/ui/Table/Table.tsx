@@ -99,7 +99,7 @@ const Table = ({
                         header?.status?.[row[header.accessor]]
                       } inline-block capitalize`}
                     >
-                      {row[header.accessor] ?? "N/A"}
+                      {row[header.accessor] ?? "NA"}
                     </span>
                   </td>
                 ))}

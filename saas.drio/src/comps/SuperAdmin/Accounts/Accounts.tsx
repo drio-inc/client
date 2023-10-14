@@ -126,16 +126,16 @@ const Accounts = () => {
         organization_units: row.organization_units.length,
         status: INDICES_TO_CHANGE.includes(index) ? "Onboarding" : "Active",
         alerts: INDICES_TO_CHANGE.includes(index)
-          ? `N/A`
+          ? `NA`
           : faker.number.int({ min: 0, max: 7 }),
         contracts: INDICES_TO_CHANGE.includes(index)
-          ? `N/A`
+          ? `NA`
           : faker.number.int({ min: 5, max: 20 }),
         datasetsPublished: INDICES_TO_CHANGE.includes(index)
-          ? `N/A`
+          ? `NA`
           : faker.number.int({ min: 5, max: 30 }),
         accessFrequency: INDICES_TO_CHANGE.includes(index)
-          ? `N/A`
+          ? `NA`
           : `${faker.number.int({ min: 10, max: 400 })} / day`,
       };
     });

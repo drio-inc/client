@@ -135,7 +135,7 @@ const Table = ({
                                     : `capitalize`
                                 }`}
                               >
-                                {row[header.accessor] ?? "N/A"}
+                                {row[header.accessor] ?? "NA"}
                               </span>
                             </Tooltip>
                           </div>
