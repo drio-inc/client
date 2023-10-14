@@ -3,8 +3,8 @@ import React from "react";
 
 const Location = () => {
   return (
-    <div className="flex-grow p-6 bg-white rounded-md inline-flex flex-col md:flex-row gap-y-4 md:gap-y-0 gap-x-16">
-      <div className="flex-grow">
+    <div className="col-span-12 lg:col-span-6 p-4 bg-white rounded-md flex flex-col md:flex-row gap-y-4 md:gap-y-0 gap-x-4 2xl:gap-x-16">
+      <div className="md:w-1/2 w-full">
         <div className="flex flex-col -mt-1">
           <h2 className="text-slate-600 text-2xl font-bold mb-2">
             Shipments by Location
@@ -17,7 +17,7 @@ const Location = () => {
           </div>
         </div>
 
-        <div className="w-full flex-col justify-start gap-2.5 flex border-b-2 border-gray-200 pb-2">
+        <div className="flex-col justify-start gap-2.5 flex border-b-2 border-gray-200 pb-2">
           <div className="justify-between items-start inline-flex">
             <div className="text-gray-500 text-sm font-semibold leading-normal">
               Bangkok
@@ -60,12 +60,11 @@ const Location = () => {
           </div>
         </div>
       </div>
-      <div className="rounded relative w-[50%]">
+      <div className="flex-grow rounded relative h-48 md:h-full w-full md:w-1/2">
         <Image
           fill
           alt="Map"
           src="/map.png"
-          sizes="100vw"
           className="object-center object-cover rounded"
         />
       </div>

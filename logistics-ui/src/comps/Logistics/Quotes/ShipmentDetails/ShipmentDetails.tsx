@@ -28,7 +28,7 @@ const ShipmentDetails = () => {
           <div className="flex flex-col flex-1 gap-y-2">
             <span className="text-gray-700 font-bold">Name</span>
             <div className="rounded-md border border-gray-300 p-4">
-              <span className="text-[#4C566A]">{name}</span>
+              <span className="text-[#4C566A]">{name ?? "All"}</span>
             </div>
           </div>
 

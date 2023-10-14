@@ -1,6 +1,5 @@
 import Table from "@/comps/ui/Table";
 import { faker } from "@faker-js/faker";
-import { Country } from "country-state-city";
 import DDXMenu from "@/comps/SuperAdmin/DDX/DDXMenu";
 import { setRows, setSelectedRows } from "@/state/slices/DDXSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
@@ -11,6 +10,8 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 
 import { useAccounts } from "@/hooks/useAccounts";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+
+const INDICES_TO_CHANGE = [3];
 
 const headers = [
   {
@@ -24,13 +25,18 @@ const headers = [
   },
 
   {
+    header: "Organization Unit",
+    accessor: "ou",
+  },
+
+  {
     header: "Status",
     accessor: "status",
     status: {
       Active: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
       Inactive: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
+      Unregistered: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
       Pending: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
-      "Not Configured": "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -57,11 +63,6 @@ const headers = [
   {
     header: "Location",
     accessor: "location",
-  },
-
-  {
-    header: "Country",
-    accessor: "country",
   },
   {
     header: "DDX Version",
@@ -91,38 +92,65 @@ const DDX = () => {
   const transformData = () => {
     const transformedData = [];
 
-    for (const account of rows) {
+    for (const [index, account] of rows.entries()) {
       const accountData = {
         account: account.name,
-        country: Country.getCountryByCode(account.country)?.name,
-        location: `${account.city}, ${account.state}, ${account.country}`,
       };
 
       if (account.organization_units) {
         for (const orgUnit of account.organization_units) {
+          const ouData = {
+            ou: orgUnit.name,
+          };
+
           if (orgUnit.ddx_clusters) {
-            for (const ddxCluster of orgUnit.ddx_clusters) {
+            for (const [index, ddxCluster] of orgUnit.ddx_clusters.entries()) {
+              console.log(account.name, orgUnit.name, ddxCluster.name);
+
               const clusterData = {
+                index_no: index,
                 name: ddxCluster.name,
-                status: `Inactive`,
-                clusterMemory: `1 GB`,
-                clusterStorage: `1 TB`,
                 ddxVersion: "1.0.2.03232023",
-                clusterVCPU: faker.number.int({ min: 25, max: 25 }),
-                infraProvider: faker.helpers.arrayElement([
-                  "AWS",
-                  "Azure",
-                  "Data Center",
-                ]),
+
+                location: INDICES_TO_CHANGE.includes(index)
+                  ? `N/A`
+                  : `${account.city}, ${account.state}, ${account.country}`,
+
+                clusterMemory: INDICES_TO_CHANGE.includes(index)
+                  ? `N/A`
+                  : `1 GB`,
+
+                clusterStorage: INDICES_TO_CHANGE.includes(index)
+                  ? `N/A`
+                  : `1 TB`,
+
+                clusterVCPU: INDICES_TO_CHANGE.includes(index)
+                  ? `N/A`
+                  : faker.number.int({ min: 25, max: 25 }),
+
+                status: INDICES_TO_CHANGE.includes(index)
+                  ? "Unregistered"
+                  : "Active",
+
+                infraProvider: INDICES_TO_CHANGE.includes(index)
+                  ? `N/A`
+                  : faker.helpers.arrayElement(["AWS", "Azure", "Data Center"]),
               };
 
-              const combinedData = { ...accountData, ...clusterData };
+              const combinedData = {
+                ...ouData,
+                ...accountData,
+                ...clusterData,
+              };
+
+              console.log(combinedData);
               transformedData.push(combinedData);
             }
           }
         }
       }
     }
+
     return transformedData;
   };
 

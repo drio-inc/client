@@ -25,6 +25,8 @@ import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 import EditOrgUnitForm from "../OrgUnits/EditOrgUnitForm";
 import { useGetAccountsQuery } from "@/api/resources/accounts";
 
+const INDICES_TO_CHANGE = [4, 5];
+
 const headers = [
   {
     header: "Account",
@@ -52,7 +54,7 @@ const headers = [
     status: {
       Active: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
       Inactive: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
-      Stalled: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      Onboarding: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -65,8 +67,8 @@ const headers = [
     accessor: "contracts",
   },
   {
-    header: "Daily Usage Frequency",
-    accessor: "dailyUsageFrequency",
+    header: "Access Frequency",
+    accessor: "accessFrequency",
   },
   {
     header: "Alert ( 7 days)",
@@ -112,7 +114,7 @@ const Accounts = () => {
   if (isLoading && !accountState.rows.length) return <StaticLoader />;
 
   const transformData = () => {
-    return accountState.rows?.map((row) => {
+    return accountState.rows?.map((row, index) => {
       const ddxClusters = row.organization_units
         .map((unit) => (unit.ddx_clusters && unit.ddx_clusters.length) || 0)
         .reduce((a, b) => a + b, 0);
@@ -120,13 +122,21 @@ const Accounts = () => {
       return {
         ...row,
         ddxClusters,
-        status: "Inactive",
         users: row.users.length,
-        alerts: faker.number.int({ min: 0, max: 7 }),
-        contracts: faker.number.int({ min: 5, max: 20 }),
         organization_units: row.organization_units.length,
-        datasetsPublished: faker.number.int({ min: 5, max: 30 }),
-        dailyUsageFrequency: faker.number.int({ min: 10, max: 400 }),
+        status: INDICES_TO_CHANGE.includes(index) ? "Onboarding" : "Active",
+        alerts: INDICES_TO_CHANGE.includes(index)
+          ? `N/A`
+          : faker.number.int({ min: 0, max: 7 }),
+        contracts: INDICES_TO_CHANGE.includes(index)
+          ? `N/A`
+          : faker.number.int({ min: 5, max: 20 }),
+        datasetsPublished: INDICES_TO_CHANGE.includes(index)
+          ? `N/A`
+          : faker.number.int({ min: 5, max: 30 }),
+        accessFrequency: INDICES_TO_CHANGE.includes(index)
+          ? `N/A`
+          : `${faker.number.int({ min: 10, max: 400 })} / day`,
       };
     });
   };

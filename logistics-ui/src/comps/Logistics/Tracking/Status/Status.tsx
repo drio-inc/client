@@ -1,132 +1,135 @@
 /* eslint-disable react/no-unescaped-entities */
 
+import {
+  RiGlobeLine,
+  RiMapPin5Line,
+  RiRoadMapLine,
+  RiPinDistanceLine,
+} from "react-icons/ri";
+
+import { useAppSelector } from "@/hooks/useStoreTypes";
+import Image from "next/image";
+
 const Status = () => {
+  const shipmentState = useAppSelector((state) => state.shipment);
+
   return (
-    <div className="p-10 bg-blue-50 rounded-tl-2xl rounded-tr-md rounded-bl-2xl rounded-br-md flex-col justify-center items-center gap-12 inline-flex">
-      <div className="flex-col justify-start items-center gap-9 flex">
-        <div className="flex-col justify-start items-start gap-10 flex">
-          <div className="flex-col justify-start items-start gap-0.5 flex">
-            <div className="text-neutral-900 text-xl font-bold font-['Inter'] leading-relaxed">
-              Delivery Status
-            </div>
-            <div>
-              <span className="text-slate-600 text-sm font-medium font-['Inter'] leading-tight">
-                Order No:{" "}
-              </span>
-              <span className="text-slate-600 text-sm font-bold font-['Inter'] leading-tight">
-                #12737689
-              </span>
-            </div>
-          </div>
-          <div className="flex-col justify-start items-start gap-2 flex">
-            <div className="w-96 h-3 relative">
-              <div className="w-96 h-1 left-0 top-[4.63px] absolute bg-gradient-to-r from-red-800 via-red-500 to-red-800 rounded-xl" />
-              <div className="w-96 h-3 left-[0.24px] top-0 absolute justify-between items-center inline-flex">
-                <div className="w-3 h-3 bg-rose-300 rounded-full" />
-                <div className="w-3 h-3 bg-rose-400 rounded-full" />
-                <div className="w-3 h-3 bg-red-500 rounded-full" />
-                <div className="w-3 h-3 bg-red-700 rounded-full" />
-                <div className="w-3 h-3 bg-red-800 rounded-full" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex-col justify-start items-center gap-4 flex">
-          <div className="w-96 h-6 justify-between items-start inline-flex">
-            <div className="flex-col justify-start items-start inline-flex">
-              <div className="text-gray-500 text-xs font-semibold font-['Inter'] leading-relaxed">
-                23 April, 2023
-              </div>
-            </div>
-            <div className="flex-col justify-start items-start inline-flex">
-              <div className="text-gray-500 text-xs font-semibold font-['Inter'] leading-relaxed">
-                30 April, 2023
-              </div>
-            </div>
-          </div>
-          <div className="flex-col justify-start items-start flex">
-            <div className="w-64 text-center text-red-800 text-xl font-semibold font-['Inter'] leading-7">
-              Delivered
-            </div>
-            <div className="w-64 text-center text-gray-700 text-sm font-medium font-['Inter'] leading-7">
-              to Minneapolis, Minnesota
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex-col justify-start items-start gap-6 flex">
-        <div className="justify-start items-start gap-6 inline-flex">
-          <div className="w-60 h-16 p-3 rounded-md shadow border border-gray-400 justify-start items-center gap-3 flex">
-            <div className="w-9 h-9 p-2 bg-sky-100 rounded justify-center items-center gap-2 flex">
-              <div className="w-6 h-6 justify-center items-center flex">
-                <div className="w-6 h-6 relative"></div>
-              </div>
-            </div>
-            <div className="w-32 flex-col justify-start items-start inline-flex">
-              <div className="w-32 text-neutral-900 text-sm font-semibold font-['Inter'] leading-tight">
-                Current Location
-              </div>
-              <div className="text-slate-600 text-xs font-semibold font-['Inter'] leading-tight">
-                Los Angeles, USA{" "}
-              </div>
-            </div>
-          </div>
-          <div className="w-60 h-16 p-3 rounded-md shadow border border-gray-400 justify-start items-center gap-3 flex">
-            <div className="w-9 h-9 p-2 bg-sky-100 rounded justify-center items-center gap-2 flex">
-              <div className="w-6 h-6 justify-center items-center flex">
-                <div className="w-6 h-6 relative"></div>
-              </div>
-            </div>
-            <div className="w-32 flex-col justify-start items-start inline-flex">
-              <div className="text-neutral-900 text-sm font-semibold font-['Inter'] leading-tight">
-                Destination Location
-              </div>
-              <div className="text-slate-600 text-xs font-semibold font-['Inter'] leading-tight">
-                Minneapolis, Minnesota
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="justify-start items-start gap-6 inline-flex">
-          <div className="w-60 h-16 p-3 rounded-md shadow border border-gray-400 justify-start items-center gap-3 flex">
-            <div className="w-9 h-9 p-2 bg-sky-100 rounded justify-center items-center gap-2 flex">
-              <div className="w-6 h-6 justify-center items-center flex">
-                <div className="w-6 h-6 relative"></div>
-              </div>
-            </div>
-            <div className="w-32 flex-col justify-start items-start inline-flex">
-              <div className="w-32 text-neutral-900 text-sm font-semibold font-['Inter'] leading-tight">
-                Distance in KM
-              </div>
-              <div className="text-slate-600 text-xs font-semibold font-['Inter'] leading-tight">
-                65 km
-              </div>
-            </div>
-          </div>
-          <div className="w-60 h-16 p-3 rounded-md shadow border border-gray-400 justify-start items-center gap-3 flex">
-            <div className="w-9 h-9 p-2 bg-sky-100 rounded justify-center items-center gap-2 flex">
-              <div className="w-6 h-6 justify-center items-center flex">
-                <div className="w-6 h-6 relative"></div>
-              </div>
-            </div>
-            <div className="flex-col justify-start items-start inline-flex">
-              <div className="justify-start items-start inline-flex">
-                <div className="w-24 text-neutral-900 text-sm font-semibold font-['Inter'] leading-tight">
-                  Origin Lat long
-                </div>
-                <div className="w-5 h-5 justify-center items-center gap-2 flex">
-                  <div className="w-3 h-3 origin-top-left rotate-180 justify-center items-center flex">
-                    <div className="w-3 h-3 relative"></div>
-                  </div>
+    <div
+      className={`col-span-12 lg:col-span-5 lg:-ml-4 p-4 lg:p-8 ${
+        shipmentState.selectedRow ? `bg-[#F6FAFF]` : `bg-white`
+      } flex-grow rounded-lg lg:rounded-none lg:rounded-tr-md lg:rounded-br-md flex-col justify-center gap-12 inline-flex`}
+    >
+      <div className="flex-col items-center gap-4 lg:gap-8 flex">
+        <div className="flex-col gap-2 flex w-full">
+          <h3 className="text-neutral-900 text-xl font-bold leading-relaxed">
+            Delivery Status
+          </h3>
+          <span className="text-slate-600 text-sm leading-tight font-medium">
+            {shipmentState.selectedRow ? (
+              <>
+                Order No: <span className="font-bold">#12737689</span>
+              </>
+            ) : (
+              <span>Choose an order to track its status</span>
+            )}
+          </span>
+
+          {shipmentState.selectedRow && (
+            <div className="flex-col items-start gap-2 flex mt-4">
+              <div className="w-full relative">
+                <div className="w-full h-1 left-0 top-[4.63px] absolute bg-gradient-to-r from-red-100 via-red-400 to-red-800 rounded-xl" />
+                <div className="w-full h-3 left-[0.24px] top-0 absolute justify-between items-center inline-flex">
+                  <div className="w-3 h-3 bg-rose-300 rounded-full" />
+                  <div className="w-3 h-3 bg-rose-400 rounded-full" />
+                  <div className="w-3 h-3 bg-red-500 rounded-full" />
+                  <div className="w-3 h-3 bg-red-700 rounded-full" />
+                  <div className="w-3 h-3 bg-red-800 rounded-full" />
                 </div>
               </div>
-              <div className="text-slate-600 text-xs font-semibold font-['Inter'] leading-tight">
-                N 50° 6' 52.776", W 94° 31' 21.5148"
+            </div>
+          )}
+        </div>
+
+        {shipmentState.selectedRow && (
+          <div className="flex-col items-center gap-4 flex">
+            <div className="w-full justify-between items-start inline-flex text-gray-500 text-xs font-semibold leading-relaxed">
+              <span>23 April, 2023</span>
+              <span>30 April, 2023</span>
+            </div>
+            <div className="w-64 text-center flex-col items-center flex leading-7">
+              <h2 className="text-red-800 text-xl font-semibold">Delivered</h2>
+              <span className="text-gray-700 text-sm font-medium">
+                to Minneapolis, Minnesota
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {shipmentState.selectedRow ? (
+        <div className="flex-col flex-wrap items-start gap-6 flex">
+          <div className="gap-4 flex flex-wrap w-full">
+            <div className="p-3 rounded-md shadow border border-gray-400 items-center gap-3 flex flex-1">
+              <div className="p-2 bg-sky-100 rounded justify-center items-center flex">
+                <RiMapPin5Line className="w-6 h-6 text-gray-700" />
+              </div>
+              <div className="flex-col items-start inline-flex font-semibold leading-tight">
+                <h3 className="text-neutral-900 text-sm">Current Location</h3>
+                <span className="text-slate-600 text-xs">
+                  Los Angeles, USA{" "}
+                </span>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-md shadow border border-gray-400 items-center gap-3 flex flex-1">
+              <div className="p-2 bg-sky-100 rounded justify-center items-center flex">
+                <RiRoadMapLine className="w-6 h-6 text-gray-700" />
+              </div>
+              <div className="flex-col  items-start inline-flex font-semibold leading-tight">
+                <h3 className="text-neutral-900 text-sm">
+                  Destination Location
+                </h3>
+                <span className="text-slate-600 text-xs">
+                  Minneapolis, Minnesota
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="gap-4 flex flex-wrap w-full">
+            <div className="p-3 rounded-md shadow border border-gray-400 items-center gap-3 flex flex-1">
+              <div className="p-2 bg-sky-100 rounded justify-center items-center gap-2 flex">
+                <RiPinDistanceLine className="w-6 h-6 text-gray-700" />
+              </div>
+              <div className="flex-col  items-start inline-flex font-semibold leading-tight">
+                <h3 className="text-neutral-900 text-sm">Distance in KM</h3>
+                <span className="text-slate-600 text-xs">65 km</span>
+              </div>
+            </div>
+            <div className="p-3 rounded-md shadow border border-gray-400  items-center gap-3 flex flex-1">
+              <div className="p-2 bg-sky-100 rounded justify-center items-center gap-2 flex">
+                <RiGlobeLine className="w-6 h-6 text-gray-700" />
+              </div>
+              <div className="flex-col items-start inline-flex font-semibold leading-tight">
+                <h3 className="text-neutral-900 text-sm">Origin Lat long</h3>
+                <span className="text-slate-600 text-xs">
+                  N 50° 6' 52.776", W 94° 31' 21.5148"
+                </span>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex justify-center min-w-[550px] pb-2">
+          <Image
+            width={300}
+            height={300}
+            alt="Empty State"
+            className="object-cover object-center"
+            src="/delivery-service.svg"
+          />
+        </div>
+      )}
     </div>
   );
 };
