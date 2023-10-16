@@ -9,3 +9,4 @@ fi
 
 echo "API_URL=$1" > ./root.drio/.env.local
 echo "API_URL=$1" > ./saas.drio/.env.local
+echo "API_URL=$1" > ./logistics-ui/.env.local

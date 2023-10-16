@@ -30,10 +30,11 @@ After that, run the following command to start the development server for both t
 yarn dev
 ```
 
-This will start the development server for both the SaaS admin and Root admin on the following ports:
+This will start the development server for the SaaS admin, Root admin, and Logistics app on the following ports:
 
 - SaaS admin: http://localhost:3000
 - Root admin: http://localhost:3001
+- Logistics App: http://localhost:3002
 
 To build the project for production, run the following command:
 
@@ -41,7 +42,7 @@ To build the project for production, run the following command:
 yarn build
 ```
 
-This will build the project for both the SaaS admin and Root admin.
+This will build the project for the SaaS admin, Root admin, and Logistics app.
 
 To start the production server, run the following command:
 
@@ -53,3 +54,4 @@ This will start the production server for both the SaaS admin and Root admin on 
 
 - SaaS admin: http://localhost:3000
 - Root admin: http://localhost:3001
+- Logistics App: http://localhost:3002
