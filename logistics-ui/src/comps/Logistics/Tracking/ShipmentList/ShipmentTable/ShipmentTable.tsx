@@ -27,16 +27,14 @@ const Table = ({
 }: TableProps) => {
   return (
     <div className="block w-full overflow-x-auto bg-white">
-      <table className="w-full">
-        <thead className="bg-[#FAFAFA]">
-          <tr>
+      <table className="w-full ">
+        <thead className="bg-[#FAFAFA] mb-4">
+          <tr className="mb-4">
             <th className="text-gray-700 text-sm px-4 py-6 text-left"></th>
             {headers?.map((header, index) => (
               <th
                 key={index}
-                className={
-                  "uppercase text-gray-700 text-sm px-4 py-6 text-left font-medium"
-                }
+                className={` uppercase text-gray-700 text-sm px-4 py-6 text-left font-medium`}
               >
                 {header.header}
               </th>
@@ -44,7 +42,10 @@ const Table = ({
           </tr>
         </thead>
 
-        <tbody>
+        <tbody className="relative">
+          <tr className="invisible">
+            <td>Empty Row</td>
+          </tr>
           {rows?.map((row, index) => {
             const isChecked = selectedRow === row.id;
             return (
@@ -56,9 +57,9 @@ const Table = ({
                     : "hover:bg-gray-50"
                 }`}
               >
-                <td className="text-xs p-4">
+                <td className={`text-xs p-4`}>
                   <Checkbox.Root
-                    className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+                    className={`flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300`}
                     checked={isChecked}
                     id={index.toString()}
                     onCheckedChange={() => handleCheckbox?.(row.id)}
@@ -73,9 +74,7 @@ const Table = ({
                   <td
                     key={index}
                     onClick={() => handleRowClick?.(row.id)}
-                    className={
-                      "cursor-pointer text-gray-700 text-sm p-4 text-left"
-                    }
+                    className={`cursor-pointer text-gray-700 text-sm p-4 text-left`}
                   >
                     <span
                       className={`${

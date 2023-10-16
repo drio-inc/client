@@ -58,7 +58,8 @@ const ShipmentList = () => {
   };
 
   return (
-    <div className="col-span-12 lg:col-span-7 flex-grow w-full shadow-xs rounded-tl-lg rounded-bl-lg">
+    <div className="col-span-12 lg:col-span-8 flex-grow w-full shadow-xs rounded-tl-lg rounded-bl-lg bg-white">
+      <h2 className="text-xl font-semibold p-4">Shipment List</h2>
       <ShipmentTable
         headers={headers}
         rows={shipmentState.rows}

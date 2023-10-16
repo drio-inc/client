@@ -15,7 +15,7 @@ const Status = () => {
 
   return (
     <div
-      className={`col-span-12 lg:col-span-5 lg:-ml-4 p-4 lg:p-8 ${
+      className={`col-span-12 lg:col-span-4 lg:-ml-4 p-4 lg:p-8 ${
         shipmentState.selectedRow ? `bg-[#F6FAFF]` : `bg-white`
       } flex-grow rounded-lg lg:rounded-none lg:rounded-tr-md lg:rounded-br-md flex-col justify-center gap-12 inline-flex`}
     >
@@ -51,12 +51,12 @@ const Status = () => {
         </div>
 
         {shipmentState.selectedRow && (
-          <div className="flex-col items-center gap-4 flex">
-            <div className="w-full justify-between items-start inline-flex text-gray-500 text-xs font-semibold leading-relaxed">
+          <div className="w-full flex-col items-center gap-4 flex">
+            <div className="w-full justify-between flex text-gray-500 text-xs font-semibold leading-relaxed">
               <span>23 April, 2023</span>
               <span>30 April, 2023</span>
             </div>
-            <div className="w-64 text-center flex-col items-center flex leading-7">
+            <div className="text-center flex-col items-center flex leading-7">
               <h2 className="text-red-800 text-xl font-semibold">Delivered</h2>
               <span className="text-gray-700 text-sm font-medium">
                 to Minneapolis, Minnesota
