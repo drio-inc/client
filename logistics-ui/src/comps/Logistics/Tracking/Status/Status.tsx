@@ -68,7 +68,7 @@ const Status = () => {
 
       {shipmentState.selectedRow ? (
         <div className="flex-col flex-wrap items-start gap-6 flex">
-          <div className="gap-4 flex flex-wrap w-full">
+          <div className="gap-4 flex flex-wrap flex-col md:flex-row w-full">
             <div className="p-3 rounded-md shadow border border-gray-400 items-center gap-3 flex flex-1">
               <div className="p-2 bg-sky-100 rounded justify-center items-center flex">
                 <RiMapPin5Line className="w-6 h-6 text-gray-700" />
@@ -96,7 +96,7 @@ const Status = () => {
             </div>
           </div>
 
-          <div className="gap-4 flex flex-wrap w-full">
+          <div className="gap-4 flex flex-wrap flex-col md:flex-row w-full">
             <div className="p-3 rounded-md shadow border border-gray-400 items-center gap-3 flex flex-1">
               <div className="p-2 bg-sky-100 rounded justify-center items-center gap-2 flex">
                 <RiPinDistanceLine className="w-6 h-6 text-gray-700" />
@@ -120,7 +120,7 @@ const Status = () => {
           </div>
         </div>
       ) : (
-        <div className="flex justify-center min-w-[550px] pb-2">
+        <div className="flex justify-center pb-2">
           <Image
             width={300}
             height={300}
