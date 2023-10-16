@@ -26,15 +26,17 @@ const Table = ({
   handleRowClick,
 }: TableProps) => {
   return (
-    <div className="block w-full overflow-x-auto bg-white">
+    <div className="block w-full overflow-x-auto bg-white pl-4">
       <table className="w-full ">
         <thead className="bg-[#FAFAFA] mb-4">
           <tr className="mb-4">
-            <th className="text-gray-700 text-sm px-4 py-6 text-left"></th>
+            <th className="text-gray-700 text-sm px-4 py-6 text-left rounded-tl-lg rounded-bl-lg"></th>
             {headers?.map((header, index) => (
               <th
                 key={index}
-                className={` uppercase text-gray-700 text-sm px-4 py-6 text-left font-medium`}
+                className={` uppercase text-gray-700 text-sm px-4 py-6 text-left font-medium ${
+                  index === headers.length - 1 && `rounded-tr-lg rounded-br-lg`
+                }`}
               >
                 {header.header}
               </th>
@@ -57,7 +59,7 @@ const Table = ({
                     : "hover:bg-gray-50"
                 }`}
               >
-                <td className={`text-xs p-4`}>
+                <td className={`text-xs p-4 rounded-tl-lg rounded-bl-lg`}>
                   <Checkbox.Root
                     className={`flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300`}
                     checked={isChecked}
