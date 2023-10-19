@@ -52,6 +52,18 @@ const headers = [
     header: "Shipment Quantity",
     accessor: "shipmentQuantity",
   },
+  {
+    header: "Dealer Name",
+    accessor: "dealerName",
+  },
+  {
+    header: "Ship To Location",
+    accessor: "shipToLocation",
+  },
+  {
+    header: "Desired ETA",
+    accessor: "desiredETA",
+  },
 ];
 
 const Products = () => {

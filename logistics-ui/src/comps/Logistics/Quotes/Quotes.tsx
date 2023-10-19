@@ -49,8 +49,16 @@ const headers = [
     accessor: "minimumWeight",
   },
   {
-    header: "Maximum Weight",
-    accessor: "maximumWeight",
+    header: "Rate",
+    accessor: "rate",
+  },
+  {
+    header: "Minimum Cost",
+    accessor: "minimumCost",
+  },
+  {
+    header: "Time To Deliver",
+    accessor: "timeToDeliver",
   },
 ];
 

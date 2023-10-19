@@ -111,10 +111,8 @@ const Status = () => {
                 <RiGlobeLine className="w-6 h-6 text-gray-700" />
               </div>
               <div className="flex-col items-start inline-flex font-semibold leading-tight">
-                <h3 className="text-neutral-900 text-sm">Origin Lat long</h3>
-                <span className="text-slate-600 text-xs">
-                  N 50° 6' 52.776", W 94° 31' 21.5148"
-                </span>
+                <h3 className="text-neutral-900 text-sm">Origin Location</h3>
+                <span className="text-slate-600 text-xs">Wausau</span>
               </div>
             </div>
           </div>

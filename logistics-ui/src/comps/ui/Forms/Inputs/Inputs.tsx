@@ -131,6 +131,20 @@ const CustomSelectInput = (props: SelectInputProps) => (
   <Input {...props} autoComplete="nope" />
 );
 
+const StatelessCustomControl = ({
+  ...props
+}: ControlProps & { registerName?: string }) => {
+  return (
+    <Control {...props}>
+      <div
+        className={`cursor-pointer flex justify-between w-full p-4 my-1 caret-transparent border border-gray-300 rounded-md bg-white`}
+      >
+        {props.children}
+      </div>
+    </Control>
+  );
+};
+
 const CustomSelectControl = ({
   registerName,
   ...props
@@ -180,6 +194,42 @@ const CustomSelectOption = (props: OptionProps) => {
         />
       </div>
     </Option>
+  );
+};
+
+export const StatelessSelectInput = ({
+  label,
+  options,
+  className,
+  ...props
+}: SelectProps) => {
+  return (
+    <div className={`${textInputStyles({})} relative flex flex-col`}>
+      <label className="flex items-center">
+        <span className="inline-block text-gray-700 mb-1 font-bold">
+          {label}
+        </span>
+      </label>
+
+      <Select
+        unstyled
+        options={options}
+        placeholder={props.placeholder}
+        onChange={(selectedOption: any) => {
+          props.onChange?.(selectedOption?.value);
+        }}
+        components={{
+          Menu: CustomSelectMenu as ComponentType<MenuProps>,
+          Option: CustomSelectOption as ComponentType<OptionProps>,
+          Control: (props: ControlProps) => (
+            <StatelessCustomControl {...props} />
+          ),
+
+          IndicatorSeparator: () => null,
+          DropdownIndicator: () => <HiChevronDown />,
+        }}
+      />
+    </div>
   );
 };
 

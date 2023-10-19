@@ -1,1 +1,1 @@
-export { TextInput, SelectInput } from "./Inputs";
+export { TextInput, SelectInput, StatelessSelectInput } from "./Inputs";

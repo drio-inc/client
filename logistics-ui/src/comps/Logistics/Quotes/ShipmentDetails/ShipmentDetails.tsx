@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { HiSearch } from "react-icons/hi";
+import { StatelessSelectInput } from "@/comps/ui/Forms/Inputs";
 
 const ShipmentDetails = () => {
   const router = useRouter();
-
-  const { id, name, sku, from } = router.query;
+  const { id, name, sku, from, to } = router.query;
 
   return (
     <div className={"flex flex-col w-full bg-gray-50 mb-6"}>
@@ -24,34 +24,46 @@ const ShipmentDetails = () => {
       </div>
 
       <div className={`bg-white flex flex-wrap items-center justify-between`}>
-        <div className="w-full flex flex-wrap gap-x-4 justify-between p-4">
-          <div className="flex flex-col flex-1 gap-y-2">
+        <div className="w-full flex flex-col md:flex-row flex-wrap gap-x-4 justify-between p-4">
+          <div className="md:flex-grow">
+            <StatelessSelectInput
+              options={[
+                {
+                  label: "All",
+                  value: "all",
+                },
+              ]}
+              registerName="ou"
+              placeholder={"Enter OU"}
+              label={"Order ID"}
+            />
+          </div>
+
+          <div className="flex flex-col md:flex-grow gap-y-2">
             <span className="text-gray-700 font-bold">Name</span>
             <div className="rounded-md border border-gray-300 p-4">
               <span className="text-[#4C566A]">{name ?? "All"}</span>
             </div>
           </div>
 
-          <div className="flex flex-col flex-1 gap-y-2">
-            <span className="text-gray-700 font-bold">Type</span>
+          <div className="flex flex-col md:flex-grow gap-y-2">
+            <span className="text-gray-700 font-bold">SKU</span>
             <div className="rounded-md border border-gray-300 p-4">
-              <span className="text-[#4C566A]">Motorcycle (SKU {sku})</span>
+              <span className="text-[#4C566A]">{sku ?? "All"}</span>
             </div>
           </div>
 
-          <div className="flex flex-col flex-1 gap-y-2">
+          <div className="flex flex-col md:flex-grow gap-y-2">
             <span className="text-gray-700 font-bold">From</span>
             <div className="rounded-md border border-gray-300 p-4">
-              <span className="text-[#4C566A]">
-                Harley Davidson Factory, {from}
-              </span>
+              <span className="text-[#4C566A]">{from ?? "All"}</span>
             </div>
           </div>
 
-          <div className="flex flex-col flex-1 gap-y-2">
+          <div className="flex flex-col md:flex-grow gap-y-2">
             <span className="text-gray-700 font-bold">To</span>
             <div className="rounded-md border border-gray-300 p-4">
-              <span className="text-[#4C566A]">ABC Dealer, San Francisco</span>
+              <span className="text-[#4C566A]">{to ?? "ALL"}</span>
             </div>
           </div>
         </div>
