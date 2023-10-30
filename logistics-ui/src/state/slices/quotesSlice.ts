@@ -1,3 +1,4 @@
+import quotesData from "@data/quotes.json";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type QuotesState = {
@@ -6,7 +7,7 @@ type QuotesState = {
 };
 
 const initialState: QuotesState = {
-  rows: [],
+  rows: quotesData,
   selectedRows: [],
 };
 

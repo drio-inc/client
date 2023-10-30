@@ -67,7 +67,7 @@ const DatasetMenu = ({ row }: TableRow) => {
                 "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
               }
             >
-              <span className="inline-block w-3 h-3 rounded-full bg-drio-red-dark mr-2"></span>
+              <span className="inline-block w-3 h-3 rounded-full bg-primary-500-dark mr-2"></span>
               Metadata
             </span>
           </Link>

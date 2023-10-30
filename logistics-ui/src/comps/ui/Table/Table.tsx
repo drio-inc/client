@@ -1,6 +1,7 @@
 import * as Checkbox from "@radix-ui/react-checkbox";
 import DashboardFooter from "@ui/Footer/DashbaordFooter";
 import { HiOutlinePencil, HiCheck } from "react-icons/hi";
+import { RiStarFill, RiStarLine } from "react-icons/ri";
 
 type TableHeader = {
   header: string;
@@ -12,6 +13,7 @@ type TableHeader = {
 
 type TableProps = {
   rows?: TableRow[];
+  important?: boolean;
   menu?: React.FC | any;
   noSelection?: boolean;
   selectedRows?: number[];
@@ -25,9 +27,10 @@ const Table = ({
   rows,
   headers,
   selectedRows,
-  menu: TableMenu,
   handleCheckbox,
   handleRowClick,
+  menu: TableMenu,
+  important = false,
   noSelection = false,
 }: TableProps) => {
   return (
@@ -38,6 +41,11 @@ const Table = ({
             {!noSelection && (
               <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left"></th>
             )}
+
+            {important && (
+              <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left"></th>
+            )}
+
             {headers?.map((header, index) => (
               <th
                 key={index}
@@ -81,6 +89,25 @@ const Table = ({
                     >
                       <Checkbox.Indicator className="text-white">
                         <HiCheck />
+                      </Checkbox.Indicator>
+                    </Checkbox.Root>
+                  </td>
+                )}
+
+                {important && (
+                  <td className="border-t border-b text-xs p-4">
+                    <Checkbox.Root
+                      className="flex h-4 w-4 appearance-none items-center justify-center rounded outline-none"
+                      checked={isChecked}
+                      id={index.toString()}
+                      onCheckedChange={() => handleCheckbox?.(row.id)}
+                    >
+                      <RiStarLine className="text-gray-300 w-4 h-4" />
+
+                      <Checkbox.Indicator className="text-white">
+                        {isChecked && (
+                          <RiStarFill className="text-drio-red w-4 h-4" />
+                        )}
                       </Checkbox.Indicator>
                     </Checkbox.Root>
                   </td>

@@ -1,0 +1,51 @@
+{
+  "Texas Harley-Davidson": {
+    "delivery_address": "1 Texas Harley Wy, Bedford, TX 76021",
+    "destination_port": "Dallas"
+  },
+
+  "Lake Shore Harley-Davidson": {
+    "delivery_address": "14000 W Rockland Rd, Libertyville, IL 60048",
+    "destination_port": "Chicago"
+  },
+
+  "America’s Motor Sports": {
+    "delivery_address": "629 Myatt Dr, Madison, TN 37115",
+    "destination_port": "Nashville"
+  },
+
+  "Black Jack Harley-Davidson": {
+    "delivery_address": "2691 Alex Lee Blvd, Florence, SC 29506",
+    "destination_port": "Charlotte"
+  },
+
+  "Tobacco Road Harley-Davidson": {
+    "delivery_address": "1126 S Saunders St, Raleigh, NC 27603",
+    "destination_port": "Raleigh"
+  },
+
+  "Smoky Mountain Harley-Davidson": {
+    "delivery_address": "1820 W Lamar Alexander Pkwy, Maryville, TN 37801",
+    "destination_port": "Knoxville"
+  },
+
+  "The Transportation Revolution": {
+    "delivery_address": "901 Julia St New Orleans, LA 70113",
+    "destination_port": "New Orleans"
+  },
+
+  "Riva Motorsports Superstore": {
+    "delivery_address": "3671 Dixie Hwy, Deerfield Beach, FL 33064",
+    "destination_port": "Fort Lauderdale"
+  },
+
+  "Black Wolf Harley-Davidson": {
+    "delivery_address": "1061 Old Abingdon Hwy Suite 1, Bristol, VA 24201",
+    "destination_port": "Pigeon Forge"
+  },
+
+  "Maddie’s Motor Sports": {
+    "delivery_address": "116 Clara Barton St. Dansville, NY 14437",
+    "destination_port": "Rochester"
+  }
+}

@@ -1,96 +1,18 @@
+import trackingData from "../../data/tracking.json";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type ShipmentState = {
   rows: TableRow[];
   selectedRows: number[];
-  selectedRow: number | null;
+  selectedRow: TableRow | null;
+  selectedRowIndex: number | null;
 };
 
 const initialState: ShipmentState = {
-  rows: [
-    {
-      id: "1",
-      destination: "London",
-      orderID: "#13737689",
-      carrierName: "FedEx",
-      customerName: "Andy Bernard",
-      productName: "M13",
-      delay: "2 days",
-      plannedETA: "23/09/23",
-    },
-    {
-      id: "2",
-      destination: "London",
-      orderID: "#13737689",
-      carrierName: "FedEx",
-      customerName: "Andy Bernard",
-      productName: "M13",
-      delay: "2 days",
-      plannedETA: "23/09/23",
-    },
-    {
-      id: "3",
-      destination: "London",
-      orderID: "#13737689",
-      carrierName: "FedEx",
-      customerName: "Andy Bernard",
-      productName: "M13",
-      delay: "2 days",
-      plannedETA: "23/09/23",
-    },
-    {
-      id: "4",
-      destination: "London",
-      orderID: "#13737689",
-      carrierName: "FedEx",
-      customerName: "Andy Bernard",
-      productName: "M13",
-      delay: "2 days",
-      plannedETA: "23/09/23",
-    },
-    {
-      id: "5",
-      destination: "London",
-      orderID: "#13737689",
-      carrierName: "FedEx",
-      customerName: "Andy Bernard",
-      productName: "M13",
-      delay: "2 days",
-      plannedETA: "23/09/23",
-    },
-    {
-      id: "6",
-      destination: "London",
-      orderID: "#13737689",
-      carrierName: "FedEx",
-      customerName: "Andy Bernard",
-      productName: "M13",
-      delay: "2 days",
-      plannedETA: "23/09/23",
-    },
-    {
-      id: "7",
-      destination: "London",
-      orderID: "#13737689",
-      carrierName: "FedEx",
-      customerName: "Andy Bernard",
-      productName: "M13",
-      delay: "2 days",
-      plannedETA: "23/09/23",
-    },
-    {
-      id: "8",
-      destination: "London",
-      orderID: "#13737689",
-      carrierName: "FedEx",
-      customerName: "Andy Bernard",
-      productName: "M13",
-      delay: "2 days",
-      plannedETA: "23/09/23",
-    },
-  ],
+  rows: trackingData,
   selectedRows: [],
   selectedRow: null,
+  selectedRowIndex: null,
 };
 
 const shipmentSlice = createSlice({
@@ -105,7 +27,11 @@ const shipmentSlice = createSlice({
       state.selectedRows = action.payload;
     },
 
-    setSelectedRow(state, action: PayloadAction<number | null>) {
+    setSelectedRowIndex(state, action: PayloadAction<number | null>) {
+      state.selectedRowIndex = action.payload;
+    },
+
+    setSelectedRow(state, action) {
       state.selectedRow = action.payload;
     },
   },
@@ -113,7 +39,7 @@ const shipmentSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRow, setSelectedRows } =
+export const { setRows, setSelectedRowIndex, setSelectedRow, setSelectedRows } =
   shipmentSlice.actions;
 
 export default shipmentSlice.reducer;

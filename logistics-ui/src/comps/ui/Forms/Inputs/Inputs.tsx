@@ -201,6 +201,7 @@ export const StatelessSelectInput = ({
   label,
   options,
   className,
+  defaultSelectedValue,
   ...props
 }: SelectProps) => {
   return (
@@ -215,6 +216,7 @@ export const StatelessSelectInput = ({
         unstyled
         options={options}
         placeholder={props.placeholder}
+        defaultValue={defaultSelectedValue}
         onChange={(selectedOption: any) => {
           props.onChange?.(selectedOption?.value);
         }}

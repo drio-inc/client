@@ -1,7 +1,58 @@
-import Image from "next/image";
-import React from "react";
+import { useCallback } from "react";
+import { useAppSelector } from "@/hooks/useStoreTypes";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+
+const containerStyle = {
+  width: "400px",
+  height: "100%",
+  borderRadius: "4px",
+};
+
+const center = {
+  lat: -3.745,
+  lng: -38.523,
+};
 
 const Location = () => {
+  const shipmentData = useAppSelector((state) => state.shipment);
+
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyBIA1Gc3jOTZxqiy68P8ICr4uXjBF84BZM",
+  });
+
+  const groupByDestLocation = () => {
+    const result: {
+      count: number;
+      percentage?: string;
+      destLocation: string;
+    }[] = [];
+
+    const map = new Map();
+
+    for (const item of shipmentData.rows) {
+      if (!map.has(item.destLocation)) {
+        map.set(item.destLocation, true);
+        result.push({
+          destLocation: item.destLocation,
+          count: 1,
+        });
+      } else {
+        for (const i of result) {
+          if (i.destLocation === item.destLocation) {
+            i.count++;
+          }
+        }
+      }
+    }
+    return result.map((item) => ({
+      ...item,
+      percentage: ((item.count / shipmentData.rows.length) * 100).toFixed(2),
+    }));
+  };
+
+  console.log(groupByDestLocation());
+
   return (
     <div className="col-span-12 lg:col-span-6 p-4 bg-white rounded-md flex flex-col md:flex-row gap-y-4 md:gap-y-0 gap-x-4 2xl:gap-x-16">
       <div className="md:w-1/2 w-full">
@@ -18,7 +69,20 @@ const Location = () => {
         </div>
 
         <div className="flex-col justify-start gap-2.5 flex border-b-2 border-gray-200 pb-2">
-          <div className="justify-between items-start inline-flex">
+          {groupByDestLocation().map((location, index) => (
+            <div
+              className="justify-between items-start inline-flex"
+              key={index}
+            >
+              <div className="text-gray-500 text-sm font-semibold leading-normal">
+                {location.destLocation}
+              </div>
+              <div className="text-gray-700 text-sm font-semibold leading-normal">
+                {location.percentage}%
+              </div>
+            </div>
+          ))}
+          {/* <div className="justify-between items-start inline-flex">
             <div className="text-gray-500 text-sm font-semibold leading-normal">
               Bangkok
             </div>
@@ -57,16 +121,17 @@ const Location = () => {
             <div className="text-gray-700 text-sm font-semibold leading-normal">
               15%
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="flex-grow rounded relative h-48 md:h-full w-full md:w-1/2">
-        <Image
-          fill
-          alt="Map"
-          src="/map.png"
-          className="object-center object-cover rounded"
-        />
+        {isLoaded && (
+          <GoogleMap
+            zoom={8}
+            center={center}
+            mapContainerStyle={containerStyle}
+          ></GoogleMap>
+        )}
       </div>
     </div>
   );

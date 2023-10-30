@@ -1,7 +1,9 @@
 import Image from "next/image";
-import React from "react";
+import { useAppSelector } from "@/hooks/useStoreTypes";
 
 const Overview = () => {
+  const shipmentState = useAppSelector((state) => state.shipment);
+
   return (
     <div className="col-span-12 lg:col-span-6 p-6 bg-white rounded-md flex-col gap-6 inline-flex">
       <h2 className="text-neutral-900 text-2xl font-bold leading-9">
@@ -16,7 +18,19 @@ const Overview = () => {
 
           <div className="flex-col justify-center items-center gap-1 flex">
             <h3 className="text-neutral-900 text-3xl font-medium leading-10">
-              10:00 PM
+              {shipmentState.selectedRow
+                ? new Date(
+                    shipmentState.selectedRow?.statusCheckTime
+                  ).toLocaleString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  })
+                : new Date().toLocaleString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  })}
             </h3>
             <span className="text-center text-slate-600 text-base font-bold">
               Status Check Time
@@ -30,7 +44,16 @@ const Overview = () => {
           </div>
           <div className="flex-col justify-center items-center gap-1 flex">
             <h3 className="text-neutral-900 text-3xl font-medium leading-10">
-              9:00 AM
+              {shipmentState.selectedRow
+                ? new Date(shipmentState.selectedRow?.actualETA).toLocaleString(
+                    "en-US",
+                    {
+                      hour: "numeric",
+                      minute: "numeric",
+                      hour12: true,
+                    }
+                  )
+                : "N/A"}
             </h3>
             <span className="text-center text-slate-600 text-base font-bold">
               Actual Time of Arrival

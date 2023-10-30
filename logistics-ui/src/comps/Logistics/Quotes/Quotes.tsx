@@ -1,23 +1,22 @@
+import { useEffect, useMemo } from "react";
 import Table from "@/comps/ui/Table";
+import { useRouter } from "next/router";
 import { faker } from "@faker-js/faker";
 import { setRows, setSelectedRows } from "@/state/slices/quotesSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import Button from "@ui/Button";
-import { useEffect } from "react";
-
 import ProductsMenu from "./QuotesMenu";
-import { HiMinusSm } from "react-icons/hi";
-import { IoRefresh } from "react-icons/io5";
-import { useGetQuotesQuery } from "@/api/quotes";
-import * as Checkbox from "@radix-ui/react-checkbox";
-import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 import ShipmentDetails from "./ShipmentDetails";
+import { useGetQuotesQuery } from "@/api/quotes";
+import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+
+import location_to_origin from "@data/location_to_origin.json";
+import dealer_to_destination from "@data/dealer_to_destination.json";
 
 const headers = [
   {
     header: "Carrier",
-    accessor: "name",
+    accessor: "carrier",
   },
 
   {
@@ -57,76 +56,54 @@ const headers = [
     accessor: "minimumCost",
   },
   {
-    header: "Time To Deliver",
-    accessor: "timeToDeliver",
+    header: "Days To Deliver",
+    accessor: "daysToDeliver",
   },
 ];
 
 const Quotes = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { data, isLoading } = useGetQuotesQuery();
   const quotesState = useAppSelector((state) => state.quotes);
+  const { selectedProduct } = useAppSelector((state) => state.products);
 
-  useEffect(() => {
-    if (!isLoading && data) dispatch(setRows(data));
-  }, [data, dispatch, isLoading]);
+  // useEffect(() => {
+  //   if (!isLoading && data) dispatch(setRows(data));
+  // }, [data, dispatch, isLoading]);
 
-  const handleCheckbox = (index: number) => {
-    if (quotesState.selectedRows.includes(index)) {
-      dispatch(
-        setSelectedRows(quotesState.selectedRows.filter((row) => row !== index))
-      );
-    } else {
-      dispatch(setSelectedRows([...quotesState.selectedRows, index]));
-    }
-  };
+  const originPort =
+    location_to_origin[
+      selectedProduct?.inventoryLocation as keyof typeof location_to_origin
+    ];
 
-  const clearSelectedRows = () => dispatch(setSelectedRows([]));
+  const destinationPort =
+    dealer_to_destination[
+      selectedProduct?.dealerName as keyof typeof dealer_to_destination
+    ]?.destination_port;
+
+  const filteredRows = useMemo(() => {
+    return quotesState.rows.filter(
+      (row) =>
+        row.originPort === originPort && row.destinationPort === destinationPort
+    );
+  }, [destinationPort, originPort, quotesState.rows]);
+
+  console.log(originPort, destinationPort, filteredRows);
+
   if (isLoading && !quotesState.rows.length) return <StaticLoader />;
-
-  if (data) console.log(data);
 
   return (
     <div className="w-full">
       <ShipmentDetails />
 
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        <div
-          className={`rounded-lg bg-gray-50 ${
-            quotesState.selectedRows.length > 0 && `px-4 py-3`
-          } flex flex-wrap items-center justify-between`}
-        >
-          {quotesState.selectedRows.length > 0 && (
-            <div className="flex items-center">
-              <Checkbox.Root
-                className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                checked={quotesState.selectedRows.length > 0}
-                onCheckedChange={() => {
-                  clearSelectedRows?.();
-                }}
-              >
-                <Checkbox.Indicator className="text-white">
-                  <HiMinusSm />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
-              <h3 className={"font-medium text-sm text-gray-700"}>
-                {quotesState.selectedRows.length} Item(s) Selected
-              </h3>
-
-              <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
-                <IoRefresh className="mr-1 font-bold" />
-                <span className="text-sm font-medium">Re-run</span>
-              </button>
-            </div>
-          )}
-        </div>
-
         <Table
+          noSelection
           headers={headers}
           menu={ProductsMenu}
-          rows={quotesState.rows}
-          handleCheckbox={handleCheckbox}
           selectedRows={quotesState.selectedRows}
+          rows={filteredRows.length === 0 ? quotesState.rows : filteredRows}
         />
       </div>
     </div>

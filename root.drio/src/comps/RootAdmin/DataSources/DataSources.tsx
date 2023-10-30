@@ -91,7 +91,7 @@ const DataSources = () => {
           {dataSourceState.selectedRows.length > 0 && (
             <div className="flex items-center">
               <Checkbox.Root
-                className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+                className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-primary-500 outline-none data-[state=unchecked]:border border-gray-300"
                 checked={dataSourceState.selectedRows.length > 0}
                 onCheckedChange={() => {
                   clearSelectedRows?.();

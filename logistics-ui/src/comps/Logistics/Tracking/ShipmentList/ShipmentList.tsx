@@ -1,17 +1,21 @@
 import { faker } from "@faker-js/faker";
 import ShipmentTable from "./ShipmentTable";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import { setRows, setSelectedRow } from "@/state/slices/shipmentSlice";
+import {
+  setRows,
+  setSelectedRow,
+  setSelectedRowIndex,
+} from "@/state/slices/shipmentSlice";
 
 const headers = [
   {
     header: "Destination",
-    accessor: "destination",
+    accessor: "destLocation",
   },
 
   {
     header: "Order ID",
-    accessor: "orderID",
+    accessor: "orderId",
   },
 
   {
@@ -37,7 +41,7 @@ const headers = [
 
   {
     header: "Delay",
-    accessor: "delay",
+    accessor: "delayInDays",
   },
 
   {
@@ -49,11 +53,17 @@ const headers = [
 const ShipmentList = () => {
   const dispatch = useAppDispatch();
   const shipmentState = useAppSelector((state) => state.shipment);
+
   const handleCheckbox = (index: number) => {
-    if (shipmentState.selectedRow === index) {
+    if (shipmentState.selectedRowIndex === index) {
       dispatch(setSelectedRow(null));
     } else {
-      dispatch(setSelectedRow(index));
+      const selectedRow = shipmentState.rows[index];
+
+      console.log(selectedRow);
+
+      dispatch(setSelectedRowIndex(index));
+      dispatch(setSelectedRow(selectedRow));
     }
   };
 
@@ -64,7 +74,7 @@ const ShipmentList = () => {
         headers={headers}
         rows={shipmentState.rows}
         handleCheckbox={handleCheckbox}
-        selectedRow={shipmentState.selectedRow}
+        selectedRow={shipmentState.selectedRowIndex}
       />
     </div>
   );

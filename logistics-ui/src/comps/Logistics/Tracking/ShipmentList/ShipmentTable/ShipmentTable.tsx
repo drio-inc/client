@@ -48,6 +48,7 @@ const Table = ({
           <tr className="invisible">
             <td>Empty Row</td>
           </tr>
+
           {rows?.map((row, index) => {
             const isChecked = selectedRow === row.id;
             return (
