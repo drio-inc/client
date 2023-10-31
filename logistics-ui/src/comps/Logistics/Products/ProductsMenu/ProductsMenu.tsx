@@ -10,7 +10,8 @@ const ProductsMenu = ({ row }: TableRow) => {
 
   const onQuotesClick = (row: TableRow) => {
     dispatch(setSelectedproduct(row));
-    router.push(`/quotes`, {
+    router.push({
+      pathname: "/quotes",
       query: {
         id: row.id,
         sku: row.sku,
@@ -18,6 +19,17 @@ const ProductsMenu = ({ row }: TableRow) => {
         to: row.dealerName,
         orderId: row.orderId,
         from: row.inventoryLocation,
+      },
+    });
+  };
+
+  const onTrackClick = (row: TableRow) => {
+    dispatch(setSelectedproduct(row));
+    router.push({
+      pathname: "/tracking",
+      query: {
+        id: row.id,
+        orderId: row.orderId,
       },
     });
   };
@@ -43,18 +55,13 @@ const ProductsMenu = ({ row }: TableRow) => {
           </span>
 
           <span
-            className={
-              "inline-block py-2 px-4 cursor-pointer hover:bg-indigo-50 "
-            }
+            onClick={() => onTrackClick(row)}
+            className="inline-block py-2 px-4 cursor-pointer hover:bg-indigo-50"
           >
             Track
           </span>
 
-          <span
-            className={
-              "inline-block py-2 px-4 cursor-pointer hover:bg-indigo-50 "
-            }
-          >
+          <span className="inline-block py-2 px-4 cursor-pointer hover:bg-indigo-50">
             Mark as Important
           </span>
         </Popover.Content>

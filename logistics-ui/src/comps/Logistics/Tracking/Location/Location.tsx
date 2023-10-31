@@ -1,16 +1,10 @@
-import { useCallback } from "react";
 import { useAppSelector } from "@/hooks/useStoreTypes";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api";
 
 const containerStyle = {
-  width: "400px",
+  width: "100%",
   height: "100%",
   borderRadius: "4px",
-};
-
-const center = {
-  lat: -3.745,
-  lng: -38.523,
 };
 
 const Location = () => {
@@ -51,11 +45,9 @@ const Location = () => {
     }));
   };
 
-  console.log(groupByDestLocation());
-
   return (
     <div className="col-span-12 lg:col-span-6 p-4 bg-white rounded-md flex flex-col md:flex-row gap-y-4 md:gap-y-0 gap-x-4 2xl:gap-x-16">
-      <div className="md:w-1/2 w-full">
+      <div className="md:w-[40%] w-full">
         <div className="flex flex-col -mt-1">
           <h2 className="text-slate-600 text-2xl font-bold mb-2">
             Shipments by Location
@@ -71,66 +63,47 @@ const Location = () => {
         <div className="flex-col justify-start gap-2.5 flex border-b-2 border-gray-200 pb-2">
           {groupByDestLocation().map((location, index) => (
             <div
-              className="justify-between items-start inline-flex"
+              className="justify-between items-start inline-flex text-sm font-medium leading-normal"
               key={index}
             >
-              <div className="text-gray-500 text-sm font-semibold leading-normal">
-                {location.destLocation}
-              </div>
-              <div className="text-gray-700 text-sm font-semibold leading-normal">
-                {location.percentage}%
-              </div>
+              <span className="text-gray-500">{location.destLocation}</span>
+              <span className="text-gray-700">{location.percentage}%</span>
             </div>
           ))}
-          {/* <div className="justify-between items-start inline-flex">
-            <div className="text-gray-500 text-sm font-semibold leading-normal">
-              Bangkok
-            </div>
-            <div className="text-gray-700 text-sm font-semibold leading-normal">
-              15%
-            </div>
-          </div>
-          <div className="justify-between items-start inline-flex">
-            <div className="text-gray-500 text-sm font-semibold leading-normal">
-              Houston
-            </div>
-            <div className="text-gray-700 text-sm font-semibold leading-normal">
-              15%
-            </div>
-          </div>
-          <div className="justify-between items-start inline-flex">
-            <div className="text-gray-500 text-sm font-semibold leading-normal">
-              San Francisco
-            </div>
-            <div className="text-gray-700 text-sm font-semibold leading-normal">
-              15%
-            </div>
-          </div>
-          <div className="justify-between items-start inline-flex">
-            <div className="text-gray-500 text-sm font-semibold leading-normal">
-              West Virginia
-            </div>
-            <div className="text-gray-700 text-sm font-semibold leading-normal">
-              15%
-            </div>
-          </div>
-          <div className="justify-between items-start inline-flex">
-            <div className="text-gray-500 text-sm font-semibold leading-normal">
-              Milwaukee
-            </div>
-            <div className="text-gray-700 text-sm font-semibold leading-normal">
-              15%
-            </div>
-          </div> */}
         </div>
       </div>
-      <div className="flex-grow rounded relative h-48 md:h-full w-full md:w-1/2">
+      <div className="flex-grow rounded relative h-48 md:h-full w-full md:w-[60%]">
         {isLoaded && (
           <GoogleMap
-            zoom={8}
-            center={center}
+            zoom={1}
+            options={{
+              disableDefaultUI: true,
+              restriction: {
+                latLngBounds: {
+                  north: 85,
+                  east: 175,
+                  south: -85,
+                  west: -175,
+                },
+                strictBounds: true,
+              },
+            }}
             mapContainerStyle={containerStyle}
-          ></GoogleMap>
+            center={{
+              lat: 0,
+              lng: 0,
+            }}
+          >
+            {shipmentData.rows.map((location, index) => (
+              <MarkerF
+                key={index}
+                position={{
+                  lat: location.currentLat,
+                  lng: location.currentLong,
+                }}
+              />
+            ))}
+          </GoogleMap>
         )}
       </div>
     </div>

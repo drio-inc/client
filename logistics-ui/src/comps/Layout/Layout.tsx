@@ -7,5 +7,5 @@ interface ILayoutProps {
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export default function Layout({ children }: ILayoutProps) {
-  return <div className={`${inter.variable} font-inter`}>{children}</div>;
+  return <div className={`${inter.variable}`}>{children}</div>;
 }

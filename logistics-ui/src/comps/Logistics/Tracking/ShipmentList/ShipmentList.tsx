@@ -57,10 +57,9 @@ const ShipmentList = () => {
   const handleCheckbox = (index: number) => {
     if (shipmentState.selectedRowIndex === index) {
       dispatch(setSelectedRow(null));
+      dispatch(setSelectedRowIndex(null));
     } else {
       const selectedRow = shipmentState.rows[index];
-
-      console.log(selectedRow);
 
       dispatch(setSelectedRowIndex(index));
       dispatch(setSelectedRow(selectedRow));
