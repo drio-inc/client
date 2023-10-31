@@ -153,7 +153,7 @@ export default function EditInboundContractsForm({ row }: TableRow) {
 
                   <div className="flex flex-col gap-y-2">
                     <div className="flex items-center gap-2">
-                      <button className="bg-primary-500 text-white p-1 rounded-md">
+                      <button className="bg-drio-red text-white p-1 rounded-md">
                         <HiX className="w-5 h-5" />
                       </button>
                       <span className="text-blue-500 underline"> Loan App</span>
@@ -161,7 +161,7 @@ export default function EditInboundContractsForm({ row }: TableRow) {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <button className="bg-primary-500 text-white p-1 rounded-md">
+                      <button className="bg-drio-red text-white p-1 rounded-md">
                         <HiX className="w-5 h-5" />
                       </button>
                       <span className="text-blue-500 underline">Marketing</span>
@@ -343,7 +343,7 @@ export default function EditInboundContractsForm({ row }: TableRow) {
 
                 <div className="flex flex-col gap-y-2">
                   <div className="flex items-center gap-2">
-                    <button className="bg-primary-500 text-white p-1 rounded-md">
+                    <button className="bg-drio-red text-white p-1 rounded-md">
                       <HiX className="w-5 h-5" />
                     </button>
                     <span className="text-blue-500 underline">Auto Model</span>
@@ -351,7 +351,7 @@ export default function EditInboundContractsForm({ row }: TableRow) {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <button className="bg-primary-500 text-white p-1 rounded-md">
+                    <button className="bg-drio-red text-white p-1 rounded-md">
                       <HiX className="w-5 h-5" />
                     </button>
                     <span className="text-blue-500 underline">Time</span>
@@ -377,7 +377,7 @@ export default function EditInboundContractsForm({ row }: TableRow) {
 
                 <div className="flex flex-col gap-y-2">
                   <div className="flex items-center gap-2">
-                    <button className="bg-primary-500 text-white p-1 rounded-md">
+                    <button className="bg-drio-red text-white p-1 rounded-md">
                       <HiX className="w-5 h-5" />
                     </button>
                     <span className="text-blue-500 underline">
@@ -387,7 +387,7 @@ export default function EditInboundContractsForm({ row }: TableRow) {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <button className="bg-primary-500 text-white p-1 rounded-md">
+                    <button className="bg-drio-red text-white p-1 rounded-md">
                       <HiX className="w-5 h-5" />
                     </button>
                     <span className="text-blue-500 underline">

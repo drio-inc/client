@@ -87,7 +87,7 @@ const Table = ({
                 {!noSelection && (
                   <td className="border-t border-b text-xs p-4">
                     <Checkbox.Root
-                      className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-primary-500 outline-none data-[state=unchecked]:border border-gray-300"
+                      className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                       id={index.toString()}
                       checked={isChecked}
                       onCheckedChange={() => {

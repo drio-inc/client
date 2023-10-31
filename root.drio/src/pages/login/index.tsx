@@ -112,7 +112,7 @@ export default function Login() {
           <div className="flex gap-x-6 flex-col md:flex-row items-center justify-between px-4 py-2 w-full text-gray-900 mb-2">
             <div className="flex items-center mb-2 md:mb-0">
               <CheckBox.Root
-                className="mr-1 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-primary-500 outline-none data-[state=unchecked]:border border-gray-300"
+                className="mr-1 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                 checked={rememberMe}
                 onCheckedChange={() => setRememberMe(!rememberMe)}
               >

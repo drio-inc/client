@@ -135,7 +135,7 @@ export default function AddDataSourceForm() {
             <div className="px-4 py-2 w-full">
               <div className="relative flex items-center gap-x-2">
                 <Checkbox.Root
-                  className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-primary-500 outline-none data-[state=unchecked]:border border-gray-300"
+                  className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                   checked={schemaBoxVisibility}
                   onCheckedChange={() => {
                     setSchemaBoxVisibility(!schemaBoxVisibility);
@@ -154,7 +154,7 @@ export default function AddDataSourceForm() {
             <div className="px-4 py-2 w-full">
               <div className="relative flex items-center gap-x-2">
                 <Checkbox.Root
-                  className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-primary-500 outline-none data-[state=unchecked]:border border-gray-300"
+                  className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                   checked={catalogBoxVisibility}
                   onCheckedChange={() => {
                     setCatalogBoxVisibility(!catalogBoxVisibility);

@@ -57,7 +57,7 @@ const SortLogsPopover = () => {
                 <div className="flex flex-wrap -m-2 rounded-lg my-4">
                   <div className="w-full flex justify-end px-2">
                     <Switch.Root
-                      className="w-[42px] h-[25px] bg-gray-200 rounded-full shadow-lg data-[state=checked]:bg-primary-500 outline-none cursor-pointer"
+                      className="w-[42px] h-[25px] bg-gray-200 rounded-full shadow-lg data-[state=checked]:bg-drio-red outline-none cursor-pointer"
                       checked={checkedName}
                       onCheckedChange={() => setCheckedName(!checkedName)}
                     >
@@ -91,7 +91,7 @@ const SortLogsPopover = () => {
                   <div className="flex justify-between w-full p-2 text-md text-gray-700 -mb-2 font-medium">
                     <span>Status</span>
                     <Switch.Root
-                      className="w-[42px] h-[25px] bg-gray-200 rounded-full shadow-lg data-[state=checked]:bg-primary-500 outline-none cursor-pointer"
+                      className="w-[42px] h-[25px] bg-gray-200 rounded-full shadow-lg data-[state=checked]:bg-drio-red outline-none cursor-pointer"
                       checked={checkedStatus}
                       onCheckedChange={() => setCheckedStatus(!checkedStatus)}
                     >
@@ -108,7 +108,7 @@ const SortLogsPopover = () => {
                   <div className="p-2 flex flex-col gap-y-2">
                     <div className="flex">
                       <Checkbox.Root
-                        className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-primary-500 outline-none data-[state=unchecked]:border border-gray-300"
+                        className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                         checked={true}
                         onCheckedChange={() => {}}
                       >
@@ -123,7 +123,7 @@ const SortLogsPopover = () => {
 
                     <div className="flex">
                       <Checkbox.Root
-                        className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-primary-500 outline-none data-[state=unchecked]:border border-gray-300"
+                        className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                         checked={true}
                         onCheckedChange={() => {}}
                       >
@@ -139,7 +139,7 @@ const SortLogsPopover = () => {
 
                   <div className="w-full flex justify-end -ml-2">
                     <Switch.Root
-                      className="w-[42px] h-[25px] bg-gray-200 rounded-full shadow-lg data-[state=checked]:bg-primary-500 outline-none cursor-pointer"
+                      className="w-[42px] h-[25px] bg-gray-200 rounded-full shadow-lg data-[state=checked]:bg-drio-red outline-none cursor-pointer"
                       checked={checkedCountry}
                       onCheckedChange={() => setCheckedCountry(!checkedCountry)}
                     >
