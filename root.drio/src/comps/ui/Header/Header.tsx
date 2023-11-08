@@ -41,9 +41,11 @@ export default function Header() {
     }
   };
 
-  const path = router.pathname
-    .split("/")
-    [router.pathname.split("/").length - 1].replace(/-/g, " ");
+  const path =
+    router.pathname &&
+    router.pathname
+      ?.split("/")
+      [router?.pathname?.split("/")?.length - 1]?.replace(/-/g, " ");
 
   return (
     <nav className="shadow-sm h-24">

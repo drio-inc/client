@@ -37,12 +37,14 @@ export default function AddNewLicenseForm({ row }: TableRow) {
   const adminAccountState = useAppSelector((state) => state.account);
   const licenseState = useAppSelector((state) => state.licensing);
 
-  const options = adminAccountState.rows.map((row) => {
-    return {
-      label: row.name,
-      value: row.name.split(" ").join("_").toLowerCase(),
-    };
-  });
+  const options = adminAccountState?.rows.length
+    ? adminAccountState?.rows?.map((row) => {
+        return {
+          label: row.name,
+          value: row.name.split(" ").join("_").toLowerCase(),
+        };
+      })
+    : [];
 
   const form = useZodForm({
     schema: schema,
@@ -59,7 +61,7 @@ export default function AddNewLicenseForm({ row }: TableRow) {
         showAlert("License created successfully", "success");
       }
     } catch (err: any) {
-      (err);
+      err;
 
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",

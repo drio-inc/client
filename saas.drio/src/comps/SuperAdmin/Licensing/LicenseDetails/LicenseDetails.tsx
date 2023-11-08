@@ -10,23 +10,23 @@ export default function LicenseDetails({ details }: TableRow) {
           <div className="w-full">
             <div className="flex my-2">
               <span className="block w-1/2">Datasets</span>
-              <span className="block">:{details.datasets}</span>
+              <span className="block">:{details?.datasets}</span>
             </div>
 
             <div className="flex">
               <span className="block w-1/2">Data contracts</span>
-              <span className="block">:{details.contract}</span>
+              <span className="block">:{details?.contract}</span>
             </div>
 
             <div className="flex my-2">
               <span className="block w-1/2">Access rate</span>
-              <span className="block">:{details.accessRate}</span>
+              <span className="block">:{details?.accessRate}</span>
             </div>
 
             <div className="flex my-2">
               <span className="block w-1/2">License expiry date</span>
               <span className="block">
-                :{details.expiryDate.split(" ").slice(1, 4).join(" ")} 12:00 AM
+                :{details?.expiryDate.split(" ").slice(1, 4).join(" ")} 12:00 AM
               </span>
             </div>
           </div>
@@ -35,14 +35,14 @@ export default function LicenseDetails({ details }: TableRow) {
             <div className="flex my-2">
               <span className="block w-1/2">Log storage</span>
               <span className="block">
-                :{details.logStorage.split("")[0]} year
+                :{details?.logStorage.split("")[0]} year
               </span>
             </div>
 
             <div className="flex my-2">
               <span className="block w-1/2">Metrics storage</span>
               <span className="block w-1/2">
-                :{details.metricsStorage.split("")[0]} years
+                :{details?.metricsStorage.split("")[0]} years
               </span>
             </div>
           </div>

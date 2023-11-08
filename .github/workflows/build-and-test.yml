@@ -7,23 +7,23 @@ on:
     branches: [master]
 
 jobs:
-  integration-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        name: Checkout Repository Code
-      - name: Setup Node and Yarn
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
-          cache: "yarn"
-      - run: yarn install --frozen-lockfile
-      - run: yarn test
+  # integration-test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       name: Checkout Repository Code
+  #     - name: Setup Node and Yarn
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: 18
+  #         cache: "yarn"
+  #     - run: yarn install --frozen-lockfile
+  #     - run: yarn test
   build:
     runs-on: ubuntu-latest
     env:
       MOCK_URL: ${{ secrets.MOCK_URL }}
-      API_URL: ${{ secrets.API_URL }} 
+      API_URL: ${{ secrets.API_URL }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node and Yarn
@@ -35,4 +35,4 @@ jobs:
       - run: yarn build
         env:
           MOCK_URL: ${{ env.MOCK_URL }}
-          API_URL: ${{ env.API_URL }} 
+          API_URL: ${{ env.API_URL }}

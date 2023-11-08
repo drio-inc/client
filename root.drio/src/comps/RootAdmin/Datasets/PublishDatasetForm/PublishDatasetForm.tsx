@@ -48,12 +48,14 @@ export default function PublishDatasetForm() {
   const datasetState = useAppSelector((state) => state.dataset);
   const dataSourceState = useAppSelector((state) => state.dataSource);
 
-  const options = dataSourceState.rows.map((row) => {
-    return {
-      label: row.sourceName,
-      value: row.sourceName.split(" ").join("_").toLowerCase(),
-    };
-  });
+  const options = dataSourceState.rows.length
+    ? dataSourceState.rows?.map((row) => {
+        return {
+          label: row.name,
+          value: row.name.split(" ").join("_").toLowerCase(),
+        };
+      })
+    : [];
 
   const form = useZodForm({
     schema: schema,

@@ -28,14 +28,14 @@ export default function AddNewLicenseForm() {
     if (createKey?.licenseKey) {
       refetch();
     }
-  }, [refetch]);
+  }, [createKey?.licenseKey, refetch]);
 
   const form = useZodForm({
     schema: schema,
   });
 
   const normalizeLicense =
-    createKey?.licenseKey.split("-").join("").toUpperCase().substring(0, 20) ??
+    createKey?.licenseKey?.split("-").join("").toUpperCase().substring(0, 20) ??
     "";
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {

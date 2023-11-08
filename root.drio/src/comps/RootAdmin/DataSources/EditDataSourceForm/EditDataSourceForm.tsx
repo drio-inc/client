@@ -77,10 +77,12 @@ export default function EditDatasourceForm({ row }: TableRow) {
   //   value: row.id,
   // }));
 
-  const ddxOptions = dataSourceState.rows.map((row) => ({
-    label: `${row.ddx.split("_").join(" ").toUpperCase()} (${row.ou})`,
-    value: row.ddx,
-  }));
+  const ddxOptions = dataSourceState?.rows?.length
+    ? dataSourceState?.rows?.map((row) => ({
+        label: `${row.ddx.split("_").join(" ").toUpperCase()} (${row.ou})`,
+        value: row.ddx,
+      }))
+    : [];
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
