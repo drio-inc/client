@@ -74,9 +74,9 @@ const NavLinks = [
   },
 
   {
+    default: "",
     name: "System Settings",
     href: "system-settings",
-    default: "system-settings",
     icon: <HiOutlinePuzzle className="inline-block w-6 h-6 mr-2" />,
   },
 
