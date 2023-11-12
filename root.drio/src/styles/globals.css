@@ -12,12 +12,11 @@
 }
 
 .custom-container {
-  min-height: calc(100vh - 6rem);
+  min-height: calc(100vh - 4rem);
 }
 
 canvas {
-  width: 80vw !important;
-  height: 400px !important;
+  height: 200px !important;
 }
 
 a {

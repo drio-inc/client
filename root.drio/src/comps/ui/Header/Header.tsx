@@ -48,10 +48,10 @@ export default function Header() {
       [router?.pathname?.split("/")?.length - 1]?.replace(/-/g, " ");
 
   return (
-    <nav className="shadow-sm h-24">
+    <nav className="shadow-sm h-[4rem]">
       <div className="flex items-center justify-between md:px-8 px-4 h-full">
         <Link
-          className="text-gray-700 text-3xl capitalize hidden md:inline-block font-bold"
+          className="text-gray-700 text-2xl capitalize hidden md:inline-block font-bold"
           href={router.pathname}
         >
           {pageTitles[path] ?? path}

@@ -1,18 +1,18 @@
+import { useState } from "react";
 import { StatelessSelectInput } from "@/comps/ui/Forms/Inputs/Inputs";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
   Title,
-  Tooltip,
   Legend,
+  Tooltip,
+  BarElement,
+  LinearScale,
+  CategoryScale,
+  Chart as ChartJS,
 } from "chart.js";
-import { useState } from "react";
 
 import { Bar } from "react-chartjs-2";
-import { HiOutlineFilter } from "react-icons/hi";
 import { IoRefresh } from "react-icons/io5";
+import { HiOutlineFilter } from "react-icons/hi";
 
 export const Data = [
   {
@@ -97,18 +97,18 @@ export const data = {
 
   datasets: [
     {
-      label: "Errors 50%",
-      data: labels.map(() => Data[0].userGain),
-      backgroundColor: "#f87171",
-      borderSkipped: false,
       borderRadius: 100,
+      label: "Errors 50%",
+      borderSkipped: false,
+      backgroundColor: "#f87171",
+      data: labels.map(() => Data[0].userGain),
     },
     {
-      label: "Anomalies 30%",
-      data: labels.map(() => Data[1].userGain),
-      backgroundColor: "#4ade80",
-      borderSkipped: false,
       borderRadius: 100,
+      borderSkipped: false,
+      label: "Anomalies 30%",
+      backgroundColor: "#4ade80",
+      data: labels.map(() => Data[1].userGain),
     },
   ],
 };
@@ -136,20 +136,20 @@ const AnomaliesAndErrorsChart = () => {
   );
 
   return (
-    <div className="p-12">
-      <div className="flex justify-between">
-        <h2 className="text-[#223354] text-2xl font-semibold mb-8">
+    <div className="p-4 bg-white rounded-md mt-2">
+      <div className="flex flex-wrap justify-between">
+        <h2 className="text-[#223354] text-2xl font-semibold">
           Anomalies and Errors
         </h2>
 
-        <div className="flex items-center gap-x-4">
-          <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 p-2 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
-            <IoRefresh className="mr-1 font-bold" />
-            <span className="text-sm font-medium">Re-run</span>
+        <div className="flex flex-wrap items-center gap-x-4">
+          <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 p-1 flex gap-x-1 items-center rounded border-2 border-indigo-200 text-drio-red-dark">
+            <IoRefresh className="font-bold" />
+            <span className="text-xs font-medium">Re-run</span>
           </button>
 
           <span className="inline-block p-2 bg-indigo-50 rounded border-2 border-indigo-200">
-            <HiOutlineFilter className="text-drio-red w-5 h-5" />
+            <HiOutlineFilter className="text-drio-red w-3 h-3" />
           </span>
 
           <StatelessSelectInput
@@ -166,19 +166,21 @@ const AnomaliesAndErrorsChart = () => {
         </div>
       </div>
 
-      <Bar options={options} data={{ ...data, datasets: filteredDatasets }} />
+      <div className="pl-16">
+        <Bar options={options} data={{ ...data, datasets: filteredDatasets }} />
+      </div>
 
-      <div className="w-full flex gap-x-8 mt-12 ml-12">
+      <div className="w-full flex gap-x-8 mt-2">
         {data.datasets.map((dataset, i) => (
           <div
             key={i}
-            className={`flex items-center cursor-pointer ${
-              hiddenDatasets.includes(i) ? "opacity-50" : ""
-            }`}
             onClick={() => toggleDataset(i)}
+            className={`flex items-center cursor-pointer ${
+              hiddenDatasets.includes(i) && "opacity-50"
+            }`}
           >
             <div
-              className="py-2 px-8 rounded-md"
+              className="py-2 px-2 md:px-4 lg:px-8 rounded-md"
               style={{ backgroundColor: dataset.backgroundColor }}
             >
               <span className="inline-block text-white font-medium">

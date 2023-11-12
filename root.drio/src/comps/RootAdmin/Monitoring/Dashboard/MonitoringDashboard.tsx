@@ -15,25 +15,25 @@ const Monitoring = () => {
   };
 
   return (
-    <div className="">
-      <div className="bg-gray-50 shadow-md pt-8">
-        <div className="flex justify-end mb-4 mr-6">
-          <DateRangePicker
-            placement="leftStart"
-            onChange={setDateRange}
-            onClean={() => setDateRange([new Date(), new Date()])}
-            placeholder={`${
-              formatDate(dateRange[0]) + " - " + formatDate(dateRange[1])
-            }`}
-            renderValue={(value: DateRange, format: string) => {
-              return `${formatDate(value[0])} - ${formatDate(value[1])}`;
-            }}
-          />
-        </div>
-        <StatCards />
-        <DatasetAccessChart />
-        <AnomaliesAndErrorsChart />
+    <div>
+      <StatCards />
+
+      <div className="flex my-4 p-4 bg-white rounded-md">
+        <DateRangePicker
+          placement="rightStart"
+          onChange={setDateRange}
+          onClean={() => setDateRange([new Date(), new Date()])}
+          placeholder={`${formatDate(dateRange[0])} - ${formatDate(
+            dateRange[1]
+          )}`}
+          renderValue={(value: DateRange, format: string) =>
+            `${formatDate(value[0])} - ${formatDate(value[1])}`
+          }
+        />
       </div>
+
+      <DatasetAccessChart />
+      <AnomaliesAndErrorsChart />
     </div>
   );
 };
