@@ -5,6 +5,7 @@ import Layout from "@/comps/Layout/Layout";
 
 import Button from "@ui/Button";
 import { HiArrowRight } from "react-icons/hi";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
