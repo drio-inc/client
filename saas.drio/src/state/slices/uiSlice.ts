@@ -21,7 +21,7 @@ const initialState: UIState = {
     ddx: "DDX",
     accounts: "Accounts",
     licensing: "Licensing",
-    ou: "Organization Units",
+    ous: "Organization Units",
   },
 };
 

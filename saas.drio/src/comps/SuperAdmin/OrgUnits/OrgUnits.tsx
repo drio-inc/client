@@ -82,16 +82,19 @@ const OrgUnits = ({ modal = false, accountId }: OrgUnitProps) => {
   if (isLoading) return <StaticLoader />;
 
   const transformedData = accountRows?.reduce((acc: TableRow[], curr) => {
-    const orgUnits = curr.organization_units.map((ou) => {
-      return {
-        ...ou,
-        location: `${ou.city}, ${ou.state}, ${ou.country}`,
-        alerts: faker.number.int({ min: 0, max: 7 }),
-        contracts: faker.number.int({ min: 5, max: 20 }),
-        datasetsPublished: faker.number.int({ min: 5, max: 30 }),
-        dailyUsageFrequency: faker.number.int({ min: 10, max: 400 }),
-      };
-    });
+    const orgUnits =
+      (curr?.organization_units &&
+        curr?.organization_units?.map((ou) => {
+          return {
+            ...ou,
+            location: `${ou.city}, ${ou.state}, ${ou.country}`,
+            alerts: faker.number.int({ min: 0, max: 7 }),
+            contracts: faker.number.int({ min: 5, max: 20 }),
+            datasetsPublished: faker.number.int({ min: 5, max: 30 }),
+            dailyUsageFrequency: faker.number.int({ min: 10, max: 400 }),
+          };
+        })) ||
+      [];
 
     return [...acc, ...orgUnits];
   }, []);
