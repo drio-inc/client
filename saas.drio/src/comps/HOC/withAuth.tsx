@@ -15,32 +15,32 @@ function withAuth(OriginalComponent: React.FC) {
     // const url = `/api`;
     const url = process.env.API_URL;
 
-    // useEffect(() => {
-    //   async function validateToken() {
-    //     try {
-    //       const res = await axios.get(`${url}/resources/validate`, {
-    //         headers: {
-    //           Authorization: `Bearer ${getToken()}`,
-    //         },
-    //       });
+    useEffect(() => {
+      async function validateToken() {
+        try {
+          const res = await axios.get(`${url}/resources/validate`, {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          });
 
-    //       if (res.status === 200) {
-    //         setLoading(false);
-    //         return;
-    //       } else {
-    //         setLoading(false);
-    //         router.push("/login");
-    //       }
-    //     } catch (error) {
-    //       setLoading(false);
-    //       router.push("/login");
-    //     }
-    //   }
+          if (res.status === 200) {
+            setLoading(false);
+            return;
+          } else {
+            setLoading(false);
+            router.push("/login");
+          }
+        } catch (error) {
+          setLoading(false);
+          router.push("/login");
+        }
+      }
 
-    //   validateToken();
-    // }, [dispatch, router, url]);
+      validateToken();
+    }, [dispatch, router, url]);
 
-    // if (loading) return <StaticLoader />;
+    if (loading) return <StaticLoader />;
 
     return <OriginalComponent />;
   }
