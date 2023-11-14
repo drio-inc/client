@@ -7,7 +7,7 @@ import Button from "@/comps/ui/Button/Button";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import SubscriptionStatus from "../../SubscribeDatasets/SubscriptionStatus";
+import SubscriptionStatus from "../../DatasetMarketplace/SubscriptionStatus";
 
 const headers = [
   {

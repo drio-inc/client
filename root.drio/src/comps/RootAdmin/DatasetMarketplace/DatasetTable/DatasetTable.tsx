@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import Image from "next/image";
 import { HiX } from "react-icons/hi";
-import SubscribeDatasetMenu from "../SubscribeDatasetMenu";
+import SubscribeDatasetMenu from "../DatasetMarketplaceMenu";
 
 const headers = [
   {

@@ -10,7 +10,7 @@ const initialState: datasetState = {
   rows: [
     {
       id: "1",
-      dataset: "Service Record",
+      dataset: "SAP Inventory",
       ou: "Corp",
       sixMonthsAccess: 25,
       visibility: "Private",
@@ -20,7 +20,7 @@ const initialState: datasetState = {
     },
     {
       id: "2",
-      dataset: "Accidents",
+      dataset: "Salesforce Orders",
       ou: "Corp",
       sixMonthsAccess: 25,
       visibility: "Contractual",

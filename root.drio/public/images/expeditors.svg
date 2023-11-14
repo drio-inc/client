@@ -1,0 +1,43 @@
+<svg version="1.1" id="svg321" xmlns:x="ns_extend;" xmlns:i="ns_ai;" xmlns:graph="ns_graphs;" inkscape:version="0.92.0 r15299" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60.2 34.4" style="enable-background:new 0 0 60.2 34.4;" xml:space="preserve">
+ <style type="text/css">
+  .st0{fill:#EF2C30;}
+ </style>
+ <metadata id="metadata318">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>
+     image/svg+xml
+    </dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage">
+    </dc:type>
+    <dc:title>
+    </dc:title>
+   </cc:Work>
+  </rdf:RDF>
+  <sfw xmlns="ns_sfw;">
+   <slices>
+   </slices>
+   <sliceSourceBounds bottomLeftOrigin="true" height="34.4" width="60.2" x="102.5" y="20.7">
+   </sliceSourceBounds>
+  </sfw>
+ </metadata>
+ <sodipodi:namedview bordercolor="#666666" borderopacity="1.0" fit-margin-bottom="0" fit-margin-left="0" fit-margin-right="0" fit-margin-top="0" id="base" inkscape:current-layer="layer1" inkscape:cx="92.915331" inkscape:cy="27.283133" inkscape:document-units="mm" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:window-height="744" inkscape:window-maximized="1" inkscape:window-width="1280" inkscape:window-x="-4" inkscape:window-y="-4" inkscape:zoom="4.3157571" pagecolor="#ffffff" showgrid="false" units="px">
+ </sodipodi:namedview>
+ <g id="layer1" transform="translate(97.15528,24.203487)" inkscape:groupmode="layer" inkscape:label="Layer 1">
+  <g id="g86" transform="matrix(0.35277777,0,0,-0.35277777,-109.72299,39.321101)">
+   <g>
+    <g id="g88">
+     <g id="g98" transform="translate(126.6222,179.6947)">
+      <path id="path100" inkscape:connector-curvature="0" class="st0" d="M-49.7,0.4l129.3,0L20.9-58.4h-72.5l18.8,18.8h-26
+						l21.1,21.2h-31.1L-49.7,0.4z">
+      </path>
+     </g>
+     <g id="g102" transform="translate(122.9706,176.0858)">
+      <path id="path104" inkscape:connector-curvature="0" class="st0" d="M-65.2-14.9l0.2-56.1l-22.3-22.5v56.4L-65.2-14.9z">
+      </path>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>

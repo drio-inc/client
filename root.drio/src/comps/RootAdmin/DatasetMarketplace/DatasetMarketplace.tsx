@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import DatasetDetails from "./DatasetDetails";
 import EditDatasetForm from "./RequestDataAccessForm";
 
-import SubscribeDatasetMenu from "./SubscribeDatasetMenu/SubscribeDatasetMenu";
+import SubscribeDatasetMenu from "./DatasetMarketplaceMenu/DatasetMarketplaceMenu";
 
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
@@ -63,7 +63,50 @@ const headers = [
   },
 ];
 
-const Dataset = () => {
+const DatasetProviders = [
+  {
+    name: "Cox Automotive",
+    logo: "/images/cox-automotive.jpeg",
+  },
+  {
+    name: "XTime",
+    logo: "/images/xtime-big.png",
+  },
+  {
+    name: "Kelly Blue Book",
+    logo: "/images/kbb.svg",
+  },
+  {
+    name: "Dealer.com",
+    logo: "/images/dealer-com.jpeg",
+  },
+  {
+    name: "Savino Del Bene",
+    logo: "/images/sdb.jpeg",
+  },
+  {
+    name: "Gebruder Weiss",
+    logo: "/images/gw.jpeg",
+  },
+  {
+    name: "Expeditors International",
+    logo: "/images/expeditors.svg",
+  },
+  {
+    name: "UPS SCS",
+    logo: "/images/ups-yellow.png",
+  },
+  {
+    name: "DGF",
+    logo: "/images/dgf.svg",
+  },
+  {
+    name: "DHL Express",
+    logo: "/images/dhl-d.svg",
+  },
+];
+
+const DatasetMarketplace = () => {
   const dispatch = useAppDispatch();
   const [tab, setTab] = useState("organizations");
   const subscribeDatasets = useAppSelector((state) => state.subscribeDataset);
@@ -87,8 +130,8 @@ const Dataset = () => {
   return (
     <div className="w-full">
       <div className="flex flex-col text-2xl text-gray-900 font-medium p-6 mb-6 bg-white rounded-md border">
-        <span>Top 10 Organizations Accessing Data</span>
-        <TopOrgs />
+        <span>Top 10 Dataset Provider Organizations</span>
+        <TopOrgs entities={DatasetProviders || []} />
       </div>
 
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
@@ -189,4 +232,4 @@ const Dataset = () => {
   );
 };
 
-export default Dataset;
+export default DatasetMarketplace;

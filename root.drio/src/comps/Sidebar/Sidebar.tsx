@@ -50,8 +50,8 @@ const NavLinks = [
         href: "/my-datasets",
       },
       {
-        name: "Subscribe Datasets",
-        href: "/subscribe-datasets",
+        name: "Dataset Marketplace",
+        href: "/dataset-marketplace",
       },
     ],
   },

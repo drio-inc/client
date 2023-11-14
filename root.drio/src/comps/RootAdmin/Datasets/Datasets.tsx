@@ -64,6 +64,49 @@ const headers = [
   },
 ];
 
+const TopDatasets = [
+  {
+    name: "Savino Del Bene",
+    logo: "/images/sdb.jpeg",
+  },
+  {
+    name: "Gebruder Weiss",
+    logo: "/images/gw.jpeg",
+  },
+  {
+    name: "Expeditors International",
+    logo: "/images/expeditors.svg",
+  },
+  {
+    name: "UPS SCS",
+    logo: "/images/ups-yellow.svg",
+  },
+  {
+    name: "DGF",
+    logo: "/images/dgf.svg",
+  },
+  {
+    name: "DHL Express",
+    logo: "/images/dhl-d.svg",
+  },
+  {
+    name: "DHL Same Day",
+    logo: "/images/dhl.svg",
+  },
+  {
+    name: "Kintetsu",
+    logo: "/images/kwe.svg",
+  },
+  {
+    name: "Hamburg SUD",
+    logo: "/images/hamburg-sud.jpeg",
+  },
+  {
+    name: "UPS Small Parcel",
+    logo: "/images/ups-yellow.svg",
+  },
+];
+
 const Dataset = () => {
   const dispatch = useAppDispatch();
   const datasetState = useAppSelector((state) => state.dataset);
@@ -88,7 +131,7 @@ const Dataset = () => {
     <div className="w-full">
       <div className="flex flex-col text-2xl text-gray-900 font-medium p-6 mb-6 bg-white rounded-md border">
         <span>Top 10 Organizations Accessing Data</span>
-        <TopOrgs />
+        <TopOrgs entities={TopDatasets || []} />
       </div>
 
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
