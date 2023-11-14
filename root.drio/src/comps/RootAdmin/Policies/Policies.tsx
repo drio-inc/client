@@ -70,13 +70,7 @@ const Policies = () => {
     }
   };
 
-  const clearSelectedRows = () => {
-    dispatch(setSelectedRows([]));
-  };
-
-  const handleRowClick = (row: TableRow) => {
-    dispatch(setOpenModal("policyRulesTable"));
-  };
+  const clearSelectedRows = () => dispatch(setSelectedRows([]));
 
   return (
     <div className="w-full">
@@ -121,12 +115,6 @@ const Policies = () => {
               Import Text/PDF
             </Button>
           </div>
-
-          <div className="hidden">
-            <Modal identifier="policyRulesTable">
-              <PolicyRules modal={true} />
-            </Modal>
-          </div>
         </div>
 
         <Table
@@ -134,7 +122,6 @@ const Policies = () => {
           menu={PoliciesMenu}
           rows={policiesState.rows}
           handleCheckbox={handleCheckbox}
-          handleRowClick={handleRowClick}
           selectedRows={policiesState.selectedRows}
         />
       </div>

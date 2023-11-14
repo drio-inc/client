@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/policiesSlice";
+import PolicyRules from "../PolicyRules";
 
 const PoliciesMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
@@ -30,32 +31,32 @@ const PoliciesMenu = ({ row }: TableRow) => {
           align="center"
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
+          {/* <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            <Modal
+              label="Edit"
+              identifier="editPolicyForm"
+              onClick={() => dispatch(setOpenModal("editPolicyForm"))}
+            >
+              Edit
+            </Modal>
+          </span> */}
+
+          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            <Modal
+              label="View"
+              identifier="policyRulesTable"
+              onClick={() => dispatch(setOpenModal("policyRulesTable"))}
+            >
+              <PolicyRules modal={true} />
+            </Modal>
+          </span>
+
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <AlertModal
               row={row}
               accessor={row.ou}
               onClick={() => deleteRow(row.id)}
             />
-          </span>
-
-          {/* <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {editForm && (
-              <Modal
-                label="Edit"
-                identifier="editOrgUnitForm"
-                onClick={() => dispatch(setOpenModal("editOrgUnitForm"))}
-              >
-                {editForm}
-              </Modal>
-            )}
-          </span> */}
-
-          <span
-            className={
-              "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
-            }
-          >
-            View
           </span>
         </Popover.Content>
       </Popover.Portal>

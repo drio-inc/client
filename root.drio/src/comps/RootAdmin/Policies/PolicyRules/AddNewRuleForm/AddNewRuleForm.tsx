@@ -5,37 +5,38 @@ import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 
 import { z } from "zod";
-import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
-
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { SubmitHandler, useFieldArray } from "react-hook-form";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRuleRows } from "@/state/slices/policiesSlice";
 import { useAddRuleMutation } from "@/api/resources/policies";
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 const schema = z.object({
-  default_allow: z.boolean({
-    required_error: "Please select an option",
-  }),
+  name: z.string().nonempty("Please Enter a value"),
 
   dataset: z.string({
     required_error: "Please select a dataset",
   }),
 
-  name: z.string().nonempty("Please Enter a value"),
+  default_allow: z.boolean({
+    required_error: "Please select an option",
+  }),
 
   metadata: z.string({
     required_error: "Please select metadata",
   }),
 
-  conditions: z.string().nonempty("Please Enter a value"),
-
-  value: z.string({
-    required_error: "Please select a value",
+  conditions: z.string({
+    required_error: "Please select a condition",
   }),
 
-  subrule: z.string().nonempty("Please Enter a value"),
+  value: z.string().nonempty("Please Enter a value"),
+
+  subrule: z.string({
+    required_error: "Please select a subrule",
+  }),
 
   action: z.string({
     required_error: "Please select an action",
@@ -73,27 +74,25 @@ export default function AddNewRuleForm() {
     dispatch(setCloseModal("addNewRuleForm"));
   };
 
+  const addNewRule = (condition: string) => {};
+
   return (
     <Layout>
       <Form form={form} onSubmit={onSubmit}>
-        <div className="mx-auto bg-white p-6 rounded-lg max-w-[60vw]">
+        <div className="mx-auto bg-white p-6 rounded-lg w-[60vw]">
           <h2 className="text-gray-700 text-2xl font-bold">Policy Rules</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4 border bg-gray-50">
-            <div className="px-4 py-2 w-1/2">
-              <SelectInput
-                placeholder={"Select"}
-                label={"Default Allow"}
-                registerName="default_allow"
+            <div className="px-4 py-2 w-1/3">
+              <TextInput
+                label={"Rule Name"}
+                {...form.register("name")}
+                placeholder={"Enter rule name"}
                 className="md:text-sm 2xl:text-base"
-                options={[
-                  { label: "True", value: true },
-                  { label: "False", value: false },
-                ]}
               />
             </div>
 
-            <div className="px-4 py-2 w-1/2">
+            <div className="px-4 py-2 w-1/3">
               <SelectInput
                 placeholder={"Select"}
                 registerName="dataset"
@@ -107,76 +106,94 @@ export default function AddNewRuleForm() {
               />
             </div>
 
-            <div className="px-4 py-2 w-1/2">
-              <TextInput
-                label={"Rule Name"}
-                {...form.register("name")}
-                placeholder={"Enter rule name"}
+            <div className="px-4 py-2 w-1/3">
+              <SelectInput
+                placeholder={"Select"}
+                label={"Default Allow"}
+                registerName="default_allow"
                 className="md:text-sm 2xl:text-base"
+                options={[
+                  { label: "True", value: true },
+                  { label: "False", value: false },
+                ]}
               />
             </div>
+          </div>
 
-            <div className="px-4 py-2 w-1/2">
+          <div className="flex flex-wrap -m-2 rounded-lg my-4 border bg-gray-50">
+            <div className="px-4 py-2 w-1/4">
               <SelectInput
                 placeholder={"Select"}
                 registerName="metadata"
                 label={"Select Metadata"}
                 className="md:text-sm 2xl:text-base"
                 options={[
-                  { label: "User Location", value: "user_location" },
                   { label: "Request", value: "Request Location" },
+                  { label: "User Location", value: "User Location" },
                 ]}
               />
             </div>
 
-            <div className="px-4 py-2 w-1/2">
-              <TextInput
-                label={"Conditions"}
-                placeholder={"Add conditions"}
-                {...form.register("conditions")}
-                className="md:text-sm 2xl:text-base"
-              />
-            </div>
-
-            <div className="px-4 py-2 w-1/2">
+            <div className="px-4 py-2 w-1/4">
               <SelectInput
-                placeholder={"Select"}
-                registerName="value"
-                label={"Select Value"}
+                label={"Conditions"}
+                registerName="conditions"
+                placeholder={"Add conditions"}
                 className="md:text-sm 2xl:text-base"
                 options={[
-                  { label: "Equal", value: "=" },
-                  { label: "<", value: "<" },
+                  { label: "< (Less than)", value: "<" },
+                  { label: "> (Greater than)", value: ">" },
+                  { label: "= (Equal to)", value: "=" },
                   { label: "Regex", value: "regex" },
                 ]}
               />
             </div>
 
-            <div className="px-4 py-2 w-1/2">
+            <div className="px-4 py-2 w-1/4">
               <TextInput
-                label={"Add Subrule"}
-                placeholder={"Add subrule"}
-                {...form.register("subrule")}
+                label={"Conditional Value"}
+                {...form.register("value")}
+                placeholder={"Please enter a value"}
                 className="md:text-sm 2xl:text-base"
               />
             </div>
 
-            <div className="px-4 py-2 w-1/2">
+            <div className="px-4 py-2 w-1/4">
               <SelectInput
-                placeholder={"Select"}
-                registerName="action"
+                label={"Add Subrule"}
+                registerName="subrule"
+                placeholder={"Add Subrule"}
+                className="md:text-sm 2xl:text-base"
+                onChangeCustomAction={(c) => addNewRule(c as string)}
+                options={[
+                  { label: "AND", value: "and" },
+                  { label: "OR", value: "or" },
+                  { label: "None", value: "none" },
+                ]}
+              />
+            </div>
+
+            <div className="mx-auto px-4 py-2 w-1/4">
+              <SelectInput
                 label={"Add Action"}
+                registerName="action"
+                placeholder={"Select"}
                 className="md:text-sm 2xl:text-base"
                 options={[
-                  { label: "Allow", value: "allow" },
-                  { label: "Deny", value: "deny" },
                   { label: "Mask", value: "mask" },
+                  { label: "Keep", value: "keep" },
+                  { label: "Index", value: "index" },
+                  { label: "Remove", value: "remove" },
+                  { label: "Generate", value: "generate" },
+                  { label: "Obfuscate", value: "obfuscate" },
+                  { label: "Quarantine", value: "quarantine" },
+                  { label: 'Convert "FName"', value: "convert_fname" },
                 ]}
               />
             </div>
           </div>
 
-          <div className="px-2 py-2 flex gap-4 justify-end mt-4">
+          <div className="px-2 py-4 flex gap-4 justify-end mt-4">
             <Button
               type="button"
               intent={`secondary`}
@@ -194,3 +211,45 @@ export default function AddNewRuleForm() {
     </Layout>
   );
 }
+
+// import React from "react";
+// import { useForm, useFieldArray, Controller } from "react-hook-form";
+
+// export default function App() {
+//   const { register, control, handleSubmit, reset, trigger, setError } = useForm(
+//     {
+//       // defaultValues: {}; you can populate the fields by this attribute
+//     }
+//   );
+//   const { fields, append, remove } = useFieldArray({
+//     control,
+//     name: "test",
+//   });
+
+//   return (
+//     <form onSubmit={handleSubmit((data) => console.log(data))}>
+//       <ul>
+//         {fields.map((item, index) => (
+//           <li key={item.id}>
+//             <input {...register(`test.${index}.firstName`)} />
+//             <Controller
+//               render={({ field }) => <input {...field} />}
+//               name={`test.${index}.lastName`}
+//               control={control}
+//             />
+//             <button type="button" onClick={() => remove(index)}>
+//               Delete
+//             </button>
+//           </li>
+//         ))}
+//       </ul>
+//       <button
+//         type="button"
+//         onClick={() => append({ firstName: "bill", lastName: "luo" })}
+//       >
+//         append
+//       </button>
+//       <input type="submit" />
+//     </form>
+//   );
+// }

@@ -185,7 +185,7 @@ const StatelessCustomControl = ({
 const CustomMenu = (props: MenuProps) => {
   return (
     <Menu {...props}>
-      <div className="p-2 bg-white py-1 shadow-lg border border-gray-300 rounded-md ring-1 ring-black ring-opacity-5">
+      <div className="p-2 bg-white py-1 shadow-lg border border-gray-300 rounded-md">
         {props.children}
       </div>
     </Menu>

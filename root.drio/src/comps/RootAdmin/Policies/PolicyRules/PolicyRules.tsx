@@ -9,8 +9,6 @@ import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 import Modal from "@/comps/ui/Modal";
 import { useRouter } from "next/router";
-import AddNewPolicyForm from "../AddNewPolicyForm";
-import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 
 import PolicyRulesMenu from "./PolicyRulesMenu";
 import AddNewRuleForm from "./AddNewRuleForm/AddNewRuleForm";
@@ -61,7 +59,7 @@ const PolicyRules = ({ modal = false }: { modal?: boolean }) => {
       <div
         className={`bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between border-t`}
       >
-        <h2 className="text-gray-700 text-2xl font-bold">Policy-Mktg Rules</h2>
+        <h2 className="text-gray-700 text-2xl font-bold">Policy Rules</h2>
 
         {modal ? (
           <Button
@@ -140,6 +138,10 @@ const PolicyRules = ({ modal = false }: { modal?: boolean }) => {
               src="/document.svg"
               className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white"
             />
+
+            <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
+              <Button intent={"primary"}>Save Policy</Button>
+            </div>
           </div>
         </>
       )}

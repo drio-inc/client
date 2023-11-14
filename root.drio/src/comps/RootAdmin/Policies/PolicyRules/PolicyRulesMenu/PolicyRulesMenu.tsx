@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRuleRows, setSelectedRuleRows } from "@/state/slices/policiesSlice";
+import AddNewRuleForm from "../AddNewRuleForm";
 
 const PolicyRulesMenu = ({ row, editForm }: any) => {
   const dispatch = useAppDispatch();
@@ -16,6 +17,7 @@ const PolicyRulesMenu = ({ row, editForm }: any) => {
     dispatch(
       setRuleRows(policiesState.ruleRows.filter((row) => row.id !== id))
     );
+
     dispatch(setSelectedRuleRows([]));
   };
 
@@ -30,26 +32,24 @@ const PolicyRulesMenu = ({ row, editForm }: any) => {
           side="left"
           sideOffset={5}
           align="center"
-          className="bg-white rounded-lg shadow-lg text-sm text-gray-700 z-[1001]"
+          className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
+          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            <Modal
+              label="Edit"
+              identifier="addNewRuleForm"
+              onClick={() => dispatch(setOpenModal("addNewRuleForm"))}
+            >
+              <AddNewRuleForm />
+            </Modal>
+          </span>
+
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <AlertModal
               row={row}
               accessor={row.ou}
               onClick={() => deleteRow(row.id)}
             />
-          </span>
-
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            {editForm && (
-              <Modal
-                label="Edit"
-                identifier="editOrgUnitForm"
-                onClick={() => dispatch(setOpenModal("editOrgUnitForm"))}
-              >
-                {editForm}
-              </Modal>
-            )}
           </span>
         </Popover.Content>
       </Popover.Portal>
