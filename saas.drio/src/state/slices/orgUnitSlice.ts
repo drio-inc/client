@@ -7,8 +7,8 @@ type OrgUnitState = {
 };
 
 const initialState: OrgUnitState = {
-  row: null,
   rows: [],
+  row: null,
   selectedRows: [],
 };
 

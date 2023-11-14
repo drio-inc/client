@@ -2,11 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type AnomalyState = {
   rows: TableRow[];
+  row: TableRow | null;
   selectedRows: number[];
-  addNewDispatched: boolean;
 };
 
 const initialState: AnomalyState = {
+  row: null,
   rows: [
     {
       id: "1",
@@ -50,7 +51,6 @@ const initialState: AnomalyState = {
     },
   ],
   selectedRows: [],
-  addNewDispatched: false,
 };
 
 const anomalySlice = createSlice({
@@ -64,11 +64,15 @@ const anomalySlice = createSlice({
     setSelectedRows(state, action) {
       state.selectedRows = action.payload;
     },
+
+    setRow(state, action) {
+      state.row = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = anomalySlice.actions;
+export const { setRows, setSelectedRows, setRow } = anomalySlice.actions;
 
 export default anomalySlice.reducer;

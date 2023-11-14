@@ -1,10 +1,13 @@
 import Table from "@/comps/ui/Table";
-import { setSelectedRows } from "@/state/slices/anomaliesSlice";
+import { setSelectedRows, setRow } from "@/state/slices/anomaliesSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { HiMinusSm } from "react-icons/hi";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
+import { setOpenModal } from "@/state/slices/uiSlice";
+import Modal from "@/comps/ui/Modal";
+import AnomalyDetails from "./AnomalyDetails";
 
 const headers = [
   {
@@ -58,8 +61,11 @@ const Anomalies = () => {
     }
   };
 
-  const clearSelectedRows = () => {
-    dispatch(setSelectedRows([]));
+  const clearSelectedRows = () => dispatch(setSelectedRows([]));
+
+  const handleRowClick = (row: TableRow) => {
+    dispatch(setRow(row));
+    dispatch(setOpenModal("anomalyDetails"));
   };
 
   return (
@@ -89,10 +95,17 @@ const Anomalies = () => {
           </div>
         )}
 
+        <div className="hidden">
+          <Modal identifier="anomalyDetails">
+            <AnomalyDetails />
+          </Modal>
+        </div>
+
         <Table
           headers={headers}
           rows={anomalyState.rows}
           handleCheckbox={handleCheckbox}
+          handleRowClick={handleRowClick}
           selectedRows={anomalyState.selectedRows}
         />
       </div>
