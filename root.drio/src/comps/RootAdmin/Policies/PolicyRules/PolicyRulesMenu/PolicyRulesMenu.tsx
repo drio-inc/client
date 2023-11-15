@@ -1,15 +1,16 @@
 import Modal from "@/comps/ui/Modal";
+import { useRouter } from "next/router";
 import AlertModal from "@ui/AlertModal";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
-
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import { setOpenModal } from "@/state/slices/uiSlice";
-import { setRuleRows, setSelectedRuleRows } from "@/state/slices/policiesSlice";
 import AddNewRuleForm from "../AddNewRuleForm";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
+import { setRuleRows, setSelectedRuleRows } from "@/state/slices/policiesSlice";
 
-const PolicyRulesMenu = ({ row, editForm }: any) => {
+const PolicyRulesMenu = ({ row }: TableRow) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const policiesState = useAppSelector((state) => state.policies);
 
@@ -32,25 +33,31 @@ const PolicyRulesMenu = ({ row, editForm }: any) => {
           side="left"
           sideOffset={5}
           align="center"
-          className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
+          className="bg-white rounded-lg shadow-lg text-sm text-gray-700 z-[1001]"
         >
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <Modal
               label="Edit"
               identifier="addNewRuleForm"
-              onClick={() => dispatch(setOpenModal("addNewRuleForm"))}
+              onClick={() => router.push("/policies/new-policy")}
             >
               <AddNewRuleForm />
             </Modal>
           </span>
 
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+          {/* <span
+            onClick={() => dispatch(setCloseModal("policyRulesTable"))}
+            className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
+          >
             <AlertModal
               row={row}
-              accessor={row.ou}
-              onClick={() => deleteRow(row.id)}
+              accessor={row.name}
+              onClick={() => {
+                deleteRow(row.id);
+                dispatch(setCloseModal("policyRulesTable"));
+              }}
             />
-          </span>
+          </span> */}
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

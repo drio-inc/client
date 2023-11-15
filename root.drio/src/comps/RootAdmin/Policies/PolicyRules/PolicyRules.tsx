@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Table from "@/comps/ui/Table";
-
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-
 import Button from "@/comps/ui/Button";
 import { HiPlus, HiX } from "react-icons/hi";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
@@ -12,6 +10,8 @@ import { useRouter } from "next/router";
 
 import PolicyRulesMenu from "./PolicyRulesMenu";
 import AddNewRuleForm from "./AddNewRuleForm/AddNewRuleForm";
+import { useZodForm } from "@/comps/ui/Forms/Form";
+import EmptyTable from "./EmptyTable";
 
 const headers = [
   {
@@ -19,40 +19,44 @@ const headers = [
     accessor: "name",
   },
   {
-    header: "Metadata Attribute",
+    header: "Dataset",
+    accessor: "dataset",
+  },
+  {
+    header: "Default Allow",
+    accessor: "defaultAllow",
+  },
+  {
+    header: "Metadata",
     accessor: "metadata",
   },
-
   {
     header: "Conditions",
     accessor: "conditions",
   },
   {
-    header: "Value",
+    header: "Conditional Value",
     accessor: "value",
-  },
-  {
-    header: "Action",
-    accessor: "action",
   },
   {
     header: "Subrule",
     accessor: "subrule",
   },
   {
-    header: "Date Last Modified",
-    accessor: "dateLastModified",
-  },
-  {
-    header: "Modified By",
-    accessor: "modifiedBy",
+    header: "Action",
+    accessor: "action",
   },
 ];
 
-const PolicyRules = ({ modal = false }: { modal?: boolean }) => {
+type PolicyProps = {
+  row?: any;
+  modal?: boolean;
+};
+
+const PolicyRules = ({ modal, row }: PolicyProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const policiesState = useAppSelector((state) => state.policies);
+  const { ruleRows } = useAppSelector((state) => state.policies);
 
   return (
     <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
@@ -77,14 +81,12 @@ const PolicyRules = ({ modal = false }: { modal?: boolean }) => {
           </Button>
         ) : (
           <Button
-            intent={"primaryOutline"}
             className="ml-auto"
-            onClick={() => {
-              dispatch(setOpenModal("addNewRuleForm"));
-            }}
+            intent={"primaryOutline"}
+            onClick={() => dispatch(setOpenModal("addNewRuleForm"))}
           >
             <div className="flex items-center gap-1">
-              <HiPlus />
+              <HiPlus className="w-4 h-4" />
               <span className="inline-block">Add New Rule</span>
             </div>
           </Button>
@@ -106,43 +108,31 @@ const PolicyRules = ({ modal = false }: { modal?: boolean }) => {
         </Modal>
       </div>
 
-      {policiesState.ruleRows.length > 0 ? (
-        <Table
-          noSelection
-          headers={headers}
-          menu={PolicyRulesMenu}
-          rows={policiesState.ruleRows}
-          selectedRows={policiesState.selectedRuleRows}
-        />
+      {modal ? (
+        <>
+          {row?.rules && row?.rules.length > 0 ? (
+            <Table
+              noSelection
+              rows={row.rules}
+              headers={headers}
+              // menu={PolicyRulesMenu}
+            />
+          ) : (
+            <EmptyTable />
+          )}
+        </>
       ) : (
         <>
-          <div className="w-full flex justify-between bg-[#F4F9FF]">
-            {headers?.map((header, index) => (
-              <div
-                key={index}
-                className={"font-bold uppercase text-gray-500 text-xs p-4"}
-              >
-                {header.header}
-              </div>
-            ))}
-          </div>
-          <div className="relative bg-gradient-to-t from-gray-100">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="border-t border-b p-4 h-[48px]" />
-            ))}
-
-            <Image
-              width={40}
-              height={40}
-              alt="empty"
-              src="/document.svg"
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white"
+          {ruleRows.length > 0 ? (
+            <Table
+              noSelection
+              rows={ruleRows}
+              headers={headers}
+              // menu={PolicyRulesMenu}
             />
-
-            <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
-              <Button intent={"primary"}>Save Policy</Button>
-            </div>
-          </div>
+          ) : (
+            <EmptyTable />
+          )}
         </>
       )}
     </div>

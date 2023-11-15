@@ -5,13 +5,15 @@ import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 
 import { z } from "zod";
-import { useZodForm, Form } from "@ui/Forms/Form";
+import { useZodForm, Form, FieldError } from "@ui/Forms/Form";
 import { SubmitHandler, useFieldArray } from "react-hook-form";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRuleRows } from "@/state/slices/policiesSlice";
 import { useAddRuleMutation } from "@/api/resources/policies";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { HiOutlineTrash } from "react-icons/hi";
+import { useState } from "react";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -20,27 +22,37 @@ const schema = z.object({
     required_error: "Please select a dataset",
   }),
 
-  default_allow: z.boolean({
+  defaultAllow: z.boolean({
     required_error: "Please select an option",
   }),
 
-  metadata: z.string({
-    required_error: "Please select metadata",
-  }),
+  subrules: z
+    .array(
+      z.object({
+        metadata: z
+          .string({
+            required_error: "Please select a metadata",
+          })
+          .nonempty("Please select a metadata"),
 
-  conditions: z.string({
-    required_error: "Please select a condition",
-  }),
+        conditions: z
+          .string({
+            required_error: "Please select a condition",
+          })
+          .nonempty("Please select a condition"),
 
-  value: z.string().nonempty("Please Enter a value"),
+        value: z.string().nonempty("Please enter a value"),
 
-  subrule: z.string({
-    required_error: "Please select a subrule",
-  }),
+        subrule: z
+          .string({
+            required_error: "Please select a subrule",
+          })
+          .nonempty("Please select a subrule"),
+      })
+    )
+    .nonempty("Please add at least one subrule"),
 
-  action: z.string({
-    required_error: "Please select an action",
-  }),
+  action: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -49,32 +61,89 @@ export default function AddNewRuleForm() {
   const dispatch = useAppDispatch();
   const [addRule, result] = useAddRuleMutation();
   const policyState = useAppSelector((state) => state.policies);
+  const [showActionField, setShowActionField] = useState(false);
 
   const form = useZodForm({
     schema: schema,
+    defaultValues: {
+      subrules: [
+        {
+          value: "",
+          subrule: "",
+          metadata: "",
+          conditions: "",
+        },
+      ],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "subrules",
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      const res = await addRule({
-        ...data,
-      }).unwrap();
+    console.log(data);
 
-      dispatch(setRuleRows([...policyState.ruleRows, res]));
+    const rules =
+      data.subrules && data.subrules.length > 0
+        ? data.subrules.map((subrule, index) => ({
+            ...subrule,
+            action: data.action,
+            name: index === 0 ? data.name : "",
+            dataset: data.dataset.replaceAll("_", " "),
+            defaultAllow: data.defaultAllow ? "True" : "False",
+          }))
+        : [];
 
-      showAlert("Rule added successfully", "success");
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
+    dispatch(setRuleRows([...policyState.ruleRows, ...rules]));
 
     form.reset();
     dispatch(setCloseModal("addNewRuleForm"));
+    showAlert("Rule added successfully", "success");
+
+    // try {
+    //   const res = await addRule({
+    //     ...data,
+    //   }).unwrap();
+
+    //   dispatch(setRuleRows([...policyState.ruleRows, res]));
+    //   showAlert("Rule added successfully", "success");
+    // } catch (err: any) {
+    //   showAlert(
+    //     err?.data?.message ?? "Something went wrong. Please try again.",
+    //     "error"
+    //   );
+    // }
   };
 
-  const addNewRule = (condition: string) => {};
+  const addNewRule = (condition: string, index: number) => {
+    if (condition === "none") {
+      const fieldsToRemove = [];
+
+      for (let i = index + 1; i < fields.length; i++) {
+        fieldsToRemove.push(i);
+      }
+
+      remove(fieldsToRemove);
+      return;
+    }
+
+    const findNotNone = fields.find((field) => field.subrule !== "none");
+    if (findNotNone) setShowActionField(true);
+
+    append({
+      value: ``,
+      subrule: "",
+      metadata: "",
+      conditions: "",
+    });
+  };
+
+  const deleteRule = (index: number) => {
+    if (fields.length === 1) return;
+    remove(index);
+  };
 
   return (
     <Layout>
@@ -83,7 +152,7 @@ export default function AddNewRuleForm() {
           <h2 className="text-gray-700 text-2xl font-bold">Policy Rules</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4 border bg-gray-50">
-            <div className="px-4 py-2 w-1/3">
+            <div className="px-4 py-2 w-full lg:w-1/2 2xl:w-1/3">
               <TextInput
                 label={"Rule Name"}
                 {...form.register("name")}
@@ -92,7 +161,7 @@ export default function AddNewRuleForm() {
               />
             </div>
 
-            <div className="px-4 py-2 w-1/3">
+            <div className="px-4 py-2 w-full lg:w-1/2 2xl:w-1/3">
               <SelectInput
                 placeholder={"Select"}
                 registerName="dataset"
@@ -106,11 +175,11 @@ export default function AddNewRuleForm() {
               />
             </div>
 
-            <div className="px-4 py-2 w-1/3">
+            <div className="px-4 py-2 w-full lg:w-1/2 2xl:w-1/3">
               <SelectInput
                 placeholder={"Select"}
                 label={"Default Allow"}
-                registerName="default_allow"
+                registerName="defaultAllow"
                 className="md:text-sm 2xl:text-base"
                 options={[
                   { label: "True", value: true },
@@ -120,60 +189,105 @@ export default function AddNewRuleForm() {
             </div>
           </div>
 
-          <div className="flex flex-wrap -m-2 rounded-lg my-4 border bg-gray-50">
-            <div className="px-4 py-2 w-1/4">
-              <SelectInput
-                placeholder={"Select"}
-                registerName="metadata"
-                label={"Select Metadata"}
-                className="md:text-sm 2xl:text-base"
-                options={[
-                  { label: "Request", value: "Request Location" },
-                  { label: "User Location", value: "User Location" },
-                ]}
-              />
-            </div>
+          {fields.map((item, index) => (
+            <div
+              key={item.id}
+              className="flex flex-wrap md:flex-nowrap items-center -m-2 rounded-lg my-4 border bg-gray-50"
+            >
+              <div className="w-full flex flex-wrap flex-grow">
+                <div className="px-4 py-2 w-full lg:w-1/3 2xl:w-1/4">
+                  <SelectInput
+                    placeholder={"Select metadata"}
+                    label={"Select Metadata"}
+                    className="md:text-sm 2xl:text-base"
+                    registerName={`subrules.${index}.metadata`}
+                    options={[
+                      { label: "Request", value: "Request Location" },
+                      { label: "User Location", value: "User Location" },
+                    ]}
+                  />
 
-            <div className="px-4 py-2 w-1/4">
-              <SelectInput
-                label={"Conditions"}
-                registerName="conditions"
-                placeholder={"Add conditions"}
-                className="md:text-sm 2xl:text-base"
-                options={[
-                  { label: "< (Less than)", value: "<" },
-                  { label: "> (Greater than)", value: ">" },
-                  { label: "= (Equal to)", value: "=" },
-                  { label: "Regex", value: "regex" },
-                ]}
-              />
-            </div>
+                  {form.formState.errors.subrules && (
+                    <p className="text-xs md:text-sm text-gray-500">
+                      {form.formState.errors.subrules[index]?.metadata?.message}
+                    </p>
+                  )}
+                </div>
 
-            <div className="px-4 py-2 w-1/4">
-              <TextInput
-                label={"Conditional Value"}
-                {...form.register("value")}
-                placeholder={"Please enter a value"}
-                className="md:text-sm 2xl:text-base"
-              />
-            </div>
+                <div className="px-4 py-2 w-full lg:w-1/3 2xl:w-1/4">
+                  <SelectInput
+                    label={"Conditions"}
+                    placeholder={"Add conditions"}
+                    className="md:text-sm 2xl:text-base"
+                    registerName={`subrules.${index}.conditions`}
+                    options={[
+                      { label: "< (Less than)", value: "<" },
+                      { label: "> (Greater than)", value: ">" },
+                      { label: "= (Equal to)", value: "=" },
+                      { label: "Regex", value: "regex" },
+                    ]}
+                  />
 
-            <div className="px-4 py-2 w-1/4">
-              <SelectInput
-                label={"Add Subrule"}
-                registerName="subrule"
-                placeholder={"Add Subrule"}
-                className="md:text-sm 2xl:text-base"
-                onChangeCustomAction={(c) => addNewRule(c as string)}
-                options={[
-                  { label: "AND", value: "and" },
-                  { label: "OR", value: "or" },
-                  { label: "None", value: "none" },
-                ]}
-              />
-            </div>
+                  {form.formState.errors.subrules && (
+                    <p className="text-xs md:text-sm text-gray-500">
+                      {
+                        form.formState.errors.subrules[index]?.conditions
+                          ?.message
+                      }
+                    </p>
+                  )}
+                </div>
 
-            <div className="mx-auto px-4 py-2 w-1/4">
+                <div className="px-4 py-2 w-full lg:w-1/3 2xl:w-1/4">
+                  <TextInput
+                    label={"Conditional Value"}
+                    placeholder={"Enter value"}
+                    className="md:text-sm 2xl:text-base"
+                    {...form.register(`subrules.${index}.value`)}
+                  />
+
+                  {form.formState.errors.subrules && (
+                    <p className="text-xs md:text-sm text-gray-500">
+                      {form.formState.errors.subrules[index]?.value?.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="px-4 py-2 w-full lg:w-1/3 2xl:w-1/4">
+                  <SelectInput
+                    label={"Add Subrule"}
+                    placeholder={"Add subrule"}
+                    className="md:text-sm 2xl:text-base"
+                    registerName={`subrules.${index}.subrule`}
+                    onChangeCustomAction={(c) => addNewRule(c as string, index)}
+                    options={[
+                      { label: "AND", value: "and" },
+                      { label: "OR", value: "or" },
+                      { label: "None", value: "none" },
+                    ]}
+                  />
+
+                  {form.formState.errors.subrules && (
+                    <p className="text-xs md:text-sm text-gray-500">
+                      {form.formState.errors.subrules[index]?.subrule?.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {fields.length > 1 && (
+                <div className="p-2 mt-4">
+                  <HiOutlineTrash
+                    onClick={() => deleteRule(index)}
+                    className="w-5 h-5 text-drio-red hover:text-drio-red-dark cursor-pointer"
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+
+          {showActionField && (
+            <div className="mx-auto px-8 pt-3 pb-4 w-full lg:w-1/2 2xl:w-1/3 bg-gray-50">
               <SelectInput
                 label={"Add Action"}
                 registerName="action"
@@ -191,9 +305,9 @@ export default function AddNewRuleForm() {
                 ]}
               />
             </div>
-          </div>
+          )}
 
-          <div className="px-2 py-4 flex gap-4 justify-end mt-4">
+          <div className="px-2 py-4 flex gap-4 justify-end">
             <Button
               type="button"
               intent={`secondary`}
@@ -211,45 +325,3 @@ export default function AddNewRuleForm() {
     </Layout>
   );
 }
-
-// import React from "react";
-// import { useForm, useFieldArray, Controller } from "react-hook-form";
-
-// export default function App() {
-//   const { register, control, handleSubmit, reset, trigger, setError } = useForm(
-//     {
-//       // defaultValues: {}; you can populate the fields by this attribute
-//     }
-//   );
-//   const { fields, append, remove } = useFieldArray({
-//     control,
-//     name: "test",
-//   });
-
-//   return (
-//     <form onSubmit={handleSubmit((data) => console.log(data))}>
-//       <ul>
-//         {fields.map((item, index) => (
-//           <li key={item.id}>
-//             <input {...register(`test.${index}.firstName`)} />
-//             <Controller
-//               render={({ field }) => <input {...field} />}
-//               name={`test.${index}.lastName`}
-//               control={control}
-//             />
-//             <button type="button" onClick={() => remove(index)}>
-//               Delete
-//             </button>
-//           </li>
-//         ))}
-//       </ul>
-//       <button
-//         type="button"
-//         onClick={() => append({ firstName: "bill", lastName: "luo" })}
-//       >
-//         append
-//       </button>
-//       <input type="submit" />
-//     </form>
-//   );
-// }

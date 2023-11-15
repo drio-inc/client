@@ -3,6 +3,7 @@ import Select, {
   components,
   OptionProps,
   ControlProps,
+  InputProps as SelectInputProps,
 } from "react-select";
 
 import { cva, VariantProps } from "class-variance-authority";
@@ -141,7 +142,26 @@ export const TextInput = forwardRef<HTMLInputElement, ITextInputProps>(
   }
 );
 
-const { Option, Control, Menu } = components;
+const { Option, Control, Menu, Input } = components;
+
+export const CustomInput = (props: SelectInputProps) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<FieldValues>();
+
+  return (
+    <Input
+      {...props}
+      {...register(props.name as string)}
+      className={`${
+        props.isDisabled
+          ? `bg-gray-100 text-gray-500`
+          : `bg-white text-gray-900`
+      }`}
+    />
+  );
+};
 
 const CustomControl = ({
   registerName,
@@ -161,20 +181,6 @@ const CustomControl = ({
             ? `border-red-300 focus:border-red-300 text-red-900 placeholder-red-900`
             : `border-gray-300 focus:border-gray-700 text-gray-500`
         }`}
-      >
-        {props.children}
-      </div>
-    </Control>
-  );
-};
-
-const StatelessCustomControl = ({
-  ...props
-}: ControlProps & { registerName?: string }) => {
-  return (
-    <Control {...props}>
-      <div
-        className={`cursor-pointer flex justify-between w-full py-2 px-3 my-1 caret-transparent border rounded-md bg-white min-w-[18rem]`}
       >
         {props.children}
       </div>
@@ -260,6 +266,7 @@ export const SelectInput = ({
               components={{
                 Menu: CustomMenu as ComponentType<MenuProps>,
                 Option: CustomOption as ComponentType<OptionProps>,
+                // Input: CustomInput as ComponentType<SelectInputProps>,
                 Control: (props: ControlProps) => (
                   <CustomControl registerName={registerName} {...props} />
                 ),
@@ -279,6 +286,20 @@ export const SelectInput = ({
         </span>
       )}
     </div>
+  );
+};
+
+const StatelessCustomControl = ({
+  ...props
+}: ControlProps & { registerName?: string }) => {
+  return (
+    <Control {...props}>
+      <div
+        className={`cursor-pointer flex justify-between w-full py-2 px-3 my-1 caret-transparent border rounded-md bg-white min-w-[18rem]`}
+      >
+        {props.children}
+      </div>
+    </Control>
   );
 };
 

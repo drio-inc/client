@@ -47,7 +47,7 @@ const PoliciesMenu = ({ row }: TableRow) => {
               identifier="policyRulesTable"
               onClick={() => dispatch(setOpenModal("policyRulesTable"))}
             >
-              <PolicyRules modal={true} />
+              <PolicyRules modal={true} row={row} />
             </Modal>
           </span>
 

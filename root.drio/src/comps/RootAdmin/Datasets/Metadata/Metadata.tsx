@@ -55,9 +55,7 @@ const Metadata = () => {
     }
   };
 
-  const clearSelectedRows = () => {
-    dispatch(setSelectedRows([]));
-  };
+  const clearSelectedRows = () => dispatch(setSelectedRows([]));
 
   return (
     <div className="w-full">

@@ -4,7 +4,6 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 import DashboardFooter from "@ui/Footer/DashbaordFooter";
 import { HiOutlinePencil, HiCheck } from "react-icons/hi";
 import MetaTags from "@/comps/RootAdmin/Datasets/Metadata/MetaTags";
-import DDXTooltip from "@/comps/RootAdmin/DDX/DDXTooltip";
 
 type TableHeader = {
   type?: string;
@@ -146,11 +145,7 @@ const Table = ({
                 })}
 
                 {TableMenu && (
-                  <td
-                    className={
-                      "border-t border-b text-gray-500 text-xs p-4 text-left"
-                    }
-                  >
+                  <td className="border-t border-b text-gray-500 text-xs p-4 text-left">
                     <TableMenu row={row} />
                   </td>
                 )}
