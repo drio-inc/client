@@ -1,9 +1,6 @@
 import Layout from "@/comps/Layout";
-import Loader from "@ui/Loader/Loader";
-import { useRouter } from "next/router";
-
+import withAuth from "@/comps/HOC/withAuth";
 import Policies from "@/comps/RootAdmin/Policies";
-import { useAppSelector } from "@/hooks/useStoreTypes";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
 const PoliciesPage = () => {
@@ -16,4 +13,4 @@ const PoliciesPage = () => {
   );
 };
 
-export default PoliciesPage;
+export default withAuth(PoliciesPage);

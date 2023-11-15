@@ -1,8 +1,9 @@
 import Layout from "@/comps/Layout";
+import withAuth from "@/comps/HOC/withAuth";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 import AddNewPolicyForm from "@/comps/RootAdmin/Policies/AddNewPolicyForm";
 
-const PoliciesPage = () => {
+const NewPolicyPage = () => {
   return (
     <Layout>
       <DashboardContainer>
@@ -12,4 +13,4 @@ const PoliciesPage = () => {
   );
 };
 
-export default PoliciesPage;
+export default withAuth(NewPolicyPage);
