@@ -1,13 +1,13 @@
 import Layout from "@/comps/Layout";
 import withAuth from "@/comps/HOC/withAuth";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
-import AddPolicyForm from "@/comps/RootAdmin/Policies/AddPolicyForm";
+import EditPolicyForm from "@/comps/RootAdmin/Policies/EditPolicyForm";
 
 const NewPolicyPage = () => {
   return (
     <Layout>
       <DashboardContainer>
-        <AddPolicyForm />
+        <EditPolicyForm />
       </DashboardContainer>
     </Layout>
   );

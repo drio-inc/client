@@ -1,14 +1,13 @@
 import { z } from "zod";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import { setRows, setRuleRows } from "@/state/slices/policiesSlice";
 import { useRouter } from "next/router";
 import { Form, useZodForm } from "@/comps/ui/Forms/Form";
 import { SelectInput, TextInput } from "@/comps/ui/Forms/Inputs";
+import { setRows, setRuleRows } from "@/state/slices/policiesSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import showAlert from "@/comps/ui/Alert";
-import PolicyRules from "../PolicyRules/PolicyRules";
-import { useAddPolicyMutation } from "@/api/resources/policies";
 import Button from "@/comps/ui/Button";
+import showAlert from "@/comps/ui/Alert";
+import PolicyRulesTable from "../RulesTable";
 
 const policySchema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -28,57 +27,59 @@ const policySchema = z.object({
 
 type FormData = z.infer<typeof policySchema>;
 
-const AddNewPolicyForm = () => {
+const contractOptions = [
+  { label: "Contract 1", value: "contract1" },
+  { label: "Contract 2", value: "contract2" },
+];
+
+const typeOptions = [
+  { label: "Privacy", value: "privacy" },
+  { label: "Security", value: "security" },
+  { label: "Regulatory", value: "regulatory" },
+];
+
+const personaOptions = [
+  { label: "Persona 1", value: "persona1" },
+  { label: "Persona 2", value: "persona2" },
+];
+
+const EditPolicyForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [addPolicy, result] = useAddPolicyMutation();
-  const auth = useAppSelector((state) => state.auth);
-  const policies = useAppSelector((state) => state.policies);
+  const row = router?.query?.row as string;
+  const parsedRow = (row && JSON.parse(row)) ?? "";
+  const { rows, ruleRows } = useAppSelector((state) => state.policies);
+
   const form = useZodForm({
     schema: policySchema,
   });
 
   const onSubmit = async (data: FormData) => {
-    console.log("data", data, policies.ruleRows);
+    const policyToUpdate = rows.find((policy) => policy.id === parsedRow.id);
+    const updatedPolicies = rows.filter((policy) => policy.id !== parsedRow.id);
 
     dispatch(
       setRows([
-        ...policies.rows,
+        ...updatedPolicies,
         {
+          ...policyToUpdate,
           ...data,
-          scope: "global",
-          rules: policies.ruleRows,
-          createdBy: auth.user?.username ?? "admin",
-          modifiedBy: auth.user?.username ?? "admin",
-          dateCreated: new Date().toISOString().slice(0, 10),
+          rules: [...ruleRows],
           dateLastModified: new Date().toISOString().slice(0, 10),
         },
       ])
     );
 
-    showAlert("Policy added successfully", "success");
+    showAlert("Policy updated successfully", "success");
     dispatch(setRuleRows([]));
     router.push("/policies");
-
-    // try {
-    //   const res = await addPolicy({
-    //     ...data,
-    //   }).unwrap();
-    //   dispatch(setRows([res]));
-    //   showAlert("Policy added successfully", "success");
-    // } catch (err: any) {
-    //   showAlert(
-    //     err?.data?.message ?? "Something went wrong. Please try again.",
-    //     "error"
-    //   );
-    // }
   };
 
   return (
     <div className="w-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div className="p-4 bg-gray-50 rounded-lg">
-          <h2 className="text-gray-700 text-2xl font-bold">Add New Policy</h2>
+          <h2 className="text-gray-700 text-2xl font-bold">Edit Policy</h2>
         </div>
 
         <Form form={form} onSubmit={onSubmit} className="w-full mb-4">
@@ -87,8 +88,9 @@ const AddNewPolicyForm = () => {
               <div className="px-4 py-2 w-full md:w-1/2 xl:w-1/3">
                 <TextInput
                   label={"Name"}
-                  placeholder={"Policy name"}
                   {...form.register("name")}
+                  placeholder={"Policy name"}
+                  defaultValue={parsedRow.name}
                   className="md:text-sm 2xl:text-base"
                 />
               </div>
@@ -97,11 +99,13 @@ const AddNewPolicyForm = () => {
                 <SelectInput
                   label="For Contract"
                   registerName="contract"
+                  options={contractOptions}
                   placeholder="Select contract"
-                  options={[
-                    { label: "Contract 1", value: "contract1" },
-                    { label: "Contract 2", value: "contract2" },
-                  ]}
+                  defaultSelectedValue={
+                    contractOptions.find(
+                      (option) => option.value === parsedRow.contract
+                    ) ?? { label: "", value: "" }
+                  }
                 />
               </div>
             </div>
@@ -111,12 +115,16 @@ const AddNewPolicyForm = () => {
                 <SelectInput
                   label="Type"
                   registerName="type"
+                  options={typeOptions}
                   placeholder="Select type"
-                  options={[
-                    { label: "Privacy", value: "privacy" },
-                    { label: "Security", value: "security" },
-                    { label: "Regulatory", value: "regulatory" },
-                  ]}
+                  defaultSelectedValue={
+                    typeOptions.find(
+                      (option) => option.value === parsedRow.type
+                    ) ?? {
+                      label: "",
+                      value: "",
+                    }
+                  }
                 />
               </div>
 
@@ -124,24 +132,35 @@ const AddNewPolicyForm = () => {
                 <SelectInput
                   label="Persona"
                   registerName="persona"
+                  options={personaOptions}
                   placeholder="Select persona"
-                  options={[
-                    { label: "Persona 1", value: "persona1" },
-                    { label: "Persona 2", value: "persona2" },
-                  ]}
+                  defaultSelectedValue={
+                    personaOptions.find(
+                      (option) => option.value === parsedRow.persona
+                    ) ?? { label: "", value: "" }
+                  }
                 />
               </div>
             </div>
           </div>
         </Form>
 
-        <PolicyRules />
+        <PolicyRulesTable rows={ruleRows} editable />
       </div>
 
-      <div className="flex mt-8">
+      <div className="flex mt-8 justify-center gap-x-4">
+        <Button
+          intent={"primaryOutline"}
+          onClick={() => {
+            router.back();
+            dispatch(setRuleRows([]));
+          }}
+        >
+          Cancel
+        </Button>
         <Button
           intent={"primary"}
-          className="mx-auto"
+          className=""
           onClick={form?.handleSubmit(onSubmit)}
         >
           Save Policy
@@ -151,4 +170,4 @@ const AddNewPolicyForm = () => {
   );
 };
 
-export default AddNewPolicyForm;
+export default EditPolicyForm;

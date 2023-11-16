@@ -52,7 +52,7 @@ interface SelectProps extends ComponentProps<"select">, SharedProps {
   onChangeCustomAction?: (selectedOption?: string) => void;
 
   defaultSelectedValue?: {
-    value: string;
+    value: string | number | boolean;
     label: string;
   };
 

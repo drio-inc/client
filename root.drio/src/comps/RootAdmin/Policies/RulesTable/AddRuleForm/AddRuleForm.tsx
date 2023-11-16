@@ -1,11 +1,13 @@
 import Button from "@ui/Button";
+import { v4 as uuidv4 } from "uuid";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
+import { faker } from "@faker-js/faker";
 
 import { z } from "zod";
-import { useZodForm, Form, FieldError } from "@ui/Forms/Form";
+import { useZodForm, Form } from "@ui/Forms/Form";
 import { SubmitHandler, useFieldArray } from "react-hook-form";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
@@ -89,6 +91,7 @@ export default function AddNewRuleForm() {
       data.subrules && data.subrules.length > 0
         ? data.subrules.map((subrule, index) => ({
             ...subrule,
+            id: uuidv4(),
             action: data.action,
             name: index === 0 ? data.name : "",
             dataset: data.dataset.replaceAll("_", " "),
@@ -99,7 +102,7 @@ export default function AddNewRuleForm() {
     dispatch(setRuleRows([...policyState.ruleRows, ...rules]));
 
     form.reset();
-    dispatch(setCloseModal("addNewRuleForm"));
+    dispatch(setCloseModal("addRuleForm"));
     showAlert("Rule added successfully", "success");
 
     // try {
@@ -119,6 +122,13 @@ export default function AddNewRuleForm() {
 
   const addNewRule = (condition: string, index: number) => {
     if (condition === "none") {
+      if (index === 0) {
+        setShowActionField(false);
+        form.setValue(`action`, undefined);
+      }
+
+      if (fields.length === 1) return;
+
       const fieldsToRemove = [];
 
       for (let i = index + 1; i < fields.length; i++) {
@@ -126,22 +136,31 @@ export default function AddNewRuleForm() {
       }
 
       remove(fieldsToRemove);
-      return;
+    } else {
+      setShowActionField(true);
+      if (index === fields.length - 1) {
+        append({
+          value: "",
+          subrule: "",
+          metadata: "",
+          conditions: "",
+        });
+      }
     }
-
-    const findNotNone = fields.find((field) => field.subrule !== "none");
-    if (findNotNone) setShowActionField(true);
-
-    append({
-      value: ``,
-      subrule: "",
-      metadata: "",
-      conditions: "",
-    });
   };
 
   const deleteRule = (index: number) => {
     if (fields.length === 1) return;
+
+    if (index - 1 === 0) {
+      setShowActionField(false);
+      form.setValue(`action`, undefined);
+    }
+
+    if (index === fields.length - 1) {
+      form.setValue(`subrules.${index - 1}.subrule`, "none");
+    }
+
     remove(index);
   };
 
@@ -149,7 +168,7 @@ export default function AddNewRuleForm() {
     <Layout>
       <Form form={form} onSubmit={onSubmit}>
         <div className="mx-auto bg-white p-6 rounded-lg w-[60vw]">
-          <h2 className="text-gray-700 text-2xl font-bold">Policy Rules</h2>
+          <h2 className="text-gray-700 text-2xl font-bold">Add Rules</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4 border bg-gray-50">
             <div className="px-4 py-2 w-full lg:w-1/2 2xl:w-1/3">
@@ -208,7 +227,7 @@ export default function AddNewRuleForm() {
                   />
 
                   {form.formState.errors.subrules && (
-                    <p className="text-xs md:text-sm text-gray-500">
+                    <p className="text-xs md:text-sm text-drio-red">
                       {form.formState.errors.subrules[index]?.metadata?.message}
                     </p>
                   )}
@@ -229,7 +248,7 @@ export default function AddNewRuleForm() {
                   />
 
                   {form.formState.errors.subrules && (
-                    <p className="text-xs md:text-sm text-gray-500">
+                    <p className="text-xs md:text-sm text-drio-red">
                       {
                         form.formState.errors.subrules[index]?.conditions
                           ?.message
@@ -247,7 +266,7 @@ export default function AddNewRuleForm() {
                   />
 
                   {form.formState.errors.subrules && (
-                    <p className="text-xs md:text-sm text-gray-500">
+                    <p className="text-xs md:text-sm text-drio-red">
                       {form.formState.errors.subrules[index]?.value?.message}
                     </p>
                   )}
@@ -268,7 +287,7 @@ export default function AddNewRuleForm() {
                   />
 
                   {form.formState.errors.subrules && (
-                    <p className="text-xs md:text-sm text-gray-500">
+                    <p className="text-xs md:text-sm text-drio-red">
                       {form.formState.errors.subrules[index]?.subrule?.message}
                     </p>
                   )}
@@ -311,7 +330,7 @@ export default function AddNewRuleForm() {
             <Button
               type="button"
               intent={`secondary`}
-              onClick={() => dispatch(setCloseModal("addNewRuleForm"))}
+              onClick={() => dispatch(setCloseModal("addRuleForm"))}
             >
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>

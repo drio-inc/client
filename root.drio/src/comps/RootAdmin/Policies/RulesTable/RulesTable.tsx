@@ -1,17 +1,15 @@
-import Image from "next/image";
 import Table from "@/comps/ui/Table";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import Button from "@/comps/ui/Button";
 import { HiPlus, HiX } from "react-icons/hi";
+import { useAppDispatch } from "@/hooks/useStoreTypes";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 import Modal from "@/comps/ui/Modal";
 import { useRouter } from "next/router";
 
-import PolicyRulesMenu from "./PolicyRulesMenu";
-import AddNewRuleForm from "./AddNewRuleForm/AddNewRuleForm";
-import { useZodForm } from "@/comps/ui/Forms/Form";
-import EmptyTable from "./EmptyTable";
+import PolicyRulesMenu from "./RulesMenu";
+import AddNewRuleForm from "./AddRuleForm";
+import EmptyTable from "@ui/Table/EmptyTable";
 
 const headers = [
   {
@@ -49,14 +47,14 @@ const headers = [
 ];
 
 type PolicyProps = {
-  row?: any;
   modal?: boolean;
+  rows?: TableRow[];
+  editable?: boolean;
 };
 
-const PolicyRules = ({ modal, row }: PolicyProps) => {
+const RulesTable = ({ rows, editable = false, modal = false }: PolicyProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { ruleRows } = useAppSelector((state) => state.policies);
 
   return (
     <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
@@ -80,16 +78,20 @@ const PolicyRules = ({ modal, row }: PolicyProps) => {
             </div>
           </Button>
         ) : (
-          <Button
-            className="ml-auto"
-            intent={"primaryOutline"}
-            onClick={() => dispatch(setOpenModal("addNewRuleForm"))}
-          >
-            <div className="flex items-center gap-1">
-              <HiPlus className="w-4 h-4" />
-              <span className="inline-block">Add New Rule</span>
-            </div>
-          </Button>
+          <>
+            {!editable && (
+              <Button
+                className="ml-auto"
+                intent={"primaryOutline"}
+                onClick={() => dispatch(setOpenModal("addRuleForm"))}
+              >
+                <div className="flex items-center gap-1">
+                  <HiPlus className="w-4 h-4" />
+                  <span className="inline-block">Add New Rule</span>
+                </div>
+              </Button>
+            )}
+          </>
         )}
 
         {modal && (
@@ -103,40 +105,23 @@ const PolicyRules = ({ modal, row }: PolicyProps) => {
       </div>
 
       <div className="hidden">
-        <Modal identifier="addNewRuleForm">
+        <Modal identifier="addRuleForm">
           <AddNewRuleForm />
         </Modal>
       </div>
 
-      {modal ? (
-        <>
-          {row?.rules && row?.rules.length > 0 ? (
-            <Table
-              noSelection
-              rows={row.rules}
-              headers={headers}
-              // menu={PolicyRulesMenu}
-            />
-          ) : (
-            <EmptyTable />
-          )}
-        </>
+      {rows && rows?.length > 0 ? (
+        <Table
+          noSelection
+          headers={headers}
+          rows={rows ?? []}
+          menu={!modal && PolicyRulesMenu}
+        />
       ) : (
-        <>
-          {ruleRows.length > 0 ? (
-            <Table
-              noSelection
-              rows={ruleRows}
-              headers={headers}
-              // menu={PolicyRulesMenu}
-            />
-          ) : (
-            <EmptyTable />
-          )}
-        </>
+        <EmptyTable />
       )}
     </div>
   );
 };
 
-export default PolicyRules;
+export default RulesTable;

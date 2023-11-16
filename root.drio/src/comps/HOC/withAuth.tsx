@@ -32,39 +32,39 @@ function withAuth(OriginalComponent: React.FC) {
     );
 
     // const url = `/api`;
-    const url = process.env.API_URL;
+    // const url = process.env.API_URL;
 
-    useEffect(() => {
-      async function validateToken() {
-        try {
-          const res = await axios.get(`${url}/resources/validate`, {
-            headers: {
-              Authorization: `Bearer ${getToken()}`,
-            },
-          });
+    // useEffect(() => {
+    //   async function validateToken() {
+    //     try {
+    //       const res = await axios.get(`${url}/resources/validate`, {
+    //         headers: {
+    //           Authorization: `Bearer ${getToken()}`,
+    //         },
+    //       });
 
-          if (res.status === 200) {
-            setSkip(false);
-            if (account) dispatch(setRecursiveRows(account.organization_units));
+    //       if (res.status === 200) {
+    //         setSkip(false);
+    //         if (account) dispatch(setRecursiveRows(account.organization_units));
 
-            setLoading(false);
-            return;
-          } else {
-            setLoading(false);
-            dispatch(logout());
-            router.push("/login");
-          }
-        } catch (error) {
-          setLoading(false);
-          dispatch(logout());
-          router.push("/login");
-        }
-      }
+    //         setLoading(false);
+    //         return;
+    //       } else {
+    //         setLoading(false);
+    //         dispatch(logout());
+    //         router.push("/login");
+    //       }
+    //     } catch (error) {
+    //       setLoading(false);
+    //       dispatch(logout());
+    //       router.push("/login");
+    //     }
+    //   }
 
-      validateToken();
-    }, [account, dispatch, isUninitialized, router, url]);
+    //   validateToken();
+    // }, [account, dispatch, isUninitialized, router, url]);
 
-    if (loading) return <StaticLoader />;
+    // if (loading) return <StaticLoader />;
 
     return <OriginalComponent />;
   }

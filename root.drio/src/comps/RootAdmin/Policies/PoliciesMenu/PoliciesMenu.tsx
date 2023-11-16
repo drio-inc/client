@@ -1,21 +1,35 @@
 import Modal from "@/comps/ui/Modal";
 import AlertModal from "@ui/AlertModal";
+import { useRouter } from "next/router";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
-
+import { setOpenModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import { setOpenModal } from "@/state/slices/uiSlice";
-import { setRows, setSelectedRows } from "@/state/slices/policiesSlice";
-import PolicyRules from "../PolicyRules";
+import {
+  setRows,
+  setRuleRows,
+  setSelectedRows,
+} from "@/state/slices/policiesSlice";
+import PolicyRulesTable from "../RulesTable";
 
 const PoliciesMenu = ({ row }: TableRow) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const policiesState = useAppSelector((state) => state.policies);
 
   const deleteRow = (id: number | string) => {
     dispatch(setRows(policiesState.rows.filter((row) => row.id !== id)));
     dispatch(setSelectedRows([]));
+  };
+
+  const handleEdit = () => {
+    dispatch(setRuleRows(row.rules));
+
+    router.push({
+      pathname: `/policies/${row.id}/edit-policy`,
+      query: { row: JSON.stringify(row) },
+    });
   };
 
   return (
@@ -31,15 +45,12 @@ const PoliciesMenu = ({ row }: TableRow) => {
           align="center"
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
-          {/* <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            <Modal
-              label="Edit"
-              identifier="editPolicyForm"
-              onClick={() => dispatch(setOpenModal("editPolicyForm"))}
-            >
-              Edit
-            </Modal>
-          </span> */}
+          <span
+            onClick={handleEdit}
+            className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
+          >
+            Edit
+          </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <Modal
@@ -47,7 +58,7 @@ const PoliciesMenu = ({ row }: TableRow) => {
               identifier="policyRulesTable"
               onClick={() => dispatch(setOpenModal("policyRulesTable"))}
             >
-              <PolicyRules modal={true} row={row} />
+              <PolicyRulesTable modal={true} rows={row.rules} />
             </Modal>
           </span>
 

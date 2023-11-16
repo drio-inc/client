@@ -6,7 +6,7 @@ import { setRows, setSelectedRows } from "@/state/slices/policiesSlice";
 
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
-import PolicyRules from "./PolicyRules";
+import PolicyRulesTable from "./RulesTable";
 import PoliciesMenu from "./PoliciesMenu";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
