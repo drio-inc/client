@@ -49,10 +49,10 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
       <Layout>
         <div className="flex items-center bg-white mb-4 p-6 rounded-lg">
           <Image
-            src="/images/DJI_Innovations.png"
-            alt="contract"
-            width={40}
             height={40}
+            width={40}
+            alt="bank-logo"
+            src="/images/bank-of-america.svg"
           />
 
           <h2 className="text-gray-700 ml-4 text-2xl font-bold">
@@ -212,12 +212,12 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
             {/* Signature */}
             <div className="flex flex-col items-center my-4 w-full">
               <div className="flex flex-col gap-y-4">
-                <div className="flex gap-x-2">
+                <div className="flex items-center gap-x-2">
                   <Image
-                    src="/images/DJI_Innovations.png"
-                    alt="logo"
                     width={40}
                     height={40}
+                    alt="bank-logo"
+                    src="/images/cox-automotive-2.jpeg"
                   />
 
                   <span>Cox Automotive Signatory</span>
@@ -263,10 +263,10 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
 
         <div className="flex items-center bg-white mb-4 p-6 rounded-lg mt-4">
           <Image
-            src="/images/DJI_Innovations.png"
-            alt="contract"
             width={40}
             height={40}
+            alt="bank-logo"
+            src="/images/bank-of-america.svg"
           />
 
           <h2 className="text-gray-700 ml-4 text-2xl font-bold">
@@ -342,12 +342,12 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
           {/* Signature */}
           <div className="flex flex-col items-center my-8 w-full">
             <div className="flex flex-col gap-y-4">
-              <div className="flex gap-x-2">
+              <div className="flex items-center gap-x-2">
                 <Image
-                  src="/images/DJI_Innovations.png"
-                  alt="logo"
                   width={40}
                   height={40}
+                  alt="bank-logo"
+                  src="/images/cox-automotive-2.jpeg"
                 />
 
                 <span>Cox Automotive Signatory</span>

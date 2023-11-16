@@ -7,7 +7,6 @@ import InboundContractsMenu from "./InboundContractsMenu/InboundContractsMenu";
 import { HiMinusSm } from "react-icons/hi";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
-
 import EditInboundContractsForm from "./EditInboundContractsForm";
 
 const headers = [
