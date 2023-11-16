@@ -94,7 +94,7 @@ const DatasetProviders = [
   },
   {
     name: "UPS SCS",
-    logo: "/images/ups-yellow.png",
+    logo: "/images/ups-yellow.svg",
   },
   {
     name: "DGF",
@@ -135,7 +135,7 @@ const DatasetMarketplace = () => {
       </div>
 
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        <div className="flex justify-between my-2 bg-white px-4 py-2">
+        <div className="flex flex-wrap gap-y-2 justify-between my-2 bg-white px-4 py-2">
           <div className="flex flex-wrap gap-x-2 items-center text-gray-500">
             <span className="inline-block mr-4">Sort by:</span>
             <button
@@ -156,7 +156,7 @@ const DatasetMarketplace = () => {
             </button>
           </div>
 
-          <div className="flex gap-x-6">
+          <div className="flex flex-wrap lg:flex-nowrap gap-x-6">
             <div className="flex items-center gap-x-2 w-full">
               <span className="inline-block p-2 bg-blue-100 rounded border">
                 <HiOutlineViewBoards className="text-drio-red" />
