@@ -1,37 +1,39 @@
-import Button from "@ui/Button";
-import { TextInput, SelectInput } from "@ui/Forms/Inputs";
-
-import showAlert from "@ui/Alert";
-import Layout from "@/comps/Layout";
-
 import { z } from "zod";
+import Button from "@ui/Button";
+import showAlert from "@ui/Alert";
+import { v4 as uuidv4 } from "uuid";
+import Layout from "@/comps/Layout";
+import { TextInput } from "@ui/Forms/Inputs";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
-
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setRows } from "@/state/slices/metadataSlice";
 import { setCloseModal } from "@/state/slices/uiSlice";
 
-import { useCallback, useState } from "react";
 import { HiX } from "react-icons/hi";
+import { useCallback, useState } from "react";
 import { TagInput } from "@/comps/ui/Forms/Inputs/Inputs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { useAddMetadataMutation } from "@/api/resources/metadata";
 
 const schema = z.object({
   name: z.string().optional(),
-
-  type: z.string().optional(),
-
+  dataType: z.string().optional(),
   sampleValue: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
 
+type ITag = {
+  id: string;
+  name: string;
+  status: string;
+};
+
 export default function AddMetaDataForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<ITag[]>([]);
   const [visibility, setVisibility] = useState("");
   const [addMetadata, result] = useAddMetadataMutation();
   const metadataState = useAppSelector((state) => state.metadata);
@@ -42,7 +44,14 @@ export default function AddMetaDataForm({ row }: TableRow) {
 
   const handleTagChange = useCallback(
     (tag: string) => {
-      setTags([...tags, tag]);
+      setTags([
+        ...tags,
+        {
+          name: tag,
+          id: uuidv4(),
+          status: "Pending",
+        },
+      ]);
     },
     [tags]
   );
@@ -58,25 +67,22 @@ export default function AddMetaDataForm({ row }: TableRow) {
       return;
     }
 
-    try {
-      const res = await addMetadata({
-        ...data,
-        id: row.id,
-        visibility,
-        tags: tags,
-      }).unwrap();
-
-      dispatch(setRows([...metadataState.rows, res]));
-      showAlert("Metadata added successfully", "success");
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
+    dispatch(
+      setRows([
+        ...metadataState.rows,
+        {
+          ...data,
+          id: row.id,
+          visibility,
+          tags: tags,
+          lastUpdated: new Date().toLocaleDateString(),
+        },
+      ])
+    );
 
     form.reset();
     dispatch(setCloseModal("addMetadataForm"));
+    showAlert("Metadata added successfully", "success");
   };
 
   const removeTagData = (indexToRemove: number) => {
@@ -88,11 +94,7 @@ export default function AddMetaDataForm({ row }: TableRow) {
       <Form
         form={form}
         onSubmit={onSubmit}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-          }
-        }}
+        onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
       >
         <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
           <h2 className="text-gray-700 text-2xl font-bold text-center">
@@ -111,8 +113,8 @@ export default function AddMetaDataForm({ row }: TableRow) {
 
             <div className="px-4 py-2 w-full">
               <TextInput
-                {...form.register("type")}
                 label={"Enter Data Type"}
+                {...form.register("dataType")}
                 placeholder={"Enter data type"}
                 className="md:text-sm 2xl:text-base"
               />
@@ -183,9 +185,9 @@ export default function AddMetaDataForm({ row }: TableRow) {
 
             <div className="px-4 py-2 w-full">
               <TagInput
-                tags={tags}
-                label="Metadata Tags"
+                label="Metadata Tags (Type and press enter to add)"
                 onTagsChange={handleTagChange}
+                tags={tags.map((tag) => tag.name)}
               >
                 <ul className={`flex flex-wrap w-auto flex-shrink`}>
                   {tags.map((tag, index) => (
@@ -193,7 +195,7 @@ export default function AddMetaDataForm({ row }: TableRow) {
                       key={index}
                       className="flex justify-center items-center bg-green-100 text-green-700 rounded-md p-1 border border-green-700 mx-1 my-2"
                     >
-                      <span className="text-sm">{tag}</span>
+                      <span className="text-sm">{tag.name}</span>
                       <span onClick={() => removeTagData(index)}>
                         <HiX className="cursor-pointer" />
                       </span>

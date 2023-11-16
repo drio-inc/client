@@ -23,9 +23,10 @@ const MetadataMenu = ({ row }: TableRow) => {
       setRows(
         metadataState.rows.map((metadataRow) => {
           if (metadataRow.id !== row.id) return metadataRow;
+
           return {
             ...metadataRow,
-            metadata: metadataRow.metadata.map(
+            tags: metadataRow.tags.map(
               (meta: { id: string; name: string; status: string }) => {
                 return {
                   ...meta,

@@ -10,20 +10,23 @@ type MetaTagsProps = {
   }[];
 };
 
+const mapStatusToColor = {
+  Pending: "border-[#FF7800] text-[#FF7800]",
+  Rejected: "border-red-500 bg-red-50 text-red-500",
+  default: "border-gray-500 bg-gray-50 text-gray-500",
+  Approved: "border-green-500 bg-green-50 text-green-500",
+};
+
+type MapStatusToColor = keyof typeof mapStatusToColor;
+
 const MetaTags = ({ tags }: MetaTagsProps) => {
   return (
     <div className="inline-grid grid-cols-3 gap-2 my-2">
-      {tags.map((tag, index) => (
+      {tags?.map((tag, index) => (
         <div
           key={index}
           className={`inline-flex flex-wrap border ${
-            tag.status === "Pending"
-              ? "border-[#FF7800]"
-              : tag.status === "Approved"
-              ? "border-green-500 bg-green-50"
-              : tag.status === "Rejected"
-              ? "border-red-500 bg-red-50"
-              : "border-gray-500 bg-gray-50"
+            mapStatusToColor[tag.status as MapStatusToColor]
           } rounded-md px-2 py-1 items-center gap-x-2`}
         >
           {tag.status === "Rejected" && (
@@ -45,13 +48,7 @@ const MetaTags = ({ tags }: MetaTagsProps) => {
 
           <span
             className={`text-xs capitalize ${
-              tag.status === "Pending"
-                ? "text-[#FF7800]"
-                : tag.status === "Approved"
-                ? "text-green-500"
-                : tag.status === "Rejected"
-                ? "text-red-500"
-                : "text-gray-500"
+              mapStatusToColor[tag.status as MapStatusToColor]
             } font-medium`}
           >
             {tag.name}

@@ -12,7 +12,7 @@ import MetadataPopover from "./HeaderPopovers/MetadataPopover";
 const headers = [
   {
     header: "Logistics - Trip Data",
-    accessor: "logisticsTripData",
+    accessor: "name",
   },
   {
     header: "Sample Value",
@@ -29,8 +29,8 @@ const headers = [
   },
   {
     type: "array",
+    accessor: "tags",
     header: "Metadata",
-    accessor: "metadata",
     menu: <MetadataPopover />,
   },
   {

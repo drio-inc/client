@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { createSlice } from "@reduxjs/toolkit";
 
 type MetadatSlice = {
@@ -9,11 +10,12 @@ const initialState: MetadatSlice = {
   rows: [
     {
       id: "1",
-      logisticsTripData: "Market/Regular",
-      sampleValue: "MVCV0000927 /082021",
-      dataType: "Str (256)",
       visibility: "Hide",
-      metadata: [
+      dataType: "Str (256)",
+      name: "Market/Regular",
+      lastUpdated: "12/06/2020",
+      sampleValue: "MVCV0000927 /082021",
+      tags: [
         {
           id: "1",
           name: "Date",
@@ -25,15 +27,15 @@ const initialState: MetadatSlice = {
           status: "Pending",
         },
       ],
-      lastUpdated: "12/06/2020 10:39",
     },
     {
       id: "2",
-      logisticsTripData: "BookingID",
-      sampleValue: "TVSLSL-PUZHAL-HUB,CHENNAI",
-      dataType: "Lat-Long",
+      name: "BookingID",
       visibility: "Hide",
-      metadata: [
+      dataType: "Lat-Long",
+      lastUpdated: "12/06/2020",
+      sampleValue: "TVSLSL-PUZHAL-HUB,CHENNAI",
+      tags: [
         {
           id: "1",
           name: "Date",
@@ -45,15 +47,15 @@ const initialState: MetadatSlice = {
           status: "Pending",
         },
       ],
-      lastUpdated: "12/06/2020 10:39",
     },
     {
       id: "3",
-      logisticsTripData: "Service Record",
-      sampleValue: "13.1550,80.1960",
-      dataType: "KA590408",
       visibility: "Hide",
-      metadata: [
+      dataType: "KA590408",
+      name: "Service Record",
+      sampleValue: "13.1550,80.1960",
+      lastUpdated: "12/06/2020",
+      tags: [
         {
           id: "1",
           name: "Date",
@@ -65,15 +67,15 @@ const initialState: MetadatSlice = {
           status: "Approved",
         },
       ],
-      lastUpdated: "12/06/2020 10:39",
     },
     {
       id: "4",
-      logisticsTripData: "Planned_ETA",
-      sampleValue: "05:09:00",
-      dataType: "Market",
       visibility: "Hide",
-      metadata: [
+      dataType: "Market",
+      name: "Planned_ETA",
+      sampleValue: "05:09:00",
+      lastUpdated: "12/06/2020",
+      tags: [
         {
           id: "1",
           name: "Date",
@@ -85,7 +87,6 @@ const initialState: MetadatSlice = {
           status: "Approved",
         },
       ],
-      lastUpdated: "12/06/2020 10:39",
     },
   ],
   selectedRows: [],

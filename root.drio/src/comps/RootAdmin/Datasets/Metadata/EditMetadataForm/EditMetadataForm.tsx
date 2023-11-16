@@ -1,13 +1,12 @@
 import Button from "@ui/Button";
-import { TextInput } from "@ui/Forms/Inputs";
-
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
+import { v4 as uuidv4 } from "uuid";
+import { TextInput } from "@ui/Forms/Inputs";
 
 import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
-
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setRows } from "@/state/slices/metadataSlice";
@@ -40,10 +39,9 @@ type FormData = z.infer<typeof schema>;
 export default function EditMetadataForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
 
-  const [tags, setTags] = useState<ITag[]>(row.metadata ?? []);
-
+  const [tags, setTags] = useState<ITag[]>(row.tags ?? []);
   const [updateMetadata, result] = useEditMetadataMutation();
-  const metadataState = useAppSelector((state) => state.metadata);
+  const { rows } = useAppSelector((state) => state.metadata);
 
   const [visibility, setVisibility] = useState(
     row.visibility.toLowerCase() ?? ""
@@ -64,48 +62,39 @@ export default function EditMetadataForm({ row }: TableRow) {
       return;
     }
 
-    try {
-      const res = await updateMetadata({
-        ...data,
-        id: row.id,
-        visibility,
-        tags: tags,
-      }).unwrap();
+    const newData = {
+      ...data,
+      id: row.id,
+      visibility,
+      tags: tags,
+      lastUpdated: new Date().toLocaleDateString(),
+    };
 
-      dispatch(
-        setRows(
-          metadataState.rows.map((row) => (row.id === res.id ? res : row))
-        )
-      );
-
-      showAlert("Metadata added successfully", "success");
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
+    dispatch(
+      setRows(rows.map((row) => (row.id === newData.id ? newData : row)))
+    );
 
     form.reset();
     dispatch(setCloseModal("editMetadataForm"));
+    showAlert("Metadata updated successfully", "success");
   };
 
   const approveOrReject = (
     tag: string,
     action: "Approved" | "Rejected" = "Approved"
   ) => {
-    const findRow = metadataState.rows.find((r) => r.id === row.id);
-    const findTag = findRow?.metadata.find((m: ITag) => m.name === tag);
+    const findRow = rows.find((r) => r.id === row.id);
+    const findTag = findRow?.tags.find((m: ITag) => m.name === tag);
 
     if (findTag) {
       dispatch(
         setRows(
-          metadataState.rows.map((r) => {
+          rows.map((r) => {
             if (r.id !== row.id) return r;
 
             return {
               ...r,
-              metadata: r.metadata.map((m: ITag) => {
+              tags: r.tags.map((m: ITag) => {
                 if (m.name !== tag) return m;
 
                 return {
@@ -133,10 +122,7 @@ export default function EditMetadataForm({ row }: TableRow) {
 
   const handleTagChange = useCallback(
     (tag: string) => {
-      setTags([
-        ...tags,
-        { id: Math.random().toString(), name: tag, status: "Pending" },
-      ]);
+      setTags([...tags, { id: uuidv4(), name: tag, status: "Pending" }]);
     },
     [tags]
   );
@@ -146,11 +132,7 @@ export default function EditMetadataForm({ row }: TableRow) {
       <Form
         form={form}
         onSubmit={onSubmit}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-          }
-        }}
+        onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
       >
         <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
           <h2 className="text-gray-700 text-2xl font-bold text-center">
@@ -160,11 +142,11 @@ export default function EditMetadataForm({ row }: TableRow) {
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             <div className="px-4 py-2 w-full">
               <TextInput
+                defaultValue={row.name}
                 label={"Metadata Name"}
                 {...form.register("name")}
                 placeholder={"Enter metadata name"}
                 className="md:text-sm 2xl:text-base"
-                defaultValue={row.logisticsTripData}
               />
             </div>
 
@@ -244,9 +226,8 @@ export default function EditMetadataForm({ row }: TableRow) {
 
             <div className="px-4 py-2 w-full">
               <TagInput
-                disabled
-                label="Metadata Tags"
                 onTagsChange={handleTagChange}
+                label="Metadata Tags (Type and press enter to add)"
               >
                 <ul className={`flex flex-wrap w-auto flex-shrink`}>
                   {tags.map((tag, index) => (
