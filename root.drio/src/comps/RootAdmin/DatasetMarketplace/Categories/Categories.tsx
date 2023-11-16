@@ -86,8 +86,8 @@ const Categories = () => {
                     key={index}
                     className="flex flex-wrap p-4 shadow-md rounded-lg divide-x-2 gap-x-2 bg-white w-1/2 -m-2"
                   >
-                    <div className="w-1/4 flex flex-col items-center p-4">
-                      <div className="rounded-full shadow-xl p-4 mb-4">
+                    <div className="w-full lg:w-1/4 flex flex-col items-center p-4">
+                      <div className="rounded-full shadow-xl p-3 mb-4">
                         <Image
                           width={50}
                           height={50}
@@ -102,7 +102,7 @@ const Categories = () => {
                     <div className="flex-grow flex flex-col p-4 gap-y-2">
                       <span>{ou.ou}</span>
                       <span className="text-gray-500">{ou.dataset}</span>
-                      <div className="w-1/3">
+                      <div className="w-full 2xl:w-1/3">
                         <Button
                           className="w-full"
                           intent="primaryOutline"
