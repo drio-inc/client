@@ -102,8 +102,11 @@ const AddNewPolicyForm = () => {
                   registerName="contract"
                   placeholder="Select contract"
                   options={[
-                    { label: "Contract 1", value: "contract1" },
-                    { label: "Contract 2", value: "contract2" },
+                    { label: "UPS", value: "ups" },
+                    { label: "DHL", value: "dhl" },
+                    { label: "Xtime", value: "xtime" },
+                    { label: "Kintetsu", value: "kintetsu" },
+                    { label: "kbb", value: "Kelly Blue Book" },
                   ]}
                 />
               </div>
@@ -119,6 +122,7 @@ const AddNewPolicyForm = () => {
                     { label: "Privacy", value: "privacy" },
                     { label: "Security", value: "security" },
                     { label: "Regulatory", value: "regulatory" },
+                    { label: "Contractual", value: "contractual" },
                   ]}
                 />
               </div>
@@ -129,8 +133,11 @@ const AddNewPolicyForm = () => {
                   registerName="persona"
                   placeholder="Select persona"
                   options={[
-                    { label: "Persona 1", value: "persona1" },
-                    { label: "Persona 2", value: "persona2" },
+                    { label: "Fraud", value: "fraud" },
+                    { label: "Logistics", value: "logistics" },
+                    { label: "Financial", value: "financial" },
+                    { label: "Marketing", value: "marketing" },
+                    { label: "Fin Compliance", value: "fin_compliance" },
                   ]}
                 />
               </div>

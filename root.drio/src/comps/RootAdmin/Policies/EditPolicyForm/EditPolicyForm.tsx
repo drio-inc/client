@@ -28,8 +28,11 @@ const policySchema = z.object({
 type FormData = z.infer<typeof policySchema>;
 
 const contractOptions = [
-  { label: "Contract 1", value: "contract1" },
-  { label: "Contract 2", value: "contract2" },
+  { label: "UPS", value: "ups" },
+  { label: "DHL", value: "dhl" },
+  { label: "Xtime", value: "xtime" },
+  { label: "Kintetsu", value: "kintetsu" },
+  { label: "kbb", value: "Kelly Blue Book" },
 ];
 
 const typeOptions = [
@@ -39,8 +42,11 @@ const typeOptions = [
 ];
 
 const personaOptions = [
-  { label: "Persona 1", value: "persona1" },
-  { label: "Persona 2", value: "persona2" },
+  { label: "Fraud", value: "fraud" },
+  { label: "Logistics", value: "logistics" },
+  { label: "Financial", value: "financial" },
+  { label: "Marketing", value: "marketing" },
+  { label: "Fin Compliance", value: "fin_compliance" },
 ];
 
 const EditPolicyForm = () => {

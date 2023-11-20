@@ -92,10 +92,10 @@ export default function AddNewRuleForm() {
         ? data.subrules.map((subrule, index) => ({
             ...subrule,
             id: uuidv4(),
-            action: data.action,
             name: index === 0 ? data.name : "",
             dataset: data.dataset.replaceAll("_", " "),
             defaultAllow: data.defaultAllow ? "True" : "False",
+            action: index === data.subrules.length - 1 ? data.action : "",
           }))
         : [];
 
@@ -187,6 +187,9 @@ export default function AddNewRuleForm() {
                 label={"Select Dataset"}
                 className="md:text-sm 2xl:text-base"
                 options={[
+                  { label: "SAP Inventory", value: "sap_inventory" },
+                  { label: "Salesforce Orders", value: "salesforce_orders" },
+                  { label: "Quotes Request", value: "quotes_request" },
                   { label: "MKT Data", value: "mkt_data" },
                   { label: "Accidents", value: "accidents" },
                   { label: "Dealer Sales", value: "dealer_sales" },
@@ -221,6 +224,11 @@ export default function AddNewRuleForm() {
                     className="md:text-sm 2xl:text-base"
                     registerName={`subrules.${index}.metadata`}
                     options={[
+                      { label: "Product Name", value: "product_name" },
+                      { label: "SKU", value: "sku" },
+                      { label: "Price", value: "price" },
+                      { label: "PII", value: "pii" },
+                      { label: "Dealer Name", value: "dealer_name" },
                       { label: "Request", value: "Request Location" },
                       { label: "User Location", value: "User Location" },
                     ]}
