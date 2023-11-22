@@ -21,8 +21,8 @@ const headers = [
   },
 
   {
-    header: "Model",
-    accessor: "model",
+    header: "Cost of Goods",
+    accessor: "price",
   },
 
   {
@@ -70,18 +70,6 @@ const Products = () => {
   const dispatch = useAppDispatch();
   const { data, isLoading } = useGetProductsQuery();
   const productsState = useAppSelector((state) => state.products);
-
-  // useEffect(() => {
-  //   if (!isLoading && data) dispatch(setRows(data));
-
-  //   // const socket = io("ws://localhost:5000");
-  //   // socket.on("connect", () => console.log("connected"));
-  //   // socket.on("products", (data) => console.log(data));
-  //   // return () => {
-  //   //   socket.disconnect();
-  //   // };
-
-  // }, [data, dispatch, isLoading]);
 
   const handleCheckbox = (index: number) => {
     if (productsState.selectedRows.includes(index)) {

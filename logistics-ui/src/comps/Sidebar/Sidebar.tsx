@@ -16,7 +16,7 @@ const NavLinks = [
   },
 
   {
-    name: "Tracking",
+    name: "Booked Order Tracking",
     href: "tracking",
     icon: <RiRoadMapLine className="inline-block w-6 h-6 mr-2" />,
   },
