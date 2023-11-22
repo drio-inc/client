@@ -72,17 +72,11 @@ export default function EditDatasourceForm({ row }: TableRow) {
     schema: schema,
   });
 
-  // const ddxOptions = ddxState.rows.map((row) => ({
-  //   label: `${row.name} (${row.ou})`,
-  //   value: row.id,
-  // }));
-
-  const ddxOptions = rows?.length
-    ? rows?.map((row) => ({
-        label: `${row.ddx.split("_").join(" ").toUpperCase()} (${row.ou})`,
-        value: row.ddx,
-      }))
-    : [];
+  const ddxOptions =
+    ddxState?.rows?.map((row) => ({
+      label: `${row.name} (${row.ou})`,
+      value: row.id,
+    })) ?? [];
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const update = {
@@ -139,7 +133,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                   placeholder={"Select DDX name"}
                   className="md:text-sm 2xl:text-base"
                   defaultSelectedValue={ddxOptions.find(
-                    (option) => option.value === row.ddx.toLowerCase()
+                    (option) => option.value === row.ddx
                   )}
                 />
               </div>

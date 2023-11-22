@@ -32,12 +32,10 @@ export default function Header() {
       const res = await logout().unwrap();
       if (res.message === "Logout successful") {
         dispatch(stateLogout());
-        router.push("/login");
-        router.reload();
+        window.location.href = "/login";
       }
     } catch (error) {
-      router.push("/login");
-      router.reload();
+      window.location.href = "/login";
     }
   };
 

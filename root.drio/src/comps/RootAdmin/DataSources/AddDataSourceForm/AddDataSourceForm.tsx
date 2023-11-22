@@ -60,6 +60,8 @@ export default function AddDataSourceForm() {
     })) ?? [];
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    const ddxValue = ddxOptions.find((ddx) => ddx.value === data.ddx)?.label;
+
     const demoData = {
       ...data,
       ou: "Corp",
@@ -70,7 +72,7 @@ export default function AddDataSourceForm() {
 
     dispatch(setRows([...dataSourceState.rows, demoData]));
     showAlert(
-      `${data.type} data source ${data.name} on ${data.ddx} added successfully`,
+      `${data.type} data source ${data.name} on (${ddxValue}) successfully added`,
       "success"
     );
 

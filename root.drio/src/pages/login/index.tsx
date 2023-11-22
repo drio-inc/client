@@ -55,7 +55,7 @@ export default function Login() {
 
       if (res.token) {
         dispatch(setToken(res.token));
-        window.sessionStorage.setItem("token", res.token);
+        window.localStorage.setItem("token", res.token);
         const decoded = jwt.decode(res.token) as JwtPayload | null;
 
         if (decoded) {

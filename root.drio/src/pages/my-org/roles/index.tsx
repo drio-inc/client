@@ -14,4 +14,4 @@ const RolesPage = () => {
   );
 };
 
-export default RolesPage;
+export default withAuth(RolesPage);

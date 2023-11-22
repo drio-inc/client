@@ -1,14 +1,8 @@
 import Layout from "@/comps/Layout";
-import { useRouter } from "next/router";
-
 import withAuth from "@/comps/HOC/withAuth";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 const SettingsPage = () => {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-
   return (
     <Layout>
       <DashboardContainer>
@@ -20,4 +14,4 @@ const SettingsPage = () => {
   );
 };
 
-export default SettingsPage;
+export default withAuth(SettingsPage);

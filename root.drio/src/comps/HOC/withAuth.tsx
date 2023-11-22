@@ -8,6 +8,7 @@ import { logout } from "@/state/slices/authSlice";
 import { setRecursiveRows } from "@/state/slices/orgUnitSlice";
 import { useGetAccountByIdQuery } from "@/api/resources/accounts";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import showAlert from "../ui/Alert/Alert";
 
 function withAuth(OriginalComponent: React.FC) {
   function AuthenticatedComponent() {
@@ -31,7 +32,6 @@ function withAuth(OriginalComponent: React.FC) {
       }
     );
 
-    // const url = `/api`;
     const url = process.env.API_URL;
 
     useEffect(() => {
@@ -49,15 +49,17 @@ function withAuth(OriginalComponent: React.FC) {
 
             setLoading(false);
             return;
-          } else {
-            setLoading(false);
+          }
+        } catch (error: any) {
+          if (error.response.status === 401) {
             dispatch(logout());
             router.push("/login");
+          } else {
+            showAlert(
+              "Network error occured. Please refresh the page and try again.",
+              "error"
+            );
           }
-        } catch (error) {
-          setLoading(false);
-          dispatch(logout());
-          router.push("/login");
         }
       }
 

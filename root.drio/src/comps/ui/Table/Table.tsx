@@ -49,7 +49,7 @@ const Table = ({
               <th
                 key={index}
                 className={
-                  "uppercase border-t border-b text-gray-500 text-xs px-4 py-6 text-left"
+                  "uppercase border-t border-b text-gray-500 text-xs px-4 py-6 text-left whitespace-nowrap"
                 }
               >
                 {header.header}

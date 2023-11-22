@@ -1,4 +1,5 @@
 import Layout from "@/comps/Layout";
+import withAuth from "@/comps/HOC/withAuth";
 import Datasets from "@/comps/RootAdmin/Datasets";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
@@ -12,4 +13,4 @@ const DatasetsPage = () => {
   );
 };
 
-export default DatasetsPage;
+export default withAuth(DatasetsPage);

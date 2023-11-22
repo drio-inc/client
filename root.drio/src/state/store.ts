@@ -40,7 +40,7 @@ import subscribeDatasetReducer from "./slices/subscribeDatasetsSlice";
 
 const persistAuthConfig = {
   key: "auth",
-  storage: storageSession,
+  storage: storage,
 };
 
 const persistDDXConfig = {

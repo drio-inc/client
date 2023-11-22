@@ -1,4 +1,5 @@
 import Layout from "@/comps/Layout";
+import withAuth from "@/comps/HOC/withAuth";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 import EditInboundContractsForm from "@/comps/RootAdmin/DataContracts/InboundContracts/EditInboundContractsForm";
 
@@ -12,4 +13,4 @@ const EditInboundContractPage = () => {
   );
 };
 
-export default EditInboundContractPage;
+export default withAuth(EditInboundContractPage);

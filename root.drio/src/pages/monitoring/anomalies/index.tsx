@@ -1,4 +1,5 @@
 import Layout from "@/comps/Layout";
+import withAuth from "@/comps/HOC/withAuth";
 import Anomalies from "@/comps/RootAdmin/Monitoring/Anomalies";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
@@ -12,4 +13,4 @@ const AnomaliesPage = () => {
   );
 };
 
-export default AnomaliesPage;
+export default withAuth(AnomaliesPage);
