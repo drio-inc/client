@@ -1,11 +1,9 @@
 import Button from "@ui/Button";
-import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
-import { faker } from "@faker-js/faker";
 
 import { z } from "zod";
 import { useZodForm, Form } from "@ui/Forms/Form";
