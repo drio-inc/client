@@ -14,7 +14,7 @@ const MetadataPopover = ({ row }: any) => {
         metadataState.rows.map((row) => {
           return {
             ...row,
-            metadata: row.metadata.map(
+            tags: row.tags.map(
               (meta: { id: string; name: string; status: string }) => {
                 return {
                   ...meta,
