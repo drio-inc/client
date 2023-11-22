@@ -6,12 +6,12 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { HiMinusSm } from "react-icons/hi";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import VisibilityPopover from "./HeaderPopovers/VisibilityPopover";
 import MetadataPopover from "./HeaderPopovers/MetadataPopover";
+import VisibilityPopover from "./HeaderPopovers/VisibilityPopover";
 
 const headers = [
   {
-    header: "Logistics - Trip Data",
+    header: "Logistics - Tracking Data",
     accessor: "name",
   },
   {

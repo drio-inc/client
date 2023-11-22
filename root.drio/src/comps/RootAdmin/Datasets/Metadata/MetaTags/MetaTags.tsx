@@ -21,13 +21,14 @@ type MapStatusToColor = keyof typeof mapStatusToColor;
 
 const MetaTags = ({ tags }: MetaTagsProps) => {
   return (
-    <div className="inline-grid grid-cols-3 gap-2 my-2">
+    <div className="flex flex-wrap gap-1 py-[10px]">
       {tags?.map((tag, index) => (
         <div
           key={index}
-          className={`inline-flex flex-wrap border ${
+          className={`flex justify-center border ${
             mapStatusToColor[tag.status as MapStatusToColor]
           } rounded-md px-2 py-1 items-center gap-x-2`}
+          // style={{ minWidth: "calc(25% - 8px)" }}
         >
           {tag.status === "Rejected" && (
             <BsXSquareFill className="text-red-500" />

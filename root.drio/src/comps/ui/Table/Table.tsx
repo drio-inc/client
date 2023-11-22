@@ -1,4 +1,4 @@
-import { ReactNode, useRef } from "react";
+import { ReactNode } from "react";
 import Tooltip from "@/comps/ui/Tooltip";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import DashboardFooter from "@ui/Footer/DashbaordFooter";
@@ -105,7 +105,9 @@ const Table = ({
                   return (
                     <>
                       {header.type === "array" ? (
-                        <MetaTags tags={row[header.accessor]} />
+                        <td className="min-w-[12rem] xl:w-[16rem] 2xl:w-[24rem]">
+                          <MetaTags tags={row[header.accessor]} />
+                        </td>
                       ) : (
                         <td
                           key={index}
