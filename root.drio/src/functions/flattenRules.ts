@@ -6,7 +6,7 @@ export interface FlattenedRule {
   action: string;
   dataset: string;
   subrule_id: string;
-  defaultAllow: string;
+  defaultAllow: boolean;
   subrule_value: string;
   subrule_subrule: string;
   subrule_metadata: string;
@@ -19,12 +19,12 @@ export const transformPolicyRules = (rules: Rule[]) => {
   rules?.forEach((rule) => {
     rule?.subrules.forEach((subrule) => {
       const flattenedRule: FlattenedRule = {
-        id: rule.id,
+        id: rule.id ?? "",
         name: rule.name,
         dataset: rule.dataset,
-        subrule_id: subrule.id,
         action: rule.action ?? "",
         subrule_value: subrule.value,
+        subrule_id: subrule.id ?? "",
         defaultAllow: rule.defaultAllow,
         subrule_subrule: subrule.subrule,
         subrule_metadata: subrule.metadata,

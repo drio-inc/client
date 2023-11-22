@@ -2,6 +2,7 @@ import Table from "@/comps/ui/Table";
 import Button from "@/comps/ui/Button";
 import { HiPlus, HiX } from "react-icons/hi";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
+import type { FlattenedRule } from "@/functions/flattenRules";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 import Modal from "@/comps/ui/Modal";
@@ -10,7 +11,6 @@ import { useRouter } from "next/router";
 import PolicyRulesMenu from "./RulesMenu";
 import AddNewRuleForm from "./AddRuleForm";
 import EmptyTable from "@ui/Table/EmptyTable";
-import type { FlattenedRule } from "../AddPolicyForm";
 
 const headers = [
   {
