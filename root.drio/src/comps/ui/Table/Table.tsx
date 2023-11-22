@@ -105,16 +105,14 @@ const Table = ({
                   return (
                     <>
                       {header.type === "array" ? (
-                        <td className="min-w-[12rem] xl:w-[16rem] 2xl:w-[24rem]">
+                        <td className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem]">
                           <MetaTags tags={row[header.accessor]} />
                         </td>
                       ) : (
                         <td
                           key={index}
                           onClick={() => handleRowClick?.(row)}
-                          className={
-                            "cursor-pointer border-t border-b text-gray-500 text-xs p-4"
-                          }
+                          className="cursor-pointer border-t border-b text-gray-500 text-xs p-4"
                         >
                           <div
                             className={`${

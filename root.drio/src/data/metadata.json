@@ -8,9 +8,7 @@
     "sampleValue": "CONSENT TRACK",
     "tags": [
       { "id": "1", "name": "Date", "status": "Rejected" },
-      { "id": "2", "name": "Address", "status": "Pending" },
-      { "id": "3", "name": "Address", "status": "Pending" },
-      { "id": "4", "name": "Address", "status": "Pending" }
+      { "id": "2", "name": "Address", "status": "Pending" }
     ]
   },
   {

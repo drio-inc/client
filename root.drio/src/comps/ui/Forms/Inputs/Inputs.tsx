@@ -295,7 +295,7 @@ const StatelessCustomControl = ({
   return (
     <Control {...props}>
       <div
-        className={`cursor-pointer flex justify-between w-full py-2 px-3 my-1 caret-transparent border rounded-md bg-white min-w-[18rem]`}
+        className={`cursor-pointer flex justify-between w-full py-2 px-3 my-1 caret-transparent border rounded-md bg-white`}
       >
         {props.children}
       </div>
@@ -310,7 +310,7 @@ export const StatelessSelectInput = ({
   ...props
 }: SelectProps) => {
   return (
-    <div className={`${textInputStyles({})} relative flex flex-col`}>
+    <div className={`${textInputStyles({})} relative flex flex-col relative`}>
       <label className="flex items-center">
         <span className="inline-block text-gray-700 text-sm font-medium">
           {label}
