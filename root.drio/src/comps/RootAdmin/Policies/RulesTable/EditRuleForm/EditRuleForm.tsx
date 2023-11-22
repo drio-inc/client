@@ -13,7 +13,7 @@ import { SubmitHandler, useFieldArray } from "react-hook-form";
 
 import { HiOutlineTrash } from "react-icons/hi";
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { useAppDispatch } from "@/hooks/useStoreTypes";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setRuleRows } from "@/state/slices/policiesSlice";
 
 const schema = z.object({
@@ -86,15 +86,18 @@ const actionOptions = [
 export default function EditRuleForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [showActionField, setShowActionField] = useState(false);
+  const { ruleRows } = useAppSelector((state) => state.policies);
+
+  console.log(row);
 
   useEffect(() => {
-    if (row.length > 1) setShowActionField(true);
+    if (row.action !== undefined) setShowActionField(true);
   }, [row]);
 
   const form = useZodForm({
     schema: schema,
     defaultValues: {
-      subrules: row?.map((subrule: TableRow) => ({
+      subrules: row?.subrules.map((subrule: TableRow) => ({
         value: subrule.value,
         subrule: subrule.subrule,
         metadata: subrule.metadata,
@@ -116,19 +119,18 @@ export default function EditRuleForm({ row }: TableRow) {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const rules =
-      data.subrules && data.subrules.length > 0
-        ? data.subrules.map((subrule, index) => ({
-            ...subrule,
-            id: uuidv4(),
-            name: index === 0 ? data.name : "",
-            dataset: data.dataset.replaceAll("_", " "),
-            defaultAllow: data.defaultAllow ? "True" : "False",
-            action: index === data.subrules.length - 1 ? data.action : "",
-          }))
-        : [];
+    const updatedRules = ruleRows.map((rule) => {
+      if (rule?.id === row.id) {
+        return {
+          ...rule,
+          ...data,
+        };
+      }
 
-    dispatch(setRuleRows([...rules]));
+      return rule;
+    });
+
+    dispatch(setRuleRows(updatedRules));
 
     form.reset();
     dispatch(setCloseModal("editRuleForm"));
@@ -190,7 +192,7 @@ export default function EditRuleForm({ row }: TableRow) {
               <TextInput
                 label={"Rule Name"}
                 {...form.register("name")}
-                defaultValue={row[0].name}
+                defaultValue={row.name}
                 placeholder={"Enter rule name"}
                 className="md:text-sm 2xl:text-base"
               />
@@ -205,7 +207,7 @@ export default function EditRuleForm({ row }: TableRow) {
                 className="md:text-sm 2xl:text-base"
                 defaultSelectedValue={
                   datasetOptions.find(
-                    (option) => option.label.toLowerCase() === row[0].dataset
+                    (option) => option.value === row.dataset
                   ) ?? { label: "", value: "" }
                 }
               />
@@ -219,7 +221,7 @@ export default function EditRuleForm({ row }: TableRow) {
                 registerName="defaultAllow"
                 className="md:text-sm 2xl:text-base"
                 defaultSelectedValue={allowOptions.find(
-                  (option) => option.label === row[0].defaultAllow
+                  (option) => option.value === row.defaultAllow
                 )}
               />
             </div>
@@ -233,8 +235,8 @@ export default function EditRuleForm({ row }: TableRow) {
               <div className="w-full flex flex-wrap flex-grow">
                 <div className="px-4 py-2 w-full lg:w-1/3 2xl:w-1/4">
                   <SelectInput
-                    placeholder={"Select metadata"}
                     label={"Select Metadata"}
+                    placeholder={"Select metadata"}
                     className="md:text-sm 2xl:text-base"
                     registerName={`subrules.${index}.metadata`}
                     options={[
@@ -337,7 +339,7 @@ export default function EditRuleForm({ row }: TableRow) {
                 className="md:text-sm 2xl:text-base"
                 defaultSelectedValue={
                   actionOptions.find(
-                    (option) => option.label.toLowerCase() === row[0].action
+                    (option) => option.label.toLowerCase() === row.action
                   ) ?? { label: "", value: "" }
                 }
               />

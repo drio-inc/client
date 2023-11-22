@@ -85,39 +85,27 @@ export default function AddNewRuleForm() {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log(data);
+    const rule = {
+      id: uuidv4(),
+      name: data.name,
+      action: data.action,
+      dataset: data.dataset,
+      defaultAllow: data.defaultAllow,
+      subrules:
+        data?.subrules?.map((subrule) => ({
+          id: uuidv4(),
+          value: subrule.value,
+          subrule: subrule.subrule,
+          metadata: subrule.metadata,
+          conditions: subrule.conditions,
+        })) ?? [],
+    };
 
-    const rules =
-      data.subrules && data.subrules.length > 0
-        ? data.subrules.map((subrule, index) => ({
-            ...subrule,
-            id: uuidv4(),
-            name: index === 0 ? data.name : "",
-            dataset: data.dataset.replaceAll("_", " "),
-            defaultAllow: data.defaultAllow ? "True" : "False",
-            action: index === data.subrules.length - 1 ? data.action : "",
-          }))
-        : [];
-
-    dispatch(setRuleRows([...policyState.ruleRows, ...rules]));
+    dispatch(setRuleRows([...policyState.ruleRows, rule]));
 
     form.reset();
     dispatch(setCloseModal("addRuleForm"));
     showAlert("Rule added successfully", "success");
-
-    // try {
-    //   const res = await addRule({
-    //     ...data,
-    //   }).unwrap();
-
-    //   dispatch(setRuleRows([...policyState.ruleRows, res]));
-    //   showAlert("Rule added successfully", "success");
-    // } catch (err: any) {
-    //   showAlert(
-    //     err?.data?.message ?? "Something went wrong. Please try again.",
-    //     "error"
-    //   );
-    // }
   };
 
   const addNewRule = (condition: string, index: number) => {

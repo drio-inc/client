@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import PolicyRulesMenu from "./RulesMenu";
 import AddNewRuleForm from "./AddRuleForm";
 import EmptyTable from "@ui/Table/EmptyTable";
+import type { FlattenedRule } from "../AddPolicyForm";
 
 const headers = [
   {
@@ -26,19 +27,19 @@ const headers = [
   },
   {
     header: "Metadata",
-    accessor: "metadata",
+    accessor: "subrule_metadata",
   },
   {
     header: "Conditions",
-    accessor: "conditions",
+    accessor: "subrule_conditions",
   },
   {
     header: "Conditional Value",
-    accessor: "value",
+    accessor: "subrule_value",
   },
   {
     header: "Subrule",
-    accessor: "subrule",
+    accessor: "subrule_subrule",
   },
   {
     header: "Action",
@@ -48,19 +49,43 @@ const headers = [
 
 type PolicyProps = {
   modal?: boolean;
-  rows?: TableRow[];
   editable?: boolean;
+  rows?: FlattenedRule[];
 };
 
 const RulesTable = ({ rows, editable = false, modal = false }: PolicyProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
+  console.log("rows", rows);
+
+  const transformedRules = rows?.map((rule, index, array) => {
+    const currentId = rule.id;
+    const firstIndex = array.map((item) => item.id).indexOf(currentId);
+    const lastIndex = array.map((item) => item.id).lastIndexOf(currentId);
+
+    if (index === firstIndex) {
+      return {
+        ...rule,
+        action: "",
+      };
+    } else if (index === lastIndex) {
+      return {
+        ...rule,
+        name: "",
+      };
+    } else {
+      return {
+        ...rule,
+        name: "",
+        action: "",
+      };
+    }
+  });
+
   return (
     <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-      <div
-        className={`bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between border-t`}
-      >
+      <div className="bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between border-t">
         <h2 className="text-gray-700 text-2xl font-bold">Policy Rules</h2>
 
         {modal ? (
@@ -78,20 +103,16 @@ const RulesTable = ({ rows, editable = false, modal = false }: PolicyProps) => {
             </div>
           </Button>
         ) : (
-          <>
-            {!editable && (
-              <Button
-                className="ml-auto"
-                intent={"primaryOutline"}
-                onClick={() => dispatch(setOpenModal("addRuleForm"))}
-              >
-                <div className="flex items-center gap-1">
-                  <HiPlus className="w-4 h-4" />
-                  <span className="inline-block">Add New Rule</span>
-                </div>
-              </Button>
-            )}
-          </>
+          <Button
+            className="ml-auto"
+            intent={"primaryOutline"}
+            onClick={() => dispatch(setOpenModal("addRuleForm"))}
+          >
+            <div className="flex items-center gap-1">
+              <HiPlus className="w-4 h-4" />
+              <span className="inline-block">Add New Rule</span>
+            </div>
+          </Button>
         )}
 
         {modal && (
@@ -114,7 +135,7 @@ const RulesTable = ({ rows, editable = false, modal = false }: PolicyProps) => {
         <Table
           noSelection
           headers={headers}
-          rows={rows ?? []}
+          rows={transformedRules ?? []}
           menu={!modal && PolicyRulesMenu}
         />
       ) : (

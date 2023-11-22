@@ -33,9 +33,7 @@ const AlertModal = ({ row, accessor, onClick }: IModalProps) => {
           </AlertDialog.Description>
           <div className="flex justify-center gap-6">
             <AlertDialog.Cancel asChild>
-              <button className="text-[#1A75FF] inline-flex items-center justify-center rounded px-4 outline-none focus:border">
-                Cancel
-              </button>
+              <Button intent={`secondary`}>Cancel</Button>
             </AlertDialog.Cancel>
 
             <AlertDialog.Action asChild>

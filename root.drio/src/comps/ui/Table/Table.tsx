@@ -16,7 +16,7 @@ type TableHeader = {
 };
 
 type TableProps = {
-  rows?: TableRow[];
+  rows?: any;
   menu?: React.FC | any;
   noSelection?: boolean;
   selectedRows?: number[];
@@ -72,7 +72,7 @@ const Table = ({
           </tr>
         </thead>
         <tbody>
-          {rows?.map((row, index) => {
+          {rows?.map((row: any, index: number) => {
             const isChecked = selectedRows?.includes(row.id);
             return (
               <tr
@@ -134,7 +134,9 @@ const Table = ({
                                     : `capitalize`
                                 }`}
                               >
-                                {row[header.accessor] ?? "NA"}
+                                {row[header.accessor]
+                                  .toString()
+                                  .replaceAll("_", " ") ?? "NA"}
                               </span>
                             </Tooltip>
                           </div>

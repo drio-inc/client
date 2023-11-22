@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import Button from "@/comps/ui/Button";
 import showAlert from "@/comps/ui/Alert";
 import PolicyRulesTable from "../RulesTable";
+import { transformPolicyRules } from "@/functions/flattenRules";
 
 const policySchema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -151,7 +152,7 @@ const EditPolicyForm = () => {
           </div>
         </Form>
 
-        <PolicyRulesTable rows={ruleRows} editable />
+        <PolicyRulesTable rows={transformPolicyRules(ruleRows)} editable />
       </div>
 
       <div className="flex mt-8 justify-center gap-x-4">

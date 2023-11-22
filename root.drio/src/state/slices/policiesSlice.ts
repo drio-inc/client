@@ -1,18 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type Rule = {
-  id: string;
+export type Rule = {
+  id?: string;
   name: string;
+  action?: string;
   dataset: string;
   defaultAllow: boolean;
   subrules: {
-    id: string;
+    id?: string;
     value: string;
     subrule: string;
     metadata: string;
     conditions: string;
   }[];
-};
+} | null;
 
 type PolicyState = {
   rows: TableRow[];
@@ -38,7 +39,7 @@ const policiesSlice = createSlice({
       state.selectedRows = action.payload;
     },
 
-    setRuleRows(state, action) {
+    setRuleRows(state, action: PayloadAction<Rule[]>) {
       state.ruleRows = action.payload;
     },
   },

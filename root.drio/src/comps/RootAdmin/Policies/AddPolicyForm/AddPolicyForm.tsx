@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import Button from "@/comps/ui/Button";
 import showAlert from "@/comps/ui/Alert";
 import PolicyRulesTable from "../RulesTable";
+import { transformPolicyRules } from "@/functions/flattenRules";
 import { useAddPolicyMutation } from "@/api/resources/policies";
 
 const policySchema = z.object({
@@ -29,28 +30,25 @@ const policySchema = z.object({
 
 type FormData = z.infer<typeof policySchema>;
 
-const AddNewPolicyForm = () => {
+const AddPolicyForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [addPolicy, result] = useAddPolicyMutation();
   const auth = useAppSelector((state) => state.auth);
-  const policies = useAppSelector((state) => state.policies);
+  const { rows, ruleRows } = useAppSelector((state) => state.policies);
 
   const form = useZodForm({
     schema: policySchema,
   });
 
   const onSubmit = async (data: FormData) => {
-    console.log("data", data, policies.ruleRows);
-
     dispatch(
       setRows([
-        ...policies.rows,
+        ...rows,
         {
           ...data,
           id: uuidv4(),
           scope: "global",
-          rules: policies.ruleRows,
+          rules: ruleRows,
           createdBy: auth.user?.username ?? "admin",
           modifiedBy: auth.user?.username ?? "admin",
           dateCreated: new Date().toISOString().slice(0, 10),
@@ -62,19 +60,6 @@ const AddNewPolicyForm = () => {
     showAlert("Policy added successfully", "success");
     dispatch(setRuleRows([]));
     router.push("/policies");
-
-    // try {
-    //   const res = await addPolicy({
-    //     ...data,
-    //   }).unwrap();
-    //   dispatch(setRows([res]));
-    //   showAlert("Policy added successfully", "success");
-    // } catch (err: any) {
-    //   showAlert(
-    //     err?.data?.message ?? "Something went wrong. Please try again.",
-    //     "error"
-    //   );
-    // }
   };
 
   return (
@@ -145,7 +130,7 @@ const AddNewPolicyForm = () => {
           </div>
         </Form>
 
-        <PolicyRulesTable rows={policies.ruleRows} />
+        <PolicyRulesTable rows={transformPolicyRules(ruleRows)} />
       </div>
 
       <div className="flex mt-8 justify-center gap-x-4">
@@ -166,4 +151,4 @@ const AddNewPolicyForm = () => {
   );
 };
 
-export default AddNewPolicyForm;
+export default AddPolicyForm;

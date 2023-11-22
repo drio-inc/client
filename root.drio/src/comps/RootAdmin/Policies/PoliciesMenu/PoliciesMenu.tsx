@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 import { setOpenModal } from "@/state/slices/uiSlice";
+import { transformPolicyRules } from "@/functions/flattenRules";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import {
@@ -58,7 +59,10 @@ const PoliciesMenu = ({ row }: TableRow) => {
               identifier="policyRulesTable"
               onClick={() => dispatch(setOpenModal("policyRulesTable"))}
             >
-              <PolicyRulesTable modal={true} rows={row.rules} />
+              <PolicyRulesTable
+                modal={true}
+                rows={transformPolicyRules(row.rules)}
+              />
             </Modal>
           </span>
 
