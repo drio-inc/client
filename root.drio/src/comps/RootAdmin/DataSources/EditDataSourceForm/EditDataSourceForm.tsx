@@ -66,7 +66,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
   );
 
   const ddxState = useAppSelector((state) => state.DDX);
-  const dataSourceState = useAppSelector((state) => state.dataSource);
+  const { rows } = useAppSelector((state) => state.dataSource);
 
   const form = useZodForm({
     schema: schema,
@@ -77,36 +77,38 @@ export default function EditDatasourceForm({ row }: TableRow) {
   //   value: row.id,
   // }));
 
-  const ddxOptions = dataSourceState?.rows?.length
-    ? dataSourceState?.rows?.map((row) => ({
+  const ddxOptions = rows?.length
+    ? rows?.map((row) => ({
         label: `${row.ddx.split("_").join(" ").toUpperCase()} (${row.ou})`,
         value: row.ddx,
       }))
     : [];
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      const res = await update({
-        ...data,
-        id: row.id,
-      }).unwrap();
+    const update = {
+      ...row,
+      ...data,
+    };
 
-      dispatch(
-        setRows(
-          dataSourceState.rows.map((row) => (row.id === res.id ? res : row))
-        )
-      );
+    dispatch(setRows(rows.map((row) => (row.id === update.id ? update : row))));
 
-      showAlert("Data source updated successfully.", "success");
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
+    // try {
+    //   const res = await update({
+    //     ...data,
+    //     id: row.id,
+    //   }).unwrap();
+    //   dispatch(setRows(rows.map((row) => (row.id === res.id ? res : row))));
+    //   showAlert("Data source updated successfully.", "success");
+    // } catch (err: any) {
+    //   showAlert(
+    //     err?.data?.message ?? "Something went wrong. Please try again.",
+    //     "error"
+    //   );
+    // }
 
     form.reset();
     dispatch(setCloseModal("editDataSourceForm"));
+    showAlert("Data source updated successfully.", "success");
   };
 
   return (
@@ -134,7 +136,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                   registerName="ddx"
                   options={ddxOptions}
                   label={"Select DDX"}
-                  placeholder={"Enter DDX name"}
+                  placeholder={"Select DDX name"}
                   className="md:text-sm 2xl:text-base"
                   defaultSelectedValue={ddxOptions.find(
                     (option) => option.value === row.ddx.toLowerCase()
@@ -151,7 +153,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                   className="md:text-sm 2xl:text-base"
                   placeholder={row.type ?? "Enter type"}
                   defaultSelectedValue={options.find(
-                    (option) => option.label === row.type
+                    (option) => option.value === row.type
                   )}
                 />
               </div>
@@ -201,9 +203,9 @@ export default function EditDatasourceForm({ row }: TableRow) {
                   <Checkbox.Root
                     className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                     checked={catalogBoxVisibility}
-                    onCheckedChange={() => {
-                      setCatalogBoxVisibility(!catalogBoxVisibility);
-                    }}
+                    onCheckedChange={() =>
+                      setCatalogBoxVisibility(!catalogBoxVisibility)
+                    }
                   >
                     <Checkbox.Indicator className="text-white">
                       <HiCheck />
@@ -217,10 +219,10 @@ export default function EditDatasourceForm({ row }: TableRow) {
                 <div className="px-4 py-2 w-full">
                   <TextInput
                     placeholder={"Enter URL"}
+                    defaultValue={row.schemaURL}
                     {...form.register("schemaURL")}
                     label={"Enter Schema-Registry URL"}
                     className="md:text-sm 2xl:text-base"
-                    defaultValue={row.schemaRegistry}
                   />
                 </div>
               )}
@@ -229,10 +231,10 @@ export default function EditDatasourceForm({ row }: TableRow) {
                 <div className="px-4 py-2 w-full">
                   <TextInput
                     placeholder={"Enter URL"}
+                    defaultValue={row.catalogURL}
                     {...form.register("catalogURL")}
                     label={"Enter Catalog Manager URL"}
                     className="md:text-sm 2xl:text-base"
-                    defaultValue={row.catalogManagement}
                   />
                 </div>
               )}
@@ -241,8 +243,8 @@ export default function EditDatasourceForm({ row }: TableRow) {
             <div className="py-2 px-2 flex w-full mt-4 gap-4">
               <Button
                 type="button"
-                intent={`secondary`}
                 className="w-full"
+                intent={`secondary`}
                 onClick={() => dispatch(setCloseModal("editDataSourceForm"))}
               >
                 <span className="inline-flex justify-center">Cancel</span>

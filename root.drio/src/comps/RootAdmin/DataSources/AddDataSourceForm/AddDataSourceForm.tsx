@@ -1,7 +1,7 @@
 import Button from "@ui/Button";
-import { SelectInput, TextInput } from "@ui/Forms/Inputs";
-
+import { v4 as uuidv4 } from "uuid";
 import * as Checkbox from "@radix-ui/react-checkbox";
+import { SelectInput, TextInput } from "@ui/Forms/Inputs";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
@@ -53,29 +53,42 @@ export default function AddDataSourceForm() {
     schema: schema,
   });
 
-  const ddxOptions = ddxState.rows.map((row) => ({
-    label: `${row.name} (${row.ou})`,
-    value: row.id,
-  }));
+  const ddxOptions =
+    ddxState?.rows?.map((row) => ({
+      label: `${row.name} (${row.ou})`,
+      value: row.id,
+    })) ?? [];
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      const res = await addDataSource({
-        ...data,
-      }).unwrap();
+    const demoData = {
+      ...data,
+      ou: "Corp",
+      datasets: 25,
+      id: uuidv4(),
+      documentation: "Swagger",
+    };
 
-      if (datasetState.addNewDispatched) {
-        dispatch(setDefaultSource(res));
-      }
+    dispatch(setRows([...dataSourceState.rows, demoData]));
+    showAlert(
+      `${data.type} data source ${data.name} on ${data.ddx} added successfully`,
+      "success"
+    );
 
-      dispatch(setRows([...dataSourceState.rows, res]));
-      showAlert("Data source added successfully", "success");
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
+    // try {
+    //   const res = await addDataSource({
+    //     ...data,
+    //   }).unwrap();
+    //   if (datasetState.addNewDispatched) {
+    //     dispatch(setDefaultSource(res));
+    //   }
+    //   dispatch(setRows([...dataSourceState.rows, res]));
+    //   showAlert("Data source added successfully", "success");
+    // } catch (err: any) {
+    //   showAlert(
+    //     err?.data?.message ?? "Something went wrong. Please try again.",
+    //     "error"
+    //   );
+    // }
 
     form.reset();
     dispatch(setCloseModal("addDataSourceForm"));
@@ -104,7 +117,7 @@ export default function AddDataSourceForm() {
                 registerName="ddx"
                 label={"Select DDX"}
                 options={ddxOptions ?? []}
-                placeholder={"Enter DDX name"}
+                placeholder={"Select DDX name"}
                 className="md:text-sm 2xl:text-base"
               />
             </div>

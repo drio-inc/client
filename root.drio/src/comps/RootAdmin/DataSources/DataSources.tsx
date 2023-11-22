@@ -43,11 +43,11 @@ const headers = [
 
   {
     header: "Schema Registry",
-    accessor: "schemaRegistry",
+    accessor: "schemaURL",
   },
   {
     header: "Catalog Management",
-    accessor: "catalogManagement",
+    accessor: "catalogURL",
   },
   {
     header: "Documentation",

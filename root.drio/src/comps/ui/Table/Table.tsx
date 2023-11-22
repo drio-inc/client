@@ -128,15 +128,15 @@ const Table = ({
                               <span
                                 className={`${
                                   typeof value === "string" &&
-                                  (value.includes("http") ||
-                                    value.includes(".com"))
+                                  (value?.includes("http") ||
+                                    value?.includes(".com"))
                                     ? ``
                                     : `capitalize`
                                 }`}
                               >
                                 {row[header.accessor]
-                                  .toString()
-                                  .replaceAll("_", " ") ?? "NA"}
+                                  ?.toString()
+                                  ?.replaceAll("_", " ") ?? "NA"}
                               </span>
                             </Tooltip>
                           </div>
