@@ -3,7 +3,7 @@ import withAuth from "@/comps/HOC/withAuth";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 import DatasetDetails from "@/comps/RootAdmin/Datasets/DatasetDetails";
 
-const DatasetsPage = () => {
+const ViewDatasetPage = () => {
   return (
     <Layout>
       <DashboardContainer>
@@ -13,4 +13,4 @@ const DatasetsPage = () => {
   );
 };
 
-export default withAuth(DatasetsPage);
+export default withAuth(ViewDatasetPage);

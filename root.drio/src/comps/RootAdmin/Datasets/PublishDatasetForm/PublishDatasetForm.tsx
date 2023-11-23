@@ -1,4 +1,5 @@
 import Button from "@ui/Button";
+import { v4 as uuidv4 } from "uuid";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
 
 import showAlert from "@ui/Alert";
@@ -8,19 +9,19 @@ import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
-
-import { setRows, setAddNewDispatched } from "@/state/slices/datasetSlice";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { setRows, setAddNewDispatched } from "@/state/slices/datasetSlice";
 
-import { HiOutlineDownload, HiOutlinePaperClip } from "react-icons/hi";
+import { HiOutlineDownload } from "react-icons/hi";
 
 import { useState } from "react";
-import { IoRefresh } from "react-icons/io5";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { usePublishDatasetMutation } from "@/api/resources/datasets";
 
 const schema = z.object({
+  name: z.string().nonempty("Please Enter a value"),
+
   dataSource: z.string({
     required_error: "Please select an option",
   }),
@@ -33,11 +34,15 @@ const schema = z.object({
     .string()
     .nonempty("Please Enter a value")
     .url("Please enter a valid URL"),
-
-  name: z.string().nonempty("Please Enter a value"),
 });
 
 type FormData = z.infer<typeof schema>;
+
+const topicOptions = [
+  { label: "All", value: "all" },
+  { label: "MySQL", value: "mysql" },
+  { label: "Purchase", value: "purchase" },
+];
 
 export default function PublishDatasetForm() {
   const dispatch = useAppDispatch();
@@ -48,7 +53,7 @@ export default function PublishDatasetForm() {
   const datasetState = useAppSelector((state) => state.dataset);
   const dataSourceState = useAppSelector((state) => state.dataSource);
 
-  const options = dataSourceState.rows.length
+  const dataSourceOptions = dataSourceState.rows.length
     ? dataSourceState.rows?.map((row) => {
         return {
           label: row.name,
@@ -82,21 +87,20 @@ export default function PublishDatasetForm() {
       return;
     }
 
-    try {
-      const res = await publish({
-        ...data,
-        visibility,
-        json: selectedJSON,
-      }).unwrap();
+    const formData = {
+      ...data,
+      alerts: 7,
+      ou: "Corp",
+      visibility,
+      id: uuidv4(),
+      frequency: 10,
+      sixMonthsAccess: 25,
+      contractInPlace: "Yes",
+      json: selectedJSON.name,
+    };
 
-      dispatch(setRows([...datasetState.rows, res]));
-      showAlert("Dataset published successfully", "success");
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
+    dispatch(setRows([...datasetState.rows, formData]));
+    showAlert("Dataset published successfully", "success");
 
     form.reset();
     dispatch(setCloseModal("publishDatasetForm"));
@@ -116,8 +120,8 @@ export default function PublishDatasetForm() {
                 placeholder={"Select"}
                 defaultSelectedValue={
                   {
-                    label: dataSourceState.defaultSource?.sourceName,
-                    value: dataSourceState.defaultSource?.sourceName
+                    label: dataSourceState?.defaultSource?.sourceName,
+                    value: dataSourceState?.defaultSource?.sourceName
                       .split(" ")
                       .join("_")
                       .toLowerCase(),
@@ -127,20 +131,20 @@ export default function PublishDatasetForm() {
                 label={"Select Data Source"}
                 onChangeCustomAction={onAddNew}
                 className="md:text-sm 2xl:text-base"
-                options={[...options, { label: "Add New", value: "add_new" }]}
+                options={[
+                  ...dataSourceOptions,
+                  { label: "Add New", value: "add_new" },
+                ]}
               />
             </div>
 
             <div className="px-4 py-2 w-full">
               <SelectInput
                 registerName="topic"
+                options={topicOptions}
                 placeholder={"Select"}
                 label={"Select Topic Dataset"}
                 className="md:text-sm 2xl:text-base"
-                options={[
-                  { label: "MySQL", value: "mysql" },
-                  { label: "Purchase", value: "purchase" },
-                ]}
               />
             </div>
 

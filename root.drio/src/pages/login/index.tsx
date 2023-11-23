@@ -83,6 +83,7 @@ export default function Login() {
         <Form form={form} onSubmit={onSubmit}>
           <div className="px-4 py-2 w-full">
             <TextInput
+              type="text"
               label="Account Name"
               placeholder="Account"
               {...form.register("account")}
@@ -92,6 +93,7 @@ export default function Login() {
           <div className="px-4 py-2 w-full">
             <div className="relative">
               <TextInput
+                type="text"
                 label="Username"
                 placeholder="Username"
                 {...form.register("username")}

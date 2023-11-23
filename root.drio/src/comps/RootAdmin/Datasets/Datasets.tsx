@@ -21,7 +21,7 @@ import Modal from "@/comps/ui/Modal";
 const headers = [
   {
     header: "Dataset",
-    accessor: "dataset",
+    accessor: "name",
   },
   {
     header: "Organization Unit",
@@ -32,9 +32,9 @@ const headers = [
     header: "Visibility",
     accessor: "visibility",
     status: {
-      Private: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
-      Public: "bg-cyan-100 text-cyan-800 px-2 py-1 font-medium rounded",
-      Contractual:
+      private: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      public: "bg-cyan-100 text-cyan-800 px-2 py-1 font-medium rounded",
+      contractual:
         "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
     },
   },

@@ -11,13 +11,11 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
+import { HiOutlineDownload } from "react-icons/hi";
 import { setRows } from "@/state/slices/datasetSlice";
 import { setCloseModal } from "@/state/slices/uiSlice";
 
-import { HiOutlineDownload, HiOutlinePaperClip } from "react-icons/hi";
-
 import { useState } from "react";
-import { IoRefresh } from "react-icons/io5";
 import { useUpdateDatasetMutation } from "@/api/resources/datasets";
 
 const schema = z.object({
@@ -41,40 +39,53 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+const topicOptions = [
+  { label: "All", value: "all" },
+  { label: "MySQL", value: "mysql" },
+  { label: "Purchase", value: "purchase" },
+];
+
 export default function EditDatasetForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [update, result] = useUpdateDatasetMutation();
-  const [visibility, setVisibility] = useState("");
+  const { rows } = useAppSelector((state) => state.dataset);
+  const [visibility, setVisibility] = useState(row.visibility);
+  const [selectedJSON, setSelectedJSON] = useState<Blob | File | null>(null);
+  const { rows: dataSourceRows } = useAppSelector((state) => state.dataSource);
 
-  const datasetState = useAppSelector((state) => state.dataset);
+  const dataSourceOptions = dataSourceRows.length
+    ? dataSourceRows?.map((row) => {
+        return {
+          label: row.name,
+          value: row.name.split(" ").join("_").toLowerCase(),
+        };
+      })
+    : [];
 
   const form = useZodForm({
     schema: schema,
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      const res = await update({
-        ...data,
-        visibility,
-        id: row?.id,
-      }).unwrap();
+    const uData = {
+      ...row,
+      ...data,
+      visibility,
+    };
 
-      dispatch(
-        setRows(datasetState.rows.map((row) => (row.id === res.id ? res : row)))
-      );
-
-      showAlert("Dataset updated successfully", "success");
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
+    dispatch(setRows(rows.map((mRow) => (mRow.id === row.id ? uData : mRow))));
+    showAlert("Dataset updated successfully", "success");
 
     form.reset();
     dispatch(setCloseModal("editDatasetForm"));
   };
+
+  console.log(
+    topicOptions.find((option) => option.value === row?.topic) ?? {
+      label: "",
+      value: "",
+    }
+  );
 
   return (
     <>
@@ -82,7 +93,7 @@ export default function EditDatasetForm({ row }: TableRow) {
         <Form form={form} onSubmit={onSubmit}>
           <div className="mx-auto bg-white p-4 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
             <h2 className="text-gray-700 text-2xl font-bold text-center">
-              Update/Edit Dataset
+              Update Dataset
             </h2>
 
             <div className="flex flex-wrap -m-2 rounded-lg my-4">
@@ -91,28 +102,31 @@ export default function EditDatasetForm({ row }: TableRow) {
                   placeholder={"Select"}
                   registerName="dataSource"
                   label={"Select Data Source"}
+                  className="md:text-sm 2xl:text-base"
+                  defaultSelectedValue={
+                    dataSourceOptions.find(
+                      (option) => option.value === row?.dataSource
+                    ) ?? { label: "", value: "" }
+                  }
                   options={[
-                    { label: "My Kafka 1", value: "my_kafka_1" },
-                    { label: "Cassandra-Q", value: "cassandra_q" },
-                    { label: "Retail Kafka", value: "retail_kafka" },
-                    { label: "MySQL-24", value: "mysql_24" },
+                    ...dataSourceOptions,
                     { label: "Add New", value: "add_new" },
                   ]}
-                  className="md:text-sm 2xl:text-base"
                 />
               </div>
 
               <div className="px-4 py-2 w-full">
                 <SelectInput
-                  registerName="dataSource"
-                  label={"Select Topic Dataset"}
+                  registerName="topic"
+                  options={topicOptions}
                   placeholder={"Select Topic"}
-                  options={[
-                    { label: "All", value: "all" },
-                    { label: "Purchase", value: "purchase" },
-                    { label: "MySQL", value: "mysql" },
-                  ]}
+                  label={"Select Topic Dataset"}
                   className="md:text-sm 2xl:text-base"
+                  defaultSelectedValue={
+                    topicOptions.find(
+                      (option) => option.value === row?.topic
+                    ) ?? { label: "", value: "" }
+                  }
                 />
               </div>
 
@@ -120,17 +134,17 @@ export default function EditDatasetForm({ row }: TableRow) {
                 <TextInput
                   label={"Base URL"}
                   placeholder={"Enter URL"}
+                  defaultValue={row.baseURL}
                   {...form.register("baseURL")}
-                  defaultValue={`https://example.com`}
                   className="md:text-sm 2xl:text-base"
                 />
               </div>
 
               <div className="px-4 py-2 w-full">
                 <TextInput
+                  defaultValue={row.name}
                   label={"Set Dataset Name"}
                   {...form.register("name")}
-                  defaultValue={row.dataset}
                   placeholder={"Enter display name"}
                   className="md:text-sm 2xl:text-base"
                 />
@@ -188,38 +202,40 @@ export default function EditDatasetForm({ row }: TableRow) {
                 </RadioGroup.Root>
               </div>
 
-              <div className="px-4 py-2 w-full">
-                <TextInput
-                  label={"Set Public View"}
-                  {...form.register("file")}
-                  className="md:text-sm 2xl:text-base"
-                  placeholder={"Select A json or csv file with example data"}
+              <div className="px-4 py-2 w-full flex flex-col gap-y-2">
+                <label className="inline-block text-gray-700 text-sm font-medium">
+                  Set Subscriber View
+                </label>
+
+                <span className="pointer-events-none border py-2 px-3 my-1 rounded-md shadow-sm border-gray-300 text-gray-400">
+                  {selectedJSON?.name ??
+                    row.json ??
+                    "Select a json file with example data"}
+                </span>
+
+                <input
+                  hidden
+                  type="file"
+                  id="upload-json"
+                  accept=".json,application/json"
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setSelectedJSON(
+                      event?.target?.files && event?.target?.files[0]
+                    );
+                  }}
                 />
               </div>
 
-              <div className="flex flex-wrap gap-2 w-full justify-between px-4 py-2">
+              <div className="flex flex-wrap gap-y-2 w-full justify-between px-4 py-2">
                 <button
                   type="button"
-                  className="flex-1 transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
+                  onClick={() =>
+                    document.getElementById("upload-json")?.click()
+                  }
+                  className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
                 >
                   <HiOutlineDownload className="mr-1 font-bold rotate-180" />
                   <span className="text-sm font-medium">Upload</span>
-                </button>
-
-                <button
-                  type="button"
-                  className="flex-1 transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
-                >
-                  <IoRefresh className="mr-1 font-bold" />
-                  <span className="text-sm font-medium">Swagger</span>
-                </button>
-
-                <button
-                  type="button"
-                  className="flex-1 transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center rounded border-2 border-indigo-200 text-drio-red-dark"
-                >
-                  <HiOutlinePaperClip className="mr-1 font-bold" />
-                  <span className="text-sm font-medium">GraphQL</span>
                 </button>
               </div>
             </div>

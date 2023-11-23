@@ -207,7 +207,7 @@ export default function DatasetDetails({ row }: TableRow) {
 
           <div className="rounded-lg bg-gray-50 w-full py-3 flex justify-end">
             <Button intent={"primary"} className="mx-4">
-              <Link href={`/datasets`}>Done</Link>
+              <Link href={`/datasets/my-datasets`}>Done</Link>
             </Button>
           </div>
         </div>

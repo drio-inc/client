@@ -34,14 +34,6 @@ const DatasetMenu = ({ row }: TableRow) => {
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            <AlertModal
-              row={row}
-              accessor={row.dataset}
-              onClick={() => deleteRow(row.id)}
-            />
-          </span>
-
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <Modal
               label="Edit"
               identifier="editDatasetForm"
@@ -51,22 +43,22 @@ const DatasetMenu = ({ row }: TableRow) => {
             </Modal>
           </span>
 
-          <Link href={`/datasets/${row.id}`}>
-            <span
-              className={
-                "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
-              }
-            >
+          <Link href={`/datasets/my-datasets/${row.id}/view`}>
+            <span className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4">
               View
             </span>
           </Link>
 
+          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            <AlertModal
+              row={row}
+              accessor={row.dataset}
+              onClick={() => deleteRow(row.id)}
+            />
+          </span>
+
           <Link href={`/datasets/my-datasets/${row.id}/metadata`}>
-            <span
-              className={
-                "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
-              }
-            >
+            <span className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4">
               <span className="inline-block w-3 h-3 rounded-full bg-drio-red-dark mr-2"></span>
               Metadata
             </span>
