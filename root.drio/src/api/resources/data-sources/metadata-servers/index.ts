@@ -1,5 +1,5 @@
 import { rootApi } from "@/state/services/apiService";
-import { RegistryData, MutationResponse, DataSourceParams } from "../types";
+import { MutationResponse, DataSourceParams } from "../types";
 
 export const metadataServerApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
