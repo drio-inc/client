@@ -12,9 +12,12 @@ type UIState = {
   modalBoolObject: {
     [key: string]: boolean;
   };
+
+  notification: string;
 };
 
 const initialState: UIState = {
+  notification: "",
   expandedLinks: {},
   modalBoolObject: {},
   pageTitles: {
@@ -48,12 +51,21 @@ const uiSlice = createSlice({
         state.modalBoolObject[key] = false;
       });
     },
+
+    setNotification(state, action) {
+      state.notification = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setOpenModal, setCloseModal, closeAllModals, setExpandedLinks } =
-  uiSlice.actions;
+export const {
+  setOpenModal,
+  setCloseModal,
+  closeAllModals,
+  setNotification,
+  setExpandedLinks,
+} = uiSlice.actions;
 
 export default uiSlice.reducer;

@@ -25,6 +25,7 @@ type OrganizationUnit = {
   updated_at: string;
   account_id: string;
   ddx_clusters: DDXCluster[];
+  data_sources: DataSource[];
 };
 
 type DDXCluster = {
@@ -63,3 +64,32 @@ interface JwtPayload {
   user_type: number;
   account_id: string;
 }
+
+type DefaultParams = {
+  ou_id: string;
+  account_id: string;
+};
+
+type RegistryData = {
+  id: string;
+  name: string;
+  ou_id: string;
+  secure: boolean;
+  endpoints: string;
+  account_id: string;
+  updated_at: string;
+  created_at: string;
+  insecure_skip_verify: boolean;
+};
+
+type DataSource = RegistryData & {
+  sr_id: string;
+  ms_id: string;
+
+  kind: string;
+  cluster_id: string;
+  cluster_name: string;
+
+  schema_registries: RegistryData;
+  metadata_servers: RegistryData;
+};

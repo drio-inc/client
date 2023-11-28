@@ -22,9 +22,12 @@ export const rootApi = createApi({
   tagTypes: [
     "Accounts",
     "Account",
-    "Organization_Units",
+    "Data_Sources",
     "DDX_Clusters",
     "DDX_Instances",
+    "Metadata_Servers",
+    "Schema_Registries",
+    "Organization_Units",
   ],
   endpoints: (builder) => {
     return {};

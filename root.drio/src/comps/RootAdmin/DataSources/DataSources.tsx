@@ -2,8 +2,9 @@ import Table from "@/comps/ui/Table";
 import AddDataSourceForm from "./AddDataSourceForm";
 import DataSourcesMenu from "./DataSourcesMenu/DataSourcesMenu";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
+import { useGetDataSourcesQuery } from "@/api/resources/data-sources";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import { setSelectedRows as setSelectedDataSourceRows } from "@/state/slices/dataSourceSlice";
+import { setRows, setSelectedRows } from "@/state/slices/dataSourceSlice";
 
 import Button from "@ui/Button";
 import { IoRefresh } from "react-icons/io5";
@@ -11,9 +12,11 @@ import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
 
+import { useEffect } from "react";
 import Modal from "@/comps/ui/Modal";
 import { mergedDDXData } from "@/functions/mergeDDXData";
-import { useEffect } from "react";
+import { mergedDataSourceData } from "@/functions/mergeDataSourcesData";
+import DataSourcePopup from "./DataSourcePopup";
 
 const headers = [
   {
@@ -27,13 +30,13 @@ const headers = [
   },
 
   {
-    header: "Type",
-    accessor: "type",
+    header: "Kind",
+    accessor: "kind",
   },
 
   {
     header: "Broker Endpoint",
-    accessor: "endpoint",
+    accessor: "endpoints",
   },
 
   {
@@ -43,11 +46,11 @@ const headers = [
 
   {
     header: "Schema Registry",
-    accessor: "schemaURL",
+    accessor: "schema_endpoints",
   },
   {
     header: "Catalog Management",
-    accessor: "catalogURL",
+    accessor: "metadata_endpoints",
   },
   {
     header: "Documentation",
@@ -57,30 +60,23 @@ const headers = [
 
 const DataSources = () => {
   const dispatch = useAppDispatch();
-  const dataSourceState = useAppSelector((state) => state.dataSource);
   const { recursiveRows } = useAppSelector((state) => state.orgUnit);
+  const { selectedRows, rows } = useAppSelector((state) => state.dataSource);
 
   useEffect(() => {
     dispatch(setDDXRows(mergedDDXData()));
+    dispatch(setRows(mergedDataSourceData()));
   }, [dispatch, recursiveRows]);
 
   const handleCheckbox = (index: number) => {
-    if (dataSourceState.selectedRows.includes(index)) {
-      dispatch(
-        setSelectedDataSourceRows(
-          dataSourceState.selectedRows.filter((row) => row !== index)
-        )
-      );
+    if (selectedRows.includes(index)) {
+      dispatch(setSelectedRows(selectedRows.filter((row) => row !== index)));
     } else {
-      dispatch(
-        setSelectedDataSourceRows([...dataSourceState.selectedRows, index])
-      );
+      dispatch(setSelectedRows([...selectedRows, index]));
     }
   };
 
-  const clearSelectedRows = () => {
-    dispatch(setSelectedDataSourceRows([]));
-  };
+  const clearSelectedRows = () => dispatch(setSelectedRows([]));
 
   return (
     <div className="w-full">
@@ -88,21 +84,19 @@ const DataSources = () => {
         <div
           className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
         >
-          {dataSourceState.selectedRows.length > 0 && (
+          {selectedRows.length > 0 && (
             <div className="flex items-center">
               <Checkbox.Root
                 className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                checked={dataSourceState.selectedRows.length > 0}
-                onCheckedChange={() => {
-                  clearSelectedRows?.();
-                }}
+                checked={selectedRows.length > 0}
+                onCheckedChange={() => clearSelectedRows?.()}
               >
                 <Checkbox.Indicator className="text-white">
                   <HiMinusSm />
                 </Checkbox.Indicator>
               </Checkbox.Root>
-              <h3 className={"font-medium text-sm text-gray-700"}>
-                {dataSourceState.selectedRows.length} Item(s) Selected
+              <h3 className="font-medium text-sm text-gray-700">
+                {selectedRows.length} Item(s) Selected
               </h3>
 
               <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
@@ -127,14 +121,20 @@ const DataSources = () => {
               <AddDataSourceForm />
             </Modal>
           </div>
+
+          <div className="hidden">
+            <Modal identifier="dataSourcePopup">
+              <DataSourcePopup />
+            </Modal>
+          </div>
         </div>
 
         <Table
+          rows={rows}
           headers={headers}
           menu={DataSourcesMenu}
-          rows={dataSourceState.rows}
+          selectedRows={selectedRows}
           handleCheckbox={handleCheckbox}
-          selectedRows={dataSourceState.selectedRows}
         />
       </div>
     </div>

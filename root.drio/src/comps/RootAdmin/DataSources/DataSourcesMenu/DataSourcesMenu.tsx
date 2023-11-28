@@ -8,6 +8,7 @@ import AlertModal from "@/comps/ui/AlertModal";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/dataSourceSlice";
 import EditDataSourceForm from "../EditDataSourceForm";
+import DeleteDataSource from "../DeleteDataSource";
 
 const DataSourcesMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
@@ -41,12 +42,21 @@ const DataSourcesMenu = ({ row }: TableRow) => {
             </Modal>
           </span>
 
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+          {/* <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <AlertModal
               row={row}
               accessor={row.ou}
               onClick={() => deleteRow(row.id)}
             />
+          </span> */}
+          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            <Modal
+              label="Delete"
+              identifier="deleteDataSource"
+              onClick={() => dispatch(setOpenModal("deleteDataSource"))}
+            >
+              <DeleteDataSource row={row} />
+            </Modal>
           </span>
         </Popover.Content>
       </Popover.Portal>

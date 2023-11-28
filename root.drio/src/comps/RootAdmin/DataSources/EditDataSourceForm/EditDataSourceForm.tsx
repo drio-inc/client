@@ -1,6 +1,6 @@
 import Button from "@ui/Button";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
-
+import * as RadioGroup from "@radix-ui/react-radio-group";
 import * as Checkbox from "@radix-ui/react-checkbox";
 
 import showAlert from "@ui/Alert";
@@ -18,11 +18,16 @@ import { setRows } from "@/state/slices/dataSourceSlice";
 import { HiCheck } from "react-icons/hi";
 
 import { useState } from "react";
-import { useEditDataSourceMutation } from "@/api/resources/data-sources";
+import {
+  usePatchDataSourceMutation,
+  useUpdateDataSourceMutation,
+} from "@/api/resources/data-sources";
+import { DataSourceFormdata } from "@/api/resources/data-sources/types";
 
 const options = [
   { label: "Kafka", value: "kafka" },
-  { label: "AWS Kinesis", value: "aws_kinesis" },
+  { label: "Amazon Kinesis", value: "amazon kinesis" },
+  { label: "Azure Event Hub", value: "azure event hub" },
 ];
 
 const encodingOptions = [
@@ -35,34 +40,38 @@ const encodingOptions = [
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
 
-  ddx: z.string({
+  cluster_id: z.string({
     required_error: "Please select an option",
   }),
 
-  type: z.string({
+  kind: z.string({
     required_error: "Please select an option",
   }),
 
-  endpoint: z.string().nonempty("Please Enter a value"),
+  endpoints: z.string().nonempty("Please Enter a value"),
 
-  encoding: z.string({
-    required_error: "Please select an option",
-  }),
+  encoding: z.string().optional(),
 
-  schemaURL: z.string().url().optional(),
-  catalogURL: z.string().url().optional(),
+  // schemaRegistryName: z.string().optional(),
+  schemaEndpoints: z.string().url().optional(),
+
+  // catalogName: z.string().optional(),
+  catalogEndpoints: z.string().url().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
 
 export default function EditDatasourceForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [update, updateResult] = useEditDataSourceMutation();
+  const [patch, patchResult] = usePatchDataSourceMutation();
+  const [update, updateResult] = usePatchDataSourceMutation();
+  const [secure, setSecure] = useState("true");
+  const [skipVerify, setSkipVerify] = useState("true");
   const [schemaBoxVisibility, setSchemaBoxVisibility] = useState(
-    !!(row.schemaRegistry !== "None")
+    !!row.schema_registry
   );
   const [catalogBoxVisibility, setCatalogBoxVisibility] = useState(
-    !!(row.catalogManagement !== "None")
+    !!row.metadata_server
   );
 
   const ddxState = useAppSelector((state) => state.DDX);
@@ -78,31 +87,64 @@ export default function EditDatasourceForm({ row }: TableRow) {
       value: row.id,
     })) ?? [];
 
+  const skipVerifyValue = () =>
+    (secure === "true" && skipVerify === "false") || secure !== "true";
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const update = {
-      ...row,
-      ...data,
+    const cluster = ddxState?.rows?.find(
+      (row) => row.id === data.cluster_id
+    ) as DDXCluster;
+
+    let patchData: DataSourceFormdata = {
+      name: data.name,
+      kind: data.kind,
+      endpoints: data.endpoints,
+
+      cluster_name: cluster?.name,
+      cluster_id: data.cluster_id,
+      ou_id: cluster?.ou_id as string,
+      insecure_skip_verify: skipVerifyValue(),
+      secure: secure === "true" ? true : false,
+      account_id: cluster?.account_id as string,
     };
 
-    dispatch(setRows(rows.map((row) => (row.id === update.id ? update : row))));
+    if (schemaBoxVisibility) {
+      patchData = {
+        ...patchData,
+        schema_registry: {
+          name: `${data.name}_schema_registry` ?? "",
+          endpoints: data.schemaEndpoints ?? "",
+        },
+      };
+    }
 
-    // try {
-    //   const res = await update({
-    //     ...data,
-    //     id: row.id,
-    //   }).unwrap();
-    //   dispatch(setRows(rows.map((row) => (row.id === res.id ? res : row))));
-    //   showAlert("Data source updated successfully.", "success");
-    // } catch (err: any) {
-    //   showAlert(
-    //     err?.data?.message ?? "Something went wrong. Please try again.",
-    //     "error"
-    //   );
-    // }
+    if (catalogBoxVisibility) {
+      patchData = {
+        ...patchData,
+        metadata_server: {
+          name: `${data.name}_metadata_server` ?? "",
+          endpoints: data.catalogEndpoints ?? "",
+        },
+      };
+    }
+
+    console.log(patchData);
+
+    try {
+      const res = await patch({
+        ...patchData,
+        id: row.id,
+      }).unwrap();
+      showAlert("Data source updated successfully.", "success");
+    } catch (err: any) {
+      showAlert(
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
+      );
+    }
 
     form.reset();
     dispatch(setCloseModal("editDataSourceForm"));
-    showAlert("Data source updated successfully.", "success");
   };
 
   return (
@@ -127,27 +169,26 @@ export default function EditDatasourceForm({ row }: TableRow) {
 
               <div className="px-4 py-2 w-full">
                 <SelectInput
-                  registerName="ddx"
                   options={ddxOptions}
                   label={"Select DDX"}
+                  registerName="cluster_id"
                   placeholder={"Select DDX name"}
                   className="md:text-sm 2xl:text-base"
                   defaultSelectedValue={ddxOptions.find(
-                    (option) => option.value === row.ddx
+                    (option) => option.value === row.cluster_id
                   )}
                 />
               </div>
 
               <div className="px-4 py-2 w-full">
                 <SelectInput
-                  label={"Type"}
+                  label={"Kind"}
                   options={options}
-                  registerName="type"
-                  defaultValue={row.type}
+                  registerName="kind"
                   className="md:text-sm 2xl:text-base"
                   placeholder={row.type ?? "Enter type"}
                   defaultSelectedValue={options.find(
-                    (option) => option.value === row.type
+                    (option) => option.value === row.kind
                   )}
                 />
               </div>
@@ -155,14 +196,14 @@ export default function EditDatasourceForm({ row }: TableRow) {
               <div className="px-4 py-2 w-full">
                 <TextInput
                   label={"Broker Endpoint"}
-                  defaultValue={row.endpoint}
-                  {...form.register("endpoint")}
+                  defaultValue={row.endpoints}
+                  {...form.register("endpoints")}
                   placeholder={"Enter broker endpoint"}
                   className="md:text-sm 2xl:text-base"
                 />
               </div>
 
-              <div className="px-4 py-2 w-full">
+              {/* <div className="px-4 py-2 w-full">
                 <SelectInput
                   label={"Encoding"}
                   registerName="encoding"
@@ -171,7 +212,93 @@ export default function EditDatasourceForm({ row }: TableRow) {
                   className="md:text-sm 2xl:text-base"
                   defaultSelectedValue={encodingOptions[0]}
                 />
+              </div> */}
+
+              <h3 className="px-4 text-gray-700 text-sm font-medium">
+                Secure?
+              </h3>
+
+              <div className="px-4 py-2 w-full">
+                <RadioGroup.Root
+                  value={secure}
+                  aria-label="Secure"
+                  onValueChange={setSecure}
+                  className="flex flex-wrap gap-y-2 gap-x-4 w-full"
+                >
+                  <div className="flex items-center gap-x-2">
+                    <RadioGroup.Item
+                      id="r1"
+                      value={"true"}
+                      className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                    />
+                    <label
+                      htmlFor="r1"
+                      className="text-gray-500 text-sm font-medium"
+                    >
+                      True
+                    </label>
+                  </div>
+
+                  <div className="flex items-center gap-x-2">
+                    <RadioGroup.Item
+                      id="r2"
+                      value={"false"}
+                      className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                    />
+                    <label
+                      htmlFor="r2"
+                      className="text-gray-500 text-sm font-medium"
+                    >
+                      False
+                    </label>
+                  </div>
+                </RadioGroup.Root>
               </div>
+
+              {secure === "true" && (
+                <>
+                  <h3 className="px-4 text-gray-700 text-sm font-medium mt-2">
+                    Validate certificates?
+                  </h3>
+
+                  <div className="px-4 py-2 w-full">
+                    <RadioGroup.Root
+                      value={skipVerify}
+                      onValueChange={setSkipVerify}
+                      aria-label="Validate certificates?"
+                      className="flex flex-wrap gap-y-2 gap-x-4 w-full"
+                    >
+                      <div className="flex items-center gap-x-2">
+                        <RadioGroup.Item
+                          id="r3"
+                          value={"true"}
+                          className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                        />
+                        <label
+                          htmlFor="r3"
+                          className="text-gray-500 text-sm font-medium"
+                        >
+                          True
+                        </label>
+                      </div>
+
+                      <div className="flex items-center gap-x-2">
+                        <RadioGroup.Item
+                          id="r4"
+                          value={"false"}
+                          className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                        />
+                        <label
+                          htmlFor="r4"
+                          className="text-gray-500 text-sm font-medium"
+                        >
+                          False
+                        </label>
+                      </div>
+                    </RadioGroup.Root>
+                  </div>
+                </>
+              )}
 
               <div className="px-4 py-2 w-full">
                 <div className="relative flex items-center gap-x-2">
@@ -210,27 +337,49 @@ export default function EditDatasourceForm({ row }: TableRow) {
               </div>
 
               {schemaBoxVisibility && (
-                <div className="px-4 py-2 w-full">
-                  <TextInput
-                    placeholder={"Enter URL"}
-                    defaultValue={row.schemaURL}
-                    {...form.register("schemaURL")}
-                    label={"Enter Schema-Registry URL"}
-                    className="md:text-sm 2xl:text-base"
-                  />
-                </div>
+                <>
+                  {/* <div className="px-4 py-2 w-full">
+                    <TextInput
+                      placeholder={"Enter name"}
+                      label={"Enter Schema-Registry Name"}
+                      className="md:text-sm 2xl:text-base"
+                      {...form.register("schemaRegistryName")}
+                    />
+                  </div> */}
+
+                  <div className="px-4 py-2 w-full">
+                    <TextInput
+                      placeholder={"Enter endpoints"}
+                      className="md:text-sm 2xl:text-base"
+                      {...form.register("schemaEndpoints")}
+                      label={"Enter Schema-Registry Endpoints"}
+                      defaultValue={"https://my-schema-registry:8081"}
+                    />
+                  </div>
+                </>
               )}
 
               {catalogBoxVisibility && (
-                <div className="px-4 py-2 w-full">
-                  <TextInput
-                    placeholder={"Enter URL"}
-                    defaultValue={row.catalogURL}
-                    {...form.register("catalogURL")}
-                    label={"Enter Catalog Manager URL"}
-                    className="md:text-sm 2xl:text-base"
-                  />
-                </div>
+                <>
+                  {/* <div className="px-4 py-2 w-full">
+                    <TextInput
+                      placeholder={"Enter name"}
+                      {...form.register("catalogName")}
+                      className="md:text-sm 2xl:text-base"
+                      label={"Enter Catalog Manager Name"}
+                    />
+                  </div> */}
+
+                  <div className="px-4 py-2 w-full">
+                    <TextInput
+                      placeholder={"Enter endpoints"}
+                      className="md:text-sm 2xl:text-base"
+                      {...form.register("catalogEndpoints")}
+                      label={"Enter Catalog Manager Endpoints"}
+                      defaultValue={"https://my-catalogue-mgr.com"}
+                    />
+                  </div>
+                </>
               )}
             </div>
 
@@ -247,7 +396,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
               <Button
                 intent={`primary`}
                 className="w-full"
-                isLoading={updateResult.isLoading}
+                isLoading={patchResult.isLoading}
               >
                 <span className="inline-flex justify-center">Update</span>
               </Button>
