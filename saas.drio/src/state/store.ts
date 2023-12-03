@@ -30,7 +30,7 @@ import licensingReducer from "./slices/licensingSlice";
 
 const persistConfig = {
   key: "auth",
-  storage: storageSession,
+  storage: storage,
 };
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
@@ -38,9 +38,9 @@ const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const rootReducer = combineReducers({
   DDX: DDXSlice,
   ui: uiReducer,
-  auth: authReducer,
   account: accountReducer,
   orgUnit: orgUnitReducer,
+  auth: persistedAuthReducer,
   licensing: licensingReducer,
   [rootApi.reducerPath]: rootApi.reducer,
 });

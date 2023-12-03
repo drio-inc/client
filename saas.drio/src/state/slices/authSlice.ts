@@ -40,6 +40,7 @@ const authSlice = createSlice({
       state.token = "";
       state.user = null;
       state.isAuthenticated = false;
+      window.localStorage.clear();
       window.sessionStorage.clear();
     },
   },

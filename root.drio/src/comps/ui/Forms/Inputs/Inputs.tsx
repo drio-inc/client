@@ -311,7 +311,7 @@ export const StatelessSelectInput = ({
   ...props
 }: SelectProps) => {
   return (
-    <div className={`${textInputStyles({})} relative flex flex-col relative`}>
+    <div className={`${textInputStyles({})} flex flex-col relative`}>
       <label className="flex items-center">
         <span className="inline-block text-gray-700 text-sm font-medium">
           {label}

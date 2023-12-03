@@ -2,13 +2,13 @@ import { useRouter } from "next/router";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 
 import axios from "axios";
+import showAlert from "@ui/Alert";
 import { getToken } from "@/utils/token";
 import { useEffect, useState } from "react";
 import { logout } from "@/state/slices/authSlice";
 import { setRecursiveRows } from "@/state/slices/orgUnitSlice";
 import { useGetAccountByIdQuery } from "@/api/resources/accounts";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import showAlert from "../ui/Alert/Alert";
 
 function withAuth(OriginalComponent: React.FC) {
   function AuthenticatedComponent() {
