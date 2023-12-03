@@ -9,7 +9,6 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 const ShipmentDetails = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  // const { orderId, name, sku, from, to } = router.query;
   const products = useAppSelector((state) => state.products);
 
   const handleProductChange = (option: ChangeEvent<HTMLSelectElement>) => {
