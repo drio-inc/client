@@ -109,40 +109,38 @@ export default function AddDataSourceForm() {
       };
     }
 
-    console.log(createData);
+    try {
+      const res = await create(createData).unwrap();
+      if (addNewDispatched) dispatch(setDefaultSource(res));
 
-    // try {
-    //   const res = await create(createData).unwrap();
-    //   if (addNewDispatched) dispatch(setDefaultSource(res));
+      dispatch(
+        setRows([
+          ...dataSourceState.rows,
+          {
+            ...res.data_source,
+            datasets: 25,
+            documentation: "Swagger",
+          },
+        ])
+      );
 
-    //   dispatch(
-    //     setRows([
-    //       ...dataSourceState.rows,
-    //       {
-    //         ...res.data_source,
-    //         datasets: 25,
-    //         documentation: "Swagger",
-    //       },
-    //     ])
-    //   );
+      if (res) {
+        const message = `${data.kind} Data Source '${data.name}' on ${cluster?.ou} - ${cluster?.name} added successfully`;
 
-    //   if (res) {
-    //     const message = `${data.kind} Data Source '${data.name}' on ${cluster?.ou} - ${cluster?.name} added successfully`;
+        dispatch(setNotification(message));
+        dispatch(setOpenModal("dataSourcePopup"));
+      }
 
-    //     dispatch(setNotification(message));
-    //     dispatch(setOpenModal("dataSourcePopup"));
-    //   }
+      showAlert("Data source added successfully", "success");
+    } catch (err: any) {
+      showAlert(
+        err?.data?.message ?? "Something went wrong. Please try again.",
+        "error"
+      );
+    }
 
-    //   showAlert("Data source added successfully", "success");
-    // } catch (err: any) {
-    //   showAlert(
-    //     err?.data?.message ?? "Something went wrong. Please try again.",
-    //     "error"
-    //   );
-    // }
-
-    // form.reset();
-    // dispatch(setCloseModal("addDataSourceForm"));
+    form.reset();
+    dispatch(setCloseModal("addDataSourceForm"));
   };
 
   return (
