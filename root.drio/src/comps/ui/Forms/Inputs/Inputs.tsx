@@ -255,6 +255,8 @@ export const SelectInput = ({
               unstyled
               {...field}
               options={options}
+              maxMenuHeight={200}
+              menuPlacement="auto"
               value={selectedValue}
               onBlur={field.onBlur}
               placeholder={props.placeholder}

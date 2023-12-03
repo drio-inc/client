@@ -11,8 +11,6 @@ import ExportAppLink from "../ExportAppLink/ExportAppLink";
 
 const DatasetMarketplaceMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
-  const datasetState = useAppSelector((state) => state.dataset);
-
   return (
     <Popover.Root>
       <Popover.Trigger>
@@ -26,11 +24,7 @@ const DatasetMarketplaceMenu = ({ row }: TableRow) => {
           align="center"
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
-          <span
-            className={
-              "cursor-pointer hover:bg-indigo-50 hover:text-drio-red w-full block"
-            }
-          >
+          <span className="cursor-pointer hover:bg-indigo-50 hover:text-drio-red w-full block">
             <Modal
               label="Request Access"
               identifier="requestDataAccessForm"
@@ -40,11 +34,7 @@ const DatasetMarketplaceMenu = ({ row }: TableRow) => {
             </Modal>
           </span>
 
-          <span
-            className={
-              "cursor-pointer hover:bg-indigo-50 hover:text-drio-red w-full block"
-            }
-          >
+          <span className="cursor-pointer hover:bg-indigo-50 hover:text-drio-red w-full block">
             <Modal
               label="Get App Link"
               identifier="getAppLink"
@@ -54,20 +44,12 @@ const DatasetMarketplaceMenu = ({ row }: TableRow) => {
             </Modal>
           </span>
 
-          <span
-            className={
-              "cursor-pointer hover:bg-indigo-50 hover:text-drio-red w-full block py-2 px-4"
-            }
-          >
+          <span className="cursor-pointer hover:bg-indigo-50 hover:text-drio-red w-full block py-2 px-4">
             Favorite
           </span>
 
-          <Link href={`/datasets/${row.dataset}`}>
-            <span
-              className={
-                "cursor-pointer hover:bg-indigo-50 hover:text-drio-red w-full block py-2 px-4"
-              }
-            >
+          <Link href={`/datasets/my-datasets/${row.dataset}/view`}>
+            <span className="cursor-pointer hover:bg-indigo-50 hover:text-drio-red w-full block py-2 px-4">
               View
             </span>
           </Link>
