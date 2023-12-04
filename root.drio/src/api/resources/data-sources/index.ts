@@ -47,7 +47,8 @@ export const dataSourcesApi = rootApi.injectEndpoints({
 
     patchDataSource: builder.mutation<
       MutationResponse,
-      DataSourceFormdata & DataSourceParams
+      Omit<DataSourceFormdata, "secure" | "insecure_skip_verify"> &
+        DataSourceParams
     >({
       query: ({ account_id, ou_id, ...payload }) => ({
         url: `/resources/accounts/${account_id}/ous/${ou_id}/data-sources/${payload.id}`,
@@ -69,7 +70,7 @@ export const dataSourcesApi = rootApi.injectEndpoints({
       MutationResponse,
       DataSourceParams & Pick<RegistryData, "secure" | "insecure_skip_verify">
     >({
-      query: ({ ou_id, secure, account_id, id, insecure_skip_verify }) => ({
+      query: ({ id, ou_id, account_id, secure, insecure_skip_verify }) => ({
         url: `/resources/accounts/${account_id}/ous/${ou_id}/data-sources/${id}/secure`,
         method: "PUT",
         body: { secure, insecure_skip_verify },

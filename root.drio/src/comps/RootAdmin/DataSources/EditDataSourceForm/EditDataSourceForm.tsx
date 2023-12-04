@@ -1,7 +1,8 @@
 import Button from "@ui/Button";
-import { SelectInput, TextInput } from "@ui/Forms/Inputs";
-import * as RadioGroup from "@radix-ui/react-radio-group";
+import { HiCheck } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
+import { setCloseModal } from "@/state/slices/uiSlice";
+import { SelectInput, TextInput } from "@ui/Forms/Inputs";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
@@ -9,20 +10,11 @@ import Layout from "@/comps/Layout";
 import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
-
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { setCloseModal } from "@/state/slices/uiSlice";
-import { setRows } from "@/state/slices/dataSourceSlice";
-
-import { HiCheck } from "react-icons/hi";
-
 import { useState } from "react";
-import {
-  usePatchDataSourceMutation,
-  useUpdateDataSourceMutation,
-} from "@/api/resources/data-sources";
 import { DataSourceFormdata } from "@/api/resources/data-sources/types";
+import { usePatchDataSourceMutation } from "@/api/resources/data-sources";
 
 const options = [
   { label: "Kafka", value: "kafka" },
@@ -31,9 +23,9 @@ const options = [
 ];
 
 const encodingOptions = [
-  { label: "Unknown", value: "unknown" },
   { label: "Avro", value: "avro" },
   { label: "JSON", value: "json" },
+  { label: "Unknown", value: "unknown" },
   { label: "protobuf", value: "protobuf" },
 ];
 
@@ -64,9 +56,6 @@ type FormData = z.infer<typeof schema>;
 export default function EditDatasourceForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [patch, patchResult] = usePatchDataSourceMutation();
-  const [update, updateResult] = usePatchDataSourceMutation();
-  const [secure, setSecure] = useState("true");
-  const [skipVerify, setSkipVerify] = useState("true");
   const [schemaBoxVisibility, setSchemaBoxVisibility] = useState(
     !!row.schema_registry
   );
@@ -75,38 +64,36 @@ export default function EditDatasourceForm({ row }: TableRow) {
   );
 
   const ddxState = useAppSelector((state) => state.DDX);
-  const { rows } = useAppSelector((state) => state.dataSource);
 
   const form = useZodForm({
     schema: schema,
   });
 
   const ddxOptions =
-    ddxState?.rows?.map((row) => ({
-      label: `${row.name} (${row.ou})`,
-      value: row.id,
-    })) ?? [];
+    ddxState?.rows
+      ?.filter((filteredRow) => filteredRow?.ou_id === row?.ou_id)
+      ?.map((mappedRow) => ({
+        label: `${mappedRow.name} (${mappedRow.ou})`,
+        value: mappedRow.id,
+      })) ?? [];
 
-  const skipVerifyValue = () =>
-    (secure === "true" && skipVerify === "false") || secure !== "true";
-
+  console.log(row, ddxState?.rows);
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const cluster = ddxState?.rows?.find(
-      (row) => row.id === data.cluster_id
+      (row) => row?.id === data?.cluster_id
     ) as DDXCluster;
 
-    let patchData: DataSourceFormdata = {
-      name: data.name,
-      kind: data.kind,
-      endpoints: data.endpoints,
+    let patchData: Omit<DataSourceFormdata, "secure" | "insecure_skip_verify"> =
+      {
+        name: data.name,
+        kind: data.kind,
+        endpoints: data.endpoints,
 
-      cluster_name: cluster?.name,
-      cluster_id: data.cluster_id,
-      ou_id: cluster?.ou_id as string,
-      insecure_skip_verify: skipVerifyValue(),
-      secure: secure === "true" ? true : false,
-      account_id: cluster?.account_id as string,
-    };
+        cluster_name: cluster?.name,
+        cluster_id: data.cluster_id,
+        ou_id: cluster?.ou_id as string,
+        account_id: cluster?.account_id as string,
+      };
 
     if (schemaBoxVisibility) {
       patchData = {
@@ -128,13 +115,14 @@ export default function EditDatasourceForm({ row }: TableRow) {
       };
     }
 
-    console.log(patchData);
+    console.log(JSON.stringify(patchData), patchData);
 
     try {
       const res = await patch({
         ...patchData,
         id: row.id,
       }).unwrap();
+
       showAlert("Data source updated successfully.", "success");
     } catch (err: any) {
       showAlert(
@@ -198,8 +186,8 @@ export default function EditDatasourceForm({ row }: TableRow) {
                   label={"Broker Endpoint"}
                   defaultValue={row.endpoints}
                   {...form.register("endpoints")}
-                  placeholder={"Enter broker endpoint"}
                   className="md:text-sm 2xl:text-base"
+                  placeholder={"Enter broker endpoint"}
                 />
               </div>
 
@@ -214,100 +202,14 @@ export default function EditDatasourceForm({ row }: TableRow) {
                 />
               </div> */}
 
-              <h3 className="px-4 text-gray-700 text-sm font-medium">
-                Secure?
-              </h3>
-
-              <div className="px-4 py-2 w-full">
-                <RadioGroup.Root
-                  value={secure}
-                  aria-label="Secure"
-                  onValueChange={setSecure}
-                  className="flex flex-wrap gap-y-2 gap-x-4 w-full"
-                >
-                  <div className="flex items-center gap-x-2">
-                    <RadioGroup.Item
-                      id="r1"
-                      value={"true"}
-                      className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
-                    />
-                    <label
-                      htmlFor="r1"
-                      className="text-gray-500 text-sm font-medium"
-                    >
-                      True
-                    </label>
-                  </div>
-
-                  <div className="flex items-center gap-x-2">
-                    <RadioGroup.Item
-                      id="r2"
-                      value={"false"}
-                      className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
-                    />
-                    <label
-                      htmlFor="r2"
-                      className="text-gray-500 text-sm font-medium"
-                    >
-                      False
-                    </label>
-                  </div>
-                </RadioGroup.Root>
-              </div>
-
-              {secure === "true" && (
-                <>
-                  <h3 className="px-4 text-gray-700 text-sm font-medium mt-2">
-                    Validate certificates?
-                  </h3>
-
-                  <div className="px-4 py-2 w-full">
-                    <RadioGroup.Root
-                      value={skipVerify}
-                      onValueChange={setSkipVerify}
-                      aria-label="Validate certificates?"
-                      className="flex flex-wrap gap-y-2 gap-x-4 w-full"
-                    >
-                      <div className="flex items-center gap-x-2">
-                        <RadioGroup.Item
-                          id="r3"
-                          value={"true"}
-                          className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
-                        />
-                        <label
-                          htmlFor="r3"
-                          className="text-gray-500 text-sm font-medium"
-                        >
-                          True
-                        </label>
-                      </div>
-
-                      <div className="flex items-center gap-x-2">
-                        <RadioGroup.Item
-                          id="r4"
-                          value={"false"}
-                          className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
-                        />
-                        <label
-                          htmlFor="r4"
-                          className="text-gray-500 text-sm font-medium"
-                        >
-                          False
-                        </label>
-                      </div>
-                    </RadioGroup.Root>
-                  </div>
-                </>
-              )}
-
               <div className="px-4 py-2 w-full">
                 <div className="relative flex items-center gap-x-2">
                   <Checkbox.Root
                     className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                     checked={schemaBoxVisibility}
-                    onCheckedChange={() => {
-                      setSchemaBoxVisibility(!schemaBoxVisibility);
-                    }}
+                    onCheckedChange={() =>
+                      setSchemaBoxVisibility(!schemaBoxVisibility)
+                    }
                   >
                     <Checkbox.Indicator className="text-white">
                       <HiCheck />
@@ -353,7 +255,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                       className="md:text-sm 2xl:text-base"
                       {...form.register("schemaEndpoints")}
                       label={"Enter Schema-Registry Endpoints"}
-                      defaultValue={"https://my-schema-registry:8081"}
+                      defaultValue={row.schema_registry?.endpoints ?? ""}
                     />
                   </div>
                 </>
@@ -376,7 +278,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                       className="md:text-sm 2xl:text-base"
                       {...form.register("catalogEndpoints")}
                       label={"Enter Catalog Manager Endpoints"}
-                      defaultValue={"https://my-catalogue-mgr.com"}
+                      defaultValue={row.metadata_server?.endpoints ?? ""}
                     />
                   </div>
                 </>

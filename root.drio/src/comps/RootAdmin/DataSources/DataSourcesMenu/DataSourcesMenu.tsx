@@ -1,24 +1,15 @@
 import Modal from "@/comps/ui/Modal";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
+import { useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-
-import AlertModal from "@/comps/ui/AlertModal";
-import { setOpenModal } from "@/state/slices/uiSlice";
-import { setRows, setSelectedRows } from "@/state/slices/dataSourceSlice";
-import EditDataSourceForm from "../EditDataSourceForm";
 import DeleteDataSource from "../DeleteDataSource";
+import { setOpenModal } from "@/state/slices/uiSlice";
+import EditDataSourceForm from "../EditDataSourceForm";
+import DataSourceSecurity from "../DataSourceSecurity";
 
 const DataSourcesMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
-  const dataSourceState = useAppSelector((state) => state.dataSource);
-
-  const deleteRow = (id: number | string) => {
-    dispatch(setRows(dataSourceState.rows.filter((row) => row.id !== id)));
-    dispatch(setSelectedRows([]));
-  };
-
   return (
     <Popover.Root>
       <Popover.Trigger>
@@ -42,13 +33,6 @@ const DataSourcesMenu = ({ row }: TableRow) => {
             </Modal>
           </span>
 
-          {/* <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            <AlertModal
-              row={row}
-              accessor={row.ou}
-              onClick={() => deleteRow(row.id)}
-            />
-          </span> */}
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <Modal
               label="Delete"
@@ -56,6 +40,16 @@ const DataSourcesMenu = ({ row }: TableRow) => {
               onClick={() => dispatch(setOpenModal("deleteDataSource"))}
             >
               <DeleteDataSource row={row} />
+            </Modal>
+          </span>
+
+          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
+            <Modal
+              label="Security"
+              identifier="editSecurityForm"
+              onClick={() => dispatch(setOpenModal("editSecurityForm"))}
+            >
+              <DataSourceSecurity row={row} />
             </Modal>
           </span>
         </Popover.Content>
