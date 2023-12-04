@@ -94,7 +94,7 @@ const RulesTable = ({ rows, editable = false, modal = false }: PolicyProps) => {
             className="ml-auto"
             onClick={() => {
               dispatch(setCloseModal("policyRulesTable"));
-              router.push("/policies/new-policy");
+              router.push("/policies/data-policies/new-policy");
             }}
           >
             <div className="flex items-center gap-1">

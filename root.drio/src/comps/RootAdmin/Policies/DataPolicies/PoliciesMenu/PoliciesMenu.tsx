@@ -28,7 +28,7 @@ const PoliciesMenu = ({ row }: TableRow) => {
     dispatch(setRuleRows(row.rules));
 
     router.push({
-      pathname: `/policies/${row.id}/edit-policy`,
+      pathname: `/policies/data-policies/${row.id}/edit-policy`,
       query: { row: JSON.stringify(row) },
     });
   };

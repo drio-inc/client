@@ -1,13 +1,13 @@
 import Layout from "@/comps/Layout";
 import withAuth from "@/comps/HOC/withAuth";
-import Policies from "@/comps/RootAdmin/Policies";
+import DataPolicies from "@/comps/RootAdmin/Policies/DataPolicies";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
 const PoliciesPage = () => {
   return (
     <Layout>
       <DashboardContainer>
-        <Policies />
+        <DataPolicies />
       </DashboardContainer>
     </Layout>
   );

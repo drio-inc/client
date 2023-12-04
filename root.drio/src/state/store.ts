@@ -37,6 +37,7 @@ import inboundContractReducer from "./slices/inboundContractSlice";
 import outboundContractReducer from "./slices/outboundContractSlice";
 import approvedContractReducer from "./slices/approvedContractSlice";
 import subscribeDatasetReducer from "./slices/subscribeDatasetsSlice";
+import alertsAnomalyPoliciesReducer from "./slices/alertAnomalyPoliciesSlice";
 
 const persistAuthConfig = {
   key: "auth",
@@ -91,6 +92,7 @@ const rootReducer = combineReducers({
   outboundContract: outboundContractReducer,
   approvedContract: approvedContractReducer,
   subscribeDataset: subscribeDatasetReducer,
+  alertsAnomalyPolicies: alertsAnomalyPoliciesReducer,
   [rootApi.reducerPath]: rootApi.reducer,
 });
 

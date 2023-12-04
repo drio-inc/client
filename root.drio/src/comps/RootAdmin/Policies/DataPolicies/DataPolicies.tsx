@@ -4,13 +4,10 @@ import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setRows, setSelectedRows } from "@/state/slices/policiesSlice";
 
-import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
-import PolicyRulesTable from "./RulesTable";
 import PoliciesMenu from "./PoliciesMenu";
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { setOpenModal } from "@/state/slices/uiSlice";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 import { HiMinusSm, HiPlus, HiUpload } from "react-icons/hi";
 import { useGetPoliciesQuery } from "@/api/resources/policies";
@@ -47,7 +44,7 @@ const headers = [
   },
 ];
 
-const Policies = () => {
+const DataPolicies = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const policiesState = useAppSelector((state) => state.policies);
@@ -106,7 +103,7 @@ const Policies = () => {
             <Button
               icon={<HiPlus />}
               intent={"primary"}
-              onClick={() => router.push("/policies/new-policy")}
+              onClick={() => router.push("/policies/data-policies/new-policy")}
             >
               Add New Policy
             </Button>
@@ -129,4 +126,4 @@ const Policies = () => {
   );
 };
 
-export default Policies;
+export default DataPolicies;

@@ -59,7 +59,7 @@ const AddPolicyForm = () => {
 
     showAlert("Policy added successfully", "success");
     dispatch(setRuleRows([]));
-    router.push("/policies");
+    router.push("/policies/data-policies");
   };
 
   return (

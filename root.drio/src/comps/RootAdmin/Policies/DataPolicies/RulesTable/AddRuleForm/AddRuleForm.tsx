@@ -170,6 +170,7 @@ export default function AddNewRuleForm() {
 
             <div className="px-4 py-2 w-full lg:w-1/2 2xl:w-1/3">
               <SelectInput
+                menuPlacement="bottom"
                 placeholder={"Select"}
                 registerName="dataset"
                 label={"Select Dataset"}

@@ -84,7 +84,18 @@ const NavLinks = [
   {
     name: "Policies",
     href: "policies",
+    default: "data-policies",
     icon: <HiOutlineClipboardCheck className="inline-block w-6 h-6 mr-2" />,
+    children: [
+      {
+        name: "Data Policies",
+        href: "/data-policies",
+      },
+      {
+        name: "Alert and Anomaly Policies",
+        href: "/alert-anomaly-policies",
+      },
+    ],
   },
 
   {

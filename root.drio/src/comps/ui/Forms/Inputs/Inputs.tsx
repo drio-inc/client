@@ -49,6 +49,7 @@ interface InputProps extends ComponentProps<"input">, SharedProps {}
 interface SelectProps extends ComponentProps<"select">, SharedProps {
   registerName: string;
   hasPlusIndicator?: boolean;
+  menuPlacement?: "auto" | "top" | "bottom";
   onChangeCustomAction?: (selectedOption?: string) => void;
 
   defaultSelectedValue?: {
@@ -78,7 +79,6 @@ export const TextInput = forwardRef<HTMLInputElement, ITextInputProps>(
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const {
-      clearErrors,
       formState: { errors },
     } = useFormContext();
 
@@ -226,6 +226,7 @@ export const SelectInput = ({
   hasPlusIndicator,
   defaultSelectedValue,
   onChangeCustomAction,
+  menuPlacement = "auto",
   ...props
 }: SelectProps) => {
   const {
@@ -256,9 +257,9 @@ export const SelectInput = ({
               {...field}
               options={options}
               maxMenuHeight={200}
-              menuPlacement="auto"
               value={selectedValue}
               onBlur={field.onBlur}
+              menuPlacement={menuPlacement}
               placeholder={props.placeholder}
               onChange={(selectedOption: any) => {
                 field.onChange(selectedOption?.value);
