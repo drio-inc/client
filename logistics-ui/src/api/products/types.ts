@@ -8,3 +8,9 @@ export type Product = {
   product_code: string;
   inventoryLocation: string;
 };
+
+export type ProductParams = {
+  name?: string;
+  limit?: number;
+  offset?: number;
+};

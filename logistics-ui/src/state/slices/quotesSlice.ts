@@ -1,5 +1,5 @@
-import quotesData from "@data/quotes.json";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { quotesApi } from "@/api/quotes";
+import { createSlice } from "@reduxjs/toolkit";
 
 type QuotesState = {
   rows: TableRow[];
@@ -7,7 +7,7 @@ type QuotesState = {
 };
 
 const initialState: QuotesState = {
-  rows: quotesData,
+  rows: [],
   selectedRows: [],
 };
 
@@ -24,7 +24,14 @@ const quotesSlice = createSlice({
     },
   },
 
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      quotesApi.endpoints.getQuotes.matchFulfilled,
+      (state, action) => {
+        state.rows = action.payload;
+      }
+    );
+  },
 });
 
 export const { setRows, setSelectedRows } = quotesSlice.actions;

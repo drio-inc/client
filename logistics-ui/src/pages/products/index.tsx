@@ -1,15 +1,15 @@
 import Layout from "@/comps/Layout";
-import Products from "@/comps/Logistics/Products";
+import Inventory from "@/comps/Logistics/Inventory";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
-const ProductsPage = () => {
+const InventoryPage = () => {
   return (
     <Layout>
       <DashboardContainer>
-        <Products />
+        <Inventory />
       </DashboardContainer>
     </Layout>
   );
 };
 
-export default ProductsPage;
+export default InventoryPage;

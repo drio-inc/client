@@ -4,16 +4,16 @@ import * as Popover from "@radix-ui/react-popover";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import {
   setSelectedRows,
-  setSelectedproduct,
-} from "@/state/slices/productsSlice";
+  setselectedItem,
+} from "@/state/slices/inventorySlice";
 
 const ProductsMenu = ({ row }: TableRow) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const productsState = useAppSelector((state) => state.products);
+  const { selectedRows } = useAppSelector((state) => state.inventory);
 
   const onQuotesClick = (row: TableRow) => {
-    dispatch(setSelectedproduct(row));
+    dispatch(setselectedItem(row));
     router.push({
       pathname: "/quotes",
       query: {
@@ -28,14 +28,10 @@ const ProductsMenu = ({ row }: TableRow) => {
   };
 
   const handleCheckbox = (index: number) => {
-    if (productsState.selectedRows.includes(index)) {
-      dispatch(
-        setSelectedRows(
-          productsState.selectedRows.filter((row) => row !== index)
-        )
-      );
+    if (selectedRows.includes(index)) {
+      dispatch(setSelectedRows(selectedRows.filter((row) => row !== index)));
     } else {
-      dispatch(setSelectedRows([...productsState.selectedRows, index]));
+      dispatch(setSelectedRows([...selectedRows, index]));
     }
   };
 
@@ -52,12 +48,12 @@ const ProductsMenu = ({ row }: TableRow) => {
           align="center"
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700 flex flex-col"
         >
-          <span
+          <Popover.Close
             onClick={() => onQuotesClick(row)}
             className="inline-block py-2 px-4 cursor-pointer hover:bg-indigo-50"
           >
             Get Quote
-          </span>
+          </Popover.Close>
 
           <Popover.Close
             onClick={() => handleCheckbox(row.id)}

@@ -26,7 +26,7 @@ const headers = [
 
   {
     header: "Transport Mode",
-    accessor: "mode",
+    accessor: "transport_mode",
   },
 
   {
@@ -36,16 +36,16 @@ const headers = [
 
   {
     header: "Origin Port",
-    accessor: "originPort",
+    accessor: "origin_port",
   },
 
   {
     header: "Destination Port",
-    accessor: "destinationPort",
+    accessor: "destination_port",
   },
   {
     header: "Minimum Weight",
-    accessor: "minimumWeight",
+    accessor: "minimum_weight",
   },
   {
     header: "Rate",
@@ -64,9 +64,14 @@ const headers = [
 const Quotes = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { data, isLoading } = useGetQuotesQuery();
+  const { data, isLoading } = useGetQuotesQuery({
+    limit: 10,
+    offset: 0,
+    origin_port: "",
+    destination_port: "",
+  });
   const quotesState = useAppSelector((state) => state.quotes);
-  const { selectedProduct } = useAppSelector((state) => state.products);
+  const { selectedItem } = useAppSelector((state) => state.inventory);
 
   // useEffect(() => {
   //   if (!isLoading && data) dispatch(setRows(data));
@@ -74,12 +79,12 @@ const Quotes = () => {
 
   const originPort =
     location_to_origin[
-      selectedProduct?.inventoryLocation as keyof typeof location_to_origin
+      selectedItem?.inventoryLocation as keyof typeof location_to_origin
     ];
 
   const destinationPort =
     dealer_to_destination[
-      selectedProduct?.dealerName as keyof typeof dealer_to_destination
+      selectedItem?.dealerName as keyof typeof dealer_to_destination
     ]?.destination_port;
 
   const filteredRows = useMemo(() => {

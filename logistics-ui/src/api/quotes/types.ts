@@ -8,3 +8,10 @@ export type Quote = {
   maximum_weight: string;
   destination_port: number;
 };
+
+export type QuoteParams = {
+  limit?: number;
+  offset?: number;
+  origin_port?: string;
+  destination_port?: string;
+};

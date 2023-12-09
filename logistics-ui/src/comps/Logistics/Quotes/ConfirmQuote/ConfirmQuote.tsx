@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 export default function ConfirmQuote({ row }: TableRow) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { selectedProduct } = useAppSelector((state) => state.products);
+  const { selectedItem } = useAppSelector((state) => state.products);
 
   const bookQuote = () => {
     dispatch(setCloseModal("confirmQuote"));
@@ -16,11 +16,11 @@ export default function ConfirmQuote({ row }: TableRow) {
   };
 
   const productDetails = {
-    sku: selectedProduct?.sku,
-    name: selectedProduct?.name,
-    to: selectedProduct?.shipToLocation,
-    "order id": selectedProduct?.orderId,
-    from: selectedProduct?.inventoryLocation,
+    sku: selectedItem?.sku,
+    name: selectedItem?.name,
+    to: selectedItem?.shipToLocation,
+    "order id": selectedItem?.orderId,
+    from: selectedItem?.inventoryLocation,
   };
 
   return (

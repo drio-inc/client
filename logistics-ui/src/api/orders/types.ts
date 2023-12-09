@@ -7,3 +7,9 @@ export type Order = {
   ship_to_location: number;
   shipment_quantity: number;
 };
+
+export type OrderParams = {
+  name?: string;
+  limit?: number;
+  offset?: number;
+};

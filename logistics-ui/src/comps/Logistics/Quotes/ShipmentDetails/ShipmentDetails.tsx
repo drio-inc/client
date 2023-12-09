@@ -2,18 +2,18 @@ import { ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import { HiSearch } from "react-icons/hi";
 import { StatelessSelectInput } from "@/comps/ui/Forms/Inputs";
-import { setSelectedproduct } from "@/state/slices/productsSlice";
+import { setselectedItem } from "@/state/slices/inventorySlice";
 import dealer_to_destination from "@data/dealer_to_destination.json";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 const ShipmentDetails = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state) => state.products);
+  const products = useAppSelector((state) => state.inventory);
 
   const handleProductChange = (option: ChangeEvent<HTMLSelectElement>) => {
     const findProduct = products.rows.find((p) => p.orderId === option);
-    dispatch(setSelectedproduct(findProduct));
+    dispatch(setselectedItem(findProduct));
   };
 
   return (
@@ -43,8 +43,8 @@ const ShipmentDetails = () => {
               registerName="orderID"
               onChange={(option) => handleProductChange(option)}
               defaultSelectedValue={{
-                label: products.selectedProduct?.orderId ?? "All",
-                value: products.selectedProduct?.orderId ?? "All",
+                label: products.selectedItem?.orderId ?? "All",
+                value: products.selectedItem?.orderId ?? "All",
               }}
               options={products.rows.map((product) => ({
                 label: product.orderId,
@@ -57,7 +57,7 @@ const ShipmentDetails = () => {
             <span className="text-gray-700 font-bold">Name</span>
             <div className="rounded-md border border-gray-300 p-4">
               <span className="text-[#4C566A]">
-                {products.selectedProduct?.name ?? "All"}
+                {products.selectedItem?.name ?? "All"}
               </span>
             </div>
           </div>
@@ -66,7 +66,7 @@ const ShipmentDetails = () => {
             <span className="text-gray-700 font-bold">SKU</span>
             <div className="rounded-md border border-gray-300 p-4">
               <span className="text-[#4C566A]">
-                {products.selectedProduct?.sku ?? "All"}
+                {products.selectedItem?.sku ?? "All"}
               </span>
             </div>
           </div>
@@ -75,7 +75,7 @@ const ShipmentDetails = () => {
             <span className="text-gray-700 font-bold">From</span>
             <div className="rounded-md border border-gray-300 p-4">
               <span className="text-[#4C566A]">
-                {products.selectedProduct?.inventoryLocation ?? "All"}
+                {products.selectedItem?.inventoryLocation ?? "All"}
               </span>
             </div>
           </div>
@@ -85,7 +85,7 @@ const ShipmentDetails = () => {
             <div className="rounded-md border border-gray-300 p-4">
               <span className="text-[#4C566A]">
                 {dealer_to_destination[
-                  products.selectedProduct
+                  products.selectedItem
                     ?.dealerName as keyof typeof dealer_to_destination
                 ]?.delivery_address ?? "ALL"}
               </span>
