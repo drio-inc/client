@@ -1,13 +1,10 @@
 export type Quote = {
   id: string;
-  name: string;
-  model: string;
-  year: string;
-  sku: string;
-  weight: number;
-  volume: number;
-  inventoryLocation: string;
-  shipmentQuantity: number;
+  type: string;
+  service: string;
+  carrier: string;
+  origin_port: number;
+  minimum_weight: string;
+  maximum_weight: string;
+  destination_port: number;
 };
-
-export type Quotes = Quote[];

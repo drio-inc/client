@@ -59,12 +59,12 @@ const ProductsMenu = ({ row }: TableRow) => {
             Get Quote
           </span>
 
-          <span
+          <Popover.Close
             onClick={() => handleCheckbox(row.id)}
             className="inline-block py-2 px-4 cursor-pointer hover:bg-indigo-50"
           >
             Mark as Important
-          </span>
+          </Popover.Close>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

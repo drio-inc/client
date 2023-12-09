@@ -2,7 +2,6 @@ import Button from "@ui/Button";
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 import { useRouter } from "next/router";
-import { HiOutlineDuplicate } from "react-icons/hi";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
@@ -48,8 +47,8 @@ export default function ConfirmQuote({ row }: TableRow) {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 gap-x-4 my-4 text-gray-700 text-sm gap-y-2 shadow-sm border rounded-md bg-indigo-50 p-4">
-          <div className="col-span-2 border-b border-gray-300 pb-[6px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 my-4 text-gray-700 text-sm gap-y-2 shadow-sm border rounded-md bg-indigo-50 p-4">
+          <div className="lg:col-span-2 border-b border-gray-300 pb-[6px]">
             <h3 className="text-[16px] font-semibold">Quote Details</h3>
           </div>
           {Object.entries(row).map(([key, value]) => (
@@ -71,7 +70,7 @@ export default function ConfirmQuote({ row }: TableRow) {
           </Button>
 
           <Button intent={`primary`} className="w-full" onClick={bookQuote}>
-            <span>Confirm</span>
+            Confirm
           </Button>
         </div>
       </div>
