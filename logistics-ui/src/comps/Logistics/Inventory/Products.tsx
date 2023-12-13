@@ -5,6 +5,7 @@ import InventoryMenu from "./InventoryMenu";
 import { useGetOrdersQuery } from "@/api/orders";
 import { useGetProductsQuery } from "@/api/products";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
+import { useModal } from "@/comps/BaseModal/useModal";
 
 const headers = [
   {
@@ -65,6 +66,10 @@ const headers = [
 
 const Products = () => {
   const dispatch = useAppDispatch();
+  const { onOpen: openTestModal } = useModal("TestModal");
+  const { onOpen: openLoginModal } = useModal("LoginModal");
+  const { onOpen: openSampleModal } = useModal("SampleModal");
+
   const { isLoading: isProductsLoading } = useGetProductsQuery({
     name: "",
     offset: 0,
@@ -85,8 +90,6 @@ const Products = () => {
 
   const rows = () => {
     const orderMap = new Map(orders.map((order) => [order.name, order]));
-    console.log(orderMap);
-
     const combinedInventory = products.map((product) => {
       const matchingOrder = orderMap.get(product.name);
 
@@ -104,12 +107,17 @@ const Products = () => {
       return product;
     });
 
-    console.log(combinedInventory, "HI");
     return combinedInventory;
   };
 
   return (
     <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
+      <div style={{ display: "flex", gap: "2rem" }}>
+        <button onClick={openLoginModal}>LOGIN</button>
+        <button onClick={openTestModal}>TEST</button>
+        <button onClick={openSampleModal}>SAmple</button>
+      </div>
+
       <Table
         important
         noSelection

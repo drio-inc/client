@@ -7,12 +7,15 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Loader from "@/comps/ui/Loader/Loader";
+import { ModalProvider } from "@/comps/BaseModal/ModalProvider";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <Loader />
-      <Component {...pageProps} />
+      <ModalProvider>
+        <Component {...pageProps} />
+      </ModalProvider>
       <ToastContainer />
     </Provider>
   );

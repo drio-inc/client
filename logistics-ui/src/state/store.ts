@@ -19,13 +19,15 @@ import {
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 import uiReducer from "./slices/uiSlice";
+import modalReducer from "./slices/modalSlice";
 import quotesReducer from "./slices/quotesSlice";
-import shimpentReducer from "./slices/shipmentSlice";
 import trackingReducer from "./slices/trackingSlice";
+import shimpentReducer from "./slices/shipmentSlice";
 import inventoryReducer from "./slices/inventorySlice";
 
 const rootReducer = combineReducers({
   ui: uiReducer,
+  modal: modalReducer,
   quotes: quotesReducer,
   tracking: trackingReducer,
   shipment: shimpentReducer,
