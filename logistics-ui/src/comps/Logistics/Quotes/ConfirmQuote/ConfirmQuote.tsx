@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 export default function ConfirmQuote({ row }: TableRow) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { selectedItem } = useAppSelector((state) => state.products);
+  const { selectedItem } = useAppSelector((state) => state.inventory);
 
   const bookQuote = () => {
     dispatch(setCloseModal("confirmQuote"));
