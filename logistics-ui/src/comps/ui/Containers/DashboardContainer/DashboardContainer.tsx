@@ -1,9 +1,10 @@
 import Header from "@ui/Header";
 import Sidebar from "@/comps/Sidebar";
+import Notificationbar from "@/comps/Notificationbar";
 
 const DashboardContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="">
+    <div>
       <Sidebar />
       <div className="relative md:ml-64">
         <div className="min-h-screen relative">
@@ -13,6 +14,7 @@ const DashboardContainer = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       </div>
+      <Notificationbar />
     </div>
   );
 };

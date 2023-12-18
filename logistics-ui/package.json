@@ -30,6 +30,7 @@
     "class-variance-authority": "^0.6.0",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
+    "framer-motion": "^10.16.16",
     "jsonwebtoken": "^9.0.2",
     "luxon": "^3.4.3",
     "next": "13.4.1",

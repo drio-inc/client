@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { HiSearch } from "react-icons/hi";
-
-import { MdLogout, MdOutlineAccountCircle } from "react-icons/md";
+import { MdOutlineNotifications, MdOutlineAccountCircle } from "react-icons/md";
 
 import Button from "../Button";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { setShowSidebar } from "@/state/slices/uiSlice";
 
 export default function Header() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { pageTitles } = useAppSelector((state) => state.ui);
+  const { pageTitles, showSidebar } = useAppSelector((state) => state.ui);
 
   const path =
     router.pathname &&
@@ -37,17 +37,16 @@ export default function Header() {
               />
             </div>
           </form>
-          <span className="mr-3 flex items-center gap-x-2 bg-neutral-50 rounded-md py-3 px-8 text-[#4C566A]">
-            <MdOutlineAccountCircle className="w-5 h-5" />
+          <span
+            className="mr-3 cursor-pointer"
+            onClick={() => dispatch(setShowSidebar(!showSidebar))}
+          >
+            <MdOutlineNotifications className="w-6 h-6 text-[#1F2937]" />
+          </span>
+          <span className="flex items-center gap-x-2 bg-neutral-50 rounded-md py-3 px-8 text-[#4C566A]">
+            <MdOutlineAccountCircle className="w-6 h-6" />
             Demo User
           </span>
-          {/* <Button
-            intent={"primary"}
-            className="text-sm mx-2"
-            icon={<MdLogout className="w-5 h-5" />}
-          >
-            Logout
-          </Button> */}
         </div>
       </div>
     </nav>

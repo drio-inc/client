@@ -1,8 +1,7 @@
 import { toast } from "react-toastify";
+import { formatTime } from "@/utils/formatTime";
 import React, { useEffect, useState } from "react";
 import { HiOutlineCheckCircle, HiOutlineXCircle } from "react-icons/hi";
-
-import { formatHourAgo } from "@/utils/formatTime";
 
 interface IAlertProps {
   timeStamp?: number;
@@ -22,7 +21,7 @@ const AlertMessage = ({ message, status, timeStamp }: IAlertProps) => {
     }
   }, [serverError, serverError.timestamp]);
 
-  const hourAgo = formatHourAgo(timeStamp ?? Date.now());
+  const timeAgo = formatTime(timeStamp ?? Date.now());
 
   return (
     <div className="flex">
@@ -41,11 +40,7 @@ const AlertMessage = ({ message, status, timeStamp }: IAlertProps) => {
           {message ?? "Something went wrong. Please try again."}
         </span>
         <br />
-        {/* <span className="text-gray-700 text-sm">
-          Your username or password is incorrect!
-        </span>
-        <br /> */}
-        <span className="text-gray-400 text-sm">{hourAgo}</span>
+        <span className="text-gray-400 text-sm">{timeAgo}</span>
       </div>
     </div>
   );
