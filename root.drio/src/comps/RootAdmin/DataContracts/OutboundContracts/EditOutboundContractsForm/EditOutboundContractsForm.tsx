@@ -10,14 +10,10 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { setRows } from "@/state/slices/datasetSlice";
-import { setCloseModal } from "@/state/slices/uiSlice";
-
-import { HiPlus, HiX } from "react-icons/hi";
-import { useUpdateDatasetMutation } from "@/api/resources/datasets";
-
 import Image from "next/image";
+import { HiPlus, HiX } from "react-icons/hi";
 import { AiFillCaretRight } from "react-icons/ai";
+import { setCloseModal } from "@/state/slices/uiSlice";
 
 const schema = z.object({
   dataSource: z.string({
@@ -42,35 +38,12 @@ type FormData = z.infer<typeof schema>;
 
 export default function EditOutboundContractsForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [update, result] = useUpdateDatasetMutation();
-
-  const datasetState = useAppSelector((state) => state.dataset);
 
   const form = useZodForm({
     schema: schema,
   });
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      const res = await update({
-        ...data,
-        id: row?.id,
-      }).unwrap();
-
-      dispatch(
-        setRows(datasetState.rows.map((row) => (row.id === res.id ? res : row)))
-      );
-
-      showAlert("Dataset updated successfully", "success");
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
-
-    form.reset();
-  };
+  const onSubmit: SubmitHandler<FormData> = async (data) => {};
 
   return (
     <div className="h-full flex items-center justify-center p-4">
@@ -490,7 +463,6 @@ export default function EditOutboundContractsForm({ row }: TableRow) {
               <Button
                 type="button"
                 intent={`primary`}
-                isLoading={result.isLoading}
                 onClick={() => onSubmit(form.getValues())}
               >
                 <span className="inline-flex justify-center w-full">

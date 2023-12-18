@@ -2,22 +2,15 @@ import Button from "@ui/Button";
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 import { SubmitHandler } from "react-hook-form";
-
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { setRows, setAddNewDispatched } from "@/state/slices/datasetSlice";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
-import { usePublishDatasetMutation } from "@/api/resources/datasets";
 import { HiUpload, HiOutlineDuplicate } from "react-icons/hi";
 
 export default function ExportAppLink({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [publish, result] = usePublishDatasetMutation();
 
-  const datasetState = useAppSelector((state) => state.dataset);
-  const dataSourceState = useAppSelector((state) => state.dataSource);
-
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  const onSubmit = () => {
     dispatch(setCloseModal("getAppLink"));
   };
 
@@ -147,7 +140,7 @@ export default function ExportAppLink({ row }: TableRow) {
             <span className="inline-flex justify-center w-full">Cancel</span>
           </Button>
 
-          <Button intent={`primary`} isLoading={result.isLoading}>
+          <Button intent={`primary`} onClick={onSubmit}>
             <span className="inline-flex justify-center w-full">
               Swagger Doc
             </span>

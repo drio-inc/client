@@ -1,18 +1,12 @@
 import Button from "@ui/Button";
-
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
-
 import { SubmitHandler } from "react-hook-form";
-
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
-
-import { setRows } from "@/state/slices/datasetSlice";
 import { setCloseModal } from "@/state/slices/uiSlice";
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { HiOutlineClock } from "react-icons/hi";
 import { MdOutlineCalendarMonth } from "react-icons/md";
-import { useUpdateDatasetMutation } from "@/api/resources/datasets";
 
 import Image from "next/image";
 import { AiFillCaretRight } from "react-icons/ai";
@@ -20,29 +14,7 @@ import { RiUploadCloud2Line } from "react-icons/ri";
 
 export default function ViewInboundContractsForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [update, result] = useUpdateDatasetMutation();
-
-  const datasetState = useAppSelector((state) => state.dataset);
-
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      const res = await update({
-        ...data,
-        id: row?.id,
-      }).unwrap();
-
-      dispatch(
-        setRows(datasetState.rows.map((row) => (row.id === res.id ? res : row)))
-      );
-
-      showAlert("Dataset updated successfully", "success");
-    } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
-    }
-  };
+  const onSubmit: SubmitHandler<FormData> = async (data) => {};
 
   return (
     <div className="h-full flex items-center justify-center p-4">
@@ -248,11 +220,7 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
                 </span>
               </Button>
 
-              <Button
-                type="button"
-                intent={`primary`}
-                isLoading={result.isLoading}
-              >
+              <Button type="button" intent={`primary`}>
                 <span className="inline-flex justify-center w-full">
                   Approve
                 </span>
@@ -376,11 +344,7 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
               <span className="inline-flex justify-center w-full">Reject</span>
             </Button>
 
-            <Button
-              type="button"
-              intent={`primary`}
-              isLoading={result.isLoading}
-            >
+            <Button type="button" intent={`primary`}>
               <span className="inline-flex justify-center w-full">Approve</span>
             </Button>
           </div>

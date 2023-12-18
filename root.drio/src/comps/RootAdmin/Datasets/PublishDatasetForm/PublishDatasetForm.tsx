@@ -17,7 +17,7 @@ import { HiOutlineDownload } from "react-icons/hi";
 
 import { useState } from "react";
 import * as RadioGroup from "@radix-ui/react-radio-group";
-import { usePublishDatasetMutation } from "@/api/resources/datasets";
+import { useCreateDatasetMutation } from "@/api/resources/datasets";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -46,7 +46,7 @@ const topicOptions = [
 
 export default function PublishDatasetForm() {
   const dispatch = useAppDispatch();
-  const [publish, result] = usePublishDatasetMutation();
+  const [publish, result] = useCreateDatasetMutation();
   const [visibility, setVisibility] = useState("private");
   const [selectedJSON, setSelectedJSON] = useState<Blob | File | null>(null);
 

@@ -16,7 +16,7 @@ import { setRows } from "@/state/slices/datasetSlice";
 import { setCloseModal } from "@/state/slices/uiSlice";
 
 import { useState } from "react";
-import { useUpdateDatasetMutation } from "@/api/resources/datasets";
+import { useCreateDatasetMutation } from "@/api/resources/datasets";
 
 const schema = z.object({
   dataSource: z.string({
@@ -47,7 +47,7 @@ const topicOptions = [
 
 export default function EditDatasetForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [update, result] = useUpdateDatasetMutation();
+  const [update, result] = useCreateDatasetMutation();
   const { rows } = useAppSelector((state) => state.dataset);
   const [visibility, setVisibility] = useState(row.visibility);
   const [selectedJSON, setSelectedJSON] = useState<Blob | File | null>(null);
