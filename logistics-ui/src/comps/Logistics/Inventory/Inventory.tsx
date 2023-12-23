@@ -1,11 +1,9 @@
 import Table from "@/comps/ui/Table";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-
 import InventoryMenu from "./InventoryMenu";
 import { useGetOrdersQuery } from "@/api/orders";
 import { useGetProductsQuery } from "@/api/products";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
-import { useModal } from "@/comps/BaseModal/useModal";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 const headers = [
   {
@@ -64,12 +62,8 @@ const headers = [
   // },
 ];
 
-const Products = () => {
+const Inventory = () => {
   const dispatch = useAppDispatch();
-  const { onOpen: openTestModal } = useModal("TestModal");
-  const { onOpen: openLoginModal } = useModal("LoginModal");
-  const { onOpen: openSampleModal } = useModal("SampleModal");
-
   const { isLoading: isProductsLoading } = useGetProductsQuery({
     name: "",
     offset: 0,
@@ -82,9 +76,12 @@ const Products = () => {
     limit: 10,
   });
 
-  const { products, orders, selectedRows } = useAppSelector(
-    ({ inventory }) => inventory
-  );
+  const {
+    orders,
+    products,
+    selectedRows,
+    rows: productRows,
+  } = useAppSelector(({ inventory }) => inventory);
 
   if (isProductsLoading || isOrdersLoading) return <StaticLoader />;
 
@@ -112,17 +109,11 @@ const Products = () => {
 
   return (
     <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-      <div style={{ display: "flex", gap: "2rem" }}>
-        <button onClick={openLoginModal}>LOGIN</button>
-        <button onClick={openTestModal}>TEST</button>
-        <button onClick={openSampleModal}>SAmple</button>
-      </div>
-
       <Table
         important
         noSelection
-        rows={rows()}
         headers={headers}
+        rows={productRows}
         menu={InventoryMenu}
         selectedRows={selectedRows}
       />
@@ -130,4 +121,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Inventory;

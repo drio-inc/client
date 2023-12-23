@@ -94,8 +94,6 @@ const Quotes = () => {
     );
   }, [destinationPort, originPort, quotesState.rows]);
 
-  console.log(originPort, destinationPort, filteredRows);
-
   if (isLoading && !quotesState.rows.length) return <StaticLoader />;
 
   return (

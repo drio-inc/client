@@ -7,7 +7,7 @@ import {
   setselectedItem,
 } from "@/state/slices/inventorySlice";
 
-const ProductsMenu = ({ row }: TableRow) => {
+const InventoryMenu = ({ row }: TableRow) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { selectedRows } = useAppSelector((state) => state.inventory);
@@ -46,20 +46,24 @@ const ProductsMenu = ({ row }: TableRow) => {
           side="left"
           sideOffset={5}
           align="center"
-          className="bg-white rounded-lg shadow-lg text-sm text-gray-700 flex flex-col"
+          className="w-full bg-white rounded-lg shadow-lg text-sm text-gray-700 flex flex-col items-start justify-start"
         >
           <Popover.Close
             onClick={() => onQuotesClick(row)}
-            className="inline-block py-2 px-4 cursor-pointer hover:bg-indigo-50"
+            className="w-full flex hover:bg-indigo-50"
           >
-            Get Quote
+            <span className="inline-block py-2 px-4 cursor-pointer">
+              Get Quote
+            </span>
           </Popover.Close>
 
           <Popover.Close
             onClick={() => handleCheckbox(row.id)}
-            className="inline-block py-2 px-4 cursor-pointer hover:bg-indigo-50"
+            className="w-full flex hover:bg-indigo-50"
           >
-            Mark as Important
+            <span className="inline-block py-2 px-4 cursor-pointer">
+              Mark as Important
+            </span>
           </Popover.Close>
         </Popover.Content>
       </Popover.Portal>
@@ -67,4 +71,4 @@ const ProductsMenu = ({ row }: TableRow) => {
   );
 };
 
-export default ProductsMenu;
+export default InventoryMenu;

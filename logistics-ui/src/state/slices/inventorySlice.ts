@@ -1,4 +1,5 @@
 import { ordersApi } from "@/api/orders";
+import products from "@data/products.json";
 import { productsApi } from "@/api/products";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -26,9 +27,9 @@ type InventoryState = {
 };
 
 const initialState: InventoryState = {
-  rows: [],
   orders: [],
   products: [],
+  rows: products,
   selectedRows: [],
   selectedItem: null,
 };

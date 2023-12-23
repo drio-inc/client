@@ -6,7 +6,7 @@ import { RiArchiveLine, RiPriceTag2Line, RiRoadMapLine } from "react-icons/ri";
 const NavLinks = [
   {
     name: "Shipping Inventory",
-    href: "products",
+    href: "inventory",
     icon: <RiArchiveLine className="inline-block w-6 h-6 mr-2" />,
   },
   {

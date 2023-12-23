@@ -1,1 +1,1 @@
-export { default } from "./ProductsMenu";
+export { default } from "./InventoryMenu";

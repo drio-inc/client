@@ -1,8 +1,23 @@
 import type { RootState } from "../store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export interface ModalMeta {
+  [name: string]: any;
+}
+
+export type Modal = {
+  id: string;
+  open: boolean;
+  meta?: ModalMeta;
+};
+
+export type ModalMap = {
+  [id: string]: Modal;
+};
+
 export type UIState = {
   modal: ModalMap;
+  [key: string]: any;
 };
 
 const initialState: UIState = {
@@ -18,7 +33,8 @@ const modalSlice = createSlice({
       action: PayloadAction<{ modalFileName: string; meta: ModalMeta }>
     ) => {
       const { modalFileName, meta } = action.payload;
-      state.modal[modalFileName] = { id: modalFileName, meta, open: true };
+      console.log({ modalFileName, meta });
+      state.modal["modalFileName"] = { id: modalFileName, open: true };
     },
 
     closeModal: (state, action: PayloadAction<string>) => {

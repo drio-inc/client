@@ -13,4 +13,4 @@ const SubscribeDatasetsPage = () => {
   );
 };
 
-export default withAuth(SubscribeDatasetsPage);
+export default SubscribeDatasetsPage;

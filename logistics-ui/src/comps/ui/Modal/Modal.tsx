@@ -10,9 +10,7 @@ interface IModalProps {
 }
 
 const Modal = ({ label, onClick, children, identifier }: IModalProps) => {
-  const isOpen = useAppSelector(
-    (state) => state.ui.modalBoolObject[identifier]
-  );
+  const isOpen = useAppSelector((state) => state.ui.modalId === identifier);
 
   return (
     <CustomModal.Root open={isOpen} onOpenChange={onClick}>

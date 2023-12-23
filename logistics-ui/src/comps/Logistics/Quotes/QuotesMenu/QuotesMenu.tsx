@@ -1,9 +1,7 @@
-import Modal from "@ui/Modal";
-import ConfirmQuote from "../ConfirmQuote";
 import showAlert from "@/comps/ui/Alert/Alert";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
-import { setOpenModal } from "@/state/slices/uiSlice";
+import { setModalId } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 const QuotesMenu = ({ row }: TableRow) => {
@@ -16,7 +14,7 @@ const QuotesMenu = ({ row }: TableRow) => {
       return;
     }
 
-    dispatch(setOpenModal("confirmQuote"));
+    dispatch(setModalId("confirmQuote"));
   };
 
   return (
@@ -32,30 +30,18 @@ const QuotesMenu = ({ row }: TableRow) => {
           align="center"
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700 flex flex-col"
         >
-          {!selectedItem ? (
-            <span
-              className="inline-block cursor-pointer hover:bg-indigo-50 py-2 px-4"
-              onClick={() =>
-                showAlert("Please select a product to get quotes", "error")
-              }
-            >
-              Book
-            </span>
-          ) : (
-            <span className="inline-block cursor-pointer hover:bg-indigo-50">
-              <Modal
-                label="Book"
-                onClick={confirmQuote}
-                identifier="confirmQuote"
-              >
-                <ConfirmQuote row={row} />
-              </Modal>
-            </span>
-          )}
+          <Popover.Close
+            onClick={confirmQuote}
+            className="w-full flex hover:bg-indigo-50"
+          >
+            <span className="inline-block py-2 px-4 cursor-pointer">Book</span>
+          </Popover.Close>
 
-          <span className="inline-block py-2 px-4 cursor-pointer hover:bg-indigo-50 ">
-            Remove
-          </span>
+          <Popover.Close className="w-full flex hover:bg-indigo-50">
+            <span className="inline-block py-2 px-4 cursor-pointer">
+              Remove
+            </span>
+          </Popover.Close>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

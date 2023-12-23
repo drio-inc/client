@@ -2,7 +2,7 @@ import Button from "@ui/Button";
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 import { useRouter } from "next/router";
-import { setCloseModal } from "@/state/slices/uiSlice";
+import { removeModalId, setCloseModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 export default function ConfirmQuote({ row }: TableRow) {
@@ -11,7 +11,7 @@ export default function ConfirmQuote({ row }: TableRow) {
   const { selectedItem } = useAppSelector((state) => state.inventory);
 
   const bookQuote = () => {
-    dispatch(setCloseModal("confirmQuote"));
+    dispatch(removeModalId());
     router.push("/tracking");
   };
 
@@ -39,24 +39,26 @@ export default function ConfirmQuote({ row }: TableRow) {
             <h3 className="text-[16px] font-semibold">Shipment Details</h3>
           </div>
 
-          {Object.entries(productDetails).map(([key, value]) => (
-            <div className="flex gap-x-2" key={key}>
-              <span className="capitalize font-medium">{key}:</span>
-              <span>{value}</span>
-            </div>
-          ))}
+          {productDetails &&
+            Object.entries(productDetails).map(([key, value]) => (
+              <div className="flex gap-x-2" key={key}>
+                <span className="capitalize font-medium">{key}:</span>
+                <span>{value}</span>
+              </div>
+            ))}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 my-4 text-gray-700 text-sm gap-y-2 shadow-sm border rounded-md bg-indigo-50 p-4">
           <div className="lg:col-span-2 border-b border-gray-300 pb-[6px]">
             <h3 className="text-[16px] font-semibold">Quote Details</h3>
           </div>
-          {Object.entries(row).map(([key, value]) => (
-            <div className="flex gap-x-2" key={key}>
-              <span className="capitalize font-medium">{key}:</span>
-              <span>{value as string}</span>
-            </div>
-          ))}
+          {row &&
+            Object.entries(row).map(([key, value]) => (
+              <div className="flex gap-x-2" key={key}>
+                <span className="capitalize font-medium">{key}:</span>
+                <span>{value as string}</span>
+              </div>
+            ))}
         </div>
 
         <div className="flex gap-x-2 justify-center w-full mt-4">
@@ -64,7 +66,7 @@ export default function ConfirmQuote({ row }: TableRow) {
             type="button"
             className="w-full"
             intent={`secondary`}
-            onClick={() => dispatch(setCloseModal("confirmQuote"))}
+            onClick={() => dispatch(removeModalId())}
           >
             <span className="inline-flex justify-center w-full">Cancel</span>
           </Button>
