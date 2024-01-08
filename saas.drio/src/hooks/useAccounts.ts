@@ -10,9 +10,7 @@ export const useAccounts = () => {
   useEffect(() => {
     if (!isLoading && data) {
       const accountIds = data.map((account: Account) => account.id);
-      getAccounts(accountIds).then((res) => {
-        setRows(res as Account[]);
-      });
+      getAccounts(accountIds).then((res) => setRows(res as Account[]));
     }
   }, [data, isLoading]);
 

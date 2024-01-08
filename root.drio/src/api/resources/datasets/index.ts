@@ -4,7 +4,7 @@ import { Dataset, DatasetSchema, SchemaStats } from "./types";
 export const datasetsApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     getDatasets: builder.query<
-      Dataset[],
+      Dataset,
       DefaultParams & { datasource_id: string }
     >({
       query: ({ account_id, ou_id, datasource_id }) => ({
@@ -35,13 +35,19 @@ export const datasetsApi = rootApi.injectEndpoints({
 
     createDataset: builder.mutation<
       Dataset,
-      Dataset & { ddxcluster_id: string }
+      Dataset & { ddxcluster_id: string; token: string }
     >({
-      query: ({ ddxcluster_id, ...payload }) => ({
-        url: `/resources/ddx-clusters/${ddxcluster_id}/datasets`,
-        method: "PUT",
-        body: payload,
-      }),
+      query: ({ token, ddxcluster_id, ...payload }) => {
+        return {
+          url: `/resources/ddx-clusters/${ddxcluster_id}/datasets`,
+          method: "PUT",
+          body: payload,
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+        };
+      },
     }),
 
     createSchemas: builder.mutation<
@@ -68,4 +74,4 @@ export const datasetsApi = rootApi.injectEndpoints({
   }),
 });
 
-export const { useCreateDatasetMutation } = datasetsApi;
+export const { useGetDatasetsQuery, useCreateDatasetMutation } = datasetsApi;

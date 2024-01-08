@@ -1,31 +1,44 @@
 import Table from "@/comps/ui/Table";
-import { setSelectedRows } from "@/state/slices/datasetSlice";
+import DatasetMenu from "./DatasetMenu/DatasetMenu";
+import PublishDatasetForm from "./PublishDatasetForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import DatasetDetails from "./DatasetDetails";
-import EditDatasetForm from "./EditDatasetForm";
-import PublishDatasetForm from "./PublishDatasetForm";
-
-import DatasetMenu from "./DatasetMenu/DatasetMenu";
-import AddDataSourceForm from "../DataSources/AddDataSourceForm";
+import {
+  setRows,
+  setRawRows,
+  setSelectedRows,
+} from "@/state/slices/datasetSlice";
 
 import Button from "@ui/Button";
 import { IoRefresh } from "react-icons/io5";
+import { HiMinusSm, HiUpload } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
-import { HiMinusSm, HiUpload, HiPlus } from "react-icons/hi";
 
 import TopOrgs from "../TopOrgs";
+import { useEffect } from "react";
 import Modal from "@/comps/ui/Modal";
+
+import getDatasets from "@/functions/getDatasets";
+import { mergedDDXData } from "@/functions/mergeDDXData";
+import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
+import { mergedDataSourceData } from "@/functions/mergeDataSourcesData";
+import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
 const headers = [
   {
     header: "Dataset",
     accessor: "name",
   },
+
   {
     header: "Organization Unit",
     accessor: "ou",
+  },
+
+  {
+    header: "Data Source",
+    accessor: "ds",
   },
 
   {
@@ -107,25 +120,39 @@ const TopDatasets = [
   },
 ];
 
-const Dataset = () => {
+const DatasetsComp = () => {
   const dispatch = useAppDispatch();
-  const datasetState = useAppSelector((state) => state.dataset);
+  const { recursiveRows } = useAppSelector((state) => state.orgUnit);
+  const { rows, selectedRows } = useAppSelector((state) => state.dataset);
+  const { rows: dataSourceRows } = useAppSelector((state) => state.dataSource);
+
+  useEffect(() => {
+    dispatch(setDDXRows(mergedDDXData()));
+    dispatch(setDataSourceRows(mergedDataSourceData()));
+  }, [dispatch, recursiveRows]);
+
+  useEffect(() => {
+    const dataSourceIds = dataSourceRows.map((row) => ({
+      ou_id: row.ou_id,
+      datasource_id: row.id,
+      account_id: row.account_id,
+    }));
+
+    getDatasets(dataSourceIds).then((payload) => {
+      dispatch(setRows(payload.data));
+      dispatch(setRawRows(payload.rawData));
+    });
+  }, [dataSourceRows, dispatch]);
 
   const handleCheckbox = (index: number) => {
-    if (datasetState.selectedRows.includes(index)) {
-      dispatch(
-        setSelectedRows(
-          datasetState.selectedRows.filter((row) => row !== index)
-        )
-      );
+    if (selectedRows.includes(index)) {
+      dispatch(setSelectedRows(selectedRows.filter((row) => row !== index)));
     } else {
-      dispatch(setSelectedRows([...datasetState.selectedRows, index]));
+      dispatch(setSelectedRows([...selectedRows, index]));
     }
   };
 
-  const clearSelectedRows = () => {
-    dispatch(setSelectedRows([]));
-  };
+  const clearSelectedRows = () => dispatch(setSelectedRows([]));
 
   return (
     <div className="w-full">
@@ -135,9 +162,7 @@ const Dataset = () => {
       </div>
 
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        <div
-          className={`rounded-lg px-4 py-5 flex flex-wrap items-center justify-between`}
-        >
+        <div className="rounded-lg px-4 py-5 flex flex-wrap items-center justify-between">
           <span className="font-semibold text-gray-700 mx-2 text-lg">
             Top by Access Frequency
           </span>
@@ -153,31 +178,25 @@ const Dataset = () => {
           </div>
 
           <div className="hidden">
-            <Modal identifier="addDataSourceForm">
-              <AddDataSourceForm />
-            </Modal>
-
             <Modal identifier="publishDatasetForm">
               <PublishDatasetForm />
             </Modal>
           </div>
         </div>
 
-        {datasetState.selectedRows.length > 0 && (
+        {selectedRows.length > 0 && (
           <div className="flex items-center p-4 bg-gray-50">
             <Checkbox.Root
               className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-              checked={datasetState.selectedRows.length > 0}
-              onCheckedChange={() => {
-                clearSelectedRows?.();
-              }}
+              checked={selectedRows.length > 0}
+              onCheckedChange={() => clearSelectedRows?.()}
             >
               <Checkbox.Indicator className="text-white">
                 <HiMinusSm />
               </Checkbox.Indicator>
             </Checkbox.Root>
             <h3 className={"font-medium text-sm text-gray-700"}>
-              {datasetState.selectedRows.length} Item(s) Selected
+              {selectedRows.length} Item(s) Selected
             </h3>
 
             <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
@@ -188,15 +207,15 @@ const Dataset = () => {
         )}
 
         <Table
+          rows={rows}
           headers={headers}
           menu={DatasetMenu}
-          rows={datasetState.rows}
+          selectedRows={selectedRows}
           handleCheckbox={handleCheckbox}
-          selectedRows={datasetState.selectedRows}
         />
       </div>
     </div>
   );
 };
 
-export default Dataset;
+export default DatasetsComp;

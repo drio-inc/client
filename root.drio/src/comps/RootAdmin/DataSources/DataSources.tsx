@@ -14,9 +14,9 @@ import { setOpenModal } from "@/state/slices/uiSlice";
 
 import { useEffect } from "react";
 import Modal from "@/comps/ui/Modal";
+import DataSourcePopup from "./DataSourcePopup";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { mergedDataSourceData } from "@/functions/mergeDataSourcesData";
-import DataSourcePopup from "./DataSourcePopup";
 
 const headers = [
   {

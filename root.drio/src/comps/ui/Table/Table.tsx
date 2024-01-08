@@ -67,7 +67,7 @@ const Table = ({
         </thead>
         <tbody>
           {rows?.map((row: any, index: number) => {
-            const isChecked = selectedRows?.includes(row.id);
+            const isChecked = selectedRows?.includes(row?.id);
             return (
               <tr
                 key={index}
@@ -93,12 +93,12 @@ const Table = ({
                 )}
 
                 {headers?.map((header, index) => {
-                  const value = row[header.accessor];
+                  const value = row?.[header.accessor];
                   return (
                     <>
                       {header.type === "array" ? (
                         <td className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem]">
-                          <MetaTags tags={row[header.accessor]} />
+                          <MetaTags tags={row?.[header.accessor]} />
                         </td>
                       ) : (
                         <td
@@ -108,7 +108,7 @@ const Table = ({
                         >
                           <div
                             className={`${
-                              header?.status?.[row[header.accessor]]
+                              header?.status?.[row?.[header.accessor]]
                             } inline-block`}
                           >
                             <Tooltip
@@ -126,7 +126,7 @@ const Table = ({
                                     : `capitalize`
                                 }`}
                               >
-                                {row[header.accessor]
+                                {row?.[header.accessor]
                                   ?.toString()
                                   ?.replaceAll("_", " ") ?? "NA"}
                               </span>

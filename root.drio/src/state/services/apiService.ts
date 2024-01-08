@@ -14,14 +14,16 @@ export const rootApi = createApi({
 
       const token = getToken();
 
-      if (token) headers.set("authorization", `Bearer ${token}`);
+      if (token && !headers.has("authorization"))
+        headers.set("authorization", `Bearer ${token}`);
 
       return headers;
     },
   }),
   tagTypes: [
-    "Accounts",
     "Account",
+    "Accounts",
+    "Datasets",
     "Data_Sources",
     "DDX_Clusters",
     "DDX_Instances",

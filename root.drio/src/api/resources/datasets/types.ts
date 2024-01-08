@@ -1,17 +1,17 @@
 type Config = {
-  "segment.bytes": number;
-  "cleanup.policy": string;
+  "segment.bytes"?: number;
+  "cleanup.policy"?: string;
 };
 
 type TopicDetails = {
   name: string;
-  configs: Config;
-  partition_count: number;
-  replication_factor: number;
+  configs?: Config;
+  partition_count?: number;
+  replication_factor?: number;
 };
 
 type Properties = {
-  additionalProp1: {};
+  additionalProp1: any;
 };
 
 type Schema = {
@@ -30,7 +30,7 @@ type Stats = {
 };
 
 export type Dataset = {
-  topics: string[];
+  topics?: string[];
   data_source_id: string;
   topics_details: TopicDetails[];
 };

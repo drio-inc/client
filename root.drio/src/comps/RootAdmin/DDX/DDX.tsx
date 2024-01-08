@@ -19,9 +19,7 @@ import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
 
-import DDXTooltip from "./DDXTooltip";
 import TokenPopup from "./TokenPopup";
-import Tooltip from "@/comps/ui/Tooltip";
 import DDXInstances from "./DDXInstances";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 
