@@ -33,21 +33,21 @@ const DatasetMenu = ({ row }: TableRow) => {
           align="center"
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
+          <Link href={`/datasets/my-datasets/${row?.id}/view`}>
+            <span className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4">
+              View
+            </span>
+          </Link>
+
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <Modal
-              label="Edit"
+              label="Publish"
               identifier="editDatasetForm"
               onClick={() => dispatch(setOpenModal("editDatasetForm"))}
             >
               <EditDatasetForm row={row} />
             </Modal>
           </span>
-
-          <Link href={`/datasets/my-datasets/${row?.id}/view`}>
-            <span className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4">
-              View
-            </span>
-          </Link>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <AlertModal
@@ -59,7 +59,6 @@ const DatasetMenu = ({ row }: TableRow) => {
 
           <Link href={`/datasets/my-datasets/${row?.id}/metadata`}>
             <span className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4">
-              <span className="inline-block w-3 h-3 rounded-full bg-drio-red-dark mr-2"></span>
               Metadata
             </span>
           </Link>

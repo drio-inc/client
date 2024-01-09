@@ -57,7 +57,7 @@ export default function EditDatasetForm({ row }: TableRow) {
     ? dataSourceRows?.map((row) => {
         return {
           label: row.name,
-          value: row.name.split(" ").join("_").toLowerCase(),
+          value: row.id,
         };
       })
     : [];
@@ -80,12 +80,7 @@ export default function EditDatasetForm({ row }: TableRow) {
     dispatch(setCloseModal("editDatasetForm"));
   };
 
-  console.log(
-    topicOptions.find((option) => option.value === row?.topic) ?? {
-      label: "",
-      value: "",
-    }
-  );
+  console.log(row, dataSourceOptions);
 
   return (
     <>
@@ -105,7 +100,7 @@ export default function EditDatasetForm({ row }: TableRow) {
                   className="md:text-sm 2xl:text-base"
                   defaultSelectedValue={
                     dataSourceOptions.find(
-                      (option) => option.value === row?.dataSource
+                      (option) => option.value === row?.data_source_id
                     ) ?? { label: "", value: "" }
                   }
                   options={[
@@ -134,9 +129,9 @@ export default function EditDatasetForm({ row }: TableRow) {
                 <TextInput
                   label={"Base URL"}
                   placeholder={"Enter URL"}
-                  defaultValue={row.baseURL}
                   {...form.register("baseURL")}
                   className="md:text-sm 2xl:text-base"
+                  defaultValue={row.baseURL ?? `https://example.com`}
                 />
               </div>
 

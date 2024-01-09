@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { store } from "@/state/store";
 import { datasetsApi } from "@/api/resources/datasets";
 
@@ -24,8 +25,10 @@ export default async function getDatasets(dataSourceIds: Params[]) {
     const transformedData = res?.flatMap((dataset) =>
       dataset?.topics_details.map((topic) => ({
         alerts: 7,
+        id: uuidv4(),
         frequency: 10,
         name: topic.name,
+        status: "learning",
         visibility: "public",
         contractInPlace: "Yes",
         sixMonthsAccess: "Yes",

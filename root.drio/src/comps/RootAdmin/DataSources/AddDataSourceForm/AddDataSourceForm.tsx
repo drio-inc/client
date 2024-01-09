@@ -111,7 +111,7 @@ export default function AddDataSourceForm() {
 
     try {
       const res = await create(createData).unwrap();
-      if (addNewDispatched) dispatch(setDefaultSource(res));
+      if (addNewDispatched) dispatch(setDefaultSource(res.data_source));
 
       dispatch(
         setRows([

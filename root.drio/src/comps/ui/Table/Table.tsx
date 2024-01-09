@@ -94,6 +94,7 @@ const Table = ({
 
                 {headers?.map((header, index) => {
                   const value = row?.[header.accessor];
+
                   return (
                     <>
                       {header.type === "array" ? (
@@ -111,26 +112,31 @@ const Table = ({
                               header?.status?.[row?.[header.accessor]]
                             } inline-block`}
                           >
-                            <Tooltip
-                              key={index}
-                              content={
-                                TableTooltip && <TableTooltip row={row} />
-                              }
+                            <span
+                              className={`${
+                                typeof value === "string" &&
+                                (value?.includes("http") ||
+                                  value?.includes(".com"))
+                                  ? ``
+                                  : `capitalize`
+                              }`}
                             >
-                              <span
-                                className={`${
-                                  typeof value === "string" &&
-                                  (value?.includes("http") ||
-                                    value?.includes(".com"))
-                                    ? ``
-                                    : `capitalize`
-                                }`}
-                              >
-                                {row?.[header.accessor]
-                                  ?.toString()
-                                  ?.replaceAll("_", " ") ?? "NA"}
-                              </span>
-                            </Tooltip>
+                              {header?.accessor === "name" &&
+                                (row?.status === "learning" ||
+                                  row?.status === "learned") && (
+                                  <span
+                                    className={`inline-block w-3 h-3 rounded-full ${
+                                      row?.status === "learning"
+                                        ? `bg-drio-red-dark`
+                                        : `bg-green-400`
+                                    }  mr-2`}
+                                  />
+                                )}
+
+                              {row?.[header.accessor]
+                                ?.toString()
+                                ?.replaceAll("_", " ") ?? "NA"}
+                            </span>
                           </div>
                         </td>
                       )}

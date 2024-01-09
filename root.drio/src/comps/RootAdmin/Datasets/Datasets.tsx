@@ -1,4 +1,5 @@
 import Table from "@/comps/ui/Table";
+import DatasetsJSON from "@/data/datasets.json";
 import DatasetMenu from "./DatasetMenu/DatasetMenu";
 import PublishDatasetForm from "./PublishDatasetForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
@@ -22,6 +23,7 @@ import Modal from "@/comps/ui/Modal";
 import getDatasets from "@/functions/getDatasets";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
+import AddDataSourceForm from "../DataSources/AddDataSourceForm";
 import { mergedDataSourceData } from "@/functions/mergeDataSourcesData";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
@@ -139,7 +141,9 @@ const DatasetsComp = () => {
     }));
 
     getDatasets(dataSourceIds).then((payload) => {
-      dispatch(setRows(payload.data));
+      console.log(payload);
+
+      dispatch(setRows([...DatasetsJSON, ...payload.data]));
       dispatch(setRawRows(payload.rawData));
     });
   }, [dataSourceRows, dispatch]);
@@ -178,6 +182,10 @@ const DatasetsComp = () => {
           </div>
 
           <div className="hidden">
+            <Modal identifier="addDataSourceForm">
+              <AddDataSourceForm />
+            </Modal>
+
             <Modal identifier="publishDatasetForm">
               <PublishDatasetForm />
             </Modal>
