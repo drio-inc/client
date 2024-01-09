@@ -6,7 +6,7 @@ export type Product = {
   weight: number;
   volume: number;
   product_code: string;
-  inventoryLocation: string;
+  inventory_location: string;
 };
 
 export type ProductParams = {

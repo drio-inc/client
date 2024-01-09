@@ -1,7 +1,7 @@
 [
   {
     "id": "1",
-    "orderId": "HDC000176558",
+    "order_id": "HDC000176558",
     "originLocation": "Manaus",
     "destLocation": "Raleigh",
     "originLatLong": "12.7400,77.8200",
@@ -24,7 +24,7 @@
   },
   {
     "id": "2",
-    "orderId": "HDC000176559",
+    "order_id": "HDC000176559",
     "originLocation": "Pattaya City",
     "destLocation": "Knoxville",
     "originLatLong": "12.8390,79.9540",
@@ -46,7 +46,7 @@
   },
   {
     "id": "3",
-    "orderId": "HDC000176560",
+    "order_id": "HDC000176560",
     "originLocation": "Charlotte",
     "destLocation": "Wausau",
     "originLatLong": "11.8710,79.7390",
@@ -68,7 +68,7 @@
   },
   {
     "id": "4",
-    "orderId": "HDC000176560",
+    "order_id": "HDC000176560",
     "originLocation": "Nashville",
     "destLocation": "Wausau",
     "originLatLong": "12.8390,79.9540",
@@ -90,7 +90,7 @@
   },
   {
     "id": "5",
-    "orderId": "HDC000176561",
+    "order_id": "HDC000176561",
     "originLocation": "Charlotte",
     "destLocation": "Manaus",
     "originLatLong": "11.8720,79.6320",
@@ -112,7 +112,7 @@
   },
   {
     "id": "6",
-    "orderId": "HDC000176562",
+    "order_id": "HDC000176562",
     "originLocation": "Chicago",
     "destLocation": "Milwaukee",
     "originLatLong": "12.8390,79.9540",

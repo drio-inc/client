@@ -65,39 +65,41 @@ const headers = [
 
 const Products = () => {
   const dispatch = useAppDispatch();
-  const { isLoading: isProductsLoading } = useGetProductsQuery({
-    name: "",
-    offset: 0,
-    limit: 10,
-  });
+  // const { isLoading: isProductsLoading } = useGetProductsQuery({
+  //   name: "",
+  //   offset: 0,
+  //   limit: 10,
+  // });
 
-  const { isLoading: isOrdersLoading } = useGetOrdersQuery({
-    name: "",
-    offset: 0,
-    limit: 10,
-  });
+  // const { isLoading: isOrdersLoading } = useGetOrdersQuery({
+  //   name: "",
+  //   offset: 0,
+  //   limit: 10,
+  // });
 
-  const { products, orders, selectedRows } = useAppSelector(
-    ({ inventory }) => inventory
-  );
+  const {
+    orders,
+    products,
+    selectedRows,
+    rows: invetoryRows,
+  } = useAppSelector(({ inventory }) => inventory);
 
-  if (isProductsLoading || isOrdersLoading) return <StaticLoader />;
+  // if (isProductsLoading || isOrdersLoading) return <StaticLoader />;
 
   const rows = () => {
-    const orderMap = new Map(orders.map((order) => [order.name, order]));
-    console.log(orderMap);
+    // const orderMap = new Map(orders.map((order) => [order.name, order]));
 
     const combinedInventory = products.map((product) => {
-      const matchingOrder = orderMap.get(product.name);
+      const matchingOrder = orders.find((order) => order.sku === product.sku);
 
       if (matchingOrder) {
         return {
           ...product,
           order_id: matchingOrder.order_id,
           dealer_name: matchingOrder.dealer_name,
+          shipment_quantity: matchingOrder.ship_quantity,
           ship_to_location: matchingOrder.ship_to_location,
-          shipment_quantity: matchingOrder.shipment_quantity,
-          price: `$ ${new Intl.NumberFormat().format(matchingOrder.price)}`,
+          price: `$${new Intl.NumberFormat().format(matchingOrder.price)}`,
         };
       }
 
@@ -107,6 +109,8 @@ const Products = () => {
     console.log(combinedInventory, "HI");
     return combinedInventory;
   };
+
+  console.log(orders, products, rows());
 
   return (
     <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>

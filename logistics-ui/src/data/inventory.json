@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "order_id": "#HDC000176559",
+    "name": "ROAD KING CUSTOM",
+    "price": "$20,192",
+    "year": "2023",
+    "sku": "166951262",
+    "weight": 28.99,
+    "volume": 87.1,
+    "inventory_location": "Menomonee Falls, Wisconsin",
+    "shipment_quantity": 388,
+    "dealer_name": "America’s Motor Sports",
+    "ship_to_location": "629 Myatt Dr, Madison, TN 37115",
+    "desired_ETA": "4/12/2023 14:38"
+  },
+  {
+    "id": "2",
+    "order_id": "#HDC000176560",
+    "name": "ELECTRA GLIDE STANDARD",
+    "price": "$5,092",
+    "year": "2024",
+    "sku": "159348797",
+    "weight": 63.0,
+    "volume": 87.8,
+    "inventory_location": "Tomahawk, Wisconsin",
+    "shipment_quantity": 69,
+    "dealer_name": "Tobacco Road Harley-Davidson",
+    "ship_to_location": "1126 S Saunders St, Raleigh, NC 27603",
+    "desired_ETA": "4/12/2023 14:38"
+  },
+  {
+    "id": "3",
+    "order_id": "#HDC000176561",
+    "name": "ULTRA CLASS ELECTRA GLIDE",
+    "price": "$10,800",
+    "year": "2023",
+    "sku": "167655771",
+    "weight": 57.0,
+    "volume": 79.5,
+    "inventory_location": "York, Pennsylvania",
+    "shipment_quantity": 114,
+    "dealer_name": "The Transportation Revolution",
+    "ship_to_location": "901 Julia St, New Orleans, LA 70113",
+    "desired_ETA": "4/29/2023 13:03"
+  }
+]

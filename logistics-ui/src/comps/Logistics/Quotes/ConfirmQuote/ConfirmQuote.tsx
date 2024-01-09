@@ -18,9 +18,9 @@ export default function ConfirmQuote({ row }: TableRow) {
   const productDetails = {
     sku: selectedItem?.sku,
     name: selectedItem?.name,
-    to: selectedItem?.shipToLocation,
-    "order id": selectedItem?.orderId,
-    from: selectedItem?.inventoryLocation,
+    to: selectedItem?.ship_to_location,
+    "order id": selectedItem?.order_id,
+    from: selectedItem?.inventory_location,
   };
 
   return (
@@ -31,7 +31,8 @@ export default function ConfirmQuote({ row }: TableRow) {
         </h2>
 
         <p className="text-center text-[#4C566A] text-sm my-2">
-          Please verify the following shipment and quote details before booking.
+          Please verify the following shipment and quote details before
+          continuing.
         </p>
 
         <div className="flex flex-col my-4 text-gray-700 text-sm gap-y-2 shadow-sm border rounded-md bg-indigo-50 p-4">

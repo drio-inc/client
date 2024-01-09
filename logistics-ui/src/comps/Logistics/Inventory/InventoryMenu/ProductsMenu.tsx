@@ -20,9 +20,9 @@ const ProductsMenu = ({ row }: TableRow) => {
         id: row.id,
         sku: row.sku,
         name: row.name,
-        to: row.dealerName,
-        orderId: row.orderId,
-        from: row.inventoryLocation,
+        to: row.dealer_name,
+        order_id: row.order_id,
+        from: row.inventory_location,
       },
     });
   };

@@ -45,7 +45,7 @@ const Status = () => {
               <>
                 Order No:{" "}
                 <span className="font-bold">
-                  #{shipmentState.selectedRow?.orderId}
+                  #{shipmentState.selectedRow?.order_id}
                 </span>
               </>
             ) : (

@@ -26,7 +26,7 @@ const headers = [
 
   {
     header: "Transport Mode",
-    accessor: "transport_mode",
+    accessor: "mode",
   },
 
   {
@@ -53,11 +53,11 @@ const headers = [
   },
   {
     header: "Minimum Cost",
-    accessor: "minimumCost",
+    accessor: "minimum_cost",
   },
   {
     header: "Days To Deliver",
-    accessor: "daysToDeliver",
+    accessor: "days_to_deliver",
   },
 ];
 
@@ -77,24 +77,25 @@ const Quotes = () => {
   //   if (!isLoading && data) dispatch(setRows(data));
   // }, [data, dispatch, isLoading]);
 
-  const originPort =
+  const origin_port =
     location_to_origin[
-      selectedItem?.inventoryLocation as keyof typeof location_to_origin
+      selectedItem?.inventory_location as keyof typeof location_to_origin
     ];
 
-  const destinationPort =
+  const destination_port =
     dealer_to_destination[
-      selectedItem?.dealerName as keyof typeof dealer_to_destination
+      selectedItem?.dealer_name as keyof typeof dealer_to_destination
     ]?.destination_port;
 
   const filteredRows = useMemo(() => {
     return quotesState.rows.filter(
       (row) =>
-        row.originPort === originPort && row.destinationPort === destinationPort
+        row.origin_port === origin_port &&
+        row.destination_port === destination_port
     );
-  }, [destinationPort, originPort, quotesState.rows]);
+  }, [destination_port, origin_port, quotesState.rows]);
 
-  console.log(originPort, destinationPort, filteredRows);
+  console.log(origin_port, destination_port, filteredRows);
 
   if (isLoading && !quotesState.rows.length) return <StaticLoader />;
 

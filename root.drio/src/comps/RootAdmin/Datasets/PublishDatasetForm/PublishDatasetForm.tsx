@@ -1,4 +1,5 @@
 import Button from "@ui/Button";
+import { useState } from "react";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
 
 import showAlert from "@ui/Alert";
@@ -16,8 +17,6 @@ import {
   setAddNewDispatched,
 } from "@/state/slices/datasetSlice";
 import { HiOutlineDownload } from "react-icons/hi";
-
-import { useState } from "react";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 
 import {
@@ -215,7 +214,7 @@ export default function PublishDatasetForm() {
               />
             </div>
 
-            {/* <div className="px-4 py-2 w-full">
+            <div className="px-4 py-2 w-full">
               <SelectInput
                 registerName="topic"
                 options={topicOptions}
@@ -223,7 +222,7 @@ export default function PublishDatasetForm() {
                 label={"Select Topic Dataset"}
                 className="md:text-sm 2xl:text-base"
               />
-            </div> */}
+            </div>
 
             {/* <div className="px-4 py-2 w-full">
               <TextInput

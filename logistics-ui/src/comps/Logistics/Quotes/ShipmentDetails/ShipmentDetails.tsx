@@ -9,10 +9,10 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 const ShipmentDetails = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state) => state.inventory);
+  const inventory = useAppSelector((state) => state.inventory);
 
   const handleProductChange = (option: ChangeEvent<HTMLSelectElement>) => {
-    const findProduct = products.rows.find((p) => p.orderId === option);
+    const findProduct = inventory.rows.find((p) => p.order_id === option);
     dispatch(setselectedItem(findProduct));
   };
 
@@ -40,15 +40,15 @@ const ShipmentDetails = () => {
             <StatelessSelectInput
               label={"Order ID"}
               placeholder={"All"}
-              registerName="orderID"
+              registerName="order_id"
               onChange={(option) => handleProductChange(option)}
               defaultSelectedValue={{
-                label: products.selectedItem?.orderId ?? "All",
-                value: products.selectedItem?.orderId ?? "All",
+                label: inventory.selectedItem?.order_id ?? "All",
+                value: inventory.selectedItem?.order_id ?? "All",
               }}
-              options={products.rows.map((product) => ({
-                label: product.orderId,
-                value: product.orderId,
+              options={inventory.rows.map((product) => ({
+                label: product.order_id,
+                value: product.order_id,
               }))}
             />
           </div>
@@ -56,8 +56,8 @@ const ShipmentDetails = () => {
           <div className="flex flex-col md:flex-1 gap-y-2">
             <span className="text-gray-700 font-bold">Name</span>
             <div className="rounded-md border border-gray-300 p-4">
-              <span className="text-[#4C566A]">
-                {products.selectedItem?.name ?? "All"}
+              <span className="text-[#4C566A] whitespace-nowrap overflow-auto">
+                {inventory.selectedItem?.name ?? "All"}
               </span>
             </div>
           </div>
@@ -65,8 +65,8 @@ const ShipmentDetails = () => {
           <div className="flex flex-col md:flex-1 gap-y-2">
             <span className="text-gray-700 font-bold">SKU</span>
             <div className="rounded-md border border-gray-300 p-4">
-              <span className="text-[#4C566A]">
-                {products.selectedItem?.sku ?? "All"}
+              <span className="text-[#4C566A] whitespace-nowrap overflow-auto">
+                {inventory.selectedItem?.sku ?? "All"}
               </span>
             </div>
           </div>
@@ -74,19 +74,19 @@ const ShipmentDetails = () => {
           <div className="flex flex-col md:flex-1 gap-y-2">
             <span className="text-gray-700 font-bold">From</span>
             <div className="rounded-md border border-gray-300 p-4">
-              <span className="text-[#4C566A]">
-                {products.selectedItem?.inventoryLocation ?? "All"}
+              <span className="text-[#4C566A] whitespace-nowrap overflow-auto">
+                {inventory.selectedItem?.inventory_location ?? "All"}
               </span>
             </div>
           </div>
 
           <div className="flex flex-col md:flex-1 gap-y-2">
             <span className="text-gray-700 font-bold">To</span>
-            <div className="rounded-md border border-gray-300 p-4">
+            <div className="rounded-md border border-gray-300 p-4 whitespace-nowrap overflow-auto">
               <span className="text-[#4C566A]">
                 {dealer_to_destination[
-                  products.selectedItem
-                    ?.dealerName as keyof typeof dealer_to_destination
+                  inventory.selectedItem
+                    ?.dealer_name as keyof typeof dealer_to_destination
                 ]?.delivery_address ?? "ALL"}
               </span>
             </div>

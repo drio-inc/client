@@ -1,3 +1,4 @@
+import quotes from "@/data/quotes.json";
 import { quotesApi } from "@/api/quotes";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -7,7 +8,7 @@ type QuotesState = {
 };
 
 const initialState: QuotesState = {
-  rows: [],
+  rows: quotes,
   selectedRows: [],
 };
 

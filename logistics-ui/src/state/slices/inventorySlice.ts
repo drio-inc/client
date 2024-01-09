@@ -1,6 +1,10 @@
+import orders from "@data/orders.json";
+import products from "@data/products.json";
+import inventory from "@data/inventory.json";
+
 import { ordersApi } from "@/api/orders";
 import { productsApi } from "@/api/products";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 type InventoryState = {
   rows: TableRow[];
@@ -16,21 +20,21 @@ type InventoryState = {
     sku: string;
     weight: number;
     volume: number;
-    orderId: string;
-    dealerName: string;
-    desiredETA: string;
-    shipToLocation: string;
-    shipmentQuantity: number;
-    inventoryLocation: string;
+    order_id: string;
+    dealer_name: string;
+    desired_ETA: string;
+    ship_to_location: string;
+    shipment_quantity: number;
+    inventory_location: string;
   } | null;
 };
 
 const initialState: InventoryState = {
-  rows: [],
-  orders: [],
-  products: [],
+  orders: orders,
+  rows: inventory,
   selectedRows: [],
   selectedItem: null,
+  products: products,
 };
 
 const inventorySlice = createSlice({
@@ -51,18 +55,18 @@ const inventorySlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addMatcher(
-      productsApi.endpoints.getProducts.matchFulfilled,
-      (state, action) => {
-        state.products = action.payload;
-      }
-    );
-    builder.addMatcher(
-      ordersApi.endpoints.getOrders.matchFulfilled,
-      (state, action) => {
-        state.orders = action.payload;
-      }
-    );
+    // builder.addMatcher(
+    //   productsApi.endpoints.getProducts.matchFulfilled,
+    //   (state, action) => {
+    //     state.products = action.payload;
+    //   }
+    // );
+    // builder.addMatcher(
+    //   ordersApi.endpoints.getOrders.matchFulfilled,
+    //   (state, action) => {
+    //     state.orders = action.payload;
+    //   }
+    // );
   },
 });
 

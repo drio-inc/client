@@ -1,47 +1,254 @@
 [
   {
     "id": "1",
-    "orderId": "#HDC000176559",
-    "name": "ROAD KING CUSTOM",
-    "price": "$20,192",
+    "name": "ROAD KING",
     "year": "2023",
-    "sku": "166951262",
-    "weight": 28.99,
-    "volume": 87.1,
-    "inventoryLocation": "Menomonee Falls, Wisconsin",
-    "shipmentQuantity": 388,
-    "dealerName": "America’s Motor Sports",
-    "shipToLocation": "629 Myatt Dr, Madison, TN 37115",
-    "desiredETA": "4/12/2023 14:38"
+    "sku": "159348797",
+    "weight": 6300,
+    "volume": 90,
+    "inventory_location": "York, Pennsylvania"
   },
   {
     "id": "2",
-    "orderId": "#HDC000176560",
-    "name": "ELECTRA GLIDE STANDARD",
-    "price": "$5,092",
-    "year": "2024",
-    "sku": "159348797",
-    "weight": 63.0,
-    "volume": 87.8,
-    "inventoryLocation": "Tomahawk, Wisconsin",
-    "shipmentQuantity": 69,
-    "dealerName": "Tobacco Road Harley-Davidson",
-    "shipToLocation": "1126 S Saunders St, Raleigh, NC 27603",
-    "desiredETA": "4/12/2023 14:38"
+    "name": "ROAD KING CLASSIC",
+    "year": "2023",
+    "sku": "166951262",
+    "weight": 2899,
+    "volume": 83.7,
+    "inventory_location": "Menomonee Falls, Wisconsin"
   },
   {
     "id": "3",
-    "orderId": "#HDC000176561",
-    "name": "ULTRA CLASS ELECTRA GLIDE",
-    "price": "$10,800",
+    "name": "ELECTRA GLIDE CLASSIC",
+    "year": "2024",
+    "sku": "167655728",
+    "weight": 5350,
+    "volume": 76.5,
+    "inventory_location": "Manaus, Brazil"
+  },
+  {
+    "id": "5",
+    "name": "ROAD KING CUSTOM",
     "year": "2023",
+    "sku": "167763266",
+    "weight": 27700,
+    "volume": 78.1,
+    "inventory_location": "Menomonee Falls, Wisconsin"
+  },
+  {
+    "id": "6",
+    "name": "ELECTRA GLIDE CLASSIC",
+    "year": "2024",
     "sku": "167655771",
-    "weight": 57.0,
-    "volume": 79.5,
-    "inventoryLocation": "York, Pennsylvania",
-    "shipmentQuantity": 114,
-    "dealerName": "The Transportation Revolution",
-    "shipToLocation": "901 Julia St, New Orleans, LA 70113",
-    "desiredETA": "4/29/2023 13:03"
+    "weight": 5700,
+    "volume": 78.7,
+    "inventory_location": "Manaus, Brazil"
+  },
+  {
+    "id": "7",
+    "name": "ROAD KING",
+    "year": "2023",
+    "sku": "167753872",
+    "weight": 7300,
+    "volume": 73.5,
+    "inventory_location": "York, Pennsylvania"
+  },
+  {
+    "id": "8",
+    "name": "ROAD KING CUSTOM",
+    "year": "2023",
+    "sku": "167692494",
+    "weight": 13350,
+    "volume": 74.3,
+    "inventory_location": "Menomonee Falls, Wisconsin"
+  },
+  {
+    "id": "9",
+    "name": "STREET GLIDE",
+    "year": "2024",
+    "sku": "167763267",
+    "weight": 14600,
+    "volume": 74.6,
+    "inventory_location": "Rayong, Thailand"
+  },
+  {
+    "id": "10",
+    "name": "STREET GLIDE",
+    "year": "2024",
+    "sku": "167656121",
+    "weight": 5250,
+    "volume": 78.1,
+    "inventory_location": "Rayong, Thailand"
+  },
+  {
+    "id": "11",
+    "name": "CVO STREET GLIDE",
+    "year": "2024",
+    "sku": "167753874",
+    "weight": 10400,
+    "volume": 79.6,
+    "inventory_location": "Rayong, Thailand"
+  },
+  {
+    "id": "12",
+    "name": "ELECTRA GLIDE STANDARD",
+    "year": "2024",
+    "sku": "167692496",
+    "weight": 12920,
+    "volume": 79.6,
+    "inventory_location": "Tomahawk, Wisconsin"
+  },
+  {
+    "id": "13",
+    "name": "ELECTRA GLIDE CLASSIC",
+    "year": "2024",
+    "sku": "167763273",
+    "weight": 31900,
+    "volume": 84.4,
+    "inventory_location": "Manaus, Brazil"
+  },
+  {
+    "id": "14",
+    "name": "ULTRA CLASSIC ELECTRA GLIDE",
+    "year": "2024",
+    "sku": "167656123",
+    "weight": 5430,
+    "volume": 86.5,
+    "inventory_location": "Rayong, Thailand"
+  },
+  {
+    "id": "15",
+    "name": "ULTRA CLASSIC ELECTRA GLIDE",
+    "year": "2024",
+    "sku": "167753916",
+    "weight": 20700,
+    "volume": 70.3,
+    "inventory_location": "Rayong, Thailand"
+  },
+  {
+    "id": "16",
+    "name": "ELECTRA GLIDE SPORT",
+    "year": "2023",
+    "sku": "167692497",
+    "weight": 12710,
+    "volume": 85.5,
+    "inventory_location": "Tomahawk, Wisconsin"
+  },
+  {
+    "id": "17",
+    "name": "ELECTRA GLIDE SPORT",
+    "year": "2023",
+    "sku": "167801757",
+    "weight": 5200,
+    "volume": 78.9,
+    "inventory_location": "Tomahawk, Wisconsin"
+  },
+  {
+    "id": "18",
+    "name": "ROAD KING",
+    "year": "2022",
+    "sku": "167763275",
+    "weight": 16500,
+    "volume": 70.8,
+    "inventory_location": "York, Pennsylvania"
+  },
+  {
+    "id": "19",
+    "name": "ROAD KING",
+    "year": "2023",
+    "sku": "167656124",
+    "weight": 5210,
+    "volume": 87.3,
+    "inventory_location": "York, Pennsylvania"
+  },
+  {
+    "id": "20",
+    "name": "ROAD KING CLASSIC",
+    "year": "2023",
+    "sku": "167753923",
+    "weight": 38100,
+    "volume": 89.4,
+    "inventory_location": "Menomonee Falls, Wisconsin"
+  },
+  {
+    "id": "21",
+    "name": "ROAD KING CLASSIC",
+    "year": "2023",
+    "sku": "167692498",
+    "weight": 12520,
+    "volume": 83.3,
+    "inventory_location": "Menomonee Falls, Wisconsin"
+  },
+  {
+    "id": "22",
+    "name": "ULTRA CLASSIC ELECTRA GLIDE LOW",
+    "year": "2024",
+    "sku": "167801773",
+    "weight": 7300,
+    "volume": 82.8,
+    "inventory_location": "Rayong, Thailand"
+  },
+  {
+    "id": "23",
+    "name": "ELECTRA GLIDE STANDARD",
+    "year": "2024",
+    "sku": "167763280",
+    "weight": 15000,
+    "volume": 75.5,
+    "inventory_location": "Tomahawk, Wisconsin"
+  },
+  {
+    "id": "24",
+    "name": "ULTRA CLASSIC ELECTRA GLIDE LOW",
+    "year": "2024",
+    "sku": "167656125",
+    "weight": 6180,
+    "volume": 77.9,
+    "inventory_location": "Rayong, Thailand"
+  },
+  {
+    "id": "25",
+    "name": "ULTRA CLASSIC ELECTRA GLIDE",
+    "year": "2024",
+    "sku": "167753937",
+    "weight": 20800,
+    "volume": 76.8,
+    "inventory_location": "Rayong, Thailand"
+  },
+  {
+    "id": "26",
+    "name": "ELECTRA GLIDE STANDARD",
+    "year": "2024",
+    "sku": "167692503",
+    "weight": 11900,
+    "volume": 86.4,
+    "inventory_location": "Tomahawk, Wisconsin"
+  },
+  {
+    "id": "27",
+    "name": "ULTRA CLASSIC ELECTRA GLIDE",
+    "year": "2024",
+    "sku": "167801828",
+    "weight": 21500,
+    "volume": 78.9,
+    "inventory_location": "Rayong, Thailand"
+  },
+  {
+    "id": "28",
+    "name": "ELECTRA GLIDE SPORT",
+    "year": "2023",
+    "sku": "167763299",
+    "weight": 12000,
+    "volume": 74.7,
+    "inventory_location": "Tomahawk, Wisconsin"
+  },
+  {
+    "id": "29",
+    "name": "ULTRA CLASSIC ELECTRA GLIDE",
+    "year": "2024",
+    "sku": "167656126",
+    "weight": 4190,
+    "volume": 77.8,
+    "inventory_location": "Manaus, Brazil"
   }
 ]

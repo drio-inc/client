@@ -15,7 +15,7 @@ const headers = [
 
   {
     header: "Order ID",
-    accessor: "orderId",
+    accessor: "order_id",
   },
 
   {
