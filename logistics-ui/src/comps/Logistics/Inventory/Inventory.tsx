@@ -1,7 +1,8 @@
 import Table from "@/comps/ui/Table";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import { useAppSelector } from "@/hooks/useStoreTypes";
 
 import InventoryMenu from "./InventoryMenu";
+import useInventory from "@/hooks/useInventory";
 import { useGetOrdersQuery } from "@/api/orders";
 import { useGetProductsQuery } from "@/api/products";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
@@ -64,7 +65,6 @@ const headers = [
 ];
 
 const Products = () => {
-  const dispatch = useAppDispatch();
   // const { isLoading: isProductsLoading } = useGetProductsQuery({
   //   name: "",
   //   offset: 0,
@@ -77,48 +77,18 @@ const Products = () => {
   //   limit: 10,
   // });
 
-  const {
-    orders,
-    products,
-    selectedRows,
-    rows: invetoryRows,
-  } = useAppSelector(({ inventory }) => inventory);
+  const { inventoryRows } = useInventory();
+  const { selectedRows } = useAppSelector(({ inventory }) => inventory);
 
   // if (isProductsLoading || isOrdersLoading) return <StaticLoader />;
-
-  const rows = () => {
-    // const orderMap = new Map(orders.map((order) => [order.name, order]));
-
-    const combinedInventory = products.map((product) => {
-      const matchingOrder = orders.find((order) => order.sku === product.sku);
-
-      if (matchingOrder) {
-        return {
-          ...product,
-          order_id: matchingOrder.order_id,
-          dealer_name: matchingOrder.dealer_name,
-          shipment_quantity: matchingOrder.ship_quantity,
-          ship_to_location: matchingOrder.ship_to_location,
-          price: `$${new Intl.NumberFormat().format(matchingOrder.price)}`,
-        };
-      }
-
-      return product;
-    });
-
-    console.log(combinedInventory, "HI");
-    return combinedInventory;
-  };
-
-  console.log(orders, products, rows());
 
   return (
     <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
       <Table
         important
         noSelection
-        rows={rows()}
         headers={headers}
+        rows={inventoryRows}
         menu={InventoryMenu}
         selectedRows={selectedRows}
       />

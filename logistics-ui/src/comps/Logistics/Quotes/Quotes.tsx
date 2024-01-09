@@ -12,6 +12,7 @@ import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 
 import location_to_origin from "@data/location_to_origin.json";
 import dealer_to_destination from "@data/dealer_to_destination.json";
+import useInventory from "@/hooks/useInventory";
 
 const headers = [
   {
@@ -64,12 +65,15 @@ const headers = [
 const Quotes = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+
   const { data, isLoading } = useGetQuotesQuery({
     limit: 10,
     offset: 0,
     origin_port: "",
     destination_port: "",
   });
+
+  const {} = useInventory();
   const quotesState = useAppSelector((state) => state.quotes);
   const { selectedItem } = useAppSelector((state) => state.inventory);
 

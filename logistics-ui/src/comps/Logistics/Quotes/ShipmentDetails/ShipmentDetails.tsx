@@ -46,9 +46,9 @@ const ShipmentDetails = () => {
                 label: inventory.selectedItem?.order_id ?? "All",
                 value: inventory.selectedItem?.order_id ?? "All",
               }}
-              options={inventory.rows.map((product) => ({
-                label: product.order_id,
-                value: product.order_id,
+              options={inventory.rows.map((item) => ({
+                label: item.order_id,
+                value: item.order_id,
               }))}
             />
           </div>
