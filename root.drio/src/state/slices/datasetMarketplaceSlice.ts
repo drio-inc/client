@@ -10,6 +10,7 @@ const initialState: SubscribeDatasetState = {
     {
       id: "1",
       dataset: "Service Record",
+      account: "Cox Automotive",
       ou: "Xtime",
       visibility: "Private",
       frequency: "25",
@@ -19,6 +20,7 @@ const initialState: SubscribeDatasetState = {
     {
       id: "2",
       dataset: "Accidents",
+      account: "Cox Automotive",
       ou: "Dealer.com",
       visibility: "Contractual",
       frequency: "25",
@@ -28,6 +30,7 @@ const initialState: SubscribeDatasetState = {
     {
       id: "3",
       dataset: "Dealer Sales",
+      account: "Cox Automotive",
       ou: "Kelly Blue Book",
       visibility: "Public",
       frequency: "25",
@@ -37,18 +40,39 @@ const initialState: SubscribeDatasetState = {
     {
       id: "4",
       dataset: "Customer Sales",
-      ou: "Cox Automotive",
+      account: "Cox Automotive",
+      ou: "Corp",
       visibility: "Private",
       frequency: "25",
       alerts: "1",
       contractInPlace: "Yes",
     },
+    {
+      id: "5",
+      dataset: "SAP Inventory",
+      account: "Cox Automotive",
+      ou: "Corp",
+      visibility: "Private",
+      frequency: "25",
+      alerts: "1",
+      contractInPlace: "Yes",
+    },
+    {
+      id: "6",
+      dataset: "Salesforce Orders",
+      account: "Cox Automotive",
+      ou: "Corp",
+      visibility: "Public",
+      frequency: "25",
+      alerts: "1",
+      contractInPlace: "No",
+    },
   ],
   selectedRows: [],
 };
 
-const subscribeDatasetSlice = createSlice({
-  name: "subscribeDataset",
+const datasetMarketplaceSlice = createSlice({
+  name: "datasetMarketplace",
   initialState,
   reducers: {
     setRows(state, action) {
@@ -63,6 +87,6 @@ const subscribeDatasetSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = subscribeDatasetSlice.actions;
+export const { setRows, setSelectedRows } = datasetMarketplaceSlice.actions;
 
-export default subscribeDatasetSlice.reducer;
+export default datasetMarketplaceSlice.reducer;

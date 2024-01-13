@@ -38,7 +38,8 @@ const headers = [
 
 const DatasetTable = ({ index }: { index: string }) => {
   const dispatch = useAppDispatch();
-  const { rows } = useAppSelector((state) => state.subscribeDataset);
+  const { rows } = useAppSelector((state) => state.datasetMarketplace);
+
   return (
     <div>
       <div className="flex justify-between p-2 bg-gray-100">

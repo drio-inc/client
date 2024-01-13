@@ -1,7 +1,7 @@
 import Table from "@/comps/ui/Table";
 import SubscribeDatasetMenu from "./DatasetMarketplaceMenu";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import { setSelectedRows } from "@/state/slices/subscribeDatasetsSlice";
+import { setSelectedRows } from "@/state/slices/datasetMarketplaceSlice";
 
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
@@ -22,6 +22,12 @@ const headers = [
     header: "Dataset",
     accessor: "dataset",
   },
+
+  {
+    header: "Organization",
+    accessor: "account",
+  },
+
   {
     header: "Organization Unit",
     accessor: "ou",
@@ -106,17 +112,15 @@ const DatasetProviders = [
 const DatasetMarketplace = () => {
   const dispatch = useAppDispatch();
   const [tab, setTab] = useState("organizations");
-  const subscribeDatasets = useAppSelector((state) => state.subscribeDataset);
+  const { rows, selectedRows } = useAppSelector(
+    (state) => state.datasetMarketplace
+  );
 
   const handleCheckbox = (index: number) => {
-    if (subscribeDatasets.selectedRows.includes(index)) {
-      dispatch(
-        setSelectedRows(
-          subscribeDatasets.selectedRows.filter((row) => row !== index)
-        )
-      );
+    if (selectedRows.includes(index)) {
+      dispatch(setSelectedRows(selectedRows.filter((row) => row !== index)));
     } else {
-      dispatch(setSelectedRows([...subscribeDatasets.selectedRows, index]));
+      dispatch(setSelectedRows([...selectedRows, index]));
     }
   };
 
@@ -184,19 +188,19 @@ const DatasetMarketplace = () => {
           </div>
         </div>
         <div className="bg-gray-50 flex flex-wrap items-center justify-between">
-          {subscribeDatasets.selectedRows.length > 0 && (
+          {selectedRows.length > 0 && (
             <div className="flex items-center px-4 py-4">
               <Checkbox.Root
                 className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                 onCheckedChange={() => clearSelectedRows?.()}
-                checked={subscribeDatasets.selectedRows.length > 0}
+                checked={selectedRows.length > 0}
               >
                 <Checkbox.Indicator className="text-white">
                   <HiMinusSm />
                 </Checkbox.Indicator>
               </Checkbox.Root>
               <h3 className={"font-medium text-sm text-gray-700"}>
-                {subscribeDatasets.selectedRows.length} Item(s) Selected
+                {selectedRows.length} Item(s) Selected
               </h3>
 
               <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
@@ -209,11 +213,11 @@ const DatasetMarketplace = () => {
 
         {tab === "organizations" ? (
           <Table
+            rows={rows}
             headers={headers}
+            selectedRows={selectedRows}
             menu={SubscribeDatasetMenu}
-            rows={subscribeDatasets.rows}
             handleCheckbox={handleCheckbox}
-            selectedRows={subscribeDatasets.selectedRows}
           />
         ) : (
           <Categories />
