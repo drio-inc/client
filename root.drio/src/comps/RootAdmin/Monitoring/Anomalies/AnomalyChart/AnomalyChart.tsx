@@ -63,10 +63,10 @@ export const options = {
 };
 
 const AnomalyChart = () => {
-  const numberOfDays = 365 / 2;
+  const numberOfDays = 365 / 4;
 
   const anomalyIndices = Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
+    { length: faker.number.int({ min: 1, max: 4 }) },
     () => faker.number.int({ min: 0, max: numberOfDays })
   );
 
@@ -82,7 +82,7 @@ const AnomalyChart = () => {
         backgroundColor: "#FF395C",
 
         data: labels.map((_, index) => {
-          const baseValue = faker.number.int({ min: 10000, max: 15000 });
+          const baseValue = faker.number.int({ min: 10000, max: 25000 });
 
           if (anomalyIndices.includes(index)) {
             return faker.number.int({ min: 50000, max: 90000 });
