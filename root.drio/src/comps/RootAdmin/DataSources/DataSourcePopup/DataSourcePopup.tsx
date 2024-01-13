@@ -21,7 +21,7 @@ const DataSourcePopup = () => {
       </div>
 
       <span className="font-medium my-2 text-gray-700 block">
-        Discovering and learning from data source...
+        Discovering and learning from data source. This may take a while.
       </span>
 
       <p className="mt-2">
