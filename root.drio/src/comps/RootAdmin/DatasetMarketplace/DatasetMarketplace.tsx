@@ -1,14 +1,11 @@
 import Table from "@/comps/ui/Table";
-import { setSelectedRows } from "@/state/slices/subscribeDatasetsSlice";
+import SubscribeDatasetMenu from "./DatasetMarketplaceMenu";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-
-import DatasetDetails from "./DatasetDetails";
-import EditDatasetForm from "./RequestDataAccessForm";
-
-import SubscribeDatasetMenu from "./DatasetMarketplaceMenu/DatasetMarketplaceMenu";
+import { setSelectedRows } from "@/state/slices/subscribeDatasetsSlice";
 
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
+
 import {
   HiMinusSm,
   HiOutlineFilter,
@@ -123,9 +120,7 @@ const DatasetMarketplace = () => {
     }
   };
 
-  const clearSelectedRows = () => {
-    dispatch(setSelectedRows([]));
-  };
+  const clearSelectedRows = () => dispatch(setSelectedRows([]));
 
   return (
     <div className="w-full">
@@ -188,17 +183,13 @@ const DatasetMarketplace = () => {
             </div>
           </div>
         </div>
-        <div
-          className={` bg-gray-50 flex flex-wrap items-center justify-between`}
-        >
+        <div className="bg-gray-50 flex flex-wrap items-center justify-between">
           {subscribeDatasets.selectedRows.length > 0 && (
             <div className="flex items-center px-4 py-4">
               <Checkbox.Root
                 className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+                onCheckedChange={() => clearSelectedRows?.()}
                 checked={subscribeDatasets.selectedRows.length > 0}
-                onCheckedChange={() => {
-                  clearSelectedRows?.();
-                }}
               >
                 <Checkbox.Indicator className="text-white">
                   <HiMinusSm />

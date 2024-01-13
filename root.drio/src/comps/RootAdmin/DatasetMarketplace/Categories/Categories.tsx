@@ -79,12 +79,12 @@ const Categories = () => {
             <span className="bg-gray-50 block p-4 rounded-md">
               {category.name}
             </span>
-            <div className="flex flex-wrap justify-between p-6 gap-8 my-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 p-6 gap-8">
               {category.organizations.map((ou, index) => {
                 return (
                   <div
                     key={index}
-                    className="flex flex-wrap p-4 shadow-md rounded-lg divide-x-2 gap-x-2 bg-white w-1/2 -m-2"
+                    className="flex flex-wrap p-4 shadow-md rounded-lg divide-y-2 lg:divide-y-0 lg:divide-x-2 gap-x-2 bg-white -m-2"
                   >
                     <div className="w-full lg:w-1/4 flex flex-col items-center p-4">
                       <div className="rounded-full shadow-xl p-3 mb-4">

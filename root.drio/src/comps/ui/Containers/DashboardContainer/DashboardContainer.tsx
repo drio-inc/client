@@ -4,7 +4,7 @@ import Notificationbar from "@/comps/Notificationbar";
 
 const DashboardContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
+    <div className="">
       <Sidebar />
       <div className="relative md:ml-64">
         <div className="min-h-screen relative">
@@ -16,7 +16,7 @@ const DashboardContainer = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       <Notificationbar />
-    </>
+    </div>
   );
 };
 
