@@ -27,6 +27,7 @@ export const detailFields = [
   },
   {
     type: "text",
+    required: true,
     name: "last_name",
     label: "Root Admin Last Name",
     placeholder: "Enter root admin last name",
@@ -44,8 +45,8 @@ export const detailFields = [
     type: "password",
     name: "password",
     isUpdatable: false,
-    label: "Root Admin Initial Password",
     placeholder: "Enter root admin password",
+    label: "Root Admin Initial Password (Must be at least 8 characters)",
   },
 ];
 
@@ -88,20 +89,25 @@ export const schema = z.object({
     required_error: "Please Enter a value",
   }),
 
-  city: z.string().optional(),
-  state: z.string().optional(),
+  city: z.string({
+    required_error: "Please Enter a value",
+  }),
+
+  state: z.string({
+    required_error: "Please Enter a value",
+  }),
 
   zip_code: z.string().optional(),
   description: z.string().optional(),
 
-  last_name: z.string().optional(),
   login_id: z.string().nonempty("Please Enter a value"),
+  last_name: z.string().nonempty("Please Enter a value"),
   first_name: z.string().nonempty("Please Enter a value"),
 
   last_name_2: z.string().optional(),
   first_name_2: z.string().optional(),
-  email: z.string().nonempty("Please Enter a value"),
   contact_number: z.string().optional(),
+  email: z.string().nonempty("Please Enter a value"),
 });
 
 export const createSchema = z

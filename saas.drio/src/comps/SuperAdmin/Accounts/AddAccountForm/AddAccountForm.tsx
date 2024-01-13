@@ -6,11 +6,9 @@ import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
-
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { setRows } from "@/state/slices/accountSlice";
 import { useCreateAccountMutation } from "@/api/resources/accounts";
 
 import {
@@ -104,6 +102,7 @@ export default function AddAccountForm() {
 
             <div className="px-4 py-2 w-1/2">
               <SelectInput
+                required={true}
                 registerName="state"
                 label="State / Province"
                 placeholder="Select state"
@@ -121,6 +120,7 @@ export default function AddAccountForm() {
             <div className="px-4 py-2 w-1/2">
               <SelectInput
                 label="City"
+                required={true}
                 registerName="city"
                 placeholder="Select city"
                 options={
