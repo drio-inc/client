@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Title,
   Legend,
@@ -11,10 +10,10 @@ import {
   Chart as ChartJS,
 } from "chart.js";
 
+import { Line } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
-import { Bar, Chart, Line } from "react-chartjs-2";
 
-const chart = ChartJS.register(
+const line = ChartJS.register(
   Title,
   Legend,
   Tooltip,
@@ -27,8 +26,6 @@ const chart = ChartJS.register(
 
 export const options = {
   responsive: true,
-  barPercentage: 0.6,
-  categoryPercentage: 1,
   maintainAspectRatio: false,
 
   scales: {
@@ -65,35 +62,38 @@ export const options = {
   },
 };
 
-const labels = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-export const data = {
-  labels,
-
-  datasets: [
-    {
-      label: "Anomaly",
-      borderColor: "#FF395C",
-      backgroundColor: "#FF395C",
-      data: labels.map(() => faker.number.int({ min: 10000, max: 90000 })),
-    },
-  ],
-};
-
 const AnomalyChart = () => {
+  const numberOfDays = 365 / 2;
+
+  const anomalyIndices = Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    () => faker.number.int({ min: 0, max: numberOfDays })
+  );
+
+  const labels = Array.from({ length: numberOfDays }, (_, i) => i + 1);
+
+  const data = {
+    labels,
+
+    datasets: [
+      {
+        label: "Anomaly",
+        borderColor: "#FF395C",
+        backgroundColor: "#FF395C",
+
+        data: labels.map((_, index) => {
+          const baseValue = faker.number.int({ min: 10000, max: 15000 });
+
+          if (anomalyIndices.includes(index)) {
+            return faker.number.int({ min: 50000, max: 90000 });
+          }
+
+          return baseValue;
+        }),
+      },
+    ],
+  };
+
   return (
     <div className="p-4 bg-white rounded-md">
       <Line options={options} data={{ ...data }} />
