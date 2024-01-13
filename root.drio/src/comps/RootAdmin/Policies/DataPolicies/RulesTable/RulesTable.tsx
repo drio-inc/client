@@ -64,6 +64,8 @@ const RulesTable = ({ rows, editable = false, modal = false }: PolicyProps) => {
     const firstIndex = array.map((item) => item.id).indexOf(currentId);
     const lastIndex = array.map((item) => item.id).lastIndexOf(currentId);
 
+    if (rows.length === 1) return rule;
+
     if (index === firstIndex) {
       return {
         ...rule,

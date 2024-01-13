@@ -2,20 +2,18 @@ import Button from "@ui/Button";
 import { v4 as uuidv4 } from "uuid";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
 
+import { z } from "zod";
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
-import { faker } from "@faker-js/faker";
-
-import { z } from "zod";
 import { useZodForm, Form } from "@ui/Forms/Form";
 import { SubmitHandler, useFieldArray } from "react-hook-form";
 
+import { useState } from "react";
+import { HiOutlineTrash } from "react-icons/hi";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { setRuleRows } from "@/state/slices/policiesSlice";
 import { useAddRuleMutation } from "@/api/resources/policies";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
-import { HiOutlineTrash } from "react-icons/hi";
-import { useState } from "react";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -109,11 +107,13 @@ export default function AddNewRuleForm() {
   };
 
   const addNewRule = (condition: string, index: number) => {
+    setShowActionField(true);
+
     if (condition === "none") {
-      if (index === 0) {
-        setShowActionField(false);
-        form.setValue(`action`, undefined);
-      }
+      // if (index === 0) {
+      //   setShowActionField(false);
+      //   form.setValue(`action`, undefined);
+      // }
 
       if (fields.length === 1) return;
 
@@ -125,7 +125,7 @@ export default function AddNewRuleForm() {
 
       remove(fieldsToRemove);
     } else {
-      setShowActionField(true);
+      // setShowActionField(true);
       if (index === fields.length - 1) {
         append({
           value: "",
@@ -140,10 +140,10 @@ export default function AddNewRuleForm() {
   const deleteRule = (index: number) => {
     if (fields.length === 1) return;
 
-    if (index - 1 === 0) {
-      setShowActionField(false);
-      form.setValue(`action`, undefined);
-    }
+    // if (index - 1 === 0) {
+    //   setShowActionField(false);
+    //   form.setValue(`action`, undefined);
+    // }
 
     if (index === fields.length - 1) {
       form.setValue(`subrules.${index - 1}.subrule`, "none");

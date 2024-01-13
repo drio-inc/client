@@ -136,11 +136,13 @@ export default function EditRuleForm({ row }: TableRow) {
   };
 
   const addNewRule = (condition: string, index: number) => {
+    setShowActionField(true);
+
     if (condition === "none") {
-      if (index === 0) {
-        setShowActionField(false);
-        form.setValue(`action`, undefined);
-      }
+      // if (index === 0) {
+      //   setShowActionField(false);
+      //   form.setValue(`action`, undefined);
+      // }
 
       if (fields.length === 1) return;
 
@@ -152,7 +154,7 @@ export default function EditRuleForm({ row }: TableRow) {
 
       remove(fieldsToRemove);
     } else {
-      setShowActionField(true);
+      // setShowActionField(true);
       if (index === fields.length - 1) {
         append({
           value: "",
@@ -167,10 +169,10 @@ export default function EditRuleForm({ row }: TableRow) {
   const deleteRule = (index: number) => {
     if (fields.length === 1) return;
 
-    if (index - 1 === 0) {
-      setShowActionField(false);
-      form.setValue(`action`, undefined);
-    }
+    // if (index - 1 === 0) {
+    //   setShowActionField(false);
+    //   form.setValue(`action`, undefined);
+    // }
 
     if (index === fields.length - 1) {
       form.setValue(`subrules.${index - 1}.subrule`, "none");
