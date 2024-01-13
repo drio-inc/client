@@ -24,8 +24,8 @@ interface NavLink {
   default?: string;
   icon?: JSX.Element;
   children?: {
-    name: string;
-    href: string;
+    name?: string;
+    href?: string;
   }[];
 }
 
@@ -86,17 +86,17 @@ export default function Sidebar() {
   const dispatch = useAppDispatch();
   const { expandedLinks } = useAppSelector((state) => state.ui);
 
-  const showNested = (link: NavLink) => {
-    const expanded = !expandedLinks[link.name];
+  // const showNested = (link: NavLink) => {
+  //   const expanded = !expandedLinks[link.name];
 
-    NavLinks.forEach((link) => {
-      if (link.children) {
-        dispatch(setExpandedLinks({ linkName: link.name, expanded: false }));
-      }
-    });
+  //   NavLinks.forEach((link) => {
+  //     if (link.children) {
+  //       dispatch(setExpandedLinks({ linkName: link.name, expanded: false }));
+  //     }
+  //   });
 
-    dispatch(setExpandedLinks({ linkName: link.name, expanded }));
-  };
+  //   dispatch(setExpandedLinks({ linkName: link.name, expanded }));
+  // };
 
   return (
     <nav className="hidden md:left-0 md:flex md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden border-r border-gray-200 bg-white relative md:w-64 py-4 px-2">
@@ -123,7 +123,7 @@ export default function Sidebar() {
                   <div
                     className="cursor-pointer"
                     onClick={() => {
-                      showNested(link);
+                      // showNested(link);
                       router.push(
                         `/${
                           link.default
@@ -146,7 +146,7 @@ export default function Sidebar() {
                       {link.name}
                     </span>
                   </div>
-                  {link.children && (
+                  {/* {link?.children && (
                     <span
                       className="ml-4"
                       onClick={() => {
@@ -159,10 +159,10 @@ export default function Sidebar() {
                         <AiFillCaretDown className="cursor-pointer inline-block w-4 h-4 text-gray-700" />
                       )}
                     </span>
-                  )}
+                  )} */}
                 </div>
 
-                {link.children &&
+                {/* {link.children &&
                   expandedLinks[link.name] &&
                   link.children.length > 0 && (
                     <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-4 my-2">
@@ -182,7 +182,7 @@ export default function Sidebar() {
                         </li>
                       ))}
                     </ul>
-                  )}
+                  )} */}
               </li>
             ))}
           </ul>
