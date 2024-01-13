@@ -1,5 +1,6 @@
 import Header from "@ui/Header";
 import Sidebar from "@/comps/Sidebar";
+import Notificationbar from "@/comps/Notificationbar";
 
 const DashboardContainer = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -13,6 +14,7 @@ const DashboardContainer = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       </div>
+      <Notificationbar />
     </>
   );
 };

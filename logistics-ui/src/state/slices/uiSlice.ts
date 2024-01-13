@@ -17,15 +17,10 @@ type UIState = {
 };
 
 const initialState: UIState = {
+  pageTitles: {},
   expandedLinks: {},
   showSidebar: false,
   modalBoolObject: {},
-  pageTitles: {
-    ddx: "DDX",
-    accounts: "Accounts",
-    licensing: "Licensing",
-    ou: "Organization Units",
-  },
 };
 
 const uiSlice = createSlice({

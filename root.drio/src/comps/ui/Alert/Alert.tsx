@@ -1,13 +1,12 @@
 import { toast } from "react-toastify";
+import { formatTime } from "@/utils/formatTime";
 import React, { useEffect, useState } from "react";
 import { HiOutlineCheckCircle, HiOutlineXCircle } from "react-icons/hi";
 
-import { formatHourAgo } from "@/utils/formatTime";
-
 interface IAlertProps {
   timeStamp?: number;
-  status?: "success" | "error" | "warning" | "info" | undefined;
   message: string | null;
+  status?: "success" | "error" | "warning" | "info" | undefined;
 }
 
 const AlertMessage = ({ message, status, timeStamp }: IAlertProps) => {
@@ -22,7 +21,7 @@ const AlertMessage = ({ message, status, timeStamp }: IAlertProps) => {
     }
   }, [serverError, serverError.timestamp]);
 
-  const hourAgo = formatHourAgo(timeStamp ?? Date.now());
+  const hourAgo = formatTime(timeStamp ?? Date.now());
 
   return (
     <div className="flex">
@@ -41,10 +40,6 @@ const AlertMessage = ({ message, status, timeStamp }: IAlertProps) => {
           {message ?? "Something went wrong. Please try again."}
         </span>
         <br />
-        {/* <span className="text-gray-700 text-sm">
-          Your username or password is incorrect!
-        </span>
-        <br /> */}
         <span className="text-gray-400 text-sm">{hourAgo}</span>
       </div>
     </div>
@@ -67,8 +62,8 @@ const showAlert = (
     position: "bottom-right",
     style: {
       width: "100%",
-      maxWidth: "400px",
       padding: ".5rem",
+      maxWidth: "400px",
       borderRadius: "0px",
       boxShadow:
         "0px 2px 2px rgba(159, 162, 191, 0.32), 0px 9px 16px rgba(159, 162, 191, 0.18)",

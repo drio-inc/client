@@ -14,11 +14,13 @@ type UIState = {
   };
 
   notification: string;
+  showSidebar: boolean;
 };
 
 const initialState: UIState = {
   notification: "",
   expandedLinks: {},
+  showSidebar: false,
   modalBoolObject: {},
   pageTitles: {
     ddx: "DDX",
@@ -55,6 +57,10 @@ const uiSlice = createSlice({
     setNotification(state, action) {
       state.notification = action.payload;
     },
+
+    setShowSidebar(state, action: PayloadAction<boolean>) {
+      state.showSidebar = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
@@ -63,6 +69,7 @@ const uiSlice = createSlice({
 export const {
   setOpenModal,
   setCloseModal,
+  setShowSidebar,
   closeAllModals,
   setNotification,
   setExpandedLinks,
