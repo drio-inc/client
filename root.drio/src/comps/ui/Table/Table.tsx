@@ -1,9 +1,16 @@
 import { ReactNode } from "react";
-import Tooltip from "@/comps/ui/Tooltip";
+
 import * as Checkbox from "@radix-ui/react-checkbox";
 import DashboardFooter from "@ui/Footer/DashbaordFooter";
 import { HiOutlinePencil, HiCheck } from "react-icons/hi";
 import MetaTags from "@/comps/RootAdmin/Datasets/Metadata/MetaTags";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TooltipProvider,
+} from "@ui/Tooltip";
 
 type TableHeader = {
   type?: string;
@@ -34,8 +41,8 @@ const Table = ({
   handleCheckbox,
   handleRowClick,
   menu: TableMenu,
-  tooltip: TableTooltip,
   noSelection = false,
+  tooltip: TableTooltip,
 }: TableProps) => {
   return (
     <div className="block w-full overflow-x-auto bg-white rounded-lg">
@@ -124,13 +131,26 @@ const Table = ({
                               {header?.accessor === "name" &&
                                 (row?.status === "learning" ||
                                   row?.status === "learned") && (
-                                  <span
-                                    className={`inline-block w-3 h-3 rounded-full ${
-                                      row?.status === "learning"
-                                        ? `bg-drio-red-dark`
-                                        : `bg-green-400`
-                                    }  mr-2`}
-                                  />
+                                  <TooltipProvider delayDuration={0}>
+                                    <Tooltip>
+                                      <TooltipTrigger>
+                                        <span
+                                          className={`inline-block w-3 h-3 rounded-full ${
+                                            row?.status === "learning"
+                                              ? `bg-drio-red-dark`
+                                              : `bg-green-400`
+                                          }  mr-2`}
+                                        />
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <span>
+                                          {row?.status === "learning"
+                                            ? `Learning Schema`
+                                            : `Schema Learned`}
+                                        </span>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
                                 )}
 
                               {row?.[header.accessor]

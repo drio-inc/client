@@ -64,7 +64,7 @@ export default function PublishDatasetForm() {
   const [generateDDXToken, tokenResult] = useGenerateDDXTokenMutation();
   const [selectedJSON, setSelectedJSON] = useState<Blob | File | null>(null);
 
-  const dataSourceOptions = dataSourceState.rows.length
+  const dataSourceOptions = dataSourceState?.rows?.length
     ? dataSourceState.rows?.map((row) => {
         return {
           label: row.name,
@@ -104,8 +104,8 @@ export default function PublishDatasetForm() {
       id: uuidv4(),
       frequency: 10,
       status: "learning",
-      ds: dataSource?.ou,
       ou: dataSource?.ou,
+      ds: dataSource?.name,
       contractInPlace: "Yes",
       sixMonthsAccess: "Yes",
       cluster_id: dataSource?.cluster_id,
@@ -238,7 +238,7 @@ export default function PublishDatasetForm() {
 
               <label
                 htmlFor="upload-json"
-                className="bg-gray-200 cursor-default border-2 border-dashed border-blue-300 py-2 px-3 my-1 rounded-md shadow-sm text-gray-400"
+                className="bg-gray-200 cursor-pointer border-2 border-dashed border-blue-500 py-2 px-3 my-1 rounded-md shadow-sm text-gray-400"
               >
                 {selectedJSON?.name ?? "Select a json file with example data"}
               </label>

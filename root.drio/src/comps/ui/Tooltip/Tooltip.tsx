@@ -1,34 +1,24 @@
-import React, { useEffect } from "react";
-import { useAppSelector } from "@/hooks/useStoreTypes";
-import { setCloseModal, closeAllModals } from "@/state/slices/uiSlice";
-import { useAppDispatch } from "@/hooks/useStoreTypes";
+import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
-type Tooltip = {
-  open?: boolean;
-  content?: React.ReactNode;
-  children: React.ReactNode;
-  onOpenChange?: () => void;
-};
+const TooltipProvider = TooltipPrimitive.Provider;
 
-export default function Tooltip({
-  open,
-  content,
-  children,
-  onOpenChange,
-  ...props
-}: Tooltip) {
-  return (
-    <TooltipPrimitive.Provider>
-      <TooltipPrimitive.Root delayDuration={0} onOpenChange={onOpenChange}>
-        <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
-        <TooltipPrimitive.Portal>
-          <TooltipPrimitive.Content sideOffset={5}>
-            {content}
-            <TooltipPrimitive.Arrow className="fill-gray-100 w-3 h-3" />
-          </TooltipPrimitive.Content>
-        </TooltipPrimitive.Portal>
-      </TooltipPrimitive.Root>
-    </TooltipPrimitive.Provider>
-  );
-}
+const Tooltip = TooltipPrimitive.Root;
+
+const TooltipTrigger = TooltipPrimitive.Trigger;
+
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <TooltipPrimitive.Content
+    ref={ref}
+    {...props}
+    sideOffset={sideOffset}
+    className="z-50 overflow-hidden rounded-md bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-700 border"
+  />
+));
+
+TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };

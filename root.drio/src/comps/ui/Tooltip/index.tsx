@@ -1,1 +1,6 @@
-export { default } from "./Tooltip";
+export {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "./Tooltip";
