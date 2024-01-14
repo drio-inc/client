@@ -2,7 +2,6 @@ import Table from "@/comps/ui/Table";
 import AddDataSourceForm from "./AddDataSourceForm";
 import DataSourcesMenu from "./DataSourcesMenu/DataSourcesMenu";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
-import { useGetDataSourcesQuery } from "@/api/resources/data-sources";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setRows, setSelectedRows } from "@/state/slices/dataSourceSlice";
 
@@ -81,9 +80,7 @@ const DataSources = () => {
   return (
     <div className="w-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        <div
-          className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
-        >
+        <div className="rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between">
           {selectedRows.length > 0 && (
             <div className="flex items-center">
               <Checkbox.Root

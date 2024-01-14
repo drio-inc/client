@@ -11,7 +11,7 @@ const initialState: AlertAnomalyPolicyState = {
       id: "1",
       alertRule: "Range Anomaly",
       trigger: "Range",
-      dataResouce: "SAP Inventory",
+      dataResource: "SAP Inventory",
       thresholdValue: "40%",
       message: "Out of range by 40%",
       occurenceHistory: "",

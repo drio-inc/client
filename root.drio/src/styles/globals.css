@@ -19,6 +19,10 @@ canvas {
   height: 200px !important;
 }
 
+#thumbnail-chart canvas {
+  height: 50px !important;
+}
+
 a {
   color: inherit !important;
   text-decoration: none !important;

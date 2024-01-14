@@ -101,6 +101,7 @@ const Table = ({
 
                 {headers?.map((header, index) => {
                   const value = row?.[header.accessor];
+                  console.log(value);
 
                   return (
                     <>
@@ -108,6 +109,8 @@ const Table = ({
                         <td className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem]">
                           <MetaTags tags={row?.[header.accessor]} />
                         </td>
+                      ) : header.type === "object" ? (
+                        <td className="w-[200px]">{row?.[header.accessor]}</td>
                       ) : (
                         <td
                           key={index}
