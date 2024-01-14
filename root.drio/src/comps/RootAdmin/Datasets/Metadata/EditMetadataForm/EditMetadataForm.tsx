@@ -28,9 +28,7 @@ interface ITag {
 
 const schema = z.object({
   name: z.string().optional(),
-
-  type: z.string().optional(),
-
+  dataType: z.string().optional(),
   sampleValue: z.string().optional(),
 });
 
@@ -38,8 +36,6 @@ type FormData = z.infer<typeof schema>;
 
 export default function EditMetadataForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-
-  const [tags, setTags] = useState<ITag[]>(row.tags ?? []);
   const [updateMetadata, result] = useEditMetadataMutation();
   const { rows } = useAppSelector((state) => state.metadata);
 
@@ -57,16 +53,11 @@ export default function EditMetadataForm({ row }: TableRow) {
       return;
     }
 
-    if (tags.length === 0) {
-      showAlert("Please enter at least one tag", "error");
-      return;
-    }
-
     const newData = {
       ...data,
       id: row.id,
       visibility,
-      tags: tags,
+      tags: row.tags,
       lastUpdated: new Date().toLocaleDateString(),
     };
 
@@ -106,25 +97,25 @@ export default function EditMetadataForm({ row }: TableRow) {
           })
         )
       );
-
-      setTags(
-        tags.map((t) => {
-          if (t.name !== tag) return t;
-
-          return {
-            ...t,
-            status: action,
-          };
-        })
-      );
     }
   };
 
   const handleTagChange = useCallback(
     (tag: string) => {
-      setTags([...tags, { id: uuidv4(), name: tag, status: "Pending" }]);
+      dispatch(
+        setRows(
+          rows.map((r) => {
+            if (r.id !== row.id) return r;
+
+            return {
+              ...r,
+              tags: [...r.tags, { id: uuidv4(), name: tag, status: "Pending" }],
+            };
+          })
+        )
+      );
     },
-    [tags]
+    [dispatch, row.id, rows]
   );
 
   return (
@@ -153,8 +144,8 @@ export default function EditMetadataForm({ row }: TableRow) {
             <div className="px-4 py-2 w-full">
               <TextInput
                 label={"Enter Data Type"}
-                {...form.register("type")}
                 defaultValue={row.dataType}
+                {...form.register("dataType")}
                 placeholder={"Enter data type"}
                 className="md:text-sm 2xl:text-base"
               />
@@ -197,14 +188,14 @@ export default function EditMetadataForm({ row }: TableRow) {
                 <div className="flex items-center gap-x-2">
                   <RadioGroup.Item
                     id="r2"
-                    value="hide"
+                    value="hidden"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
                   <label
                     className="text-gray-500 text-sm font-medium"
                     htmlFor="r2"
                   >
-                    Hide
+                    Hidden
                   </label>
                 </div>
 
@@ -230,7 +221,7 @@ export default function EditMetadataForm({ row }: TableRow) {
                 label="Metadata Tags (Type and press enter to add)"
               >
                 <ul className={`flex flex-wrap w-auto flex-shrink`}>
-                  {tags.map((tag, index) => (
+                  {row?.tags?.map((tag: ITag, index: number) => (
                     <li
                       key={index}
                       className={`flex justify-center items-center rounded-md p-1 border mx-1 my-2 gap-x-1 ${

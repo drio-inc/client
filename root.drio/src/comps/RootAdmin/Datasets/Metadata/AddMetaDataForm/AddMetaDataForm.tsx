@@ -72,7 +72,6 @@ export default function AddMetaDataForm({ row }: TableRow) {
         ...metadataState.rows,
         {
           ...data,
-          id: row.id,
           visibility,
           tags: tags,
           lastUpdated: new Date().toLocaleDateString(),
@@ -156,14 +155,14 @@ export default function AddMetaDataForm({ row }: TableRow) {
                 <div className="flex items-center gap-x-2">
                   <RadioGroup.Item
                     id="r2"
-                    value="hide"
+                    value="hidden"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
                   <label
                     className="text-gray-500 text-sm font-medium"
                     htmlFor="r2"
                   >
-                    Hide
+                    Hidden
                   </label>
                 </div>
 
@@ -209,8 +208,8 @@ export default function AddMetaDataForm({ row }: TableRow) {
           <div className="px-2 py-2 flex gap-4 justify-center w-full mt-4">
             <Button
               type="button"
-              intent={`secondary`}
               className="w-full"
+              intent={`secondary`}
               onClick={() => dispatch(setCloseModal("addMetadataForm"))}
             >
               <span className="inline-flex justify-center w-full">Cancel</span>

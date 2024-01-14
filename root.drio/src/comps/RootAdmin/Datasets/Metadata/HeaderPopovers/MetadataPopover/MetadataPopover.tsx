@@ -3,6 +3,7 @@ import * as Popover from "@radix-ui/react-popover";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setRows, setSelectedRows } from "@/state/slices/metadataSlice";
+import showAlert from "@/comps/ui/Alert/Alert";
 
 const MetadataPopover = ({ row }: any) => {
   const dispatch = useAppDispatch();
@@ -26,6 +27,11 @@ const MetadataPopover = ({ row }: any) => {
         })
       )
     );
+
+    showAlert(
+      `All tags ${action === "Approved" ? "approved" : "rejected"}!`,
+      "success"
+    );
   };
 
   return (
@@ -41,23 +47,19 @@ const MetadataPopover = ({ row }: any) => {
           sideOffset={20}
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
-          <span
+          <Popover.Close
             onClick={() => approveOrRejectAll("Approved")}
-            className={
-              "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
-            }
+            className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4 text-left"
           >
             Accept All
-          </span>
+          </Popover.Close>
 
-          <span
+          <Popover.Close
             onClick={() => approveOrRejectAll("Rejected")}
-            className={
-              "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
-            }
+            className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4 text-left"
           >
             Reject All
-          </span>
+          </Popover.Close>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

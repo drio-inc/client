@@ -55,16 +55,6 @@ const MetadataMenu = ({ row }: TableRow) => {
         >
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <Modal
-              label="Add"
-              identifier="addMetadataForm"
-              onClick={() => dispatch(setOpenModal("addMetadataForm"))}
-            >
-              <AddMetaDataForm row={row} />
-            </Modal>
-          </span>
-
-          <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            <Modal
               label="Edit"
               identifier="editMetadataForm"
               onClick={() => dispatch(setOpenModal("editMetadataForm"))}
@@ -81,23 +71,19 @@ const MetadataMenu = ({ row }: TableRow) => {
             />
           </span>
 
-          <span
+          <Popover.Close
             onClick={() => approveOrRejectAll("Approved")}
-            className={
-              "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
-            }
+            className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4 text-left"
           >
             Approve All
-          </span>
+          </Popover.Close>
 
-          <span
+          <Popover.Close
             onClick={() => approveOrRejectAll("Rejected")}
-            className={
-              "cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4"
-            }
+            className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4 text-left"
           >
             Reject All
-          </span>
+          </Popover.Close>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
