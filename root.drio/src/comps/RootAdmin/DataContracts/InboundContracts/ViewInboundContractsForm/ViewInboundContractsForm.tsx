@@ -17,12 +17,12 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
   const onSubmit: SubmitHandler<FormData> = async (data) => {};
 
   return (
-    <div className="h-full flex items-center justify-center p-4">
+    <div className="h-full flex items-center justify-center">
       <Layout>
-        <div className="flex items-center bg-white mb-4 p-6 rounded-lg">
+        <div className="flex items-center bg-white mb-4 p-4 rounded-lg">
           <Image
-            height={40}
             width={40}
+            height={40}
             alt="bank-logo"
             src="/images/bank-of-america.svg"
           />
@@ -32,10 +32,10 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
           </h2>
         </div>
 
-        <div className="mx-auto bg-white py-4 px-12 rounded-lg max-w-5xl">
+        <div className="mx-auto bg-white py-2 px-8 rounded-lg max-w-5xl">
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             {/* Validity Timeframe */}
-            <div className="w-full px-4 my-4">
+            <div className="w-full px-4 my-2">
               <h3 className="text-xl font-bold mb-2">Validity Timeframe</h3>
 
               <div className="flex rounded-lg border p-6 divide-x-2">
@@ -58,7 +58,7 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
             </div>
 
             {/* App Personas */}
-            <div className="flex justify-between w-full px-4 my-4">
+            <div className="flex justify-between w-full px-4 my-2">
               <div>
                 <h3 className="text-xl font-bold mb-2">App Personas Allowed</h3>
 
@@ -76,57 +76,79 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
               </div>
             </div>
 
+            {/* App Auth Mechanism */}
+            <div className="w-full px-4 my-2">
+              <h3 className="text-xl font-bold">App Auth Mechanism</h3>
+
+              <div className="flex flex-col">
+                <div className="w-full flex justify-between items-center py-1">
+                  <span className="text-gray-700 font-medium">
+                    : ldap://coreldap.bbank.com
+                  </span>
+                </div>
+
+                <div className="w-full flex justify-between items-center py-1">
+                  <span className="text-gray-700 font-medium">
+                    : ldap://coreldap.bbank.com
+                  </span>
+                </div>
+
+                <div className="w-full flex justify-between items-center py-1">
+                  <span className="text-gray-700 font-medium">
+                    : ldap://coreldap.bbank.com
+                  </span>
+                </div>
+              </div>
+            </div>
+
             {/* Limitations */}
-            <div className="w-full px-4 my-4">
+            <div className="w-full px-4 my-2">
               <h3 className="text-xl font-bold mb-2">Limitations</h3>
 
-              <div className="flex rounded-lg border p-6 divide-x-2">
+              <div className="flex rounded-lg border p-4 divide-x-2">
                 <div className="w-1/2 flex flex-col items-center">
                   <span className="text-drio-red font-bold text-2xl">02</span>
                   <p className="text-gray-500 text-sm text-center">
-                    Max number of <br />
-                    personas
+                    Max number of personas
                   </p>
                 </div>
 
                 <div className="w-1/2 flex flex-col items-center">
                   <span className="text-drio-red font-bold text-2xl">56</span>
                   <p className="text-gray-500 text-sm text-center">
-                    Max number of <br />
-                    accessors
+                    Max number of accessors
                   </p>
                 </div>
 
                 <div className="w-1/2 flex flex-col items-center">
                   <span className="text-drio-red font-bold text-2xl">25</span>
                   <p className="text-gray-500 text-sm text-center">
-                    Max daily access <br />
-                    frequency limit
+                    Max daily access frequency limit
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Datasets Covered */}
-            <div className="w-full px-4 my-4">
-              <h3 className="text-xl font-bold mb-2">Datasets Covered</h3>
+            <div className="w-full px-4 my-2">
+              <h3 className="text-xl font-bold">Datasets Covered</h3>
 
-              <div className="flex flex-col p-6 divide-y-2">
-                <div className="w-full flex justify-between items-center py-6">
+              <div className="flex flex-col divide-y-2">
+                <div className="w-full flex justify-between items-center py-4">
                   <span className="text-gray-700 font-bold">All Personas</span>
                   <p className="text-gray-500 text-sm text-center underline">
                     : /api/2022-10-31/ account/Cox/orgunit/dt.com/*
                   </p>
                 </div>
 
-                <div className="w-full flex justify-between items-center py-6">
+                <div className="w-full flex justify-between items-center py-4">
                   <span className="text-gray-700 font-bold">Loan App</span>
                   <p className="text-gray-500 text-sm text-center underline">
                     : /api/2022-10-31/ account/Cox/orgunit/dt.com/*
                   </p>
                 </div>
 
-                <div className="w-full flex justify-between items-center py-6">
+                <div className="w-full flex justify-between items-center py-4">
                   <span className="text-gray-700 font-bold">Marketing App</span>
                   <p className="text-gray-500 text-sm text-center underline">
                     : /api/2022-10-31/ account/Cox/orgunit/dt.com/*
@@ -137,17 +159,23 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
 
             {/* Legal Addendums */}
 
-            <div className="flex justify-between w-full my-4 px-4">
+            <div className="flex justify-between w-full my-2 px-4">
               <div className="w-full">
-                <h3 className="text-xl font-semibold mb-2">Legal Addendums</h3>
+                <h3 className="text-xl font-semibold">Legal Addendums</h3>
 
                 <div className="w-full flex flex-col divide-y-2">
-                  <div className="w-full flex flex-col gap-2 py-6">
+                  <div className="w-full flex flex-col gap-2 py-2">
                     <span className="font-bold text-xl text-gray-700">
                       Privacy
                     </span>
                     <p className="text-gray-500">
-                      Contains all the Privacy T&C related to this contract
+                      Lorem ipsum dolor sit amet consectetur. A ut turpis dui
+                      integer egestas tincidunt enim. In nec gravida tempor
+                      molestie varius. Libero dolor bibendum quis nec lectus
+                      hac. Pellentesque aliquam amet hendrerit condimentum
+                      nullam. Dolor morbi mauris nunc phasellus diam. Varius
+                      pellentesque sed morbi vestibulum cursus. Tellus hendrerit
+                      in viverra ornare.
                     </p>
                     <div>
                       <Button
@@ -160,12 +188,18 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
                     </div>
                   </div>
 
-                  <div className="w-full flex flex-col gap-2 py-6">
+                  <div className="w-full flex flex-col gap-2 py-2">
                     <span className="font-bold text-xl text-gray-700">
                       Regulatory
                     </span>
                     <p className="text-gray-500">
-                      Contains all the Regulatory T&C related to this contract
+                      Lorem ipsum dolor sit amet consectetur. A ut turpis dui
+                      integer egestas tincidunt enim. In nec gravida tempor
+                      molestie varius. Libero dolor bibendum quis nec lectus
+                      hac. Pellentesque aliquam amet hendrerit condimentum
+                      nullam. Dolor morbi mauris nunc phasellus diam. Varius
+                      pellentesque sed morbi vestibulum cursus. Tellus hendrerit
+                      in viverra ornare.
                     </p>
                     <div>
                       <Button
@@ -242,9 +276,9 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
           </h2>
         </div>
 
-        <div className="mx-auto bg-white py-4 px-12 rounded-lg max-w-5xl mt-4">
+        <div className="mx-auto bg-white py-8 px-12 rounded-lg max-w-5xl mt-4">
           {/* App Personas */}
-          <div className="flex justify-between w-full px-4 my-4">
+          <div className="flex justify-between w-full px-4 my-2">
             <div>
               <h3 className="text-xl font-bold mb-2">App Personas Allowed</h3>
 
@@ -262,12 +296,37 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
             </div>
           </div>
 
-          {/* Datasets Covered */}
+          {/* App Auth Mechanism */}
           <div className="w-full px-4 my-4">
-            <h3 className="text-xl font-bold mb-2">Datasets Covered</h3>
+            <h3 className="text-xl font-bold">App Auth Mechanism</h3>
 
-            <div className="flex flex-col p-6 divide-y-2">
-              <div className="w-full flex justify-between items-center py-6">
+            <div className="flex flex-col">
+              <div className="w-full flex justify-between items-center py-1">
+                <span className="text-gray-700 font-medium">
+                  : ldap://coreldap.bbank.com
+                </span>
+              </div>
+
+              <div className="w-full flex justify-between items-center py-1">
+                <span className="text-gray-700 font-medium">
+                  : ldap://coreldap.bbank.com
+                </span>
+              </div>
+
+              <div className="w-full flex justify-between items-center py-1">
+                <span className="text-gray-700 font-medium">
+                  : ldap://coreldap.bbank.com
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Datasets Covered */}
+          <div className="w-full px-4 my-2">
+            <h3 className="text-xl font-bold">Datasets Covered</h3>
+
+            <div className="flex flex-col py-2 divide-y-2">
+              <div className="w-full flex justify-between items-center">
                 <span className="text-gray-700 font-bold">Marketing App</span>
                 <p className="text-gray-500 text-sm text-center underline">
                   : /api/2022-10-31/ account/Cox/orgunit/dt.com/*
@@ -277,38 +336,35 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
           </div>
 
           {/* Limitations */}
-          <div className="w-full px-4 my-4">
+          <div className="w-full px-4 my-2">
             <h3 className="text-xl font-bold mb-2">Limitations</h3>
 
             <div className="flex rounded-lg border p-6 divide-x-2">
               <div className="w-1/2 flex flex-col items-center">
                 <span className="text-drio-red font-bold text-2xl">02</span>
                 <p className="text-gray-500 text-sm text-center">
-                  Max number of <br />
-                  personas
+                  Max number of personas
                 </p>
               </div>
 
               <div className="w-1/2 flex flex-col items-center">
                 <span className="text-drio-red font-bold text-2xl">56</span>
                 <p className="text-gray-500 text-sm text-center">
-                  Max number of <br />
-                  accessors
+                  Max number of accessors
                 </p>
               </div>
 
               <div className="w-1/2 flex flex-col items-center">
                 <span className="text-drio-red font-bold text-2xl">25</span>
                 <p className="text-gray-500 text-sm text-center">
-                  Max daily access <br />
-                  frequency limit
+                  Max daily access frequency limit
                 </p>
               </div>
             </div>
           </div>
 
           {/* Signature */}
-          <div className="flex flex-col items-center my-8 w-full">
+          <div className="flex flex-col items-center my-4 w-full">
             <div className="flex flex-col gap-y-4">
               <div className="flex items-center gap-x-2">
                 <Image
@@ -335,7 +391,7 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
           </div>
 
           {/* Submit/Reject */}
-          <div className="px-2 py-2 flex gap-4 justify-center mt-4">
+          <div className="px-2 py-2 flex gap-4 justify-center">
             <Button
               type="button"
               intent={`secondary`}

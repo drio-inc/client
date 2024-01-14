@@ -4,7 +4,7 @@ import * as Popover from "@radix-ui/react-popover";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import AlertModal from "@/comps/ui/AlertModal";
-import AddMetaDataForm from "../AddMetaDataForm";
+import showAlert from "@/comps/ui/Alert/Alert";
 import EditMetadataForm from "../EditMetadataForm";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { setRows, setSelectedRows } from "@/state/slices/metadataSlice";
@@ -38,6 +38,8 @@ const MetadataMenu = ({ row }: TableRow) => {
         })
       )
     );
+
+    showAlert(`All tags are ${action}!`, "success");
   };
 
   return (

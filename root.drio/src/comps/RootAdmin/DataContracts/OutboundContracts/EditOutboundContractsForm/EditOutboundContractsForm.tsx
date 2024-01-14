@@ -354,7 +354,7 @@ export default function EditOutboundContractsForm({ row }: TableRow) {
                       <HiX className="w-5 h-5" />
                     </button>
                     <span className="text-blue-500 underline">
-                      idap://coreldap.bbank.com
+                      ldap://coreldap.bbank.com
                     </span>
                     <AiFillCaretRight className="text-blue-500 " />
                   </div>
@@ -364,7 +364,7 @@ export default function EditOutboundContractsForm({ row }: TableRow) {
                       <HiX className="w-5 h-5" />
                     </button>
                     <span className="text-blue-500 underline">
-                      idap://coreldap.bbank.com
+                      ldap://coreldap.bbank.com
                     </span>
                     <AiFillCaretRight className="text-blue-500 " />
                   </div>
