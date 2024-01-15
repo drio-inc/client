@@ -63,9 +63,7 @@ export const TextInput = forwardRef<HTMLInputElement, ITextInputProps>(
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const {
-      setValue,
-      clearErrors,
-      formState: { errors, isDirty, dirtyFields },
+      formState: { errors },
     } = useFormContext();
 
     if (!props.name) return null;

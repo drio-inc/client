@@ -37,9 +37,9 @@ export default function AddAccountForm() {
         city: data.city ?? "",
         country: data.country,
         state: data.state ?? "",
-        account_name: data.name,
         login_id: data.login_id,
         password: data.password,
+        account_name: data.account_ID,
         last_name: data.last_name ?? "",
         first_name: data.first_name ?? "",
       }).unwrap();

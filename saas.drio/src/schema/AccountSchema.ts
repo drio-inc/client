@@ -3,11 +3,11 @@ import { z } from "zod";
 export const nameFields = [
   {
     type: "text",
-    name: "name",
     required: true,
+    name: "account_ID",
     autoComplete: "nope",
     label: "Account Name",
-    placeholder: "Enter account name",
+    placeholder: "Enter account Name",
   },
   {
     type: "text",
@@ -44,7 +44,7 @@ export const detailFields = [
     required: true,
     type: "password",
     name: "password",
-    isUpdatable: false,
+    autoComplete: "nope",
     placeholder: "Enter root admin password",
     label: "Root Admin Initial Password (Must be at least 8 characters)",
   },
@@ -74,7 +74,6 @@ export const contactFields = [
   },
   {
     type: "text",
-    required: true,
     name: "contact_number",
     label: "Contact Number",
     placeholder: "Enter your number",
@@ -83,7 +82,7 @@ export const contactFields = [
 
 export const schema = z.object({
   street_address: z.string().optional(),
-  name: z.string().nonempty("Please Enter a value"),
+  account_ID: z.string().nonempty("Please Enter a value"),
 
   country: z.string({
     required_error: "Please Enter a value",

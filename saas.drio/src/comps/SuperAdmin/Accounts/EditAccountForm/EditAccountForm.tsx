@@ -97,9 +97,9 @@ export default function EditAccountForm({ row }: TableRow) {
     try {
       const res = await patch({
         id: process.env.DEVELOPMENT_MODE === "mock" ? row.id : accountdata?.id,
-        name: updatedData.name,
         city: updatedData.city,
         state: updatedData.state,
+        name: updatedData.account_ID,
         country: updatedData.country,
         users: [
           {
