@@ -240,6 +240,7 @@ export default function AddNewRuleForm() {
                       { label: "< (Less than)", value: "<" },
                       { label: "> (Greater than)", value: ">" },
                       { label: "= (Equal to)", value: "=" },
+                      { label: "!= (Not equal to)", value: "!=" },
                       { label: "Regex", value: "regex" },
                     ]}
                   />

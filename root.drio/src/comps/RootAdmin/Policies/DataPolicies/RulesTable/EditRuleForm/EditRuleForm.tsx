@@ -11,8 +11,8 @@ import { SubmitHandler, useFieldArray } from "react-hook-form";
 
 import { HiOutlineTrash } from "react-icons/hi";
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setRuleRows } from "@/state/slices/policiesSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -267,6 +267,7 @@ export default function EditRuleForm({ row }: TableRow) {
                       { label: "< (Less than)", value: "<" },
                       { label: "> (Greater than)", value: ">" },
                       { label: "= (Equal to)", value: "=" },
+                      { label: "!= (Not equal to)", value: "!=" },
                       { label: "Regex", value: "regex" },
                     ]}
                   />
