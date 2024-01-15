@@ -1,0 +1,83 @@
+[
+  {
+    "id": "1",
+    "ds": "kafka",
+    "ou": "XTime",
+    "legacy": true,
+    "severity": "Error",
+    "name": "Service Record",
+    "anomaly_type": "anomaly",
+    "timestamp": 1705025025000,
+    "event_type": "access_error"
+  },
+  {
+    "id": "2",
+    "ou": "KBB",
+    "legacy": true,
+    "name": "Accidents",
+    "ds": "amazon_kinesis",
+    "timestamp": 1705025025000,
+    "severity": "Informational",
+    "anomaly_type": "comparison",
+    "event_type": "added_new_field"
+  },
+  {
+    "id": "3",
+    "ds": "kafka",
+    "ou": "B Bank",
+    "legacy": true,
+    "severity": "Warning",
+    "anomaly_type": "iqr",
+    "name": "Dealer Sales",
+    "event_type": "anomaly",
+    "timestamp": 1705025025000
+  },
+  {
+    "id": "4",
+    "legacy": true,
+    "ou": "Dealer Track",
+    "severity": "Warning",
+    "ds": "azure_event_hub",
+    "name": "Customer Sales",
+    "timestamp": 1705025025000,
+    "anomaly_type": "comparison",
+    "event_type": "datatype_mismatch"
+  },
+  {
+    "id": "5",
+    "iqr": 50,
+    "value": 120,
+    "ds": "kafka",
+    "field": "quantity",
+    "anomaly_type": "iqr",
+    "event_type": "anomaly",
+    "timestamp": 1705025025000,
+    "name": "Salesforce Orders"
+  },
+  {
+    "iqr": 0,
+    "id": "6",
+    "value": null,
+    "field": "sku",
+    "datatype": "string",
+    "ds": "amazon_kinesis",
+    "name": "SAP Inventory",
+    "new_datatype": "integer",
+    "timestamp": 1705025025000,
+    "anomaly_type": "comparison",
+    "event_type": "datatype_mismatch"
+  },
+  {
+    "iqr": 0,
+    "id": "7",
+    "value": null,
+    "ds": "kafka",
+    "field": "isNew",
+    "new_datatype": "",
+    "datatype": "integer",
+    "name": "SAP Inventory",
+    "timestamp": 1704846789000,
+    "anomaly_type": "comparison",
+    "event_type": "added_new_field"
+  }
+]
