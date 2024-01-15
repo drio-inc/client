@@ -11,6 +11,7 @@ import { MdOutlineCalendarMonth } from "react-icons/md";
 import Image from "next/image";
 import { AiFillCaretRight } from "react-icons/ai";
 import { RiUploadCloud2Line } from "react-icons/ri";
+import Link from "next/link";
 
 export default function ViewInboundContractsForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
@@ -63,15 +64,21 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
                 <h3 className="text-xl font-bold mb-2">App Personas Allowed</h3>
 
                 <div className="flex flex-col gap-y-2">
-                  <div className="flex items-center gap-2">
+                  <Link
+                    href={"/policies/data-policies"}
+                    className="flex items-center gap-2"
+                  >
                     <span className="text-blue-500 underline">Loan App</span>
                     <AiFillCaretRight className="text-blue-500 " />
-                  </div>
+                  </Link>
 
-                  <div className="flex items-center gap-2">
+                  <Link
+                    href={"/policies/data-policies"}
+                    className="flex items-center gap-2"
+                  >
                     <span className="text-blue-500 underline">Marketing</span>
                     <AiFillCaretRight className="text-blue-500 " />
-                  </div>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -101,8 +101,6 @@ const Table = ({
 
                 {headers?.map((header, index) => {
                   const value = row?.[header.accessor];
-                  console.log(value);
-
                   return (
                     <>
                       {header.type === "array" ? (

@@ -92,6 +92,8 @@ const AddPolicyForm = () => {
                     { label: "Xtime", value: "xtime" },
                     { label: "Kintetsu", value: "kintetsu" },
                     { label: "kbb", value: "Kelly Blue Book" },
+                    { label: "Wells Fargo", value: "wells_fargo" },
+                    { label: "Market Analytics", value: "market_analytics" },
                   ]}
                 />
               </div>

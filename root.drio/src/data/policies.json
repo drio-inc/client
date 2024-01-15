@@ -1,0 +1,141 @@
+[
+  {
+    "id": "c9f2628a-f97c-4e2a-a335-fe9d8c1dc44a",
+    "contract": "dhl",
+    "scope": "global",
+    "createdBy": "admin",
+    "modifiedBy": "admin",
+    "type": "contractual",
+    "persona": "logistics",
+    "dateCreated": "2019-10-10",
+    "name": "Shipping Quotation",
+    "dateLastModified": "2019-10-10",
+    "rules": [
+      {
+        "id": "2aad2760-113d-4325-bbcb-dad75f3c13b9",
+        "action": "remove",
+        "defaultAllow": true,
+        "dataset": "shipping_data",
+        "name": "Disallow product details",
+        "subrules": [
+          {
+            "id": "1",
+            "value": "TRUE",
+            "subrule": "and",
+            "metadata": "product_identity",
+            "conditions": "="
+          },
+          {
+            "id": "2",
+            "value": "TRUE",
+            "subrule": "none",
+            "metadata": "volume",
+            "conditions": "!="
+          },
+          {
+            "id": "3",
+            "value": "TRUE",
+            "subrule": "none",
+            "metadata": "weight",
+            "conditions": "!="
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "d82c2a71-2f86-4c2d-97e3-1d65e31ea4a5",
+    "scope": "global",
+    "createdBy": "admin",
+    "modifiedBy": "admin",
+    "type": "contractual",
+    "persona": "marketing",
+    "name": "Auto marketing",
+    "dateCreated": "2019-10-10",
+    "contract": "market_analytics",
+    "dateLastModified": "2019-10-10",
+    "rules": [
+      {
+        "id": "094e0248-35ad-43e7-9529-9313757794c3",
+        "action": "remove",
+        "defaultAllow": true,
+        "dataset": "shipping_data",
+        "name": "Disallow product details",
+        "subrules": [
+          {
+            "id": "4",
+            "value": "TRUE",
+            "subrule": "and",
+            "metadata": "product_identity",
+            "conditions": "="
+          },
+          {
+            "id": "5",
+            "value": "TRUE",
+            "subrule": "none",
+            "metadata": "price",
+            "conditions": "!="
+          },
+          {
+            "id": "6",
+            "value": "TRUE",
+            "subrule": "none",
+            "metadata": "geolocation",
+            "conditions": "!="
+          },
+          {
+            "id": "7",
+            "value": "TRUE",
+            "subrule": "none",
+            "metadata": "model",
+            "conditions": "!="
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "56d32631-1322-45d0-bf62-2ec441b73d4a",
+    "scope": "global",
+    "createdBy": "admin",
+    "modifiedBy": "admin",
+    "type": "contractual",
+    "persona": "financial",
+    "contract": "wells_fargo",
+    "dateCreated": "2019-10-10",
+    "name": "Wells Fargo Financial",
+    "dateLastModified": "2019-10-10",
+    "rules": [
+      {
+        "id": "7c81e7ea-a0b9-45d8-a801-82ab197d7c03",
+        "action": "remove",
+        "defaultAllow": true,
+        "dataset": "shipping_data",
+        "name": "Disallow product details",
+        "subrules": [
+          {
+            "id": "8",
+            "value": "TRUE",
+            "subrule": "and",
+            "metadata": "product_identity",
+            "conditions": "="
+          },
+          {
+            "id": "9",
+            "value": "TRUE",
+            "subrule": "none",
+            "metadata": "price",
+            "conditions": "!="
+          },
+          {
+            "id": "10",
+            "value": "TRUE",
+            "subrule": "none",
+            "metadata": "model",
+            "conditions": "!="
+          }
+        ]
+      }
+    ]
+  }
+]

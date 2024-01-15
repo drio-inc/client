@@ -57,8 +57,6 @@ const RulesTable = ({ rows, editable = false, modal = false }: PolicyProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  console.log("rows", rows);
-
   const transformedRules = rows?.map((rule, index, array) => {
     const currentId = rule.id;
     const firstIndex = array.map((item) => item.id).indexOf(currentId);

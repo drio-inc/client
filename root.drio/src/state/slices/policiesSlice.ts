@@ -1,3 +1,4 @@
+import policies from "../../data/policies.json";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type Rule = {
@@ -22,7 +23,7 @@ type PolicyState = {
 };
 
 const initialState: PolicyState = {
-  rows: [],
+  rows: policies,
   ruleRows: [],
   selectedRows: [],
 };

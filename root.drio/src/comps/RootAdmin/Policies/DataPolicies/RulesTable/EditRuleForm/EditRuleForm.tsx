@@ -63,6 +63,7 @@ const datasetOptions = [
   { label: "MKT Data", value: "mkt_data" },
   { label: "Accidents", value: "accidents" },
   { label: "Dealer Sales", value: "dealer_sales" },
+  { label: "Shipping Data", value: "shipping_data" },
 ];
 
 const allowOptions = [
@@ -191,8 +192,8 @@ export default function EditRuleForm({ row }: TableRow) {
             <div className="px-4 py-2 w-full lg:w-1/2 2xl:w-1/3">
               <TextInput
                 label={"Rule Name"}
+                defaultValue={row?.name}
                 {...form.register("name")}
-                defaultValue={row.name}
                 placeholder={"Enter rule name"}
                 className="md:text-sm 2xl:text-base"
               />
@@ -207,7 +208,7 @@ export default function EditRuleForm({ row }: TableRow) {
                 className="md:text-sm 2xl:text-base"
                 defaultSelectedValue={
                   datasetOptions.find(
-                    (option) => option.value === row.dataset
+                    (option) => option.value === row?.dataset
                   ) ?? { label: "", value: "" }
                 }
               />
@@ -247,6 +248,11 @@ export default function EditRuleForm({ row }: TableRow) {
                       { label: "Dealer Name", value: "dealer_name" },
                       { label: "Request", value: "Request Location" },
                       { label: "User Location", value: "User Location" },
+                      { label: "Product Identity", value: "product_identity" },
+                      { label: "Volume", value: "volume" },
+                      { label: "Weight", value: "weight" },
+                      { label: "Geolocation", value: "geolocation" },
+                      { label: "Model", value: "model" },
                     ]}
                   />
 

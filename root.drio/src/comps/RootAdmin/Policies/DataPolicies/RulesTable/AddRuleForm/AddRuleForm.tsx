@@ -182,6 +182,7 @@ export default function AddNewRuleForm() {
                   { label: "MKT Data", value: "mkt_data" },
                   { label: "Accidents", value: "accidents" },
                   { label: "Dealer Sales", value: "dealer_sales" },
+                  { label: "Shipping Data", value: "shipping_data" },
                 ]}
               />
             </div>
@@ -220,6 +221,11 @@ export default function AddNewRuleForm() {
                       { label: "Dealer Name", value: "dealer_name" },
                       { label: "Request", value: "Request Location" },
                       { label: "User Location", value: "User Location" },
+                      { label: "Product Identity", value: "product_identity" },
+                      { label: "Volume", value: "volume" },
+                      { label: "Weight", value: "weight" },
+                      { label: "Geolocation", value: "geolocation" },
+                      { label: "Model", value: "model" },
                     ]}
                   />
 
