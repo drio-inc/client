@@ -141,7 +141,7 @@ const DatasetsComp = () => {
     }));
 
     getDatasets(dataSourceIds).then((payload) => {
-      dispatch(setRows([...datasetsJSON, ...payload.data]));
+      dispatch(setRows([...payload.data]));
       dispatch(setRawRows(payload.rawData));
     });
   }, [dataSourceRows, dispatch]);

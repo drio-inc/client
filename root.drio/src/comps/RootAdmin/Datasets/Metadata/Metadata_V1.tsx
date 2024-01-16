@@ -20,23 +20,16 @@ import MetadataPopover from "./HeaderPopovers/MetadataPopover";
 import VisibilityPopover from "./HeaderPopovers/VisibilityPopover";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import { useRouter } from "next/router";
-import getSchema from "@/functions/getSchema";
+import getSchemas from "@/functions/getSchemas";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
-type Params = {
-  id: string;
-  ou_id: string;
-  account_id: string;
-};
-
 const headers = [
   {
     header: "Dataset Name",
-    accessor: "property",
+    accessor: "name",
   },
   {
     header: "Sample Value",
@@ -44,19 +37,19 @@ const headers = [
   },
   {
     header: "Data Type",
-    accessor: "property_type",
+    accessor: "type",
   },
   {
     header: "Visibility",
     accessor: "visibility",
     menu: <VisibilityPopover />,
   },
-  // {
-  //   type: "array",
-  //   accessor: "tags",
-  //   header: "Metadata",
-  //   menu: <MetadataPopover />,
-  // },
+  {
+    type: "array",
+    accessor: "tags",
+    header: "Metadata",
+    menu: <MetadataPopover />,
+  },
   {
     header: "Last Updated",
     accessor: "last_updated",
@@ -64,16 +57,10 @@ const headers = [
 ];
 
 const Metadata = () => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const { recursiveRows } = useAppSelector((state) => state.orgUnit);
   const { rows, selectedRows } = useAppSelector((state) => state.metadata);
   const { rows: dataSourceRows } = useAppSelector((state) => state.dataSource);
-
-  const datasetName = router.query.dataset;
-  const datasourceId = router.asPath.split("/")[3];
-
-  console.log("datasourceId", datasourceId);
 
   useEffect(() => {
     dispatch(setDDXRows(mergedDDXData()));
@@ -81,20 +68,17 @@ const Metadata = () => {
   }, [dispatch, recursiveRows]);
 
   useEffect(() => {
-    const params = dataSourceRows?.find((row) => row?.id === datasourceId);
+    const dataSourceIds = dataSourceRows.map((row) => ({
+      ou_id: row.ou_id,
+      datasource_id: row.id,
+      account_id: row.account_id,
+    }));
 
-    console.log("params", params);
-
-    getSchema({
-      ou_id: params?.ou_id,
-      datasource_id: params?.id,
-      account_id: params?.account_id,
-    }).then((payload) => {
-      const data = payload?.filter((row) => row?.dataset_name === datasetName);
-      dispatch(setRows([...data]));
-      // dispatch(setRawRows(payload.rawData));
+    getSchemas(dataSourceIds).then((payload) => {
+      dispatch(setRows([...payload.data]));
+      dispatch(setRawRows(payload.rawData));
     });
-  }, [dataSourceRows, datasetName, datasourceId, dispatch]);
+  }, [dataSourceRows, dispatch]);
 
   const handleCheckbox = (index: number) => {
     if (selectedRows.includes(index)) {
@@ -151,14 +135,7 @@ const Metadata = () => {
 
         <Table
           rows={rows}
-          //if header name is dataset, use datasetName var
-          headers={headers.map((header) => {
-            if (header.header === "Dataset Name") {
-              return { ...header, header: datasetName as string };
-            } else {
-              return header;
-            }
-          })}
+          headers={headers}
           menu={MetadataMenu}
           selectedRows={selectedRows}
           handleCheckbox={handleCheckbox}
