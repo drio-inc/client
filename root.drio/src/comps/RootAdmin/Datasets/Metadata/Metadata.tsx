@@ -51,12 +51,12 @@ const headers = [
     accessor: "visibility",
     menu: <VisibilityPopover />,
   },
-  // {
-  //   type: "array",
-  //   accessor: "tags",
-  //   header: "Metadata",
-  //   menu: <MetadataPopover />,
-  // },
+  {
+    type: "array",
+    accessor: "tags",
+    header: "Metadata",
+    menu: <MetadataPopover />,
+  },
   {
     header: "Last Updated",
     accessor: "last_updated",

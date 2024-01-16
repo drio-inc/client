@@ -29,13 +29,14 @@ export default async function getSchemas(params: Params) {
     let dataset_name = schema.name;
     let dataset_type = schema.type;
 
-    // Iterate through each property in the schema
     Object.keys(schema.properties).forEach((property) => {
       let property_type =
         schema.properties[property as keyof typeof schema.properties].type;
 
-      // Create a new object for each property
       let transformedObject = {
+        tags: [],
+        id: uuidv4(),
+        sample_value: null,
         property: property,
         visibility: "public",
         dataset_name: dataset_name,
@@ -45,7 +46,6 @@ export default async function getSchemas(params: Params) {
         last_updated: new Date(Date.now())?.toLocaleString(),
       };
 
-      // Add the object to the transformed list
       transformed.push(transformedObject);
     });
   });

@@ -27,9 +27,9 @@ interface ITag {
 }
 
 const schema = z.object({
-  name: z.string().optional(),
-  dataType: z.string().optional(),
-  sampleValue: z.string().optional(),
+  property: z.string().optional(),
+  sample_value: z.string().optional(),
+  property_type: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -38,6 +38,8 @@ export default function EditMetadataForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [updateMetadata, result] = useEditMetadataMutation();
   const { rows } = useAppSelector((state) => state.metadata);
+
+  console.log(row);
 
   const [visibility, setVisibility] = useState(
     row.visibility.toLowerCase() ?? ""
@@ -58,7 +60,6 @@ export default function EditMetadataForm({ row }: TableRow) {
       id: row.id,
       visibility,
       tags: row.tags,
-      lastUpdated: new Date().toLocaleDateString(),
     };
 
     dispatch(
@@ -133,9 +134,9 @@ export default function EditMetadataForm({ row }: TableRow) {
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             <div className="px-4 py-2 w-full">
               <TextInput
-                defaultValue={row.name}
                 label={"Metadata Name"}
-                {...form.register("name")}
+                defaultValue={row.property}
+                {...form.register("property")}
                 placeholder={"Enter metadata name"}
                 className="md:text-sm 2xl:text-base"
               />
@@ -144,9 +145,9 @@ export default function EditMetadataForm({ row }: TableRow) {
             <div className="px-4 py-2 w-full">
               <TextInput
                 label={"Enter Data Type"}
-                defaultValue={row.dataType}
-                {...form.register("dataType")}
                 placeholder={"Enter data type"}
+                defaultValue={row.property_type}
+                {...form.register("property_type")}
                 className="md:text-sm 2xl:text-base"
               />
             </div>
@@ -154,8 +155,8 @@ export default function EditMetadataForm({ row }: TableRow) {
             <div className="px-4 py-2 w-full">
               <TextInput
                 label={"Sample Value"}
-                defaultValue={row.sampleValue}
-                {...form.register("sampleValue")}
+                defaultValue={row.sample_value}
+                {...form.register("sample_value")}
                 placeholder={"Enter sample value"}
                 className="md:text-sm 2xl:text-base"
               />
