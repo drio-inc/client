@@ -23,7 +23,7 @@ import getDatasets from "@/functions/getDatasets";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
 import AddDataSourceForm from "../DataSources/AddDataSourceForm";
-import { mergedDataSourceData } from "@/functions/mergeDataSourcesData";
+import { mergedDataSourceData } from "@/functions/mergeDataSources";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
 const headers = [

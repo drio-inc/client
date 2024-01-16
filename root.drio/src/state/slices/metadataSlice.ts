@@ -3,11 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type MetadatSlice = {
   rows: TableRow[];
+  rawRows: TableRow[];
   selectedRows: number[];
 };
 
 const initialState: MetadatSlice = {
-  rows: metadata,
+  rows: [],
+  rawRows: [],
   selectedRows: [],
 };
 
@@ -22,11 +24,15 @@ const metadatSlice = createSlice({
     setSelectedRows(state, action) {
       state.selectedRows = action.payload;
     },
+
+    setRawRows(state, action) {
+      state.rawRows = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = metadatSlice.actions;
+export const { setRows, setSelectedRows, setRawRows } = metadatSlice.actions;
 
 export default metadatSlice.reducer;

@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import Modal from "@/comps/ui/Modal";
 import DataSourcePopup from "./DataSourcePopup";
 import { mergedDDXData } from "@/functions/mergeDDXData";
-import { mergedDataSourceData } from "@/functions/mergeDataSourcesData";
+import { mergedDataSourceData } from "@/functions/mergeDataSources";
 
 const headers = [
   {

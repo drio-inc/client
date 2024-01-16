@@ -1,17 +1,30 @@
 import Table from "@/comps/ui/Table";
+import Modal from "@/comps/ui/Modal";
+import Button from "@/comps/ui/Button";
 import MetadataMenu from "./MetadataMenu";
-import { setSelectedRows } from "@/state/slices/metadataSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import metadataJSON from "@/data/metadata.json";
 
-import { HiMinusSm, HiPlus } from "react-icons/hi";
+import {
+  setRows,
+  setRawRows,
+  setSelectedRows,
+} from "@/state/slices/metadataSlice";
+
+import { useEffect } from "react";
 import { IoRefresh } from "react-icons/io5";
+import AddMetaDataForm from "./AddMetaDataForm";
+import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
+import { setOpenModal } from "@/state/slices/uiSlice";
 import MetadataPopover from "./HeaderPopovers/MetadataPopover";
 import VisibilityPopover from "./HeaderPopovers/VisibilityPopover";
-import Button from "@/comps/ui/Button";
-import Modal from "@/comps/ui/Modal";
-import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
-import AddMetaDataForm from "./AddMetaDataForm";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+
+import getSchemas from "@/functions/getSchemas";
+import { mergedDDXData } from "@/functions/mergeDDXData";
+import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
+import { mergedDataSourceData } from "@/functions/mergeDataSources";
+import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
 const headers = [
   {
@@ -20,11 +33,11 @@ const headers = [
   },
   {
     header: "Sample Value",
-    accessor: "sampleValue",
+    accessor: "sample_value",
   },
   {
     header: "Data Type",
-    accessor: "dataType",
+    accessor: "type",
   },
   {
     header: "Visibility",
@@ -39,13 +52,33 @@ const headers = [
   },
   {
     header: "Last Updated",
-    accessor: "lastUpdated",
+    accessor: "last_updated",
   },
 ];
 
 const Metadata = () => {
   const dispatch = useAppDispatch();
+  const { recursiveRows } = useAppSelector((state) => state.orgUnit);
   const { rows, selectedRows } = useAppSelector((state) => state.metadata);
+  const { rows: dataSourceRows } = useAppSelector((state) => state.dataSource);
+
+  useEffect(() => {
+    dispatch(setDDXRows(mergedDDXData()));
+    dispatch(setDataSourceRows(mergedDataSourceData()));
+  }, [dispatch, recursiveRows]);
+
+  useEffect(() => {
+    const dataSourceIds = dataSourceRows.map((row) => ({
+      ou_id: row.ou_id,
+      datasource_id: row.id,
+      account_id: row.account_id,
+    }));
+
+    getSchemas(dataSourceIds).then((payload) => {
+      dispatch(setRows([...metadataJSON, ...payload.data]));
+      dispatch(setRawRows(payload.rawData));
+    });
+  }, [dataSourceRows, dispatch]);
 
   const handleCheckbox = (index: number) => {
     if (selectedRows.includes(index)) {

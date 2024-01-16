@@ -20,7 +20,7 @@ import { setOpenModal } from "@/state/slices/uiSlice";
 import AnomalyDetails from "./AnomalyDetails";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
-import { mergedDataSourceData } from "@/functions/mergeDataSourcesData";
+import { mergedDataSourceData } from "@/functions/mergeDataSources";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
 const headers = [

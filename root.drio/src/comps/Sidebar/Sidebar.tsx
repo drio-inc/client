@@ -43,15 +43,15 @@ const NavLinks = [
     children: [
       {
         name: "My Data Sources",
-        href: "/data-sources",
+        href: "data-sources",
       },
       {
         name: "My Datasets",
-        href: "/my-datasets",
+        href: "my-datasets",
       },
       {
         name: "Dataset Marketplace",
-        href: "/dataset-marketplace",
+        href: "dataset-marketplace",
       },
     ],
   },
@@ -64,19 +64,19 @@ const NavLinks = [
     children: [
       {
         name: "Inbound Contracts to Approve",
-        href: "/inbound-contracts",
+        href: "inbound-contracts",
       },
       {
         name: "Approved Contracts",
-        href: "/approved-contracts",
+        href: "approved-contracts",
       },
       {
         name: "Outbound Contracts",
-        href: "/outbound-contracts",
+        href: "outbound-contracts",
       },
       {
         name: "Personas",
-        href: "/personas",
+        href: "personas",
       },
     ],
   },
@@ -89,11 +89,11 @@ const NavLinks = [
     children: [
       {
         name: "Data Policies",
-        href: "/data-policies",
+        href: "data-policies",
       },
       {
         name: "Alert and Anomaly Policies",
-        href: "/alert-anomaly-policies",
+        href: "alert-anomaly-policies",
       },
     ],
   },
@@ -107,19 +107,19 @@ const NavLinks = [
     children: [
       {
         name: "Alerts",
-        href: "/alerts",
+        href: "alerts",
       },
       {
         name: "Reports",
-        href: "/reports",
+        href: "reports",
       },
       {
         name: "Anomalies",
-        href: "/anomalies",
+        href: "anomalies",
       },
       {
         name: "Audit Logs",
-        href: "/audit-logs",
+        href: "audit-logs",
       },
     ],
   },
@@ -146,7 +146,7 @@ const NavLinks = [
     children: [
       {
         name: "Organizational Units",
-        href: "/org-units",
+        href: "org-units",
       },
       {
         name: "Agreements and Assets",

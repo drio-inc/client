@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { FaCheckSquare } from "react-icons/fa";
 import { BsXSquareFill } from "react-icons/bs";
 
@@ -6,6 +7,7 @@ type MetaTagsProps = {
   tags: {
     id: string;
     name: string;
+    type?: string;
     status: string;
   }[];
 };
@@ -52,7 +54,7 @@ const MetaTags = ({ tags }: MetaTagsProps) => {
               mapStatusToColor[tag.status as MapStatusToColor]
             } font-medium`}
           >
-            {tag.name}
+            {tag.name ?? tag.type}
           </span>
         </div>
       ))}

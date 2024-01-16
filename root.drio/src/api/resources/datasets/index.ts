@@ -14,7 +14,7 @@ export const datasetsApi = rootApi.injectEndpoints({
     }),
 
     getSchemas: builder.query<
-      DatasetSchema[],
+      DatasetSchema,
       DefaultParams & { datasource_id: string }
     >({
       query: ({ account_id, ou_id, datasource_id }) => ({
