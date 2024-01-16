@@ -60,6 +60,7 @@ export default function EditMetadataForm({ row }: TableRow) {
       id: row.id,
       visibility,
       tags: row.tags,
+      last_updated: new Date().toLocaleDateString(),
     };
 
     dispatch(
@@ -154,8 +155,8 @@ export default function EditMetadataForm({ row }: TableRow) {
 
             <div className="px-4 py-2 w-full">
               <TextInput
+                defaultValue={"N/A"}
                 label={"Sample Value"}
-                defaultValue={row.sample_value}
                 {...form.register("sample_value")}
                 placeholder={"Enter sample value"}
                 className="md:text-sm 2xl:text-base"

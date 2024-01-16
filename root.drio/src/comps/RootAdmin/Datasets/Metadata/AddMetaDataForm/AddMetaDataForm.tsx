@@ -18,9 +18,9 @@ import * as RadioGroup from "@radix-ui/react-radio-group";
 import { useAddMetadataMutation } from "@/api/resources/metadata";
 
 const schema = z.object({
-  name: z.string().optional(),
-  dataType: z.string().optional(),
-  sampleValue: z.string().optional(),
+  property: z.string().optional(),
+  sample_value: z.string().optional(),
+  property_type: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -74,7 +74,7 @@ export default function AddMetaDataForm({ row }: TableRow) {
           ...data,
           visibility,
           tags: tags,
-          lastUpdated: new Date().toLocaleDateString(),
+          last_updated: new Date().toLocaleDateString(),
         },
       ])
     );
@@ -104,8 +104,8 @@ export default function AddMetaDataForm({ row }: TableRow) {
             <div className="px-4 py-2 w-full">
               <TextInput
                 label={"Metadata Name"}
+                {...form.register("property")}
                 placeholder={"Enter metadata name"}
-                {...form.register("name")}
                 className="md:text-sm 2xl:text-base"
               />
             </div>
@@ -113,16 +113,17 @@ export default function AddMetaDataForm({ row }: TableRow) {
             <div className="px-4 py-2 w-full">
               <TextInput
                 label={"Enter Data Type"}
-                {...form.register("dataType")}
                 placeholder={"Enter data type"}
+                {...form.register("property_type")}
                 className="md:text-sm 2xl:text-base"
               />
             </div>
 
             <div className="px-4 py-2 w-full">
               <TextInput
+                defaultValue={"N/A"}
                 label={"Sample Value"}
-                {...form.register("sampleValue")}
+                {...form.register("sample_value")}
                 placeholder={"Enter sample value"}
                 className="md:text-sm 2xl:text-base"
               />
