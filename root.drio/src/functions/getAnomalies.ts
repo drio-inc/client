@@ -12,27 +12,24 @@ export default async function getAnomalies(dataSourceIds: Params[]) {
   const { rows } = store.getState().dataSource;
 
   const anomaliesPromises = dataSourceIds.map(async (source) => {
-    console.log(source);
-
     const { data } = await store.dispatch(
       anomaliesApi.endpoints.getAnomalies.initiate(source, {
         forceRefetch: true,
       })
     );
 
-    console.log(data);
     return data;
   });
 
   const anomalies = await Promise.all(anomaliesPromises).then((res) => {
-    const transformedData = res?.flatMap((response) =>
-      response?.anomalies.map((anomaly) => ({
-        id: uuidv4(),
+    const transformedData = res?.flatMap((res) =>
+      res?.anomalies.map((anomaly) => ({
         ...anomaly,
-        anomalies: response.anomalies,
-        data_source_id: response?.data_source_id,
-        ou: rows.find((row) => row.id === response?.data_source_id)?.ou,
-        ds: rows.find((row) => row.id === response?.data_source_id)?.name,
+        id: uuidv4(),
+        anomalies: res.anomalies,
+        data_source_id: res?.data_source_id,
+        ou: rows.find(({ id }) => id === res?.data_source_id)?.ou as string,
+        ds: rows.find(({ id }) => id === res?.data_source_id)?.name as string,
       }))
     );
 

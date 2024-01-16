@@ -28,7 +28,7 @@ import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
 const headers = [
   {
-    header: "Logistics - Tracking Data",
+    header: "Dataset Name",
     accessor: "name",
   },
   {
@@ -75,7 +75,7 @@ const Metadata = () => {
     }));
 
     getSchemas(dataSourceIds).then((payload) => {
-      dispatch(setRows([...metadataJSON, ...payload.data]));
+      dispatch(setRows([...payload.data]));
       dispatch(setRawRows(payload.rawData));
     });
   }, [dataSourceRows, dispatch]);

@@ -1,4 +1,5 @@
 import Table from "@/comps/ui/Table";
+import datasetsJSON from "@/data/datasets.json";
 import DatasetMenu from "./DatasetMenu/DatasetMenu";
 import PublishDatasetForm from "./PublishDatasetForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
@@ -140,7 +141,7 @@ const DatasetsComp = () => {
     }));
 
     getDatasets(dataSourceIds).then((payload) => {
-      dispatch(setRows([...payload.data]));
+      dispatch(setRows([...datasetsJSON, ...payload.data]));
       dispatch(setRawRows(payload.rawData));
     });
   }, [dataSourceRows, dispatch]);

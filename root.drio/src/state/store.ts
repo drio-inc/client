@@ -33,6 +33,7 @@ import anomaliesReducer from "./slices/anomaliesSlice";
 import auditLogsReducer from "./slices/auditLogsSlice";
 import dataSourceReducer from "./slices/dataSourceSlice";
 import DDXInstanceReducer from "./slices/DDXInstanceSlice";
+import notificationsReducer from "./slices/notificationSlice";
 import inboundContractReducer from "./slices/inboundContractSlice";
 import outboundContractReducer from "./slices/outboundContractSlice";
 import approvedContractReducer from "./slices/approvedContractSlice";
@@ -52,29 +53,6 @@ const persistDDXConfig = {
 const persistedDDXReducer = persistReducer(persistDDXConfig, DDXReducer);
 const persistedAuthReducer = persistReducer(persistAuthConfig, authReducer);
 
-// export const store = configureStore({
-//   reducer: {
-//     ui: uiReducer,
-//     DDX: DDXReducer,
-//     alerts: alertsReducer,
-//     orgUnit: orgUnitReducer,
-//     dataset: datasetReducer,
-//     metadata: metadataReducer,
-//     policies: policiesReducer,
-//     auth: persistedAuthReducer,
-//     anomalies: anomaliesReducer,
-//     auditLogs: auditLogsReducer,
-//     dataSource: dataSourceReducer,
-//     inboundContract: inboundContractReducer,
-//     outboundContract: outboundContractReducer,
-//     approvedContract: approvedContractReducer,
-//     subscribeDataset: subscribeDatasetReducer,
-//     [rootApi.reducerPath]: rootApi.reducer,
-//   },
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware().concat(rootApi.middleware),
-// });
-
 const rootReducer = combineReducers({
   ui: uiReducer,
   DDX: persistedDDXReducer,
@@ -88,6 +66,7 @@ const rootReducer = combineReducers({
   auditLogs: auditLogsReducer,
   dataSource: dataSourceReducer,
   DDXInstance: DDXInstanceReducer,
+  notifications: notificationsReducer,
   inboundContract: inboundContractReducer,
   outboundContract: outboundContractReducer,
   approvedContract: approvedContractReducer,

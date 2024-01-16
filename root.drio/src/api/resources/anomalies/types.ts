@@ -1,9 +1,9 @@
-type Anomalies = {
-  value: any;
+export type Anomalies = {
   iqr: number;
   name: string;
   field: string;
   timestamp: number;
+  value: string | number | boolean;
   anomaly_type: "comparison" | "iqr";
   datatype: string | number | boolean;
   new_datatype: string | number | boolean;

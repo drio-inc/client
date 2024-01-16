@@ -1,6 +1,8 @@
+import Modal from "../../Modal";
 import Header from "@ui/Header";
 import Sidebar from "@/comps/Sidebar";
 import Notificationbar from "@/comps/Notificationbar";
+import AnomalyDetails from "@/comps/RootAdmin/Monitoring/Anomalies/AnomalyDetails";
 
 const DashboardContainer = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -16,6 +18,12 @@ const DashboardContainer = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       <Notificationbar />
+
+      <div className="hidden">
+        <Modal identifier="anomalyDetails">
+          <AnomalyDetails />
+        </Modal>
+      </div>
     </div>
   );
 };

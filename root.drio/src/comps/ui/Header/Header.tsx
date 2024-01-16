@@ -17,12 +17,53 @@ import {
 } from "react-icons/md";
 import { setShowSidebar } from "@/state/slices/uiSlice";
 
+import { useEffect, useState } from "react";
+import getAnomalies from "@/functions/getAnomalies";
+import { mergedDDXData } from "@/functions/mergeDDXData";
+import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
+import { mergedDataSourceData } from "@/functions/mergeDataSources";
+import {
+  readNotifications,
+  setNotifications,
+} from "@/state/slices/notificationSlice";
+import { setRawRows, setRows } from "@/state/slices/anomaliesSlice";
+import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
+
 export default function Header() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [logout, result] = useLogoutMutation();
+  const [loading, setLoading] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
+  const { recursiveRows } = useAppSelector((state) => state.orgUnit);
   const { pageTitles, showSidebar } = useAppSelector((state) => state.ui);
+  const { rows: dataSourceRows } = useAppSelector((state) => state.dataSource);
+
+  const { notifications, isRead } = useAppSelector(
+    (state) => state.notifications
+  );
+
+  useEffect(() => {
+    dispatch(setDDXRows(mergedDDXData()));
+    dispatch(setDataSourceRows(mergedDataSourceData()));
+  }, [dispatch, recursiveRows]);
+
+  useEffect(() => {
+    setLoading(true);
+    const dataSourceIds = dataSourceRows.map((row) => ({
+      ou_id: row.ou_id,
+      datasource_id: row.id,
+      account_id: row.account_id,
+    }));
+
+    getAnomalies(dataSourceIds).then((payload) => {
+      dispatch(setRows([...payload.data]));
+      dispatch(setRawRows(payload.rawData));
+      dispatch(setNotifications([...payload.data]));
+
+      setLoading(false);
+    });
+  }, [dataSourceRows, dispatch]);
 
   const { data: account } = useGetAccountByIdQuery({
     id: user?.account_id ?? "",
@@ -47,6 +88,8 @@ export default function Header() {
       ?.split("/")
       [router?.pathname?.split("/")?.length - 1]?.replace(/-/g, " ");
 
+  if (loading) return null;
+
   return (
     <nav className="shadow-sm h-[4rem]">
       <div className="flex items-center justify-between md:px-8 px-4 h-full">
@@ -67,10 +110,20 @@ export default function Header() {
             </div>
           </form> */}
           <span
-            className="mr-3 cursor-pointer"
-            onClick={() => dispatch(setShowSidebar(!showSidebar))}
+            className="mr-3 cursor-pointer relative"
+            onClick={() => {
+              dispatch(readNotifications(true));
+              dispatch(setShowSidebar(!showSidebar));
+            }}
           >
-            <MdOutlineNotifications className="w-6 h-6 text-[#1F2937]" />
+            <MdOutlineNotifications className="w-8 h-8 text-[#1F2937]" />
+            {!isRead && (
+              <div className="absolute p-[9px] top-0 right-0 bg-drio-red rounded-full flex items-center justify-center w-3 h-3">
+                <span className="text-[12px] text-white font-medium">
+                  {notifications?.length ?? 0}
+                </span>
+              </div>
+            )}
           </span>
           {user && (
             <div className="text-[#4C566A] flex">

@@ -49,11 +49,56 @@ export default function AnomalyPopupV2() {
             <span className="font-bold">'{row?.field}'</span> field of{" "}
             <span className="font-bold">'{row?.name}'</span> dataset being
             published on <span className="font-bold">'{row?.ds}'</span> expected
-            to be within 1 and{" "}
-            <span className="font-bold">'{row?.iqr ?? "unknown iqr"}'</span> but
-            was measured to be{" "}
-            <span className="font-bold">'{row?.value ?? "unknown value"}'</span>
+            to be <span className="font-bold">{row?.iqr ?? "unknown iqr"}</span>{" "}
+            but received value was{" "}
+            <span className="font-bold">{row?.value ?? "unknown value"}</span>
           </p>
+        );
+
+      case "cluster_anomaly":
+        return (
+          <div className="flex flex-col">
+            <p>
+              <span className="font-bold">'{row?.name}'</span> dataset metadata
+              being published on <span className="font-bold">'{row?.ds}'</span>{" "}
+              was detected to be significantly outside the learned baseline
+              metadata distribution.
+            </p>
+
+            <span className="font-bold text-gray-900 text-xl my-2">
+              Observation:
+            </span>
+
+            <div className="mb-2">
+              <span className="font-medium text-700 block">
+                Combination of data field values not seen previously:
+              </span>
+              <div className="flex flex-col text-drio-red">
+                <span>
+                  <span className="font-medium">Product Name:</span> Road King
+                </span>
+                <span>
+                  <span className="font-medium">Ship Quantity:</span> 144
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <span className="font-medium text-700 block">
+                Closest data field values seen previously:
+              </span>
+              <div className="flex flex-col text-drio-red">
+                <span>
+                  <span className="font-medium">Product Name:</span> Road King
+                </span>
+                <span>
+                  <span className="font-medium">Ship Quantity:</span> 372
+                </span>
+              </div>
+            </div>
+
+            <p className="mt-2">The access was allowed to proceed.</p>
+          </div>
         );
       default:
         return "No description available";
@@ -69,8 +114,55 @@ export default function AnomalyPopupV2() {
         return `Please check if the change is valid and update schema accordingly.`;
       case "anomaly":
         return `Please check if this is a valid change or not.`;
+      case "cluster_anomaly":
+        return "Please check cause of this combinational change detected and if the change is valid.";
       default:
-        return "No resolution available";
+        return "No resolution available.";
+    }
+  };
+
+  const renderSubtext = () => {
+    switch (row?.event_type) {
+      case "datatype_mismatch":
+        return (
+          <span className="text-gray-900 block mb-4">
+            Detected deviation from learned schema on{" "}
+            <span className="font-bold">
+              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
+            </span>
+          </span>
+        );
+
+      case "added_new_field":
+        return (
+          <span className="text-gray-900 block mb-4">
+            Detected deviation from learned schema on{" "}
+            <span className="font-bold">
+              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
+            </span>
+          </span>
+        );
+
+      case "anomaly":
+        return (
+          <span className="text-gray-900 block mb-4">
+            Detected deviation from learned schema on{" "}
+            <span className="font-bold">
+              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
+            </span>
+          </span>
+        );
+
+      case "cluster_anomaly":
+        return (
+          <span className="text-gray-900 block mb-4">
+            Dataset characteristics outside of range Detected deviation from
+            learned overall characteristics of a dataset on{" "}
+            <span className="font-bold">
+              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
+            </span>
+          </span>
+        );
     }
   };
 
@@ -88,12 +180,7 @@ export default function AnomalyPopupV2() {
           {row?.event_type?.replaceAll("_", " ") ?? "Unknown Event"}
         </h2>
 
-        <span className="text-gray-900 block mb-4">
-          Detected deviation from learned schema on{" "}
-          <span className="font-bold">
-            {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
-          </span>
-        </span>
+        {renderSubtext()}
 
         <div className="flex flex-col gap-y-4">
           <div className="bg-white p-4 flex flex-col gap-y-2 rounded-md">

@@ -27,9 +27,13 @@ export default async function getSchemas(dataSourceIds: Params[]) {
         sample_value: "null",
         visibility: "public",
         schemas: schema.schemas,
-        tags: Object.values(s.properties),
         data_source_id: schema?.data_source_id,
         last_updated: new Date(Date.now())?.toLocaleString(),
+        tags: Object.keys(s.properties).map((key) => ({
+          name: key,
+          status: "Pending",
+          value: s.properties[key as keyof typeof s.properties] as string,
+        })),
       }))
     );
 

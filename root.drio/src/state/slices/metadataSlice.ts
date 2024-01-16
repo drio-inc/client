@@ -1,13 +1,13 @@
 import metadata from "@/data/metadata.json";
 import { createSlice } from "@reduxjs/toolkit";
 
-type MetadatSlice = {
+type MetadataSlice = {
   rows: TableRow[];
   rawRows: TableRow[];
   selectedRows: number[];
 };
 
-const initialState: MetadatSlice = {
+const initialState: MetadataSlice = {
   rows: [],
   rawRows: [],
   selectedRows: [],

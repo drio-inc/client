@@ -4,7 +4,7 @@
     "visibility": "Hidden",
     "type": "String",
     "name": "GPS Provider",
-    "lastUpdated": "12/06/2020",
+    "last_updated": "12/06/2020",
     "sampleValue": "CONSENT TRACK",
     "tags": [
       { "id": "1", "name": "Vendor", "status": "Pending" },
@@ -16,7 +16,7 @@
     "visibility": "Hidden",
     "type": "String",
     "name": "Order ID",
-    "lastUpdated": "12/06/2020",
+    "last_updated": "12/06/2020",
     "sampleValue": "HDC000176558",
     "tags": [{ "id": "1", "name": "Identifier", "status": "Pending" }]
   },
@@ -25,7 +25,7 @@
     "visibility": "Hidden",
     "type": "Enum",
     "name": "Market/Regular",
-    "lastUpdated": "12/06/2020",
+    "last_updated": "12/06/2020",
     "sampleValue": "Market",
     "tags": [{ "id": "1", "name": "Type", "status": "Pending" }]
   }
