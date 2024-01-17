@@ -5,9 +5,9 @@ import { setCloseModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 const statusToColor = {
-  Info: "text-blue-500",
   Error: "text-red-500",
   Warning: "text-yellow-500",
+  Informational: "text-blue-500",
 };
 
 export default function AnomalyPopupV1() {

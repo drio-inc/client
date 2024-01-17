@@ -146,7 +146,7 @@ export default function AnomalyPopupV2() {
       case "anomaly":
         return (
           <span className="text-gray-900 block mb-4">
-            Detected deviation from learned schema on{" "}
+            Detected deviation from learned data field characteristics on{" "}
             <span className="font-bold">
               {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
             </span>
@@ -156,13 +156,31 @@ export default function AnomalyPopupV2() {
       case "cluster_anomaly":
         return (
           <span className="text-gray-900 block mb-4">
-            Dataset characteristics outside of range Detected deviation from
-            learned overall characteristics of a dataset on{" "}
+            Detected deviation from learned overall characteristics of a dataset
+            on{" "}
             <span className="font-bold">
               {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
             </span>
           </span>
         );
+    }
+  };
+
+  const renderHeading = () => {
+    switch (row?.event_type) {
+      case "datatype_mismatch":
+        return "Data Type Mismatch";
+
+      case "added_new_field":
+        return "New field added to a dataset";
+
+      case "anomaly":
+        return "Data field outside expected range";
+
+      case "cluster_anomaly":
+        return "Dataset characteristics outside of range";
+      default:
+        return "Unknown Event";
     }
   };
 
@@ -177,7 +195,7 @@ export default function AnomalyPopupV2() {
         </span>
 
         <h2 className="capitalize text-gray-700 text-2xl font-bold">
-          {row?.event_type?.replaceAll("_", " ") ?? "Unknown Event"}
+          {renderHeading() ?? "Unknown Event"}
         </h2>
 
         {renderSubtext()}

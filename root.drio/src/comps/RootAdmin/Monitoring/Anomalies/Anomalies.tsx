@@ -37,8 +37,8 @@ const headers = [
     accessor: "event_type",
   },
   {
-    header: "Anomaly Type",
-    accessor: "anomaly_type",
+    header: "Anomaly Method",
+    accessor: "anomaly_method",
   },
   {
     header: "Time Occurred",
@@ -80,7 +80,7 @@ const Anomalies = () => {
     getAnomalies(dataSourceIds).then((payload) => {
       console.log(payload);
 
-      dispatch(setRows([...payload.data]));
+      dispatch(setRows([...AnomaliesJSON, ...payload.data]));
       dispatch(setRawRows(payload.rawData));
     });
   }, [dataSourceRows, dispatch]);
