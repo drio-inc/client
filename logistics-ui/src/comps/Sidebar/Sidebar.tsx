@@ -32,10 +32,9 @@ export default function Sidebar() {
           width={100}
           height={80}
           quality={100}
-          // unoptimized={true}
+          src="/acmemfg.png"
           className="mx-auto"
-          alt="Harley Davidson Logo"
-          src="/harley-davidson.png"
+          alt="ACME Manufacturing Logo"
         />
 
         <div
