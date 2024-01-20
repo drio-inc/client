@@ -1,5 +1,5 @@
 import { rootApi } from "@/state/services/apiService";
-import { MutationResponse, DataSourceParams } from "../types";
+import { DataSourceResponse, DataSourceParams } from "../types";
 
 export const schemaRegistrysApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -21,7 +21,7 @@ export const schemaRegistrysApi = rootApi.injectEndpoints({
     }),
 
     createSchemaRegistry: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceParams & Pick<RegistryData, "name" | "endpoints">
     >({
       query: ({ account_id, ou_id, ...payload }) => ({
@@ -32,7 +32,7 @@ export const schemaRegistrysApi = rootApi.injectEndpoints({
     }),
 
     updateSchemaRegistry: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceParams &
         Pick<RegistryData, "name" | "endpoints"> & { sr_id: string }
     >({
@@ -44,7 +44,7 @@ export const schemaRegistrysApi = rootApi.injectEndpoints({
     }),
 
     patchSchemaRegistry: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceParams &
         Pick<RegistryData, "name" | "endpoints"> & { sr_id: string }
     >({
@@ -56,7 +56,7 @@ export const schemaRegistrysApi = rootApi.injectEndpoints({
     }),
 
     deleteSchemaRegistry: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceParams & { sr_id: string }
     >({
       query: ({ account_id, ou_id, sr_id }) => ({
@@ -66,7 +66,7 @@ export const schemaRegistrysApi = rootApi.injectEndpoints({
     }),
 
     updateSchemaRegistrySecureFlag: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceParams &
         Pick<RegistryData, "secure" | "insecure_skip_verify"> & {
           sr_id: string;

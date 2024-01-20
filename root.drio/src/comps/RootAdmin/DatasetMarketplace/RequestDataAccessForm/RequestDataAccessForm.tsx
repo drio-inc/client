@@ -75,10 +75,12 @@ export default function RequestDataAccessForm({ row }: TableRow) {
                 label={"From Organization"}
                 registerName="ou"
                 className="md:text-sm 2xl:text-base"
-                options={orgUnitState.rows.map((row) => ({
-                  label: row.ou,
-                  value: row.ou.toLowerCase().replace(/\s/g, ""),
-                }))}
+                options={
+                  orgUnitState?.rows?.map((row) => ({
+                    label: row?.ou ?? "",
+                    value: row?.ou?.toLowerCase().replace(/\s/g, "") ?? "",
+                  })) ?? []
+                }
               />
             </div>
 

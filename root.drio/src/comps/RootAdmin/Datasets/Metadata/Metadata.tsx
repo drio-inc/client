@@ -86,13 +86,12 @@ const Metadata = () => {
     console.log("params", params);
 
     getSchema({
-      ou_id: params?.ou_id,
-      datasource_id: params?.id,
-      account_id: params?.account_id,
+      ou_id: params?.ou_id ?? "",
+      datasource_id: params?.id ?? "",
+      account_id: params?.account_id ?? "",
     }).then((payload) => {
       const data = payload?.filter((row) => row?.dataset_name === datasetName);
       dispatch(setRows([...data]));
-      // dispatch(setRawRows(payload.rawData));
     });
   }, [dataSourceRows, datasetName, datasourceId, dispatch]);
 

@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { orgUnitApi } from "@/api/resources/ous";
 
 type OrgUnitState = {
-  rows: TableRow[];
   selectedRows: number[];
+  rows: OrganizationUnit[];
   recursiveRows: TableRow[];
 };
 

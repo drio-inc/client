@@ -1,5 +1,5 @@
 import { rootApi } from "@/state/services/apiService";
-import { MutationResponse, DataSourceParams } from "../types";
+import { DataSourceResponse, DataSourceParams } from "../types";
 
 export const metadataServerApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -21,7 +21,7 @@ export const metadataServerApi = rootApi.injectEndpoints({
     }),
 
     createMetadataServer: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceParams & Pick<RegistryData, "name" | "endpoints">
     >({
       query: ({ account_id, ou_id, ...payload }) => ({
@@ -32,7 +32,7 @@ export const metadataServerApi = rootApi.injectEndpoints({
     }),
 
     updateMetadataServer: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceParams &
         Pick<RegistryData, "name" | "endpoints"> & { ms_id: string }
     >({
@@ -44,7 +44,7 @@ export const metadataServerApi = rootApi.injectEndpoints({
     }),
 
     patchMetadataServer: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceParams &
         Pick<RegistryData, "name" | "endpoints"> & { ms_id: string }
     >({
@@ -56,7 +56,7 @@ export const metadataServerApi = rootApi.injectEndpoints({
     }),
 
     deleteMetadataServer: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceParams & { ms_id: string }
     >({
       query: ({ account_id, ou_id, ms_id }) => ({
@@ -66,7 +66,7 @@ export const metadataServerApi = rootApi.injectEndpoints({
     }),
 
     updateMetadataServerSecureFlag: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceParams &
         Pick<RegistryData, "secure" | "insecure_skip_verify"> & {
           ms_id: string;

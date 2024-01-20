@@ -40,8 +40,8 @@ const authSlice = createSlice({
     logout: (state) => {
       state.token = "";
       state.user = null;
-      state.isAuthenticated = false;
       window.localStorage.clear();
+      state.isAuthenticated = false;
       window.sessionStorage.clear();
     },
   },

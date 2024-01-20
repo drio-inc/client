@@ -1,7 +1,7 @@
 import {
-  MutationResponse,
   DataSourceParams,
   DataSourceFormdata,
+  DataSourceResponse,
 } from "./types";
 import { rootApi } from "@/state/services/apiService";
 
@@ -22,7 +22,7 @@ export const dataSourcesApi = rootApi.injectEndpoints({
     }),
 
     createDataSource: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceFormdata & DefaultParams
     >({
       query: ({ account_id, ou_id, ...payload }) => ({
@@ -34,7 +34,7 @@ export const dataSourcesApi = rootApi.injectEndpoints({
     }),
 
     updateDataSource: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceFormdata & DataSourceParams
     >({
       query: ({ account_id, ou_id, id, ...payload }) => ({
@@ -46,7 +46,7 @@ export const dataSourcesApi = rootApi.injectEndpoints({
     }),
 
     patchDataSource: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       Omit<DataSourceFormdata, "secure" | "insecure_skip_verify"> &
         DataSourceParams
     >({
@@ -58,7 +58,7 @@ export const dataSourcesApi = rootApi.injectEndpoints({
       invalidatesTags: ["Account", "Data_Sources", "Organization_Units"],
     }),
 
-    deleteDataSource: builder.mutation<MutationResponse, DataSourceParams>({
+    deleteDataSource: builder.mutation<DataSourceResponse, DataSourceParams>({
       query: ({ account_id, ou_id, id }) => ({
         url: `/resources/accounts/${account_id}/ous/${ou_id}/data-sources/${id}`,
         method: "DELETE",
@@ -67,7 +67,7 @@ export const dataSourcesApi = rootApi.injectEndpoints({
     }),
 
     updateSecureFlag: builder.mutation<
-      MutationResponse,
+      DataSourceResponse,
       DataSourceParams & Pick<RegistryData, "secure" | "insecure_skip_verify">
     >({
       query: ({ id, ou_id, account_id, secure, insecure_skip_verify }) => ({

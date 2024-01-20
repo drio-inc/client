@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type DDXState = {
-  rows: TableRow[];
-  selectedRows: number[];
+  rows: DDXCluster[];
   clusterToken: string;
+  selectedRows: number[];
   currentDDXCluster: DDXCluster | null;
   licenseDetails: {
     [key: string]: string;

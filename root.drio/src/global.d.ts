@@ -17,9 +17,10 @@ type User = {
 
 type OrganizationUnit = {
   id: string;
+  ou?: string;
+  city: string;
   name: string;
   state: string;
-  city?: string;
   country: string;
   created_at: string;
   updated_at: string;
@@ -39,6 +40,7 @@ type DDXCluster = {
 
   account_id?: string;
   ou_id?: string;
+  ou?: string;
 };
 
 type DDXInstance = {
@@ -72,6 +74,7 @@ type DefaultParams = {
 
 type RegistryData = {
   id: string;
+  ou?: string;
   name: string;
   ou_id: string;
   secure: boolean;

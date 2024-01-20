@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type dataSourceState = {
-  rows: TableRow[];
+  rows: DataSource[];
   selectedRows: number[];
   defaultSource: TableRow | null;
 };

@@ -22,19 +22,21 @@ type TableHeader = {
   };
 };
 
-type TableProps = {
-  rows?: any;
+type TableRow<T extends Record<string, any>> = T;
+
+type TableProps<T extends Record<string, any>, Key extends keyof T> = {
+  rows?: TableRow<T>[];
   menu?: React.FC | any;
   noSelection?: boolean;
   selectedRows?: number[];
   headers?: TableHeader[];
   tooltip?: React.FC | any;
   clearSelectedRows?: () => void;
-  handleRowClick?: (row: TableRow) => void;
+  handleRowClick?: (row: any) => void;
   handleCheckbox?: (index: number) => void;
 };
 
-const Table = ({
+const Table = <T extends Record<string, any>, Key extends keyof T>({
   rows,
   headers,
   selectedRows,
@@ -43,7 +45,7 @@ const Table = ({
   menu: TableMenu,
   noSelection = false,
   tooltip: TableTooltip,
-}: TableProps) => {
+}: TableProps<T, Key>) => {
   return (
     <div className="block w-full overflow-x-auto bg-white rounded-lg">
       <table className="w-full">
@@ -73,7 +75,7 @@ const Table = ({
           </tr>
         </thead>
         <tbody>
-          {rows?.map((row: any, index: number) => {
+          {rows?.map((row, index) => {
             const isChecked = selectedRows?.includes(row?.id);
             return (
               <tr

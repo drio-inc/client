@@ -17,6 +17,11 @@ import DataSourcePopup from "./DataSourcePopup";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";
 
+type ExtendedDataSource = DataSource & {
+  datasets: number;
+  documentation: number;
+};
+
 const headers = [
   {
     header: "Name",
@@ -76,6 +81,7 @@ const DataSources = () => {
   };
 
   const clearSelectedRows = () => dispatch(setSelectedRows([]));
+  const typedRows: ExtendedDataSource[] = rows as ExtendedDataSource[];
 
   return (
     <div className="w-full">
@@ -126,8 +132,8 @@ const DataSources = () => {
           </div>
         </div>
 
-        <Table
-          rows={rows}
+        <Table<DataSource, keyof DataSource>
+          rows={typedRows}
           headers={headers}
           menu={DataSourcesMenu}
           selectedRows={selectedRows}

@@ -18,7 +18,7 @@ export type DataSourceFormdata = DefaultParams & {
   };
 };
 
-export type MutationResponse = {
+export type DataSourceResponse = {
   message: string;
   data_source: DataSource;
 };

@@ -2,31 +2,21 @@ import Button from "@ui/Button";
 import showAlert from "@ui/Alert";
 import { v4 as uuidv4 } from "uuid";
 import Layout from "@/comps/Layout";
+import { useRouter } from "next/router";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
 
 import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
+import { HiOutlineDownload } from "react-icons/hi";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
-import {
-  setRows,
-  setRawRows,
-  setAddNewDispatched,
-} from "@/state/slices/datasetSlice";
-import { HiOutlineDownload } from "react-icons/hi";
+import { setRows, setAddNewDispatched } from "@/state/slices/datasetSlice";
 
 import { useState } from "react";
 import * as RadioGroup from "@radix-ui/react-radio-group";
-
-import {
-  useGetDatasetsQuery,
-  useCreateDatasetMutation,
-} from "@/api/resources/datasets";
-import { useGenerateDDXTokenMutation } from "@/api/resources/ddx";
-import { useRouter } from "next/router";
-import getDatasets from "@/functions/getDatasets";
+import { useCreateDatasetMutation } from "@/api/resources/datasets";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -59,9 +49,7 @@ export default function PublishDatasetForm() {
   const [publish, result] = useCreateDatasetMutation();
   const [visibility, setVisibility] = useState("private");
   const datasetState = useAppSelector((state) => state.dataset);
-  // const { data: datasets, isLoading } = useGetDatasetsQuery();
   const dataSourceState = useAppSelector((state) => state.dataSource);
-  const [generateDDXToken, tokenResult] = useGenerateDDXTokenMutation();
   const [selectedJSON, setSelectedJSON] = useState<Blob | File | null>(null);
 
   const dataSourceOptions = dataSourceState?.rows?.length
