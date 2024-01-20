@@ -163,7 +163,7 @@ export default function AddDataSourceForm() {
 
             <div className="px-4 py-2 w-full">
               <SelectInput
-                label={"Select DDX"}
+                label={"Select DDX (DDX - OU)"}
                 registerName="cluster_id"
                 options={ddxOptions ?? []}
                 placeholder={"Select DDX name"}

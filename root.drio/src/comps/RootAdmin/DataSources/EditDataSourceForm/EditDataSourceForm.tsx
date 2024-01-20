@@ -158,7 +158,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
               <div className="px-4 py-2 w-full">
                 <SelectInput
                   options={ddxOptions}
-                  label={"Select DDX"}
+                  label={"Select DDX (DDX - OU)"}
                   registerName="cluster_id"
                   placeholder={"Select DDX name"}
                   className="md:text-sm 2xl:text-base"

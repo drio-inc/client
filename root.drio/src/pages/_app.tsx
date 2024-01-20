@@ -12,7 +12,7 @@ import Loader from "@/comps/ui/Loader/Loader";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <PersistGate loading={<Loader />} persistor={persistor}>
+      <PersistGate persistor={persistor}>
         <Loader />
         <Component {...pageProps} />
         <ToastContainer />
