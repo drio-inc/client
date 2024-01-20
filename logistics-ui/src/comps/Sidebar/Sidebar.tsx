@@ -44,7 +44,7 @@ export default function Sidebar() {
             {NavLinks.map((link) => (
               <li key={link.name}>
                 <div
-                  className={`text-sm py-3 px-2 font-medium flex justify-between items-center 
+                  className={`cursor-pointer transition-colors duration-200 ease-in-out hover:rounded-lg hover:bg-gray-100 text-sm py-3 px-2 font-medium flex justify-between items-center 
                         ${
                           router.pathname.indexOf(link.href) !== -1
                             ? "bg-[#ECF5FF] text-drio-red hover:text-drio-red-dark rounded-lg"

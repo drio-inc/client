@@ -180,6 +180,8 @@ export default function Sidebar() {
 
     NavLinks.forEach((link) => {
       if (link.children) {
+        console.log("link", link);
+
         dispatch(setExpandedLinks({ linkName: link.name, expanded: false }));
       }
     });
@@ -197,11 +199,12 @@ export default function Sidebar() {
         <div
           className={`md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded`}
         >
-          <ul className="md:flex-col md:min-w-full flex flex-col list-none">
+          <ul className="md:flex-col md:min-w-full flex flex-col list-none gap-y-2">
             {NavLinks.map((link) => (
               <li key={link.name}>
                 <div
-                  className={`text-sm py-3 px-2 font-medium flex justify-between items-center 
+                  onClick={() => showNested(link)}
+                  className={`cursor-pointer transition-colors duration-200 ease-in-out hover:rounded-lg hover:bg-gray-100 text-sm py-3 px-2 font-medium flex justify-between items-center 
                         ${
                           router.pathname.indexOf(link.href) !== -1
                             ? "bg-gray-100 text-gray-600 hover:text-gray-500 rounded-lg"
@@ -212,7 +215,6 @@ export default function Sidebar() {
                   <div
                     className="cursor-pointer"
                     onClick={() => {
-                      showNested(link);
                       router.push(
                         `/${
                           link.default
@@ -236,12 +238,7 @@ export default function Sidebar() {
                     </span>
                   </div>
                   {link.children && (
-                    <span
-                      className="ml-4"
-                      onClick={() => {
-                        showNested(link);
-                      }}
-                    >
+                    <span className="ml-4">
                       {expandedLinks[link.name] ? (
                         <AiFillCaretUp className="cursor-pointer inline-block w-4 h-4 text-gray-700" />
                       ) : (
@@ -259,7 +256,7 @@ export default function Sidebar() {
                         <li key={child.name}>
                           <Link href={`/${link.href}/${child.href}`}>
                             <span
-                              className={`text-sm py-3 px-2 font-medium block my-1 ${
+                              className={`cursor-pointer transition-colors duration-200 ease-in-out hover:rounded-lg hover:bg-gray-100 text-sm py-3 px-2 font-medium block my-1 ${
                                 router.pathname.indexOf(child.href) !== -1
                                   ? "bg-gray-100 text-gray-600 hover:text-gray-500 rounded-lg"
                                   : "text-gray-500 hover:text-gray-600"
