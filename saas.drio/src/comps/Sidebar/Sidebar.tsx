@@ -86,17 +86,20 @@ export default function Sidebar() {
   const dispatch = useAppDispatch();
   const { expandedLinks } = useAppSelector((state) => state.ui);
 
-  // const showNested = (link: NavLink) => {
-  //   const expanded = !expandedLinks[link.name];
+  const showNested = (link: NavLink) => {
+    if (!link.children) {
+      router.push(`/${link.href}`);
+      return;
+    }
 
-  //   NavLinks.forEach((link) => {
-  //     if (link.children) {
-  //       dispatch(setExpandedLinks({ linkName: link.name, expanded: false }));
-  //     }
-  //   });
-
-  //   dispatch(setExpandedLinks({ linkName: link.name, expanded }));
-  // };
+    // const expanded = !expandedLinks[link.name];
+    // NavLinks.forEach((link) => {
+    //   if (link.children) {
+    //     dispatch(setExpandedLinks({ linkName: link.name, expanded: false }));
+    //   }
+    // });
+    // dispatch(setExpandedLinks({ linkName: link.name, expanded }));
+  };
 
   return (
     <nav className="hidden md:left-0 md:flex md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden border-r border-gray-200 bg-white relative md:w-64 py-4 px-2">
@@ -112,6 +115,7 @@ export default function Sidebar() {
             {NavLinks.map((link) => (
               <li key={link.name}>
                 <div
+                  onClick={() => showNested(link)}
                   className={`cursor-pointer transition-colors duration-200 ease-in-out hover:rounded-lg hover:bg-gray-100 text-sm py-3 px-2 font-medium flex justify-between items-center 
                         ${
                           router.pathname.indexOf(link.href) !== -1

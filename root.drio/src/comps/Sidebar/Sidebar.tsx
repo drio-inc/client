@@ -176,12 +176,15 @@ export default function Sidebar() {
   const { expandedLinks } = useAppSelector((state) => state.ui);
 
   const showNested = (link: NavLink) => {
+    if (!link.children) {
+      router.push(`/${link.href}`);
+      return;
+    }
+
     const expanded = !expandedLinks[link.name];
 
     NavLinks.forEach((link) => {
       if (link.children) {
-        console.log("link", link);
-
         dispatch(setExpandedLinks({ linkName: link.name, expanded: false }));
       }
     });
