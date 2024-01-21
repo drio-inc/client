@@ -99,7 +99,6 @@ const OrgUnits = ({ modal = false, accountId }: OrgUnitProps) => {
     return [...acc, ...orgUnits];
   }, []);
 
-  console.log(transformedData);
   return (
     <div className={`${!modal ? `py-2 w-full` : `xl:w-[64vw]`}`}>
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>

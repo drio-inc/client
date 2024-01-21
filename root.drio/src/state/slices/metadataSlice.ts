@@ -5,12 +5,14 @@ type MetadataSlice = {
   rows: TableRow[];
   rawRows: TableRow[];
   selectedRows: number[];
+  currentRow: TableRow | null;
 };
 
 const initialState: MetadataSlice = {
   rows: [],
   rawRows: [],
   selectedRows: [],
+  currentRow: null,
 };
 
 const metadatSlice = createSlice({
@@ -28,11 +30,16 @@ const metadatSlice = createSlice({
     setRawRows(state, action) {
       state.rawRows = action.payload;
     },
+
+    setCurrentRow(state, action) {
+      state.currentRow = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows, setRawRows } = metadatSlice.actions;
+export const { setRows, setSelectedRows, setRawRows, setCurrentRow } =
+  metadatSlice.actions;
 
 export default metadatSlice.reducer;

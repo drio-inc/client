@@ -20,7 +20,7 @@ import MetadataPopover from "./HeaderPopovers/MetadataPopover";
 import VisibilityPopover from "./HeaderPopovers/VisibilityPopover";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import getSchemas from "@/functions/getSchemas";
+import getSchemas from "@/functions/legacy/getSchemas";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";

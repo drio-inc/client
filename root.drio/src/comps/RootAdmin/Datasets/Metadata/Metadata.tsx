@@ -8,6 +8,7 @@ import {
   setRows,
   setRawRows,
   setSelectedRows,
+  setCurrentRow,
 } from "@/state/slices/metadataSlice";
 
 import { useEffect } from "react";
@@ -26,6 +27,7 @@ import { mergedDDXData } from "@/functions/mergeDDXData";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
+import SchemaStats from "./SchemaStats";
 
 type Params = {
   id: string;
@@ -83,8 +85,6 @@ const Metadata = () => {
   useEffect(() => {
     const params = dataSourceRows?.find((row) => row?.id === datasourceId);
 
-    console.log("params", params);
-
     getSchema({
       ou_id: params?.ou_id ?? "",
       datasource_id: params?.id ?? "",
@@ -101,6 +101,11 @@ const Metadata = () => {
     } else {
       dispatch(setSelectedRows([...selectedRows, index]));
     }
+  };
+
+  const handlelRowClick = (row: TableRow) => {
+    dispatch(setCurrentRow(row));
+    dispatch(setOpenModal("schemStatsDetails"));
   };
 
   const clearSelectedRows = () => dispatch(setSelectedRows([]));
@@ -146,6 +151,12 @@ const Metadata = () => {
               <AddMetaDataForm />
             </Modal>
           </div>
+
+          <div className="hidden">
+            <Modal identifier="schemStatsDetails">
+              <SchemaStats />
+            </Modal>
+          </div>
         </div>
 
         <Table
@@ -161,6 +172,7 @@ const Metadata = () => {
           menu={MetadataMenu}
           selectedRows={selectedRows}
           handleCheckbox={handleCheckbox}
+          handleRowClick={handlelRowClick}
         />
       </div>
     </div>

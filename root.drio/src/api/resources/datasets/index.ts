@@ -24,7 +24,7 @@ export const datasetsApi = rootApi.injectEndpoints({
     }),
 
     getSchemaStats: builder.query<
-      SchemaStats[],
+      SchemaStats,
       DefaultParams & { datasource_id: string }
     >({
       query: ({ account_id, ou_id, datasource_id }) => ({
@@ -32,46 +32,7 @@ export const datasetsApi = rootApi.injectEndpoints({
         method: "GET",
       }),
     }),
-
-    createDataset: builder.mutation<
-      Dataset,
-      Dataset & { ddxcluster_id: string; token: string }
-    >({
-      query: ({ token, ddxcluster_id, ...payload }) => {
-        return {
-          url: `/resources/ddx-clusters/${ddxcluster_id}/datasets`,
-          method: "PUT",
-          body: payload,
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${token}`,
-          },
-        };
-      },
-    }),
-
-    createSchemas: builder.mutation<
-      DatasetSchema,
-      DatasetSchema & { ddxcluster_id: string }
-    >({
-      query: ({ ddxcluster_id, ...payload }) => ({
-        url: `/resources/ddx-clusters/${ddxcluster_id}/schemas`,
-        method: "PUT",
-        body: payload,
-      }),
-    }),
-
-    createStats: builder.mutation<
-      SchemaStats,
-      SchemaStats & { ddxcluster_id: string }
-    >({
-      query: ({ ddxcluster_id, ...payload }) => ({
-        url: `/resources/ddx-clusters/${ddxcluster_id}/stats`,
-        method: "PUT",
-        body: payload,
-      }),
-    }),
   }),
 });
 
-export const { useGetDatasetsQuery, useCreateDatasetMutation } = datasetsApi;
+export const { useGetDatasetsQuery } = datasetsApi;

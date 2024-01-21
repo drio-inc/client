@@ -20,13 +20,26 @@ type Schema = {
   properties: Properties;
 };
 
-type Stats = {
-  min: number;
-  max: number;
-  avg: number;
+export type Fields = {
+  q1: 0;
+  q2: 0;
+  q3: 0;
+  min: 0;
+  max: 0;
+  avg: 0;
+  count: 0;
+  std_dev: 0;
   type: string;
+  null_count: 0;
+  true_count: 0;
   metric: string;
-  std_dev: number;
+  false_count: 0;
+};
+
+type Stats = {
+  name: string;
+  fields: Fields[];
+  timestamp: number;
 };
 
 export type Dataset = {
@@ -41,8 +54,6 @@ export type DatasetSchema = {
 };
 
 export type SchemaStats = {
-  name: string;
   stats: Stats[];
-  timestamp: number;
   data_source_id: string;
 };
