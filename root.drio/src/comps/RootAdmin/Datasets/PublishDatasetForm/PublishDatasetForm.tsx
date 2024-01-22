@@ -16,7 +16,6 @@ import { setRows, setAddNewDispatched } from "@/state/slices/datasetSlice";
 
 import { useState } from "react";
 import * as RadioGroup from "@radix-ui/react-radio-group";
-import { useCreateDatasetMutation } from "@/api/resources/datasets";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -46,7 +45,6 @@ const topicOptions = [
 export default function PublishDatasetForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [publish, result] = useCreateDatasetMutation();
   const [visibility, setVisibility] = useState("private");
   const datasetState = useAppSelector((state) => state.dataset);
   const dataSourceState = useAppSelector((state) => state.dataSource);
@@ -266,11 +264,7 @@ export default function PublishDatasetForm() {
               <span className="inline-flex justify-center">Cancel</span>
             </Button>
 
-            <Button
-              intent={`primary`}
-              className="w-full"
-              isLoading={result.isLoading}
-            >
+            <Button intent={`primary`} className="w-full">
               <span className="inline-flex justify-center">Publish</span>
             </Button>
           </div>
