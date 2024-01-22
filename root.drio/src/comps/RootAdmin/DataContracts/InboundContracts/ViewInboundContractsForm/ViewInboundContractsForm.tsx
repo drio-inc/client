@@ -1,9 +1,8 @@
 import Button from "@ui/Button";
-import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 import { SubmitHandler } from "react-hook-form";
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { HiOutlineClock } from "react-icons/hi";
 import { MdOutlineCalendarMonth } from "react-icons/md";
@@ -12,6 +11,7 @@ import Image from "next/image";
 import { AiFillCaretRight } from "react-icons/ai";
 import { RiUploadCloud2Line } from "react-icons/ri";
 import Link from "next/link";
+import { FaArrowRight } from "react-icons/fa";
 
 export default function ViewInboundContractsForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
@@ -57,7 +57,6 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
                 </div>
               </div>
             </div>
-
             {/* App Personas */}
             <div className="flex justify-between w-full px-4 my-2">
               <div>
@@ -79,31 +78,6 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
                     <span className="text-blue-500 underline">Marketing</span>
                     <AiFillCaretRight className="text-blue-500 " />
                   </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* App Auth Mechanism */}
-            <div className="w-full px-4 my-2">
-              <h3 className="text-xl font-bold">App Auth Mechanism</h3>
-
-              <div className="flex flex-col">
-                <div className="w-full flex justify-between items-center py-1">
-                  <span className="text-gray-700 font-medium">
-                    : ldap://coreldap.bbank.com
-                  </span>
-                </div>
-
-                <div className="w-full flex justify-between items-center py-1">
-                  <span className="text-gray-700 font-medium">
-                    : ldap://coreldap.bbank.com
-                  </span>
-                </div>
-
-                <div className="w-full flex justify-between items-center py-1">
-                  <span className="text-gray-700 font-medium">
-                    : ldap://coreldap.bbank.com
-                  </span>
                 </div>
               </div>
             </div>
@@ -164,8 +138,37 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
               </div>
             </div>
 
-            {/* Legal Addendums */}
+            {/* App Authentication Mechanism */}
+            <div className="w-full px-4 my-2">
+              <h3 className="text-xl font-bold">
+                App Authentication Mechanism
+              </h3>
 
+              <div className="flex flex-col divide-y-2">
+                <div className="w-full flex justify-between items-center py-4">
+                  <span className="text-gray-700 font-bold">
+                    ldap://coreldap.bbank.com
+                  </span>
+                  <FaArrowRight className="w-5 h-5 text-drio-red" />
+                </div>
+
+                <div className="w-full flex justify-between items-center py-4">
+                  <span className="text-gray-700 font-bold">
+                    ldap://coreldap.bbank.com
+                  </span>
+                  <FaArrowRight className="w-5 h-5 text-drio-red" />
+                </div>
+
+                <div className="w-full flex justify-between items-center py-4">
+                  <span className="text-gray-700 font-bold">
+                    ldap://coreldap.bbank.com
+                  </span>
+                  <FaArrowRight className="w-5 h-5 text-drio-red" />
+                </div>
+              </div>
+            </div>
+
+            {/* Legal Addendums */}
             <div className="flex justify-between w-full my-2 px-4">
               <div className="w-full">
                 <h3 className="text-xl font-semibold">Legal Addendums</h3>
@@ -221,7 +224,6 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
                 </div>
               </div>
             </div>
-
             {/* Signature */}
             <div className="flex flex-col items-center my-4 w-full">
               <div className="flex flex-col gap-y-4">
@@ -248,7 +250,6 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
                 </span>
               </div>
             </div>
-
             {/* Submit/Reject */}
             <div className="px-2 py-2 flex gap-4 justify-center w-full mt-4">
               <Button
@@ -303,31 +304,6 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
             </div>
           </div>
 
-          {/* App Auth Mechanism */}
-          <div className="w-full px-4 my-4">
-            <h3 className="text-xl font-bold">App Auth Mechanism</h3>
-
-            <div className="flex flex-col">
-              <div className="w-full flex justify-between items-center py-1">
-                <span className="text-gray-700 font-medium">
-                  : ldap://coreldap.bbank.com
-                </span>
-              </div>
-
-              <div className="w-full flex justify-between items-center py-1">
-                <span className="text-gray-700 font-medium">
-                  : ldap://coreldap.bbank.com
-                </span>
-              </div>
-
-              <div className="w-full flex justify-between items-center py-1">
-                <span className="text-gray-700 font-medium">
-                  : ldap://coreldap.bbank.com
-                </span>
-              </div>
-            </div>
-          </div>
-
           {/* Datasets Covered */}
           <div className="w-full px-4 my-2">
             <h3 className="text-xl font-bold">Datasets Covered</h3>
@@ -338,6 +314,34 @@ export default function ViewInboundContractsForm({ row }: TableRow) {
                 <p className="text-gray-500 text-sm text-center underline">
                   : /api/2022-10-31/ account/Cox/orgunit/dt.com/*
                 </p>
+              </div>
+            </div>
+          </div>
+
+          {/* App Authentication Mechanism */}
+          <div className="w-full px-4 my-2">
+            <h3 className="text-xl font-bold">App Authentication Mechanism</h3>
+
+            <div className="flex flex-col divide-y-2">
+              <div className="w-full flex justify-between items-center py-4">
+                <span className="text-gray-700 font-bold">
+                  ldap://coreldap.bbank.com
+                </span>
+                <FaArrowRight className="w-5 h-5 text-drio-red" />
+              </div>
+
+              <div className="w-full flex justify-between items-center py-4">
+                <span className="text-gray-700 font-bold">
+                  ldap://coreldap.bbank.com
+                </span>
+                <FaArrowRight className="w-5 h-5 text-drio-red" />
+              </div>
+
+              <div className="w-full flex justify-between items-center py-4">
+                <span className="text-gray-700 font-bold">
+                  ldap://coreldap.bbank.com
+                </span>
+                <FaArrowRight className="w-5 h-5 text-drio-red" />
               </div>
             </div>
           </div>

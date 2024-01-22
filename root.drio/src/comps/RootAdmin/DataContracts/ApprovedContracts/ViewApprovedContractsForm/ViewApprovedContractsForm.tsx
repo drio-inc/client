@@ -11,6 +11,7 @@ import { MdOutlineCalendarMonth } from "react-icons/md";
 import Image from "next/image";
 import { AiFillCaretRight } from "react-icons/ai";
 import { RiUploadCloud2Line } from "react-icons/ri";
+import { FaArrowRight } from "react-icons/fa";
 
 export default function ViewApprovedContractsForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
@@ -108,10 +109,10 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
             </div>
 
             {/* Datasets Covered */}
-            <div className="w-full px-4 my-4">
+            <div className="w-full px-4 my-2">
               <h3 className="text-xl font-bold mb-2">Datasets Covered</h3>
 
-              <div className="flex flex-col p-6 divide-y-2">
+              <div className="flex flex-col divide-y-2">
                 <div className="w-full flex justify-between items-center py-6">
                   <span className="text-gray-700 font-bold">All Personas</span>
                   <p className="text-gray-500 text-sm text-center underline">
@@ -135,8 +136,37 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
               </div>
             </div>
 
-            {/* Legal Addendums */}
+            {/* App Authentication Mechanism */}
+            <div className="w-full px-4 my-2">
+              <h3 className="text-xl font-bold">
+                App Authentication Mechanism
+              </h3>
 
+              <div className="flex flex-col divide-y-2">
+                <div className="w-full flex justify-between items-center py-4">
+                  <span className="text-gray-700 font-bold">
+                    ldap://coreldap.bbank.com
+                  </span>
+                  <FaArrowRight className="w-5 h-5 text-drio-red" />
+                </div>
+
+                <div className="w-full flex justify-between items-center py-4">
+                  <span className="text-gray-700 font-bold">
+                    ldap://coreldap.bbank.com
+                  </span>
+                  <FaArrowRight className="w-5 h-5 text-drio-red" />
+                </div>
+
+                <div className="w-full flex justify-between items-center py-4">
+                  <span className="text-gray-700 font-bold">
+                    ldap://coreldap.bbank.com
+                  </span>
+                  <FaArrowRight className="w-5 h-5 text-drio-red" />
+                </div>
+              </div>
+            </div>
+
+            {/* Legal Addendums */}
             <div className="flex justify-between w-full my-4 px-4">
               <div className="w-full">
                 <h3 className="text-xl font-semibold mb-2">Legal Addendums</h3>
@@ -263,15 +293,43 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
           </div>
 
           {/* Datasets Covered */}
-          <div className="w-full px-4 my-4">
+          <div className="w-full px-4 my-2">
             <h3 className="text-xl font-bold mb-2">Datasets Covered</h3>
 
-            <div className="flex flex-col p-6 divide-y-2">
+            <div className="flex flex-col divide-y-2">
               <div className="w-full flex justify-between items-center py-6">
                 <span className="text-gray-700 font-bold">Marketing App</span>
                 <p className="text-gray-500 text-sm text-center underline">
                   : /api/2022-10-31/ account/Cox/orgunit/dt.com/*
                 </p>
+              </div>
+            </div>
+          </div>
+
+          {/* App Authentication Mechanism */}
+          <div className="w-full px-4 my-2">
+            <h3 className="text-xl font-bold">App Authentication Mechanism</h3>
+
+            <div className="flex flex-col divide-y-2">
+              <div className="w-full flex justify-between items-center py-4">
+                <span className="text-gray-700 font-bold">
+                  ldap://coreldap.bbank.com
+                </span>
+                <FaArrowRight className="w-5 h-5 text-drio-red" />
+              </div>
+
+              <div className="w-full flex justify-between items-center py-4">
+                <span className="text-gray-700 font-bold">
+                  ldap://coreldap.bbank.com
+                </span>
+                <FaArrowRight className="w-5 h-5 text-drio-red" />
+              </div>
+
+              <div className="w-full flex justify-between items-center py-4">
+                <span className="text-gray-700 font-bold">
+                  ldap://coreldap.bbank.com
+                </span>
+                <FaArrowRight className="w-5 h-5 text-drio-red" />
               </div>
             </div>
           </div>
