@@ -35,4 +35,4 @@ export const datasetsApi = rootApi.injectEndpoints({
   }),
 });
 
-export const { useGetDatasetsQuery } = datasetsApi;
+export const { useGetDatasetsQuery, useGetSchemaStatsQuery } = datasetsApi;

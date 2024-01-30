@@ -51,7 +51,7 @@ function withAuth(OriginalComponent: React.FC) {
             return;
           }
         } catch (error: any) {
-          if (error.response.status === 401) {
+          if (error?.response?.status === 401) {
             dispatch(logout());
             router.push("/login");
           } else {

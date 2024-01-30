@@ -2,13 +2,11 @@ import Table from "@/comps/ui/Table";
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
 import MetadataMenu from "./MetadataMenu";
-import metadataJSON from "@/data/metadata.json";
 
 import {
   setRows,
-  setRawRows,
-  setSelectedRows,
   setCurrentRow,
+  setSelectedRows,
 } from "@/state/slices/metadataSlice";
 
 import { useEffect } from "react";
@@ -21,13 +19,13 @@ import MetadataPopover from "./HeaderPopovers/MetadataPopover";
 import VisibilityPopover from "./HeaderPopovers/VisibilityPopover";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
+import SchemaStats from "./SchemaStats";
 import { useRouter } from "next/router";
 import getSchema from "@/functions/getSchema";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
-import SchemaStats from "./SchemaStats";
 
 type Params = {
   id: string;
@@ -72,10 +70,8 @@ const Metadata = () => {
   const { rows, selectedRows } = useAppSelector((state) => state.metadata);
   const { rows: dataSourceRows } = useAppSelector((state) => state.dataSource);
 
-  const datasetName = router.query.dataset;
+  const datasetName = router?.query?.dataset;
   const datasourceId = router.asPath.split("/")[3];
-
-  console.log("datasourceId", datasourceId);
 
   useEffect(() => {
     dispatch(setDDXRows(mergedDDXData()));
@@ -161,18 +157,15 @@ const Metadata = () => {
 
         <Table
           rows={rows}
-          //if header name is dataset, use datasetName var
-          headers={headers.map((header) => {
-            if (header.header === "Dataset Name") {
-              return { ...header, header: datasetName as string };
-            } else {
-              return header;
-            }
-          })}
           menu={MetadataMenu}
           selectedRows={selectedRows}
           handleCheckbox={handleCheckbox}
           handleRowClick={handlelRowClick}
+          headers={headers.map((header) => {
+            return header.header === "Dataset Name"
+              ? { ...header, header: datasetName as string }
+              : header;
+          })}
         />
       </div>
     </div>
