@@ -39,28 +39,22 @@ const Table = ({
         <thead className="bg-[#F4F9FF]">
           <tr>
             {!noSelection && (
-              <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left"></th>
+              <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left" />
             )}
 
             {important && (
-              <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left"></th>
+              <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left" />
             )}
 
             {headers?.map((header, index) => (
               <th
                 key={index}
-                className={
-                  "uppercase border-t border-b text-gray-500 text-xs px-4 py-6 text-left whitespace-nowrap"
-                }
+                className="uppercase border-t border-b text-gray-500 text-xs px-4 py-6 text-left whitespace-nowrap"
               >
                 {header.header}
               </th>
             ))}
-            <th
-              className={
-                "border-t border-b text-gray-500 text-xs px-4 py-6 text-left"
-              }
-            >
+            <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left">
               <HiOutlinePencil />
             </th>
           </tr>
@@ -81,11 +75,9 @@ const Table = ({
                   <td className="border-t border-b text-xs p-4">
                     <Checkbox.Root
                       className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                      id={index.toString()}
                       checked={isChecked}
-                      onCheckedChange={() => {
-                        handleCheckbox?.(row.id);
-                      }}
+                      id={index.toString()}
+                      onCheckedChange={() => handleCheckbox?.(row.id)}
                     >
                       <Checkbox.Indicator className="text-white">
                         <HiCheck />
@@ -103,7 +95,6 @@ const Table = ({
                       onCheckedChange={() => handleCheckbox?.(row.id)}
                     >
                       <RiStarLine className="text-gray-300 w-4 h-4" />
-
                       <Checkbox.Indicator className="text-white">
                         {isChecked && (
                           <RiStarFill className="text-drio-red w-4 h-4" />
@@ -117,25 +108,19 @@ const Table = ({
                   <td
                     key={index}
                     onClick={() => handleRowClick?.(row.id)}
-                    className={
-                      "cursor-pointer border-t border-b text-gray-500 text-xs p-4 text-left "
-                    }
+                    className="cursor-pointer border-t border-b text-gray-500 text-xs p-4 text-left"
                   >
                     <span
                       className={`${
                         header?.status?.[row[header.accessor]]
-                      } inline-block capitalize`}
+                      } inline-block`}
                     >
                       {row[header.accessor] ?? "NA"}
                     </span>
                   </td>
                 ))}
 
-                <td
-                  className={
-                    "border-t border-b text-gray-500 text-xs p-4 text-left"
-                  }
-                >
+                <td className="border-t border-b text-gray-500 text-xs p-4 text-left">
                   {TableMenu && <TableMenu row={row} />}
                 </td>
               </tr>

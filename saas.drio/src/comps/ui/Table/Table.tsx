@@ -36,23 +36,17 @@ const Table = ({
         <thead className="bg-[#F4F9FF]">
           <tr>
             {!noSelection && (
-              <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left"></th>
+              <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left" />
             )}
             {headers?.map((header, index) => (
               <th
                 key={index}
-                className={
-                  "uppercase border-t border-b text-gray-500 text-xs px-4 py-6 text-left"
-                }
+                className="uppercase border-t border-b text-gray-500 text-xs px-4 py-6 text-left"
               >
                 {header.header}
               </th>
             ))}
-            <th
-              className={
-                "border-t border-b text-gray-500 text-xs px-4 py-6 text-left"
-              }
-            >
+            <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left">
               <HiOutlinePencil />
             </th>
           </tr>
@@ -90,25 +84,19 @@ const Table = ({
                   <td
                     key={index}
                     onClick={() => handleRowClick?.(row.id)}
-                    className={
-                      "cursor-pointer border-t border-b text-gray-500 text-xs p-4 text-left "
-                    }
+                    className="cursor-pointer border-t border-b text-gray-500 text-xs p-4 text-left"
                   >
                     <span
                       className={`${
                         header?.status?.[row[header.accessor]]
-                      } inline-block capitalize`}
+                      } inline-block`}
                     >
                       {row[header.accessor] ?? "NA"}
                     </span>
                   </td>
                 ))}
 
-                <td
-                  className={
-                    "border-t border-b text-gray-500 text-xs p-4 text-left"
-                  }
-                >
+                <td className="border-t border-b text-gray-500 text-xs p-4 text-left">
                   {TableMenu && <TableMenu row={row} />}
                 </td>
               </tr>

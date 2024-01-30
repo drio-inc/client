@@ -102,7 +102,6 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                 )}
 
                 {headers?.map((header, index) => {
-                  const value = row?.[header.accessor];
                   return (
                     <>
                       {header.type === "array" ? (
@@ -122,15 +121,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                               header?.status?.[row?.[header.accessor]]
                             } inline-block`}
                           >
-                            <span
-                              className={`${
-                                typeof value === "string" &&
-                                (value?.includes("http") ||
-                                  value?.includes(".com"))
-                                  ? ``
-                                  : `capitalize`
-                              }`}
-                            >
+                            <span>
                               {header?.accessor === "name" &&
                                 (row?.status === "learning" ||
                                   row?.status === "learned") && (
@@ -142,7 +133,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                                             row?.status === "learning"
                                               ? `bg-drio-red-dark`
                                               : `bg-green-400`
-                                          }  mr-2`}
+                                          } mr-2`}
                                         />
                                       </TooltipTrigger>
                                       <TooltipContent>
@@ -156,9 +147,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                                   </TooltipProvider>
                                 )}
 
-                              {row?.[header.accessor]
-                                ?.toString()
-                                ?.replaceAll("_", " ") ?? "NA"}
+                              {row?.[header.accessor]?.toString() ?? "NA"}
                             </span>
                           </div>
                         </td>
