@@ -41,8 +41,8 @@ const SchemaStats = () => {
     <div className="relative flex flex-col w-[500px] shadow-lg rounded-lg bg-white">
       <span className="flex justify-end w-full">
         <HiX
-          className="m-2 absolute w-8 h-8 cursor-pointer hover:text-drio-red-dark transition-all duration-200"
           onClick={() => dispatch(setCloseModal("schemStatsDetails"))}
+          className="m-2 absolute w-8 h-8 cursor-pointer hover:text-drio-red-dark transition-all duration-200"
         />
       </span>
       <div className="bg-white px-8 py-4 rounded-lg">

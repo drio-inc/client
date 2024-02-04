@@ -5,7 +5,6 @@ import { useAppSelector } from "@/hooks/useStoreTypes";
 
 const AnomalyDetails = () => {
   const { row } = useAppSelector((state) => state.anomalies);
-  console.log(row?.legacy);
 
   return row?.legacy === true ? <AnomalyPopupV1 /> : <AnomalyPopupV2 />;
 };

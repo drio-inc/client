@@ -35,7 +35,7 @@ export default async function getAnomalies(dataSourceIds: Params[]) {
 
     return {
       rawData: res.filter((dataset) => dataset !== undefined),
-      data: transformedData.filter((dataset) => dataset !== undefined),
+      data: transformedData?.filter((dataset) => dataset !== undefined),
     };
   });
 

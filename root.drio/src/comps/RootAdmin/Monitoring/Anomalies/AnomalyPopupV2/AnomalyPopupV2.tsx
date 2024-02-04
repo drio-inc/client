@@ -44,7 +44,7 @@ export default function AnomalyPopupV2() {
         );
 
       case "anomaly":
-        return (
+        return !row?.record && !row?.closest_data_points ? (
           <p>
             <span className="font-bold">'{row?.field}'</span> field of{" "}
             <span className="font-bold">'{row?.name}'</span> dataset being
@@ -53,10 +53,7 @@ export default function AnomalyPopupV2() {
             but received value was{" "}
             <span className="font-bold">{row?.value ?? "unknown value"}</span>
           </p>
-        );
-
-      case "cluster_anomaly":
-        return (
+        ) : (
           <div className="flex flex-col">
             <p>
               <span className="font-bold">'{row?.name}'</span> dataset metadata
@@ -65,41 +62,51 @@ export default function AnomalyPopupV2() {
               metadata distribution.
             </p>
 
-            <span className="font-bold text-gray-900 text-xl my-2">
+            <span className="font-bold text-gray-900 text-xl mt-2">
               Observation:
             </span>
 
-            <div className="mb-2">
-              <span className="font-medium text-700 block">
-                Combination of data field values not seen previously:
+            <div>
+              <span className="font-medium text-700 block mb-2">
+                Combination of data field values{" "}
+                <span className="text-drio-red">not seen previously</span>:
               </span>
-              <div className="flex flex-col text-drio-red">
-                <span>
-                  <span className="font-medium">Product Name:</span> Road King
-                </span>
-                <span>
-                  <span className="font-medium">Ship Quantity:</span> 144
-                </span>
+              <div className="bg-neutral-50 p-4 rounded">
+                {Object.keys(row?.record).map((key) => (
+                  <div className="flex flex-col text-drio-red" key={key}>
+                    <div className="flex gap-x-1">
+                      <span className="font-medium">{key}:</span>
+                      <span>{row?.record[key]}</span>
+                    </div>
+                  </div>
+                )) ?? "No data found"}
               </div>
             </div>
 
-            <div>
-              <span className="font-medium text-700 block">
+            <div className="mt-2">
+              <span className="font-medium text-700 block mb-2">
                 Closest data field values seen previously:
               </span>
-              <div className="flex flex-col text-drio-red">
-                <span>
-                  <span className="font-medium">Product Name:</span> Road King
-                </span>
-                <span>
-                  <span className="font-medium">Ship Quantity:</span> 372
-                </span>
+              <div className="flex flex-col gap-y-2 bg-neutral-50 p-4 rounded">
+                {row?.closest_data_points?.map((point: any, i: number) => (
+                  <div key={i} className="flex flex-col border-b pb-2">
+                    {Object.keys(point).map((p) => (
+                      <div className="flex flex-col text-drio-red" key={p}>
+                        <div className="flex gap-x-1">
+                          <span className="font-medium">{p}:</span>
+                          <span>{point?.[p]}</span>
+                        </div>
+                      </div>
+                    )) ?? "No data found"}
+                  </div>
+                )) ?? "No data found"}
               </div>
             </div>
 
-            <p className="mt-2">The access was allowed to proceed.</p>
+            <p className="mt-2">This access was allowed to proceed.</p>
           </div>
         );
+
       default:
         return "No description available";
     }
@@ -113,9 +120,10 @@ export default function AnomalyPopupV2() {
       case "added_new_field":
         return `Please check if the change is valid and update schema accordingly.`;
       case "anomaly":
-        return `Please check if this is a valid change or not.`;
-      case "cluster_anomaly":
-        return "Please check cause of this combinational change detected and if the change is valid.";
+        return row?.record && row?.closest_data_points
+          ? "Please check cause of this combinational change detected and if the change is valid."
+          : `Please check if this is a valid change or not.`;
+
       default:
         return "No resolution available.";
     }
@@ -146,18 +154,9 @@ export default function AnomalyPopupV2() {
       case "anomaly":
         return (
           <span className="text-gray-900 block mb-4">
-            Detected deviation from learned data field characteristics on{" "}
-            <span className="font-bold">
-              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
-            </span>
-          </span>
-        );
-
-      case "cluster_anomaly":
-        return (
-          <span className="text-gray-900 block mb-4">
-            Detected deviation from learned overall characteristics of a dataset
-            on{" "}
+            {row?.record && row?.closest_data_points
+              ? `Detected deviation from learned overall characteristics of a dataset`
+              : `Detected deviation from learned data field characteristics on`}{" "}
             <span className="font-bold">
               {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
             </span>
@@ -175,10 +174,10 @@ export default function AnomalyPopupV2() {
         return "New field added to a dataset";
 
       case "anomaly":
-        return "Data field outside expected range";
+        return row?.record && row?.closest_data_points
+          ? "Dataset characteristics outside of range"
+          : "Data field outside expected range";
 
-      case "cluster_anomaly":
-        return "Dataset characteristics outside of range";
       default:
         return "Unknown Event";
     }

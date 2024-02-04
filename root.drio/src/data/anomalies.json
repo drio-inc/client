@@ -53,12 +53,26 @@
     "id": "7",
     "value": null,
     "ds": "kafka",
-    "field": "isNew",
+    "field": "SKU",
     "new_datatype": "",
-    "datatype": "integer",
+    "datatype": "string",
     "name": "SAP Inventory",
+    "event_type": "anomaly",
     "timestamp": 1704846789000,
     "anomaly_method": "comparison",
-    "event_type": "cluster_anomaly"
+    "record": {
+      "name": "SKU",
+      "value": "12345678"
+    },
+    "closest_data_points": [
+      {
+        "name": "SKU",
+        "value": "123"
+      },
+      {
+        "name": "SKU",
+        "value": "456"
+      }
+    ]
   }
 ]

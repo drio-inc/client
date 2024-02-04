@@ -78,8 +78,6 @@ const Anomalies = () => {
     }));
 
     getAnomalies(dataSourceIds).then((payload) => {
-      console.log(payload);
-
       dispatch(setRows([...AnomaliesJSON, ...payload.data]));
       dispatch(setRawRows(payload.rawData));
     });

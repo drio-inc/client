@@ -8,6 +8,14 @@ export type Anomalies = {
   datatype: string | number | boolean;
   new_datatype: string | number | boolean;
   event_type: "anomaly" | "datatype_mismatch" | "added_new_field";
+
+  record: {
+    [key: string]: string | number | boolean;
+  };
+
+  closest_data_points: {
+    [key: string]: string | number | boolean;
+  }[];
 };
 
 export type Anomaly = {
