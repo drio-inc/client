@@ -55,12 +55,10 @@ export default function AnomalyPopupV2() {
           </p>
         ) : (
           <div className="flex flex-col">
-            <p>
-              <span className="font-bold">'{row?.name}'</span> dataset metadata
-              being published on <span className="font-bold">'{row?.ds}'</span>{" "}
-              was detected to be significantly outside the learned baseline
-              metadata distribution.
-            </p>
+            <span>
+              The following <strong>{row?.name}</strong> data field combination
+              was detected to be outside the normal metadata distribution.
+            </span>
 
             <span className="font-bold text-gray-900 text-xl mt-2">
               Observation:
@@ -85,7 +83,8 @@ export default function AnomalyPopupV2() {
 
             <div className="mt-2">
               <span className="font-medium text-700 block mb-2">
-                Closest data field values seen previously:
+                The {row?.closest_data_points?.length} closest data points seen
+                previously:
               </span>
               <div className="flex flex-col gap-y-2 bg-neutral-50 p-4 rounded">
                 {row?.closest_data_points?.map((point: any, i: number) => (
@@ -121,7 +120,7 @@ export default function AnomalyPopupV2() {
         return `Please check if the change is valid and update schema accordingly.`;
       case "anomaly":
         return row?.record && row?.closest_data_points
-          ? "Please check cause of this combinational change detected and if the change is valid."
+          ? "Please check if the data record is valid."
           : `Please check if this is a valid change or not.`;
 
       default:
@@ -153,13 +152,21 @@ export default function AnomalyPopupV2() {
 
       case "anomaly":
         return (
-          <span className="text-gray-900 block mb-4">
-            {row?.record && row?.closest_data_points
-              ? `Detected deviation from learned overall characteristics of a dataset`
-              : `Detected deviation from learned data field characteristics on`}{" "}
-            <span className="font-bold">
-              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
-            </span>
+          <span className="text-gray-900 block">
+            {row?.record && row?.closest_data_points ? (
+              <span>
+                Anomaly detected based on learned characteristics of the data
+                set on{" "}
+                <strong>
+                  {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
+                </strong>
+              </span>
+            ) : (
+              <span>
+                Detected deviation from learned data field characteristics on{" "}
+                {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
+              </span>
+            )}{" "}
           </span>
         );
     }
@@ -174,9 +181,14 @@ export default function AnomalyPopupV2() {
         return "New field added to a dataset";
 
       case "anomaly":
-        return row?.record && row?.closest_data_points
-          ? "Dataset characteristics outside of range"
-          : "Data field outside expected range";
+        return row?.record && row?.closest_data_points ? (
+          <span className="w-4/5 block">
+            Data fields combination in the received appear outside of normal
+            seen previously
+          </span>
+        ) : (
+          "Data field outside expected range"
+        );
 
       default:
         return "Unknown Event";
@@ -200,7 +212,7 @@ export default function AnomalyPopupV2() {
         {renderSubtext()}
 
         <div className="flex flex-col gap-y-4">
-          <div className="bg-white p-4 flex flex-col gap-y-2 rounded-md">
+          <div className="bg-white mt-2 flex flex-col gap-y-2 rounded-md">
             <span className="font-medium text-gray-700">Details</span>
             <div className="border-2 p-4 rounded-md">
               <p className="text-gray-900">{renderDescription()}</p>
