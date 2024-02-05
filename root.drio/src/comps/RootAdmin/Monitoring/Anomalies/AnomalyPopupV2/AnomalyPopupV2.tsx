@@ -44,7 +44,7 @@ export default function AnomalyPopupV2() {
         );
 
       case "anomaly":
-        return !row?.record && !row?.closest_data_points ? (
+        return (
           <p>
             <span className="font-bold">'{row?.field}'</span> field of{" "}
             <span className="font-bold">'{row?.name}'</span> dataset being
@@ -53,7 +53,10 @@ export default function AnomalyPopupV2() {
             but received value was{" "}
             <span className="font-bold">{row?.value ?? "unknown value"}</span>
           </p>
-        ) : (
+        );
+
+      case "Cluster Anomaly":
+        return (
           <div className="flex flex-col">
             <span>
               The following <strong>{row?.name}</strong> data field combination
@@ -119,10 +122,9 @@ export default function AnomalyPopupV2() {
       case "added_new_field":
         return `Please check if the change is valid and update schema accordingly.`;
       case "anomaly":
-        return row?.record && row?.closest_data_points
-          ? "Please check if the data record is valid."
-          : `Please check if this is a valid change or not.`;
-
+        return `Please check if this is a valid change or not.`;
+      case "Cluster Anomaly":
+        return `Please check if the data record is valid.`;
       default:
         return "No resolution available.";
     }
@@ -153,20 +155,20 @@ export default function AnomalyPopupV2() {
       case "anomaly":
         return (
           <span className="text-gray-900 block">
-            {row?.record && row?.closest_data_points ? (
-              <span>
-                Anomaly detected based on learned characteristics of the data
-                set on{" "}
-                <strong>
-                  {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
-                </strong>
-              </span>
-            ) : (
-              <span>
-                Detected deviation from learned data field characteristics on{" "}
-                {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
-              </span>
-            )}{" "}
+            <span>
+              Detected deviation from learned data field characteristics on{" "}
+              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
+            </span>
+          </span>
+        );
+
+      case "Cluster Anomaly":
+        return (
+          <span>
+            Anomaly detected based on learned characteristics of the data set on{" "}
+            <strong>
+              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
+            </strong>
           </span>
         );
     }
@@ -181,15 +183,15 @@ export default function AnomalyPopupV2() {
         return "New field added to a dataset";
 
       case "anomaly":
-        return row?.record && row?.closest_data_points ? (
+        return "Data field outside expected range";
+
+      case "Cluster Anomaly":
+        return (
           <span className="w-4/5 block">
             Data fields combination in the received appear outside of normal
             seen previously
           </span>
-        ) : (
-          "Data field outside expected range"
         );
-
       default:
         return "Unknown Event";
     }

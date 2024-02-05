@@ -7,7 +7,11 @@ export type Anomalies = {
   anomaly_type: "comparison" | "iqr";
   datatype: string | number | boolean;
   new_datatype: string | number | boolean;
-  event_type: "anomaly" | "datatype_mismatch" | "added_new_field";
+  event_type:
+    | "anomaly"
+    | "Cluster Anomaly"
+    | "added_new_field"
+    | "datatype_mismatch";
 
   record: {
     [key: string]: string | number | boolean;
