@@ -188,8 +188,8 @@ export default function AnomalyPopupV2() {
       case "Cluster Anomaly":
         return (
           <span className="w-4/5 block">
-            Data fields combination in the received appear outside of normal
-            seen previously
+            Data fields combination in the received data appear outside of
+            normal seen previously
           </span>
         );
       default:
