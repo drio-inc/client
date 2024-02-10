@@ -1,0 +1,14 @@
+# Use a lightweight Node.js runtime as the base image
+FROM node:lts-bookworm-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the Next.js static output folder into the container
+COPY ./out ./out
+
+# Expose the port that your app runs on
+EXPOSE 5000
+
+# Command to run your app using npx serve
+CMD ["npx", "serve", "-s", "out", "-l", "5000"]
