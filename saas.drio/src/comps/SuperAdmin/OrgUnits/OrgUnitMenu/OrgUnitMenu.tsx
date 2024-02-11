@@ -58,7 +58,7 @@ const OrgUnitMenu = ({ row }: TableRow) => {
                 dispatch(setOpenModal("editOrgUnitForm"));
               }}
             >
-              <EditOrgUnitForm row={row} />
+              <EditOrgUnitForm />
             </Modal>
           </span>
         </Popover.Content>

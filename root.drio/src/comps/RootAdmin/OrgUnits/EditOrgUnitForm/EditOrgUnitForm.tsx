@@ -1,6 +1,5 @@
 import Button from "@ui/Button";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
-import { Country, State, City } from "country-state-city";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
@@ -19,45 +18,32 @@ import {
 } from "@/schema/OrgUnitSchema";
 
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
-import { useEffect, useState } from "react";
+import {
+  useGetCountriesQuery,
+  useGetStatesQuery,
+  useGetCitiesQuery,
+} from "@/api/misc";
 
 export default function EditOrgUnitForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [patch, result] = usePatchOrgUnitMutation();
   const { rows } = useAppSelector((state) => state.orgUnit);
 
-  const [defaultCountry, setDefaultCountry] = useState(
-    Country.getAllCountries().find((c) => c.isoCode === row?.country)
-  );
-  const [defaultState, setDefaultState] = useState(
-    State.getStatesOfCountry(row?.country).find((s) => s.isoCode === row?.state)
-  );
-
-  const [defaultCity, setDefaultCity] = useState(
-    City.getCitiesOfState(row?.country ?? "", row?.state ?? "").find(
-      (c) => c.name === row?.city
-    )
-  );
-
   const form = useZodForm({
     schema: updateOrgUnitSchema,
   });
 
-  useEffect(() => {
-    setDefaultCountry(
-      Country.getAllCountries().find((c) => c.isoCode === row?.country)
-    );
-    setDefaultState(
-      State.getStatesOfCountry(row?.country).find(
-        (s) => s.isoCode === row?.state
-      )
-    );
-    setDefaultCity(
-      City.getCitiesOfState(row?.country ?? "", row?.state ?? "").find(
-        (c) => c.name === row?.city
-      )
-    );
-  }, [row?.city, row?.country, row?.state]);
+  const { data: countries, isLoading: isCountriesLoading } =
+    useGetCountriesQuery();
+
+  const { data: states, isLoading: isStatesLoading } = useGetStatesQuery(
+    form.watch("country") ?? row?.country ?? ""
+  );
+
+  const { data: cities, isLoading: isCitiesLoading } = useGetCitiesQuery({
+    country: form.watch("country") ?? row?.country ?? "",
+    state: form.watch("state") ?? row?.state ?? "",
+  });
 
   const onSubmit: SubmitHandler<UpdateOrgUnitFormData> = async (data) => {
     try {
@@ -82,6 +68,14 @@ export default function EditOrgUnitForm({ row }: TableRow) {
       );
     }
   };
+
+  if (isCountriesLoading || isStatesLoading || isCitiesLoading) {
+    return <StaticLoader />;
+  }
+
+  const defaultCity = cities?.find((c) => c.name === row?.city);
+  const defaultState = states?.find((s) => s.iso2 === row?.state);
+  const defaultCountry = countries?.find((c) => c.iso2 === row?.country);
 
   return (
     <Layout>
@@ -120,12 +114,12 @@ export default function EditOrgUnitForm({ row }: TableRow) {
                   placeholder="Select country"
                   defaultSelectedValue={{
                     label: defaultCountry?.name ?? "",
-                    value: defaultCountry?.isoCode ?? "",
+                    value: defaultCountry?.iso2 ?? "",
                   }}
                   options={
-                    Country.getAllCountries().map((country) => ({
+                    countries?.map((country) => ({
                       label: country.name,
-                      value: country.isoCode,
+                      value: country.iso2,
                     })) ?? []
                   }
                 />
@@ -140,14 +134,12 @@ export default function EditOrgUnitForm({ row }: TableRow) {
                   placeholder="Select state"
                   defaultSelectedValue={{
                     label: defaultState?.name ?? "",
-                    value: defaultState?.isoCode ?? "",
+                    value: defaultState?.iso2 ?? "",
                   }}
                   options={
-                    State.getStatesOfCountry(
-                      form.watch("country") ?? row?.country ?? ""
-                    ).map((state) => ({
+                    states?.map((state) => ({
                       label: state.name,
-                      value: state.isoCode,
+                      value: state.iso2,
                     })) ?? []
                   }
                 />
@@ -165,10 +157,7 @@ export default function EditOrgUnitForm({ row }: TableRow) {
                     value: defaultCity?.name ?? "",
                   }}
                   options={
-                    City.getCitiesOfState(
-                      form.watch("country") ?? row?.country ?? "",
-                      form.watch("state") ?? row?.state ?? ""
-                    ).map((city) => ({
+                    cities?.map((city) => ({
                       label: city.name,
                       value: city.name,
                     })) ?? []

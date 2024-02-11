@@ -1,8 +1,7 @@
 import Layout from "@/comps/Layout";
+import withAuth from "@/comps/HOC/withAuth";
 import Accounts from "@/comps/SuperAdmin/Accounts";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
-
-import withAuth from "@/comps/HOC/withAuth";
 
 const AccountsPage = () => {
   return (

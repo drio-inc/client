@@ -1,6 +1,5 @@
 import Button from "@ui/Button";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
-import { Country, State, City } from "country-state-city";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
@@ -14,7 +13,6 @@ import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 import {
   useGetAccountByIdQuery,
   usePatchAccountMutation,
-  useUpdateAccountMutation,
 } from "@/api/resources/accounts";
 
 import { useGetUsersQuery } from "@/api/resources/accounts/users";
@@ -30,27 +28,54 @@ import {
 
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 import { Account } from "@/api/resources/accounts/types";
+import {
+  useGetStatesQuery,
+  useGetCitiesQuery,
+  useGetCountriesQuery,
+} from "@/api/misc";
 
 export default function EditAccountForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [patch, result] = usePatchAccountMutation();
   const { rows } = useAppSelector((state) => state.account);
 
+  const form = useZodForm({
+    schema: updateSchema,
+  });
+
   const {
     data: accountdata,
-    error: accountError,
     refetch: refetchAccount,
     isLoading: isAccountDataLoading,
   } = useGetAccountByIdQuery(row.id);
 
   const {
     data: userData,
-    error: usersError,
     refetch: refetchUsers,
     isLoading: isUserDataLoading,
   } = useGetUsersQuery(accountdata?.id ?? "", {
     skip: !accountdata?.id,
   });
+
+  const { data: countries, isLoading: isCountriesLoading } =
+    useGetCountriesQuery();
+
+  const { data: states, isLoading: isStatesLoading } = useGetStatesQuery(
+    form.watch("country") ?? accountdata?.country ?? "",
+    {
+      skip: !accountdata?.country && !form.watch("country"),
+    }
+  );
+
+  const { data: cities, isLoading: isCitiesLoading } = useGetCitiesQuery(
+    {
+      state: form.watch("state") ?? accountdata?.state ?? "",
+      country: form.watch("country") ?? accountdata?.country ?? "",
+    },
+    {
+      skip: !accountdata?.state && !form.watch("state"),
+    }
+  );
 
   const getField = (field: AccountField) => {
     if (process.env.DEVELOPMENT_MODE === "mock") {
@@ -63,35 +88,6 @@ export default function EditAccountForm({ row }: TableRow) {
         : "";
     }
   };
-
-  const form = useZodForm({
-    schema: updateSchema,
-  });
-
-  const defaultCountry = Country.getAllCountries().find(
-    (c) =>
-      c.isoCode ===
-      (process.env.DEVELOPMENT_MODE === "mock"
-        ? row.country
-        : accountdata?.country)
-  );
-
-  const defaultState = State.getStatesOfCountry(
-    accountdata?.country ?? ""
-  ).find((s) =>
-    process.env.DEVELOPMENT_MODE === "mock"
-      ? row.state
-      : s.isoCode === accountdata?.state
-  );
-
-  const defaultCity = City.getCitiesOfState(
-    accountdata?.country ?? "",
-    accountdata?.state ?? ""
-  ).find((c) =>
-    process.env.DEVELOPMENT_MODE === "mock"
-      ? row.city
-      : c.name === accountdata?.city
-  );
 
   const onSubmit: SubmitHandler<UpdateFormData> = async (updatedData) => {
     try {
@@ -141,10 +137,19 @@ export default function EditAccountForm({ row }: TableRow) {
   >;
 
   if (process.env.DEVELOPMENT_MODE !== "mock") {
-    if (isAccountDataLoading) return <StaticLoader />;
-    if (isUserDataLoading) return <StaticLoader />;
-    if (!userData) return <StaticLoader />;
+    if (
+      isCitiesLoading ||
+      isStatesLoading ||
+      isUserDataLoading ||
+      isCountriesLoading ||
+      isAccountDataLoading
+    ) {
+      return <StaticLoader />;
+    }
   }
+  const defaultCountry = countries?.find((c) => c.iso2 === row.country);
+  const defaultState = states?.find((s) => s.iso2 === row.state);
+  const defaultCity = cities?.find((c) => c.name === row.city);
 
   return (
     <Layout>
@@ -172,8 +177,8 @@ export default function EditAccountForm({ row }: TableRow) {
                   placeholder={field.placeholder}
                   autoComplete={field.autoComplete}
                   className="md:text-sm 2xl:text-base"
+                  defaultValue={accountdata?.name ?? ""}
                   {...form.register(field.name as UpdateFormKeyTypes)}
-                  defaultValue={getField(field.name as AccountField)}
                 />
               </div>
             ))}
@@ -186,12 +191,12 @@ export default function EditAccountForm({ row }: TableRow) {
                 placeholder="Select country"
                 defaultSelectedValue={{
                   label: defaultCountry?.name ?? "",
-                  value: defaultCountry?.isoCode ?? "",
+                  value: defaultCountry?.iso2 ?? "",
                 }}
                 options={
-                  Country.getAllCountries().map((country) => ({
+                  countries?.map((country) => ({
                     label: country.name,
-                    value: country.isoCode,
+                    value: country.iso2,
                   })) ?? []
                 }
               />
@@ -204,14 +209,12 @@ export default function EditAccountForm({ row }: TableRow) {
                 placeholder="Select state"
                 defaultSelectedValue={{
                   label: defaultState?.name ?? "",
-                  value: defaultState?.isoCode ?? "",
+                  value: defaultState?.iso2 ?? "",
                 }}
                 options={
-                  State.getStatesOfCountry(
-                    form.watch("country") ?? accountdata?.country ?? ""
-                  ).map((state) => ({
+                  states?.map((state) => ({
                     label: state.name,
-                    value: state.isoCode,
+                    value: state.iso2,
                   })) ?? []
                 }
               />
@@ -227,10 +230,7 @@ export default function EditAccountForm({ row }: TableRow) {
                   value: defaultCity?.name ?? "",
                 }}
                 options={
-                  City.getCitiesOfState(
-                    form.watch("country") ?? accountdata?.country ?? "",
-                    form.watch("state") ?? accountdata?.state ?? ""
-                  ).map((city) => ({
+                  cities?.map((city) => ({
                     label: city.name,
                     value: city.name,
                   })) ?? []

@@ -1,13 +1,17 @@
 import Button from "@ui/Button";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
-import { Country, State, City } from "country-state-city";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { useAppDispatch } from "@/hooks/useStoreTypes";
 
+import {
+  useGetCitiesQuery,
+  useGetStatesQuery,
+  useGetCountriesQuery,
+} from "@/api/misc";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { useCreateAccountMutation } from "@/api/resources/accounts";
 
@@ -23,11 +27,25 @@ import {
 export default function AddAccountForm() {
   const dispatch = useAppDispatch();
   const [create, result] = useCreateAccountMutation();
-  const { rows } = useAppSelector((state) => state.account);
 
   const form = useZodForm({
     schema: createSchema,
   });
+
+  const { data: countries } = useGetCountriesQuery();
+  const { data: states } = useGetStatesQuery(form.watch("country"), {
+    skip: !form.watch("country"),
+  });
+
+  const { data: cities } = useGetCitiesQuery(
+    {
+      state: form.watch("state"),
+      country: form.watch("country"),
+    },
+    {
+      skip: !form.watch("state"),
+    }
+  );
 
   const onSubmit: SubmitHandler<CreateFormData> = async (data) => {
     try {
@@ -92,9 +110,9 @@ export default function AddAccountForm() {
                 registerName="country"
                 placeholder="Select country"
                 options={
-                  Country.getAllCountries().map((country) => ({
+                  countries?.map((country) => ({
                     label: country.name,
-                    value: country.isoCode,
+                    value: country.iso2,
                   })) ?? []
                 }
               />
@@ -107,12 +125,10 @@ export default function AddAccountForm() {
                 label="State / Province"
                 placeholder="Select state"
                 options={
-                  State.getStatesOfCountry(form.watch("country") as string).map(
-                    (state) => ({
-                      label: state.name,
-                      value: state.isoCode,
-                    })
-                  ) ?? []
+                  states?.map((state) => ({
+                    label: state.name,
+                    value: state.iso2,
+                  })) ?? []
                 }
               />
             </div>
@@ -124,10 +140,7 @@ export default function AddAccountForm() {
                 registerName="city"
                 placeholder="Select city"
                 options={
-                  City.getCitiesOfState(
-                    form.watch("country") as string,
-                    form.watch("state") as string
-                  ).map((city) => ({
+                  cities?.map((city) => ({
                     label: city.name,
                     value: city.name,
                   })) ?? []

@@ -1,18 +1,14 @@
 import Modal from "@/comps/ui/Modal";
-import AlertModal from "@ui/AlertModal";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
+import { useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-
-import EditOrgUnitForm from "../EditOrgAccountForm";
-import { setOpenModal } from "@/state/slices/uiSlice";
-import { setRows, setSelectedRows } from "@/state/slices/orgUnitSlice";
 import DeleteOrgUnit from "../DeleteOrgUnit";
+import EditOrgUnitForm from "../EditOrgUnitForm";
+import { setOpenModal } from "@/state/slices/uiSlice";
 
 const OrgUnitMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
-  const orgUnitState = useAppSelector((state) => state.orgUnit);
 
   return (
     <Popover.Root>

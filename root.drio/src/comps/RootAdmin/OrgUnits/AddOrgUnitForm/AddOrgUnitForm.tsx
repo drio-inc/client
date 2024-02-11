@@ -1,6 +1,5 @@
 import Button from "@ui/Button";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
-import { Country, State, City } from "country-state-city";
 
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
@@ -19,6 +18,12 @@ import {
   CreateOrgUnitFormData,
 } from "@/schema/OrgUnitSchema";
 
+import {
+  useGetStatesQuery,
+  useGetCitiesQuery,
+  useGetCountriesQuery,
+} from "@/api/misc";
+
 export default function AddOrgUnitForm() {
   const dispatch = useAppDispatch();
   const [create, result] = useCreateOrgUnitMutation({});
@@ -28,6 +33,21 @@ export default function AddOrgUnitForm() {
   const form = useZodForm({
     schema: createOrgUnitSchema,
   });
+
+  const { data: countries } = useGetCountriesQuery();
+  const { data: states } = useGetStatesQuery(form.watch("country"), {
+    skip: !form.watch("country"),
+  });
+
+  const { data: cities } = useGetCitiesQuery(
+    {
+      state: form.watch("state"),
+      country: form.watch("country"),
+    },
+    {
+      skip: !form.watch("state"),
+    }
+  );
 
   const onSubmit: SubmitHandler<CreateOrgUnitFormData> = async (data) => {
     try {
@@ -86,9 +106,9 @@ export default function AddOrgUnitForm() {
                   registerName="country"
                   placeholder="Select country"
                   options={
-                    Country.getAllCountries().map((country) => ({
+                    countries?.map((country) => ({
                       label: country.name,
-                      value: country.isoCode,
+                      value: country.iso2,
                     })) ?? []
                   }
                 />
@@ -102,11 +122,9 @@ export default function AddOrgUnitForm() {
                   registerName="state"
                   placeholder="Select state"
                   options={
-                    State.getStatesOfCountry(
-                      form.watch("country") as string
-                    ).map((state) => ({
+                    states?.map((state) => ({
                       label: state.name,
-                      value: state.isoCode,
+                      value: state.iso2,
                     })) ?? []
                   }
                 />
@@ -120,10 +138,7 @@ export default function AddOrgUnitForm() {
                   registerName="city"
                   placeholder="Select city"
                   options={
-                    City.getCitiesOfState(
-                      form.watch("country") as string,
-                      form.watch("state") as string
-                    ).map((city) => ({
+                    cities?.map((city) => ({
                       label: city.name,
                       value: city.name,
                     })) ?? []

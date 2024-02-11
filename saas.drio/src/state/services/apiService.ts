@@ -26,16 +26,4 @@ export const rootApi = createApi({
   endpoints: () => ({}),
 });
 
-// export const rootApi = createApi({
-//   reducerPath: "rootApi",
-//   baseQuery: fetchBaseQuery({
-//     baseUrl: `/api`,
-//     credentials: "include",
-//   }),
-
-//   endpoints: (builder) => {
-//     return {};
-//   },
-// });
-
 export const {} = rootApi;
