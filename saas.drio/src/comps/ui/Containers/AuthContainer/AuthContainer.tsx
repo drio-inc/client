@@ -28,10 +28,10 @@ const AuthContainer = ({
       >
         <div className="flex flex-col text-center items-center w-full mb-8">
           <Image
-            src="/logo.svg"
-            alt="Drio Logo"
             width={145}
             height={145}
+            src="/logo.svg"
+            alt="Drio Logo"
             className="mb-8"
           />
           <h1 className="sm:text-3xl text-2xl font-extrabold text-gray-900">

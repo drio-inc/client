@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
 import { formatTime } from "@/utils/formatTime";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,22 +15,22 @@ type Notifications = {
 const Notifications = [
   {
     id: 1,
-    time: faker.date.recent(),
+    time: new Date(),
     name: "New DDX Registered for Philips",
   },
   {
     id: 2,
-    time: faker.date.recent(),
+    time: new Date(),
     name: "Account Coca Cola became active",
   },
   {
     id: 3,
-    time: faker.date.recent(),
+    time: new Date(),
     name: "Anomaly in Harley data traffic detected",
   },
   {
     id: 4,
-    time: faker.date.recent(),
+    time: new Date(),
     name: "Communication lost with Visa New York DDX",
   },
 ];

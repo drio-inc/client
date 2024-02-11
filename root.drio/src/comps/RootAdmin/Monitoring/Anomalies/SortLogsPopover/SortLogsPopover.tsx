@@ -1,17 +1,16 @@
-import { Country } from "country-state-city";
 import * as Popover from "@radix-ui/react-popover";
 import { HiCheck, HiOutlineFilter, HiX } from "react-icons/hi";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { z } from "zod";
+import { useState } from "react";
 import Layout from "@/comps/Layout";
 import Button from "@/comps/ui/Button";
 import { SubmitHandler } from "react-hook-form";
 import * as Switch from "@radix-ui/react-switch";
+import { useGetCountriesQuery } from "@/api/misc";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { useZodForm, Form } from "@/comps/ui/Forms/Form";
 import { SelectInput, TextInput } from "@/comps/ui/Forms/Inputs";
-import { useState } from "react";
 
 const schema = z.object({
   dataset: z.string().nonempty("Please enter a value"),
@@ -28,6 +27,7 @@ const SortLogsPopover = () => {
   const [checkedName, setCheckedName] = useState(false);
   const [checkedStatus, setCheckedStatus] = useState(false);
   const [checkedCountry, setCheckedCountry] = useState(false);
+  const { data: countries } = useGetCountriesQuery();
 
   const form = useZodForm({
     schema: schema,
@@ -160,9 +160,9 @@ const SortLogsPopover = () => {
                       placeholder={"Select Country"}
                       className="md:text-sm 2xl:text-base"
                       options={
-                        Country.getAllCountries().map((country) => ({
+                        countries?.map((country) => ({
                           label: country.name,
-                          value: country.isoCode,
+                          value: country.iso2,
                         })) ?? []
                       }
                     />

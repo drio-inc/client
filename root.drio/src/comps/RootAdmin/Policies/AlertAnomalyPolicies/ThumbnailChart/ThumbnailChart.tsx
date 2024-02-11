@@ -11,7 +11,6 @@ import {
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
-import { faker } from "@faker-js/faker";
 
 ChartJS.register(
   Title,
@@ -65,12 +64,15 @@ export const options = {
   },
 };
 
+function getRandomArbitrary(min: number, max: number) {
+  return Math.round(Math.random() * (max - min) + min);
+}
+
 const AnomalyThumbnailChart = () => {
   const numberOfDays = 30;
 
-  const anomalyIndices = Array.from(
-    { length: faker.number.int({ min: 1, max: 4 }) },
-    () => faker.number.int({ min: 0, max: numberOfDays })
+  const anomalyIndices = Array.from({ length: getRandomArbitrary(1, 5) }, () =>
+    getRandomArbitrary(0, numberOfDays)
   );
 
   const labels = Array.from({ length: numberOfDays }, (_, i) => i + 1);
@@ -85,10 +87,10 @@ const AnomalyThumbnailChart = () => {
         backgroundColor: "#FF395C",
 
         data: labels.map((_, index) => {
-          const baseValue = faker.number.int({ min: 10000, max: 25000 });
+          const baseValue = getRandomArbitrary(10000, 25000);
 
           if (anomalyIndices.includes(index)) {
-            return faker.number.int({ min: 50000, max: 90000 });
+            return getRandomArbitrary(50000, 90000);
           }
 
           return baseValue;

@@ -1,8 +1,6 @@
-import { faker } from "@faker-js/faker";
 import ShipmentTable from "./ShipmentTable";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import {
-  setRows,
   setSelectedRow,
   setSelectedRowIndex,
 } from "@/state/slices/shipmentSlice";

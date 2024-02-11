@@ -13,7 +13,6 @@ import Modal from "@/comps/ui/Modal";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 
-import { faker } from "@faker-js/faker";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { useGetOrgUnitsQuery } from "@/api/resources/ous";
 
@@ -64,11 +63,11 @@ const OrgUnits = () => {
   const transformData =
     data?.map((row) => ({
       ...row,
-      alerts: faker.number.int({ min: 0, max: 7 }),
-      contracts: faker.number.int({ min: 5, max: 20 }),
+      alerts: Math.round(Math.random() * 7),
+      contracts: Math.round(Math.random() * 20),
+      datasetsPublished: Math.round(Math.random() * 30),
       location: ` ${row.city}, ${row.state}, ${row.country}`,
-      datasetsPublished: faker.number.int({ min: 5, max: 30 }),
-      dailyUsageFrequency: faker.number.int({ min: 10, max: 400 }),
+      dailyUsageFrequency: `${Math.round(Math.random() * 400)} / day`,
     })) ?? [];
 
   type ExtendedOrgUnit = (typeof transformData)[0];

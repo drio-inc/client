@@ -1,7 +1,6 @@
 import Table from "@/comps/ui/Table";
-import { faker } from "@faker-js/faker";
 import DDXMenu from "@/comps/SuperAdmin/DDX/DDXMenu";
-import { setRows, setSelectedRows } from "@/state/slices/DDXSlice";
+import { setSelectedRows } from "@/state/slices/DDXSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import { HiMinusSm } from "react-icons/hi";
@@ -126,7 +125,7 @@ const DDX = () => {
 
                 clusterVCPU: INDICES_TO_CHANGE.includes(index)
                   ? `NA`
-                  : faker.number.int({ min: 25, max: 25 }),
+                  : Math.round(Math.random() * 25),
 
                 status: INDICES_TO_CHANGE.includes(index)
                   ? "Unregistered"
@@ -134,7 +133,7 @@ const DDX = () => {
 
                 infraProvider: INDICES_TO_CHANGE.includes(index)
                   ? `NA`
-                  : faker.helpers.arrayElement(["AWS", "Azure", "Data Center"]),
+                  : ["AWS", "Azure", "Kafka"][Math.round(Math.random() * 2)],
               };
 
               const combinedData = {
@@ -143,7 +142,6 @@ const DDX = () => {
                 ...clusterData,
               };
 
-              console.log(combinedData);
               transformedData.push(combinedData);
             }
           }

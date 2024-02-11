@@ -1,18 +1,15 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import Table from "@/comps/ui/Table";
-import { useRouter } from "next/router";
-import { faker } from "@faker-js/faker";
-import { setRows, setSelectedRows } from "@/state/slices/quotesSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import { useAppSelector } from "@/hooks/useStoreTypes";
 
 import ProductsMenu from "./QuotesMenu";
 import ShipmentDetails from "./ShipmentDetails";
 import { useGetQuotesQuery } from "@/api/quotes";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 
+import useInventory from "@/hooks/useInventory";
 import location_to_origin from "@data/location_to_origin.json";
 import dealer_to_destination from "@data/dealer_to_destination.json";
-import useInventory from "@/hooks/useInventory";
 
 const headers = [
   {
@@ -63,9 +60,6 @@ const headers = [
 ];
 
 const Quotes = () => {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-
   const { data, isLoading } = useGetQuotesQuery({
     limit: 10,
     offset: 0,
@@ -98,8 +92,6 @@ const Quotes = () => {
         row.destination_port === destination_port
     );
   }, [destination_port, origin_port, quotesState.rows]);
-
-  console.log(origin_port, destination_port, filteredRows);
 
   if (isLoading && !quotesState.rows.length) return <StaticLoader />;
 

@@ -1,5 +1,4 @@
 import Table from "@/comps/ui/Table";
-import { faker } from "@faker-js/faker";
 import AddAccountForm from "./AddAccountForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
@@ -123,20 +122,12 @@ const Accounts = () => {
         ...row,
         ddxClusters,
         users: row.users.length,
+        alerts: Math.round(Math.random() * 7),
+        contracts: Math.round(Math.random() * 20),
+        datasetsPublished: Math.round(Math.random() * 30),
         organization_units: row.organization_units.length,
+        accessFrequency: `${Math.round(Math.random() * 400)} / day`,
         status: INDICES_TO_CHANGE.includes(index) ? "Onboarding" : "Active",
-        alerts: INDICES_TO_CHANGE.includes(index)
-          ? `NA`
-          : faker.number.int({ min: 0, max: 7 }),
-        contracts: INDICES_TO_CHANGE.includes(index)
-          ? `NA`
-          : faker.number.int({ min: 5, max: 20 }),
-        datasetsPublished: INDICES_TO_CHANGE.includes(index)
-          ? `NA`
-          : faker.number.int({ min: 5, max: 30 }),
-        accessFrequency: INDICES_TO_CHANGE.includes(index)
-          ? `NA`
-          : `${faker.number.int({ min: 10, max: 400 })} / day`,
       };
     });
   };
@@ -188,7 +179,7 @@ const Accounts = () => {
             </Modal>
 
             <Modal identifier="orgUnitTable">
-              <OrgUnits modal={true} accountId={accountState.accountId ?? ""} />
+              <OrgUnits accountId={accountState.accountId ?? ""} />
             </Modal>
           </div>
         </div>

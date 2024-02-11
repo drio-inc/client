@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import Table from "@/comps/ui/Table";
-import { faker } from "@faker-js/faker";
 
 import {
   setRows,
@@ -86,7 +85,7 @@ const DDX = () => {
     ...row,
     ddxVersion: "1.0.2.03232023",
     instances: (row.ddx_instances && row.ddx_instances.length) || 0,
-    infraProvider: faker.helpers.arrayElement(["AWS", "Azure", "Data Center"]),
+    infraProvider: ["AWS", "Azure", "Kafka"][Math.floor(Math.random() * 3)],
   }));
 
   type ExtendedDDX = (typeof transformedRows)[0];
@@ -95,9 +94,7 @@ const DDX = () => {
   return (
     <div className="w-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        <div
-          className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
-        >
+        <div className="rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between">
           {selectedRows.length > 0 && (
             <div className="flex items-center">
               <Checkbox.Root

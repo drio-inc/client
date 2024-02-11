@@ -1,5 +1,4 @@
 import { store } from "@/state/store";
-import { Country } from "country-state-city";
 
 export const mergedDDXData = () => {
   return store
@@ -11,8 +10,8 @@ export const mergedDDXData = () => {
             return {
               ...ddx,
               ou: row.name,
+              country: row.country,
               location: `${row.city}, ${row.state}, ${row.country}`,
-              country: Country.getCountryByCode(row.country)?.name,
               status:
                 ddx.ddx_instances &&
                 ddx.ddx_instances.length > 0 &&

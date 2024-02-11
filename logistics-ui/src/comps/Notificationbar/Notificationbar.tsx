@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
 import { formatTime } from "@/utils/formatTime";
 import { AnimatePresence, motion } from "framer-motion";
@@ -8,61 +7,51 @@ import { MdOutlineClose, MdOutlineNotifications } from "react-icons/md";
 
 type Notifications = {
   id: number;
-  time: Date;
+  time: number;
   name: string;
   isPreviousDay: boolean;
+};
+
+const randomDate = (days: number) => {
+  return new Date().getTime() - 86400000 * Math.round(Math.random() * days);
 };
 
 const Notifications = [
   {
     id: 1,
-    time: faker.date.recent(),
+    time: randomDate(10),
     name: "Range Anomaly has been recorded",
   },
   {
     id: 2,
-    time: faker.date.recent(),
+    time: randomDate(10),
+
     name: "New order for M13 has been placed",
   },
   {
     id: 3,
-    time: faker.date.recent(),
+    time: randomDate(10),
     name: "RT23 has reached the destination",
   },
   {
     id: 4,
     name: "Anomalies recorded",
-    time: faker.date.recent({
-      days: 10,
-    }),
+    time: randomDate(10),
   },
   {
     id: 5,
     name: "Anomalies recorded",
-    time: faker.date.recent({
-      days: 10,
-    }),
+    time: randomDate(10),
   },
   {
     id: 6,
     name: "Anomalies recorded",
-    time: faker.date.recent({
-      days: 10,
-    }),
+    time: randomDate(10),
   },
   {
     id: 7,
     name: "Anomalies recorded",
-    time: faker.date.recent({
-      days: 10,
-    }),
-  },
-  {
-    id: 8,
-    name: "Anomalies recorded",
-    time: faker.date.recent({
-      days: 10,
-    }),
+    time: randomDate(10),
   },
 ];
 
@@ -73,10 +62,9 @@ export default function Notificationbar() {
 
   useEffect(() => {
     const updatedNotifications = Notifications.sort(
-      (a, b) => b.time.getTime() - a.time.getTime()
+      (a, b) => b.time - a.time
     ).map((notification) => {
-      const days =
-        (Date.now() - notification.time.getTime()) / (1000 * 60) / 60 / 24;
+      const days = (Date.now() - notification.time) / (1000 * 60) / 60 / 24;
 
       return {
         ...notification,
@@ -132,7 +120,7 @@ export default function Notificationbar() {
                   <div className="flex items-center gap-x-2">
                     <div className="inline-block w-[10px] h-[10px] rounded-full bg-drio-red" />
                     <span className="text-drio-red text-sm">
-                      {formatTime(time.getTime())}
+                      {formatTime(time)}
                     </span>
                   </div>
                 </div>

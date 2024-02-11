@@ -1,14 +1,12 @@
 import { z } from "zod";
 import Button from "@ui/Button";
-import { TextInput } from "@/comps/ui/Forms/Inputs";
-import AuthContainer from "@ui/Containers/AuthContainer";
-import { useZodForm, Form } from "@/comps/ui/Forms/Form";
-import { SubmitHandler } from "react-hook-form";
-
-import { useResetPasswordMutation } from "@/api/auth";
-import { useAppDispatch } from "@/hooks/useStoreTypes";
 import { useRouter } from "next/router";
 import showAlert from "@/comps/ui/Alert";
+import { SubmitHandler } from "react-hook-form";
+import { TextInput } from "@/comps/ui/Forms/Inputs";
+import { useResetPasswordMutation } from "@/api/auth";
+import AuthContainer from "@ui/Containers/AuthContainer";
+import { useZodForm, Form } from "@/comps/ui/Forms/Form";
 
 const schema = z.object({
   email: z
@@ -33,7 +31,7 @@ const ForgotPassword = () => {
         email: data.email,
       }).unwrap();
 
-      // router.push("/dashboard");
+      router.push("/login");
     } catch (err: any) {
       showAlert(
         err?.data?.message ?? "Something went wrong. Please try again.",

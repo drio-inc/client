@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import { createSlice } from "@reduxjs/toolkit";
 import { Anomalies } from "@/api/resources/anomalies/types";
 
@@ -16,7 +15,11 @@ export type AnomalyNotification = {
   anomaly_type: "comparison" | "iqr";
   datatype: string | number | boolean;
   new_datatype: string | number | boolean;
-  event_type: "anomaly" | "datatype_mismatch" | "added_new_field";
+  event_type:
+    | "anomaly"
+    | "added_new_field"
+    | "Cluster Anomaly"
+    | "datatype_mismatch";
 };
 
 type NotificationSlice = {
