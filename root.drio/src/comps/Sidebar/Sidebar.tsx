@@ -196,7 +196,13 @@ export default function Sidebar() {
     <nav className="hidden md:left-0 md:flex md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden border-r border-gray-200 bg-white relative md:w-64 py-4 px-2">
       <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
         <Link href="/">
-          <Image src="/logo.svg" alt="Drio Logo" width={145} height={145} />
+          <Image
+            priority
+            width={145}
+            height={145}
+            src="/logo.svg"
+            alt="Drio Logo"
+          />
         </Link>
 
         <div

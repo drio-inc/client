@@ -105,11 +105,16 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                   return (
                     <>
                       {header.type === "array" ? (
-                        <td className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem]">
+                        <td
+                          key={index}
+                          className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem]"
+                        >
                           <MetaTags tags={row?.[header.accessor]} />
                         </td>
                       ) : header.type === "object" ? (
-                        <td className="w-[200px]">{row?.[header.accessor]}</td>
+                        <td key={index} className="w-[200px]">
+                          {row?.[header.accessor]}
+                        </td>
                       ) : (
                         <td
                           key={index}
