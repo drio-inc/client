@@ -1,11 +1,9 @@
 import Button from "@ui/Button";
 import { useRouter } from "next/router";
 import { FaLock } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { TextInput } from "@ui/Forms/Inputs";
 
 import { z } from "zod";
-import jwt from "jsonwebtoken";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 
@@ -24,9 +22,7 @@ import { setToken, setUser } from "@/state/slices/authSlice";
 
 const schema = z.object({
   account: z.string().nonempty("Please Enter a value").max(1024),
-
   username: z.string().nonempty("Please Enter a value").max(1024),
-
   password: z
     .string()
     .nonempty("Please Enter a value")
@@ -56,17 +52,13 @@ export default function Login() {
       if (res.token) {
         dispatch(setToken(res.token));
         window.localStorage.setItem("token", res.token);
-        const decoded = jwt.decode(res.token) as JwtPayload | null;
 
-        if (decoded) {
-          dispatch(
-            setUser({
-              username: decoded.sub,
-              user_type: decoded.user_type,
-              account_id: decoded.account_id,
-            })
-          );
-        }
+        dispatch(
+          setUser({
+            username: data.username,
+            account_id: res.account_id,
+          })
+        );
 
         router.push("/my-org/org-units");
       }
@@ -148,19 +140,6 @@ export default function Login() {
                 <Link href={`/activation`}> Sign Up</Link>
               </span>
             </p>
-          </div>
-
-          <div className="px-4 flex items-center w-full mb-4">
-            <div className="flex-grow h-px bg-gray-300"></div>
-            <span className="inline-block mx-4 text-gray-500 text-sm">or</span>
-            <div className="flex-grow h-px bg-gray-300"></div>
-          </div>
-
-          <div className="px-4 py-2 w-full">
-            <Button intent={`google`} className="w-full justify-center">
-              <FcGoogle className="inline-block w-6 h-6" />
-              <span className="ml-2">Sign In with Google</span>
-            </Button>
           </div>
         </Form>
       </AuthContainer>

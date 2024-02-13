@@ -1,5 +1,5 @@
+import dynamic from "next/dynamic";
 import Table from "@/comps/ui/Table";
-import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
 import MetadataMenu from "./MetadataMenu";
 
@@ -11,15 +11,11 @@ import {
 
 import { useEffect } from "react";
 import { IoRefresh } from "react-icons/io5";
-import AddMetaDataForm from "./AddMetaDataForm";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
-import MetadataPopover from "./HeaderPopovers/MetadataPopover";
-import VisibilityPopover from "./HeaderPopovers/VisibilityPopover";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import SchemaStats from "./SchemaStats";
 import { useRouter } from "next/router";
 import getSchema from "@/functions/getSchema";
 import { mergedDDXData } from "@/functions/mergeDDXData";
@@ -27,11 +23,17 @@ import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
-type Params = {
-  id: string;
-  ou_id: string;
-  account_id: string;
-};
+const Modal = dynamic(() => import("@/comps/ui/Modal"));
+const SchemaStats = dynamic(() => import("./SchemaStats"));
+const AddMetaDataForm = dynamic(() => import("./AddMetaDataForm"));
+
+const MetadataPopover = dynamic(
+  () => import("./HeaderPopovers/MetadataPopover")
+);
+
+const VisibilityPopover = dynamic(
+  () => import("./HeaderPopovers/VisibilityPopover")
+);
 
 const headers = [
   {

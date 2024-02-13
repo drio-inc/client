@@ -5,4 +5,8 @@ export type LoginFormData = {
 };
 
 export type LogoutResponse = { message: string };
-export type LoginRespose = { message: string; token: string };
+export type LoginResponse = {
+  token: string;
+  message: string;
+  account_id: string;
+};

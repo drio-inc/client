@@ -1,17 +1,9 @@
-import { LoginFormData, LoginRespose, LogoutResponse } from "./types";
+import { LoginFormData, LoginResponse, LogoutResponse } from "./types";
 import { rootApi } from "@/state/services/apiService";
 
 export const authApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
-    activate: builder.mutation<unknown, unknown>({
-      query: (payload) => ({
-        url: `/auth/activate`,
-        method: "POST",
-        body: payload,
-      }),
-    }),
-
-    login: builder.mutation<LoginRespose, LoginFormData>({
+    login: builder.mutation<LoginResponse, LoginFormData>({
       query: (payload) => ({
         url: `/auth/login`,
         method: "POST",
@@ -34,30 +26,6 @@ export const authApi = rootApi.injectEndpoints({
       }),
     }),
 
-    setLDAP: builder.mutation<any, any>({
-      query: (payload) => ({
-        url: `/auth/ldap`,
-        method: "POST",
-        body: payload,
-      }),
-    }),
-
-    setGoogleAuth: builder.mutation<any, any>({
-      query: (payload) => ({
-        url: `/auth/google-auth`,
-        method: "POST",
-        body: payload,
-      }),
-    }),
-
-    setOAuth: builder.mutation<any, any>({
-      query: (payload) => ({
-        url: `/auth/oauth`,
-        method: "POST",
-        body: payload,
-      }),
-    }),
-
     resetPassword: builder.mutation<any, any>({
       query: (payload) => ({
         url: `/auth/reset-password`,
@@ -71,11 +39,6 @@ export const authApi = rootApi.injectEndpoints({
 export const {
   useLoginMutation,
   useLogoutMutation,
-  useActivateMutation,
   useSetPasswordMutation,
   useResetPasswordMutation,
-
-  useSetLDAPMutation,
-  useSetOAuthMutation,
-  useSetGoogleAuthMutation,
 } = authApi;

@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import Button from "@ui/Button";
 import { useRouter } from "next/router";
 import { FaLock } from "react-icons/fa";
@@ -56,16 +55,13 @@ export default function Login() {
       if (res.token) {
         dispatch(setToken(res.token));
         window.localStorage.setItem("token", res.token);
-        const decoded = jwt.decode(res.token) as JwtPayload | null;
 
-        if (decoded) {
-          dispatch(
-            setUser({
-              username: decoded.sub,
-              user_type: decoded.user_type,
-            })
-          );
-        }
+        dispatch(
+          setUser({
+            username: data.username,
+          })
+        );
+
         router.push("/accounts");
       }
     } catch (err: any) {

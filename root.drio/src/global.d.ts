@@ -56,17 +56,6 @@ type DDXInstance = {
   ou_id?: string;
 };
 
-interface JwtPayload {
-  sub: string;
-  iat: number;
-  iss: string;
-  jti: string;
-  nbf: number;
-  version: number;
-  user_type: number;
-  account_id: string;
-}
-
 type DefaultParams = {
   ou_id: string;
   account_id: string;
