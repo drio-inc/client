@@ -37,7 +37,7 @@ const VisibilityPopover = dynamic(
 
 const headers = [
   {
-    header: "Dataset Name",
+    header: "Attribute",
     accessor: "property",
   },
   {
@@ -49,19 +49,19 @@ const headers = [
     accessor: "property_type",
   },
   {
-    header: "Visibility",
-    accessor: "visibility",
-    menu: <VisibilityPopover />,
-  },
-  {
     type: "array",
     accessor: "tags",
-    header: "Metadata",
+    header: "Tags",
     menu: <MetadataPopover />,
   },
   {
     header: "Last Updated",
     accessor: "last_updated",
+  },
+  {
+    header: "Discoverability",
+    accessor: "visibility",
+    menu: <VisibilityPopover />,
   },
 ];
 
@@ -113,7 +113,7 @@ const Metadata = () => {
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div className="rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between">
           {selectedRows.length > 0 && (
-            <div className="flex items-center">
+            <div className="flex items-center mr-2">
               <Checkbox.Root
                 className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                 checked={selectedRows.length > 0}
@@ -133,6 +133,8 @@ const Metadata = () => {
               </button>
             </div>
           )}
+
+          <span className="font-medium">Dataset: {datasetName}</span>
 
           <div className="flex gap-4 ml-auto">
             <Button
@@ -159,15 +161,11 @@ const Metadata = () => {
 
         <Table
           rows={rows}
+          headers={headers}
           menu={MetadataMenu}
           selectedRows={selectedRows}
           handleCheckbox={handleCheckbox}
           handleRowClick={handlelRowClick}
-          headers={headers.map((header) => {
-            return header.header === "Dataset Name"
-              ? { ...header, header: datasetName as string }
-              : header;
-          })}
         />
       </div>
     </div>

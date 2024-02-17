@@ -28,6 +28,7 @@ const initialState: UIState = {
     licensing: "Licensing",
     ou: "Organization Units",
     "new policy": "Policies",
+    metadata: "Discovered Metadata",
   },
 };
 
