@@ -1,11 +1,10 @@
 {
   "private": true,
   "scripts": {
-    "test": "concurrently \"yarn workspace saas.drio test\"",
-    "dev": "concurrently \"yarn workspace root.drio dev\" \"yarn workspace saas.drio dev\" \"yarn workspace logistics-ui dev\"",
-    "start": "concurrently \"yarn workspace root.drio start\" \"yarn workspace saas.drio start\" \"yarn workspace logistics-ui start\"",
-    "dev:mock": "concurrently \"yarn workspace root.drio dev:mock\" \"yarn workspace saas.drio dev:mock\" \"yarn workspace logistics-ui dev:mock\"",
-    "build": "yarn workspace root.drio build && yarn workspace saas.drio build && yarn workspace logistics-ui build"
+    "start": "serve ./saas.drio/out -p 3000 & serve ./root.drio/out -p 3001",
+    "build": "yarn workspace root.drio build && yarn workspace saas.drio build",
+    "dev": "concurrently \"yarn workspace root.drio dev\" \"yarn workspace saas.drio dev\"",
+    "serve": "concurrently \"yarn workspace root.drio start\" \"yarn workspace saas.drio start\""
   },
   "workspaces": [
     "root.drio",
