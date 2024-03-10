@@ -14,8 +14,14 @@ import { setOpenModal } from "@/state/slices/uiSlice";
 import { useEffect } from "react";
 import Modal from "@/comps/ui/Modal";
 import DataSourcePopup from "./DataSourcePopup";
+import getDatasets from "@/functions/getDatasets";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";
+
+import {
+  setRawRows,
+  setRows as setDatasetRows,
+} from "@/state/slices/datasetSlice";
 
 type ExtendedDataSource = DataSource & {
   datasets: number;
@@ -65,12 +71,26 @@ const headers = [
 const DataSources = () => {
   const dispatch = useAppDispatch();
   const { recursiveRows } = useAppSelector((state) => state.orgUnit);
+  const { rows: datasetRows } = useAppSelector((state) => state.dataset);
   const { selectedRows, rows } = useAppSelector((state) => state.dataSource);
 
   useEffect(() => {
     dispatch(setDDXRows(mergedDDXData()));
     dispatch(setRows(mergedDataSourceData()));
   }, [dispatch, recursiveRows]);
+
+  useEffect(() => {
+    const dataSourceIds = rows.map((row) => ({
+      ou_id: row.ou_id,
+      datasource_id: row.id,
+      account_id: row.account_id,
+    }));
+
+    getDatasets(dataSourceIds).then((payload) => {
+      dispatch(setRawRows(payload.rawData));
+      dispatch(setDatasetRows([...payload.data]));
+    });
+  }, [rows, dispatch]);
 
   const handleCheckbox = (index: number) => {
     if (selectedRows.includes(index)) {
@@ -81,7 +101,10 @@ const DataSources = () => {
   };
 
   const clearSelectedRows = () => dispatch(setSelectedRows([]));
-  const typedRows: ExtendedDataSource[] = rows as ExtendedDataSource[];
+  const typedRows: ExtendedDataSource[] = rows.map((row) => ({
+    ...row,
+    datasets: datasetRows.length,
+  })) as ExtendedDataSource[];
 
   return (
     <div className="w-full">

@@ -1,5 +1,4 @@
 import Table from "@/comps/ui/Table";
-import datasetsJSON from "@/data/datasets.json";
 import DatasetMenu from "./DatasetMenu/DatasetMenu";
 import PublishDatasetForm from "./PublishDatasetForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
