@@ -13,10 +13,9 @@ import Modal from "@/comps/ui/Modal";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import StaticLoader from "@/comps/ui/Loader/StaticLoader";
 
+import useWebSocket from "@/hooks/useWebSocket";
 import { setOpenModal } from "@/state/slices/uiSlice";
-import { useCallback, useEffect, useState } from "react";
 import { useGetOrgUnitsQuery } from "@/api/resources/ous";
-import { webSocketService } from "@/state/services/webSocketService";
 
 const headers = [
   {
@@ -48,38 +47,13 @@ const headers = [
 
 const OrgUnits = () => {
   const dispatch = useAppDispatch();
-  const [connected, setConnected] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
   const { selectedRows } = useAppSelector((state) => state.orgUnit);
   const { data, isLoading } = useGetOrgUnitsQuery(user?.account_id ?? "");
 
   let topic = `/exchange/my-exchange/topic.message`;
-
-  const handleMessage = useCallback(
-    (body: any) => console.log("Message:", topic, body),
-    [topic]
-  );
-
-  useEffect(() => {
-    webSocketService.connect();
-
-    const handleConnection = () => {
-      setConnected(true);
-      webSocketService.subscribeToTopic(topic, handleMessage);
-    };
-
-    const handleDisconnection = () => {
-      setConnected(false);
-    };
-
-    webSocketService.setOnConnectCallback(handleConnection);
-    webSocketService.setOnDisconnectCallback(handleDisconnection);
-
-    return () => {
-      webSocketService.unsubscribeFromTopic(topic);
-      webSocketService.disconnect();
-    };
-  }, [handleMessage, topic]);
+  const { connected, message } = useWebSocket(topic);
+  console.log(connected, message);
 
   const handleCheckbox = (index: number) => {
     if (selectedRows.includes(index)) {
