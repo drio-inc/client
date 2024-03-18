@@ -16,8 +16,8 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
 
 import TopOrgs from "../TopOrgs";
-import { useEffect } from "react";
 import Modal from "@/comps/ui/Modal";
+import { useEffect, useState } from "react";
 
 import getDatasets from "@/functions/getDatasets";
 import { mergedDDXData } from "@/functions/mergeDDXData";
@@ -123,6 +123,7 @@ const TopDatasets = [
 
 const DatasetsComp = () => {
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
   const { recursiveRows } = useAppSelector((state) => state.orgUnit);
   const { rows, selectedRows } = useAppSelector((state) => state.dataset);
   const { rows: dataSourceRows } = useAppSelector((state) => state.dataSource);
@@ -133,6 +134,7 @@ const DatasetsComp = () => {
   }, [dispatch, recursiveRows]);
 
   useEffect(() => {
+    setLoading(true);
     const dataSourceIds = dataSourceRows.map((row) => ({
       ou_id: row.ou_id,
       datasource_id: row.id,
@@ -142,6 +144,7 @@ const DatasetsComp = () => {
     getDatasets(dataSourceIds).then((payload) => {
       dispatch(setRows([...payload.data]));
       dispatch(setRawRows(payload.rawData));
+      setLoading(false);
     });
   }, [dataSourceRows, dispatch]);
 
@@ -213,6 +216,7 @@ const DatasetsComp = () => {
 
         <Table
           rows={rows}
+          loading={loading}
           headers={headers}
           menu={DatasetMenu}
           selectedRows={selectedRows}
