@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@ui/Tooltip";
+import Skeleton from "../Skeleton";
 
 type TableHeader = {
   type?: string;
@@ -25,6 +26,7 @@ type TableHeader = {
 type TableRow<T extends Record<string, any>> = T;
 
 type TableProps<T extends Record<string, any>, Key extends keyof T> = {
+  loading?: boolean;
   rows?: TableRow<T>[];
   menu?: React.FC | any;
   noSelection?: boolean;
@@ -39,6 +41,7 @@ type TableProps<T extends Record<string, any>, Key extends keyof T> = {
 const Table = <T extends Record<string, any>, Key extends keyof T>({
   rows,
   headers,
+  loading,
   selectedRows,
   handleCheckbox,
   handleRowClick,
@@ -75,100 +78,115 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
           </tr>
         </thead>
         <tbody>
-          {rows?.map((row, index) => {
-            const isChecked = selectedRows?.includes(row?.id);
-            return (
-              <tr
-                key={index}
-                className={`${
-                  isChecked
-                    ? "bg-[#ECF5FF] hover:bg-[#ECF5FF]"
-                    : "hover:bg-gray-50"
-                } border-t border-b border-gray-100`}
-              >
-                {!noSelection && (
-                  <td className="border-t border-b text-xs p-4">
-                    <Checkbox.Root
-                      className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                      checked={isChecked}
-                      id={index.toString()}
-                      onCheckedChange={() => handleCheckbox?.(row.id)}
-                    >
-                      <Checkbox.Indicator className="text-white">
-                        <HiCheck />
-                      </Checkbox.Indicator>
-                    </Checkbox.Root>
+          {loading ? (
+            <>
+              {[0, 0, 0, 0, 0].map((_, i) => (
+                <tr key={i} className="border-[10px] border-white">
+                  <td colSpan={headers?.length && headers?.length + 2}>
+                    <Skeleton className="h-12 rounded-md" />
                   </td>
-                )}
-
-                {headers?.map((header, index) => {
-                  return (
-                    <>
-                      {header.type === "array" ? (
-                        <td
-                          key={index}
-                          className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem]"
+                </tr>
+              ))}
+            </>
+          ) : (
+            <>
+              {rows?.map((row, index) => {
+                const isChecked = selectedRows?.includes(row?.id);
+                return (
+                  <tr
+                    key={index}
+                    className={`${
+                      isChecked
+                        ? "bg-[#ECF5FF] hover:bg-[#ECF5FF]"
+                        : "hover:bg-gray-50"
+                    } border-t border-b border-gray-100`}
+                  >
+                    {!noSelection && (
+                      <td className="border-t border-b text-xs p-4">
+                        <Checkbox.Root
+                          className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+                          checked={isChecked}
+                          id={index.toString()}
+                          onCheckedChange={() => handleCheckbox?.(row.id)}
                         >
-                          <MetaTags tags={row?.[header.accessor]} />
-                        </td>
-                      ) : header.type === "object" ? (
-                        <td key={index} className="w-[200px]">
-                          {row?.[header.accessor]}
-                        </td>
-                      ) : (
-                        <td
-                          key={index}
-                          onClick={() => handleRowClick?.(row)}
-                          className="cursor-pointer border-t border-b text-gray-500 text-xs p-4"
-                        >
-                          <div
-                            className={`${
-                              header?.status?.[row?.[header.accessor]]
-                            } inline-block`}
-                          >
-                            <span>
-                              {header?.accessor === "name" &&
-                                (row?.status === "learning" ||
-                                  row?.status === "learned") && (
-                                  <TooltipProvider delayDuration={0}>
-                                    <Tooltip>
-                                      <TooltipTrigger>
-                                        <span
-                                          className={`inline-block w-3 h-3 rounded-full ${
-                                            row?.status === "learning"
-                                              ? `bg-drio-red-dark`
-                                              : `bg-green-400`
-                                          } mr-2`}
-                                        />
-                                      </TooltipTrigger>
-                                      <TooltipContent>
-                                        <span>
-                                          {row?.status === "learning"
-                                            ? `Learning Schema`
-                                            : `Schema Learned`}
-                                        </span>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
-                                )}
+                          <Checkbox.Indicator className="text-white">
+                            <HiCheck />
+                          </Checkbox.Indicator>
+                        </Checkbox.Root>
+                      </td>
+                    )}
 
-                              {row?.[header.accessor]?.toString() ?? "NA"}
-                            </span>
-                          </div>
-                        </td>
-                      )}
-                    </>
-                  );
-                })}
+                    {headers?.map((header, index) => {
+                      return (
+                        <>
+                          {header.type === "array" ? (
+                            <td
+                              key={index}
+                              className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem]"
+                            >
+                              <MetaTags tags={row?.[header.accessor]} />
+                            </td>
+                          ) : header.type === "object" ? (
+                            <td key={index} className="w-[200px]">
+                              {row?.[header.accessor]}
+                            </td>
+                          ) : (
+                            <td
+                              key={index}
+                              onClick={() => handleRowClick?.(row)}
+                              className="cursor-pointer border-t border-b text-gray-500 text-xs p-4"
+                            >
+                              <div
+                                className={`${
+                                  header?.status?.[row?.[header.accessor]]
+                                } inline-block`}
+                              >
+                                <span>
+                                  {header?.accessor === "name" &&
+                                    (row?.status === "learning" ||
+                                      row?.status === "learned") && (
+                                      <TooltipProvider delayDuration={0}>
+                                        <Tooltip>
+                                          <TooltipTrigger>
+                                            <span
+                                              className={`inline-block w-3 h-3 rounded-full ${
+                                                row?.status === "learning"
+                                                  ? `bg-drio-red-dark`
+                                                  : `bg-green-400`
+                                              } mr-2`}
+                                            />
+                                          </TooltipTrigger>
+                                          <TooltipContent>
+                                            <span>
+                                              {row?.status === "learning"
+                                                ? `Learning Schema`
+                                                : `Schema Learned`}
+                                            </span>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </TooltipProvider>
+                                    )}
 
-                {TableMenu && (
-                  <td className="border-t border-b text-gray-500 text-xs p-4 text-left">
-                    <TableMenu row={row} />
-                  </td>
-                )}
-              </tr>
-            );
-          })}
+                                  {row?.[header.accessor]?.toString() ?? "NA"}
+                                </span>
+                              </div>
+                            </td>
+                          )}
+                        </>
+                      );
+                    })}
+
+                    {TableMenu && (
+                      <td className="border-t border-b text-gray-500 text-xs p-4 text-left">
+                        <TableMenu row={row} />
+                      </td>
+                    )}
+                  </tr>
+                );
+              })}
+            </>
+          )}
+
           <tr>
             <td colSpan={headers?.length && headers?.length + 2}>
               <DashboardFooter rows={rows} />

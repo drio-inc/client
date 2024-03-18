@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { HiSearch } from "react-icons/hi";
 
 import Button from "../Button";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
@@ -22,10 +21,12 @@ import getAnomalies from "@/functions/getAnomalies";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";
+
 import {
   readNotifications,
   setNotifications,
 } from "@/state/slices/notificationSlice";
+
 import { setRawRows, setRows } from "@/state/slices/anomaliesSlice";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
@@ -65,7 +66,7 @@ export default function Header() {
     });
   }, [dataSourceRows, dispatch]);
 
-  const { data: account } = useGetAccountByIdQuery({
+  const { data: account, isLoading } = useGetAccountByIdQuery({
     id: user?.account_id ?? "",
     recurse: false,
   });
@@ -88,27 +89,13 @@ export default function Header() {
       ?.split("/")
       [router?.pathname?.split("/")?.length - 1]?.replace(/-/g, " ");
 
-  if (loading) return null;
-
   return (
     <nav className="shadow-sm h-[4rem]">
       <div className="flex items-center justify-between md:px-8 px-4 h-full">
-        <Link
-          className="text-gray-700 text-2xl capitalize hidden md:inline-block font-bold"
-          href={router.pathname}
-        >
+        <span className="text-gray-700 text-2xl capitalize hidden md:inline-block font-bold">
           {pageTitles[path] ?? path}
-        </Link>
+        </span>
         <div className="flex items-center">
-          {/* <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
-            <div className="relative flex w-full flex-wrap items-center">
-              <HiSearch className="text-gray-400 inline-flex h-full absolute items-center justify-center w-8 pl-2 py-2" />
-              <input
-                placeholder="Search"
-                className="pl-10 transition-colors ease-in-out duration-200 border py-2 px-3 my-1 rounded-md focus:outline-none shadow-sm"
-              />
-            </div>
-          </form> */}
           <span
             className="mr-3 cursor-pointer relative"
             onClick={() => {
@@ -117,6 +104,7 @@ export default function Header() {
             }}
           >
             <MdOutlineNotifications className="w-8 h-8 text-[#1F2937]" />
+
             {!isRead && (
               <div className="absolute p-[9px] top-0 right-0 bg-drio-red rounded-full flex items-center justify-center w-3 h-3">
                 <span className="text-[12px] text-white font-medium">
@@ -125,11 +113,12 @@ export default function Header() {
               </div>
             )}
           </span>
-          {user && (
+
+          {user && !isLoading ? (
             <div className="text-[#4C566A] flex">
               <span className="mr-3 flex items-center gap-x-2 bg-neutral-50 rounded-md py-3 px-8">
                 <MdOutlinePeopleOutline className="w-5 h-5" />
-                {user.username ?? "Demo User"}
+                {user?.username ?? "Demo User"}
               </span>
 
               <span className="mr-3 flex items-center gap-x-2 bg-neutral-50 rounded-md py-3 px-8">
@@ -137,7 +126,7 @@ export default function Header() {
                 {account?.name ?? "Demo Account"}
               </span>
             </div>
-          )}
+          ) : null}
 
           <Button
             intent={"primary"}

@@ -9,7 +9,7 @@ import {
   setSelectedRows,
 } from "@/state/slices/metadataSlice";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IoRefresh } from "react-icons/io5";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
@@ -68,6 +68,7 @@ const headers = [
 const Metadata = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
   const { recursiveRows } = useAppSelector((state) => state.orgUnit);
   const { rows, selectedRows } = useAppSelector((state) => state.metadata);
   const { rows: dataSourceRows } = useAppSelector((state) => state.dataSource);
@@ -81,6 +82,7 @@ const Metadata = () => {
   }, [dispatch, recursiveRows]);
 
   useEffect(() => {
+    setLoading(true);
     const params = dataSourceRows?.find((row) => row?.id === datasourceId);
 
     getSchema({
@@ -90,6 +92,7 @@ const Metadata = () => {
     }).then((payload) => {
       const data = payload?.filter((row) => row?.dataset_name === datasetName);
       dispatch(setRows([...data]));
+      setLoading(false);
     });
   }, [dataSourceRows, datasetName, datasourceId, dispatch]);
 
@@ -161,6 +164,7 @@ const Metadata = () => {
 
         <Table
           rows={rows}
+          loading={loading}
           headers={headers}
           menu={MetadataMenu}
           selectedRows={selectedRows}
