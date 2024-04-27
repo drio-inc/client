@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { HiOutlineDocumentText } from "react-icons/hi2";
 import { RiArchiveLine, RiPriceTag2Line, RiRoadMapLine } from "react-icons/ri";
 
 const NavLinks = [
@@ -19,6 +20,12 @@ const NavLinks = [
     name: "Booked Order Tracking",
     href: "tracking",
     icon: <RiRoadMapLine className="inline-block w-6 h-6 mr-2" />,
+  },
+
+  {
+    name: "Template Generator",
+    href: "template-generator",
+    icon: <HiOutlineDocumentText className="inline-block w-6 h-6 mr-2" />,
   },
 ];
 

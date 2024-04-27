@@ -14,3 +14,11 @@
 .custom-container {
   min-height: calc(100vh - 6rem);
 }
+
+.table-row th {
+  @apply border-2 border-black bg-gray-200;
+}
+
+.table-row td {
+  @apply border-2 border-black;
+}
