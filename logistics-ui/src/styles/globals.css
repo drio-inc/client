@@ -22,3 +22,7 @@
 .table-row td {
   @apply border-2 border-black;
 }
+
+.outer-table td {
+  @apply border-l-2 border-black;
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "a4c1ad99-75ff-4a1b-bd4a-8ed65b585faf",
+    "uom": "Each",
+    "volex_item": "430900",
+    "item_description": "3\" Widget",
+    "forecast_information": [
+      {
+        "id": "2d9b1737-dd64-4529-b498-e510b10f8ecc",
+        "forecast_code": "Firm",
+        "interval_grouping_of_forecast": "",
+        "qty": 200,
+        "forecast_date_load": "6/23/2020",
+        "warehouse_location_id": "1A"
+      },
+      {
+        "id": "9d815af1-9652-4d36-9856-ebdeda9e2913",
+        "forecast_code": "Planning",
+        "interval_grouping_of_forecast": "",
+        "qty": 100,
+        "forecast_date_load": "6/30/2020",
+        "warehouse_location_id": "1A"
+      },
+      {
+        "id": "2204f3cb-4451-4cf7-bf88-1d4ceb5e40f7",
+        "forecast_code": "Planning",
+        "interval_grouping_of_forecast": "",
+        "qty": 400,
+        "forecast_date_load": "7/14/2020",
+        "warehouse_location_id": "1A"
+      }
+    ]
+  },
+  {
+    "id": "3c4466ed-a6bb-465b-be4f-fda00c1dce33",
+    "uom": "Each",
+    "volex_item": "300100",
+    "item_description": "5\" Sprocket",
+    "forecast_information": [
+      {
+        "id": "4e63a265-9c2a-41f8-ae0b-12d6dc5f3092",
+        "forecast_code": "Firm",
+        "interval_grouping_of_forecast": "",
+        "qty": 100,
+        "forecast_date_load": "6/16/2020",
+        "warehouse_location_id": "1A"
+      },
+      {
+        "id": "dff19249-7951-409c-a4f1-3139bb3988ec",
+        "forecast_code": "Planning",
+        "interval_grouping_of_forecast": "",
+        "qty": 200,
+        "forecast_date_load": "6/30/2020",
+        "warehouse_location_id": "1A"
+      }
+    ]
+  }
+]

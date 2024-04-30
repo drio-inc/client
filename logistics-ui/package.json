@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "DEVELOPMENT_MODE=development next dev -p 3002",
-    "dev:mock": "DEVELOPMENT_MODE=mock next dev -p 3002",
-    "build:mock": "DEVELOPMENT_MODE=mock next build",
+    "dev": "next dev -p 3002",
+    "dev:mock": "next dev -p 3002",
+    "build:mock": "next build",
     "build": "next build",
     "start": "next start -p 3002",
     "lint": "next lint",
@@ -53,6 +53,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^14.0.0",
     "@types/jsonwebtoken": "^9.0.2",
