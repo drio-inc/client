@@ -1,10 +1,13 @@
 /* eslint-disable react/no-unescaped-entities */
 import { v4 as uuid } from "uuid";
+import html2canvas from "html2canvas";
 import Button from "@/comps/ui/Button";
 import { faker } from "@faker-js/faker";
-import { useEffect, useRef, useState } from "react";
 import ReactToPrint from "react-to-print";
+import { HiXMark } from "react-icons/hi2";
 import { HiMinus, HiPlus } from "react-icons/hi";
+import { useEffect, useRef, useState } from "react";
+import { useAppDispatch } from "@/hooks/useStoreTypes";
 
 import EDI830 from "./edi_830.json";
 
@@ -15,6 +18,10 @@ import {
   warehouseLocationIdEnum,
   intervalGroupingOfForecastEnum,
 } from "./constants";
+
+import Modal from "@/comps/ui/Modal";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
+import showAlert from "@/comps/ui/Alert/Alert";
 
 type RenderTableProps = {
   data: TemplateBody[];
@@ -69,37 +76,43 @@ const RenderTable = ({ data, setItems }: RenderTableProps): JSX.Element => {
   return (
     <table className="w-full border-2 border-black">
       <thead>
-        <tr className="table-row">
-          <th>Volex Item #</th>
-          <th>Item Description</th>
-          <th>UOM</th>
+        <tr className="custom-table-row">
+          <th className="add-padding">Volex Item #</th>
+          <th className="add-padding">Item Description</th>
+          <th className="add-padding">UOM</th>
         </tr>
       </thead>
 
       {data?.map((item, index: number) => (
         <>
-          <tr key={index} className="outer-table">
-            <td contentEditable>{item.volex_item}</td>
-            <td contentEditable>{item.item_description}</td>
-            <td contentEditable>{item.uom}</td>
+          <tr key={index} className="outer-table-row">
+            <td contentEditable className="add-padding">
+              {item.volex_item}
+            </td>
+            <td contentEditable className="add-padding">
+              {item.item_description}
+            </td>
+            <td contentEditable className="add-padding">
+              {item.uom}
+            </td>
           </tr>
 
           <tr>
             <td colSpan={3}>
               <table className="w-[95%] ml-auto">
-                <tr className="table-row">
-                  <th>Forecast Code</th>
-                  <th>Interval Grouping of Forecast</th>
-                  <th>Qty</th>
-                  <th>Forecast Date Load</th>
-                  <th>Warehouse Location ID</th>
+                <tr className="custom-table-row">
+                  <th className="add-padding">Forecast Code</th>
+                  <th className="add-padding">Interval Grouping of Forecast</th>
+                  <th className="add-padding">Qty</th>
+                  <th className="add-padding">Forecast Date Load</th>
+                  <th className="add-padding">Warehouse Location ID</th>
                 </tr>
 
                 {item?.forecast_information?.map((forecast, index: number) => (
                   <tr
                     id={forecast.id}
                     key={forecast.id}
-                    className="relative table-row"
+                    className="relative custom-table-row"
                     onMouseEnter={(e) => {
                       // Show he Hidden Icons
                       const icons = e.currentTarget.querySelector("span");
@@ -116,7 +129,7 @@ const RenderTable = ({ data, setItems }: RenderTableProps): JSX.Element => {
                     {Object.values(forecast).map((value, index) => (
                       <>
                         {index > 0 && (
-                          <td key={index} contentEditable>
+                          <td key={index} contentEditable className="add-padding">
                             {value}
                           </td>
                         )}
@@ -146,8 +159,43 @@ const RenderTable = ({ data, setItems }: RenderTableProps): JSX.Element => {
 };
 
 const TemplateGenerator = () => {
-  const printRef = useRef(null);
+  const dispatch = useAppDispatch();
   const [items, setItems] = useState(EDI830);
+  const printRef = useRef<HTMLDivElement | null>(null);
+
+  const handleDownloadImage = async () => {
+    const documentToPrint = document.getElementById("documentToPrint");
+    if (!documentToPrint) return;
+
+    documentToPrint.querySelectorAll(".add-padding").forEach((el) => {
+      el.classList.add("pb-4");
+    });
+
+    const canvas = await html2canvas(documentToPrint as HTMLDivElement, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+    });
+
+    const data = canvas.toDataURL("image/jpeg");
+    const link = document.createElement("a");
+
+    if (typeof link.download === "string") {
+      link.href = data;
+      link.download = "image.jpeg";
+      document.body.appendChild(link);
+
+      link.click();
+      document.body.removeChild(link);
+      showAlert("Image Downloaded Successfully", "success");
+    } else {
+      window.open(data);
+    }
+
+    documentToPrint.querySelectorAll(".add-padding").forEach((el) => {
+      el.classList.remove("pb-4");
+    });
+  };
 
   const randomTemplate = {
     id: uuid(),
@@ -193,10 +241,41 @@ const TemplateGenerator = () => {
 
   return (
     <div>
-      <ReactToPrint
-        content={() => printRef.current}
-        trigger={() => <Button className="mb-8">Print Document</Button>}
-      />
+      <Button intent={"primary"} onClick={() => dispatch(setOpenModal("printDocumentPopup"))}>
+        Print Document
+      </Button>
+
+      <div className="hidden">
+        <Modal identifier="printDocumentPopup">
+          <div className="relative mx-auto bg-white p-8 rounded-lg w-[400px]">
+            <div className="flex justify-between">
+              <h2 className="text-gray-700 text-2xl font-bold">Select a Print Option</h2>
+
+              <HiXMark
+                onClick={() => dispatch(setCloseModal("printDocumentPopup"))}
+                className="text-gray-700 hover:text-drio-red-dark w-10 h-10 cursor-pointer"
+              />
+            </div>
+
+            <div className="flex gap-x-2 justify-center w-full mt-4">
+              <Button
+                type="button"
+                className="w-full"
+                intent={`primary`}
+                onClick={handleDownloadImage}
+              >
+                <span className="inline-flex justify-center w-full">Print JPEG</span>
+              </Button>
+
+              <ReactToPrint
+                content={() => printRef.current}
+                trigger={() => <Button className="w-full">Print PDF</Button>}
+                onAfterPrint={() => showAlert("PDF Downloaded Successfully", "success")}
+              />
+            </div>
+          </div>
+        </Modal>
+      </div>
 
       <Button onClick={addVolexItem} className="ml-4 mb-8">
         Add Item
@@ -210,7 +289,7 @@ const TemplateGenerator = () => {
         Randomize Everything
       </Button>
 
-      <div className="bg-white p-4" ref={printRef}>
+      <div className="bg-white p-4" ref={printRef} id="documentToPrint">
         <div className="flex flex-col items-end p-4 gap-y-1">
           <h1 className="text-3xl font-semibold">Planning Schedule with Release Capacity</h1>
 
@@ -244,17 +323,23 @@ const TemplateGenerator = () => {
 
         <table className="w-full my-4">
           <thead>
-            <tr className="table-row">
-              <th>Schedule Type</th>
-              <th>Schedule Qty Code</th>
-              <th>Supplier Code</th>
+            <tr className="custom-table-row">
+              <th className="add-padding">Schedule Type</th>
+              <th className="add-padding">Schedule Qty Code</th>
+              <th className="add-padding">Supplier Code</th>
             </tr>
           </thead>
 
-          <tr className="table-row">
-            <td contentEditable>Planned Shipment Based</td>
-            <td contentEditable>Actual Discrete Quantities</td>
-            <td contentEditable>434</td>
+          <tr className="custom-table-row">
+            <td contentEditable className="add-padding">
+              Planned Shipment Based
+            </td>
+            <td contentEditable className="add-padding">
+              Actual Discrete Quantities
+            </td>
+            <td contentEditable className="add-padding">
+              434
+            </td>
           </tr>
         </table>
 
