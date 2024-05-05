@@ -1,0 +1,52 @@
+{
+  "documentInformation": {
+    "Transaction Set Purpose Code": "Original",
+    "Forecast Order Number": "8800000958",
+    "Release Number": "331",
+    "Forecast Type Qualifier": "Delivery Based",
+    "Forecast Quantity Qualifier": "Actual Discrete Quantities",
+    "Schedule Horizon Start Date": "05/10/2016",
+    "Schedule Horizon End Date": "03/07/2016",
+    "Issue Date": "12/25/2016"
+  },
+
+  "referenceInformation": {
+    "Warehouse Storage Location": "21WF",
+    "Number": "1"
+  },
+
+  "shipFromInformation": {
+    "Company Name": "Tesla Motors",
+    "Additional Name": "Tesla Motors",
+    "Assigned by Buyer": "Tesla Motors",
+    "Address": "",
+    "Address 1": "3500 Deer Creek Road",
+    "Address 2": "",
+    "Citiy/State/Zip": "Palo Alto, CA 94304",
+    "Country": "US"
+  },
+
+  "shipToInformation": {
+    "Company Name": "Tesla Motors",
+    "Additional Name": "Tesla Motors",
+    "Assigned by Buyer": "Tesla Motors",
+    "Address": "",
+    "Address 1": "3500 Deer Creek Road",
+    "Address 2": "",
+    "Citiy/State/Zip": "Palo Alto, CA 94304",
+    "Country": "US"
+  },
+
+  "contactInformation": {
+    "Contact Function Code": "Expeditor",
+    "Name": "John Doe",
+    "Telephone": "650-681-5000"
+  },
+
+  "forecastSchedule": {
+    "Quantity": "100",
+    "Forecast Qualifier": "Immediate",
+    "Timing Qualifier": "Weekly Bucket",
+    "Date": "05/10/2016"
+  }
+}

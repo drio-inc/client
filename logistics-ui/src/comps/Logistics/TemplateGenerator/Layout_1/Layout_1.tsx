@@ -2,14 +2,12 @@ import { newForecast } from "../constants";
 import { useState, useEffect } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
 
-import EDI830 from "@data/edi_830.json";
-
 type RenderTableProps = {
-  data: TemplateBody[];
+  items: TemplateBody[];
   setItems: React.Dispatch<React.SetStateAction<TemplateBody[]>>;
 };
 
-const RenderTable = ({ data, setItems }: RenderTableProps): JSX.Element => {
+const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
   const [forecastId, setForecaseId] = useState<string>("");
 
   useEffect(() => {
@@ -64,7 +62,7 @@ const RenderTable = ({ data, setItems }: RenderTableProps): JSX.Element => {
         </tr>
       </thead>
 
-      {data?.map((item, index: number) => (
+      {items?.map((item, index: number) => (
         <>
           <tr key={index} className="outer-table-row">
             <td contentEditable className="add-padding">
@@ -139,9 +137,7 @@ const RenderTable = ({ data, setItems }: RenderTableProps): JSX.Element => {
   );
 };
 
-const Layout_1 = () => {
-  const [items, setItems] = useState(EDI830);
-
+const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
   return (
     <>
       <div className="flex flex-col items-end p-4 gap-y-1">
@@ -197,7 +193,7 @@ const Layout_1 = () => {
         </tr>
       </table>
 
-      <RenderTable data={items} setItems={setItems} />
+      <RenderTable items={items} setItems={setItems} />
     </>
   );
 };

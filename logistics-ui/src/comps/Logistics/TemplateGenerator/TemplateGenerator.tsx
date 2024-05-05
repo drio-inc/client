@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 
 import Layout_1 from "./Layout_1";
+import Layout_2 from "./Layout_2";
 
 import {
   Select,
@@ -19,7 +20,8 @@ import {
   SelectContent,
 } from "@ui/Select";
 
-import EDI830 from "@data/edi_830.json";
+import EDI_830_Layout_1 from "@data/edi_830_layout_1.json";
+import EDI_830_Layout_2 from "@data/edi_830_layout_2.json";
 
 import {
   uomEnum,
@@ -29,15 +31,16 @@ import {
 } from "./constants";
 
 import Modal from "@/comps/ui/Modal";
-import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import showAlert from "@/comps/ui/Alert/Alert";
-import Layout_2 from "./Layout_2";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 const TemplateGenerator = () => {
   const dispatch = useAppDispatch();
-  const [items, setItems] = useState(EDI830);
   const printRef = useRef<HTMLDivElement | null>(null);
   const [templateLayout, setTemplateLayout] = useState("Layout 1");
+
+  const [layoutOneItems, setLayoutOneItems] = useState(EDI_830_Layout_1);
+  const [layoutTwoItems, setLayoutTwoItems] = useState(EDI_830_Layout_2);
 
   const handleDownloadImage = async () => {
     const documentToPrint = document.getElementById("documentToPrint");
@@ -89,15 +92,15 @@ const TemplateGenerator = () => {
   };
 
   const addVolexItem = () => {
-    setItems((prev) => [...prev, randomTemplate]);
+    setLayoutOneItems((prev) => [...prev, randomTemplate]);
   };
 
   const removeVolexItem = (index: number) => {
-    setItems((prev) => prev.filter((_, i) => i !== index));
+    setLayoutOneItems((prev) => prev.filter((_, i) => i !== index));
   };
 
   const randomizeEverything = () => {
-    setItems((prev) =>
+    setLayoutOneItems((prev) =>
       prev.map((item) => ({
         ...item,
         volex_item: faker.string.numeric({ length: 6 }),
@@ -128,6 +131,8 @@ const TemplateGenerator = () => {
     setTemplateLayout(layout);
   };
 
+  console.log(layoutTwoItems);
+
   return (
     <div>
       <div className="flex items-center gap-x-4 mb-8">
@@ -152,7 +157,9 @@ const TemplateGenerator = () => {
 
         <Button onClick={addVolexItem}>Add Item</Button>
 
-        <Button onClick={() => removeVolexItem(items.length - 1)}>Remove Latest Item</Button>
+        <Button onClick={() => removeVolexItem(layoutOneItems.length - 1)}>
+          Remove Latest Item
+        </Button>
 
         <Button onClick={randomizeEverything}>Randomize Everything</Button>
       </div>
@@ -190,7 +197,11 @@ const TemplateGenerator = () => {
       </div>
 
       <div className="bg-white p-4" ref={printRef} id="documentToPrint">
-        {templateLayout === "Layout 1" ? <Layout_1 /> : <Layout_2 />}
+        {templateLayout === "Layout 1" ? (
+          <Layout_1 items={layoutOneItems} setItems={setLayoutOneItems} />
+        ) : (
+          <Layout_2 items={layoutTwoItems} setItems={setLayoutTwoItems} />
+        )}
       </div>
     </div>
   );
