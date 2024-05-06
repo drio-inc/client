@@ -3,11 +3,7 @@ import Table from "@/comps/ui/Table";
 import Button from "@/comps/ui/Button";
 import MetadataMenu from "./MetadataMenu";
 
-import {
-  setRows,
-  setCurrentRow,
-  setSelectedRows,
-} from "@/state/slices/metadataSlice";
+import { setRows, setCurrentRow, setSelectedRows } from "@/state/slices/metadataSlice";
 
 import { useEffect, useState } from "react";
 import { IoRefresh } from "react-icons/io5";
@@ -27,13 +23,9 @@ const Modal = dynamic(() => import("@/comps/ui/Modal"));
 const SchemaStats = dynamic(() => import("./SchemaStats"));
 const AddMetaDataForm = dynamic(() => import("./AddMetaDataForm"));
 
-const MetadataPopover = dynamic(
-  () => import("./HeaderPopovers/MetadataPopover")
-);
+const MetadataPopover = dynamic(() => import("./HeaderPopovers/MetadataPopover"));
 
-const VisibilityPopover = dynamic(
-  () => import("./HeaderPopovers/VisibilityPopover")
-);
+const VisibilityPopover = dynamic(() => import("./HeaderPopovers/VisibilityPopover"));
 
 const headers = [
   {
@@ -45,13 +37,23 @@ const headers = [
     accessor: "sample_value",
   },
   {
-    header: "Data Type",
+    header: "Basic Data Type",
     accessor: "property_type",
+  },
+  {
+    header: "Enhanced Data Type",
+    accessor: "enhanced_property_type",
   },
   {
     type: "array",
     accessor: "tags",
-    header: "Tags",
+    header: "Key Name Tags",
+    menu: <MetadataPopover />,
+  },
+  {
+    type: "array",
+    accessor: "data_tags",
+    header: "Data Field Tags",
     menu: <MetadataPopover />,
   },
   {
