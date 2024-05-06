@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
+import { BiBrain } from "react-icons/bi";
 import { setExpandedLinks } from "@/state/slices/uiSlice";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import { IoGridOutline, IoLayersOutline } from "react-icons/io5";
@@ -57,6 +58,23 @@ const NavLinks = [
   },
 
   {
+    name: "Data Domain Learning",
+    href: "data-domain-learning",
+    default: "lexicon",
+    icon: <BiBrain className="inline-block w-6 h-6 mr-2" />,
+    children: [
+      {
+        name: "Lexicon",
+        href: "lexicon",
+      },
+      {
+        name: "Anomaly Model",
+        href: "anomaly-model",
+      },
+    ],
+  },
+
+  {
     name: "Data Contracts",
     href: "data-contracts",
     default: "inbound-contracts",
@@ -101,9 +119,7 @@ const NavLinks = [
   {
     name: "Monitoring",
     href: "monitoring",
-    icon: (
-      <HiOutlinePresentationChartBar className="inline-block w-6 h-6 mr-2" />
-    ),
+    icon: <HiOutlinePresentationChartBar className="inline-block w-6 h-6 mr-2" />,
     children: [
       {
         name: "Alerts",
@@ -127,9 +143,7 @@ const NavLinks = [
   {
     name: "Troubleshooting",
     href: "troubleshooting",
-    icon: (
-      <HiOutlinePresentationChartLine className="inline-block w-6 h-6 mr-2" />
-    ),
+    icon: <HiOutlinePresentationChartLine className="inline-block w-6 h-6 mr-2" />,
   },
 
   {
@@ -196,13 +210,7 @@ export default function Sidebar() {
     <nav className="hidden md:left-0 md:flex md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden border-r border-gray-200 bg-white relative md:w-64 py-4 px-2">
       <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
         <Link href="/">
-          <Image
-            priority
-            width={145}
-            height={145}
-            src="/logo.svg"
-            alt="Drio Logo"
-          />
+          <Image priority width={145} height={145} src="/logo.svg" alt="Drio Logo" />
         </Link>
 
         <div
@@ -224,13 +232,7 @@ export default function Sidebar() {
                   <div
                     className="cursor-pointer"
                     onClick={() => {
-                      router.push(
-                        `/${
-                          link.default
-                            ? `${link.href}/${link.default}`
-                            : link.href
-                        }`
-                      );
+                      router.push(`/${link.default ? `${link.href}/${link.default}` : link.href}`);
                     }}
                   >
                     <span
@@ -242,9 +244,7 @@ export default function Sidebar() {
                     >
                       {link.icon}
                     </span>
-                    <span className={`text-gray-500 hover:text-gray-600`}>
-                      {link.name}
-                    </span>
+                    <span className={`text-gray-500 hover:text-gray-600`}>{link.name}</span>
                   </div>
                   {link.children && (
                     <span className="ml-4">
@@ -257,27 +257,25 @@ export default function Sidebar() {
                   )}
                 </div>
 
-                {link.children &&
-                  expandedLinks[link.name] &&
-                  link.children.length > 0 && (
-                    <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-4 my-2">
-                      {link.children.map((child) => (
-                        <li key={child.name}>
-                          <Link href={`/${link.href}/${child.href}`}>
-                            <span
-                              className={`cursor-pointer transition-colors duration-200 ease-in-out hover:rounded-lg hover:bg-gray-100 text-sm py-3 px-2 font-medium block my-1 ${
-                                router.pathname.indexOf(child.href) !== -1
-                                  ? "bg-gray-100 text-gray-600 hover:text-gray-500 rounded-lg"
-                                  : "text-gray-500 hover:text-gray-600"
-                              }`}
-                            >
-                              {child.name}
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                {link.children && expandedLinks[link.name] && link.children.length > 0 && (
+                  <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-4 my-2">
+                    {link.children.map((child) => (
+                      <li key={child.name}>
+                        <Link href={`/${link.href}/${child.href}`}>
+                          <span
+                            className={`cursor-pointer transition-colors duration-200 ease-in-out hover:rounded-lg hover:bg-gray-100 text-sm py-3 px-2 font-medium block my-1 ${
+                              router.pathname.indexOf(child.href) !== -1
+                                ? "bg-gray-100 text-gray-600 hover:text-gray-500 rounded-lg"
+                                : "text-gray-500 hover:text-gray-600"
+                            }`}
+                          >
+                            {child.name}
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
