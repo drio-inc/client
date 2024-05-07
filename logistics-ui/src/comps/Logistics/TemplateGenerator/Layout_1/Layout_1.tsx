@@ -108,7 +108,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
                     {Object.values(forecast).map((value, index) => (
                       <>
                         {index > 0 && (
-                          <td key={index} contentEditable className="add-padding">
+                          <td key={index} contentEditable className="inner-table add-padding">
                             {value}
                           </td>
                         )}

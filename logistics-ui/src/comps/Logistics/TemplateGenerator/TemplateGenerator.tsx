@@ -46,10 +46,6 @@ const TemplateGenerator = () => {
     const documentToPrint = document.getElementById("documentToPrint");
     if (!documentToPrint) return;
 
-    documentToPrint.querySelectorAll(".add-padding").forEach((el) => {
-      el.classList.add("pb-4");
-    });
-
     const canvas = await html2canvas(documentToPrint as HTMLDivElement, {
       scale: 2,
       useCORS: true,
@@ -70,13 +66,9 @@ const TemplateGenerator = () => {
     } else {
       window.open(data);
     }
-
-    documentToPrint.querySelectorAll(".add-padding").forEach((el) => {
-      el.classList.remove("pb-4");
-    });
   };
 
-  const randomTemplate = {
+  const randomLayoutOneTemplate = {
     id: uuid(),
     volex_item: faker.string.numeric({ length: 6 }),
     item_description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
@@ -91,31 +83,104 @@ const TemplateGenerator = () => {
     })),
   };
 
-  const addVolexItem = () => {
-    setLayoutOneItems((prev) => [...prev, randomTemplate]);
+  const randomLayoutTwoTemplate = {
+    id: uuid(),
+
+    "Line #": faker.string.numeric({ length: 5 }),
+    "Buyer's Part Number": `${faker.number.int({ min: 100000, max: 999999 })} - ${faker.number.int({
+      min: 10,
+      max: 99,
+    })} - ${faker.string.alpha().toUpperCase()}`,
+
+    "Unit Detail": {
+      "Composite Unit of Measure": faker.helpers.arrayElement(uomEnum),
+    },
+
+    "Contact Information": {
+      "Contact Function Code": faker.helpers.arrayElement(["SA", "SE", "SU"]),
+      Name: faker.person.fullName(),
+      Telephone: faker.phone.number(),
+    },
+
+    "Forecast Schedule": Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => ({
+      id: uuid(),
+      Quantity: faker.number.int({ min: 100, max: 800 }).toString(),
+      "Forecast Qualifier": faker.helpers.arrayElement(forecastCodeEnum),
+      "Timing Qualifier": faker.helpers.arrayElement(intervalGroupingOfForecastEnum),
+      Date: faker.date.past().toLocaleDateString("en-US"),
+    })),
+  };
+
+  const addLineItem = () => {
+    if (templateLayout === "Layout 1") {
+      setLayoutOneItems((prev) => [...prev, randomLayoutOneTemplate]);
+    } else {
+      setLayoutTwoItems((prev) => [...prev, randomLayoutTwoTemplate]);
+    }
   };
 
   const removeVolexItem = (index: number) => {
-    setLayoutOneItems((prev) => prev.filter((_, i) => i !== index));
+    if (templateLayout === "Layout 1") {
+      setLayoutOneItems((prev) => prev.filter((_, i) => i !== index));
+    } else {
+      setLayoutTwoItems((prev) => prev.filter((_, i) => i !== index));
+    }
   };
 
   const randomizeEverything = () => {
-    setLayoutOneItems((prev) =>
-      prev.map((item) => ({
-        ...item,
-        volex_item: faker.string.numeric({ length: 6 }),
-        item_description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
-        uom: faker.helpers.arrayElement(uomEnum),
-        forecast_information: item.forecast_information.map(() => ({
+    if (templateLayout === "Layout 1") {
+      setLayoutOneItems((prev) =>
+        prev.map((item) => ({
+          ...item,
+          volex_item: faker.string.numeric({ length: 6 }),
+          item_description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
+          uom: faker.helpers.arrayElement(uomEnum),
+          forecast_information: item.forecast_information.map(() => ({
+            id: uuid(),
+            forecast_code: faker.helpers.arrayElement(forecastCodeEnum),
+            interval_grouping_of_forecast: faker.helpers.arrayElement(
+              intervalGroupingOfForecastEnum
+            ),
+            qty: faker.number.int({ min: 100, max: 800 }),
+            forecast_date_load: faker.date.past().toLocaleDateString("en-US"),
+            warehouse_location_id: faker.helpers.arrayElement(warehouseLocationIdEnum),
+          })),
+        }))
+      );
+    } else {
+      setLayoutTwoItems((prev) =>
+        prev.map((item) => ({
           id: uuid(),
-          forecast_code: faker.helpers.arrayElement(forecastCodeEnum),
-          interval_grouping_of_forecast: faker.helpers.arrayElement(intervalGroupingOfForecastEnum),
-          qty: faker.number.int({ min: 100, max: 800 }),
-          forecast_date_load: faker.date.past().toLocaleDateString("en-US"),
-          warehouse_location_id: faker.helpers.arrayElement(warehouseLocationIdEnum),
-        })),
-      }))
-    );
+
+          "Line #": faker.string.numeric({ length: 5 }),
+          "Buyer's Part Number": `${faker.number.int({
+            min: 100000,
+            max: 999999,
+          })} - ${faker.number.int({
+            min: 10,
+            max: 99,
+          })} - ${faker.string.alpha().toUpperCase()}`,
+
+          "Unit Detail": {
+            "Composite Unit of Measure": faker.helpers.arrayElement(uomEnum),
+          },
+
+          "Contact Information": {
+            "Contact Function Code": faker.helpers.arrayElement(["SA", "SE", "SU"]),
+            Name: faker.person.fullName(),
+            Telephone: faker.phone.number(),
+          },
+
+          "Forecast Schedule": item["Forecast Schedule"].map(() => ({
+            id: uuid(),
+            Quantity: faker.number.int({ min: 100, max: 800 }).toString(),
+            "Forecast Qualifier": faker.helpers.arrayElement(forecastCodeEnum),
+            "Timing Qualifier": faker.helpers.arrayElement(intervalGroupingOfForecastEnum),
+            Date: faker.date.past().toLocaleDateString("en-US"),
+          })),
+        }))
+      );
+    }
   };
 
   const layouts = [
@@ -130,8 +195,6 @@ const TemplateGenerator = () => {
   const handleLayoutChange = (layout: string) => {
     setTemplateLayout(layout);
   };
-
-  console.log(layoutTwoItems);
 
   return (
     <div>
@@ -155,7 +218,7 @@ const TemplateGenerator = () => {
           Print Document
         </Button>
 
-        <Button onClick={addVolexItem}>Add Item</Button>
+        <Button onClick={addLineItem}>Add Item</Button>
 
         <Button onClick={() => removeVolexItem(layoutOneItems.length - 1)}>
           Remove Latest Item
