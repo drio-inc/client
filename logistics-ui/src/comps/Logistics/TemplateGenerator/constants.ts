@@ -1,5 +1,4 @@
 import { v4 as uuid } from "uuid";
-import { faker } from "@faker-js/faker";
 
 export const forecastCodeEnum = ["Firm", "Planning", "Order"];
 export const warehouseLocationIdEnum = ["1A", "2B", "3C", "4D", "5E"];

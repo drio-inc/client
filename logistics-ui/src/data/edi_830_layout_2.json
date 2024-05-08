@@ -1,0 +1,48 @@
+[
+  {
+    "id": "9d409955-3d5e-4936-a9bf-0a032bbd39d0",
+    "Line #": "00010",
+    "Buyer's Part Number": "1069845-22-B",
+
+    "Unit Detail": {
+      "Composite Unit of Measure": "Each"
+    },
+
+    "Contact Information": {
+      "Contact Function Code": "Expeditor",
+      "Name": "John Doe",
+      "Telephone": "650-681-5000"
+    },
+
+    "Forecast Schedule": [
+      {
+        "id": "ba8eeec6-36f7-42a2-ac6f-41d54a961761",
+        "Quantity": "100",
+        "Forecast Qualifier": "Immediate",
+        "Timing Qualifier": "Weekly Bucket",
+        "Date": "05/10/2016"
+      },
+      {
+        "id": "1a7d91ff-ca82-44bb-b5fa-3d7732f1231f",
+        "Quantity": "100",
+        "Forecast Qualifier": "Immediate",
+        "Timing Qualifier": "Weekly Bucket",
+        "Date": "05/17/2016"
+      },
+      {
+        "id": "d73917fd-726f-4007-ad65-c7840eae925d",
+        "Quantity": "100",
+        "Forecast Qualifier": "Immediate",
+        "Timing Qualifier": "Weekly Bucket",
+        "Date": "05/24/2016"
+      },
+      {
+        "id": "0ca633a9-8cd7-401c-b0d3-a8e79a89a230",
+        "Quantity": "100",
+        "Forecast Qualifier": "Immediate",
+        "Timing Qualifier": "Weekly Bucket",
+        "Date": "05/31/2016"
+      }
+    ]
+  }
+]

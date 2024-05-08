@@ -16,3 +16,26 @@ type TemplateBody = {
     interval_grouping_of_forecast: string;
   }[];
 };
+
+interface ItemInformation {
+  id: string;
+  "Line #": string;
+  "Buyer's Part Number": string;
+  "Unit Detail": {
+    "Composite Unit of Measure": string;
+  };
+
+  "Contact Information": {
+    "Contact Function Code": string;
+    Name: string;
+    Telephone: string;
+  };
+
+  "Forecast Schedule": {
+    id: string;
+    Quantity: string;
+    "Forecast Qualifier": string;
+    "Timing Qualifier": string;
+    Date: string;
+  }[];
+}
