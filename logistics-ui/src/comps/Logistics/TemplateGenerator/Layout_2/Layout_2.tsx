@@ -70,7 +70,20 @@ const Layout_2 = ({ items, setItems }: Layout2Props) => {
       })
     );
   };
-  const deleteForecast = (id: string, index: number) => {};
+  const deleteForecastSchedule = (id: string, index: number) => {
+    setItems((prev) =>
+      prev.map((p) => {
+        if (p.id === id) {
+          return {
+            ...p,
+            "Forecast Schedule": p["Forecast Schedule"].filter((_, i) => i !== index),
+          };
+        }
+
+        return p;
+      })
+    );
+  };
 
   return (
     <>
@@ -269,13 +282,28 @@ const Layout_2 = ({ items, setItems }: Layout2Props) => {
 
                   {/* Third Column */}
                   {item["Forecast Schedule"].map((forecast, index) => (
-                    <div className="border border-white" key={index}>
+                    <div
+                      className="border border-white"
+                      key={index}
+                      onMouseEnter={(e) => {
+                        // Show he Hidden Icons
+                        const icons = e.currentTarget.querySelector("span");
+                        icons?.classList.remove("hidden");
+                        icons?.classList.add("flex");
+                      }}
+                      onMouseLeave={(e) => {
+                        // Hide the Hidden Icons
+                        const icons = e.currentTarget.querySelector("span");
+                        icons?.classList.add("hidden");
+                        icons?.classList.remove("flex");
+                      }}
+                    >
                       <div className="bg-[#E4E9EB] flex justify-between">
                         <h5 className="font-semibold">Forecast Schedule</h5>
-                        <span>
+                        <span className="hidden">
                           <HiMinus
                             className="cursor-pointer w-6 h-6 text-black"
-                            onClick={() => deleteForecast(item.id, index)}
+                            onClick={() => deleteForecastSchedule(item.id, index)}
                           />
                         </span>
                       </div>
