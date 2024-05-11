@@ -1,10 +1,10 @@
-import { newForecast } from "../constants";
+import { newForecast } from "../../constants";
 import { useState, useEffect } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
 
 type RenderTableProps = {
-  items: TemplateBody[];
-  setItems: React.Dispatch<React.SetStateAction<TemplateBody[]>>;
+  items: EDI830LayoutOne[];
+  setItems: React.Dispatch<React.SetStateAction<EDI830LayoutOne[]>>;
 };
 
 const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
