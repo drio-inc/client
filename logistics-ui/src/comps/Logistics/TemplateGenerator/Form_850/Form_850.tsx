@@ -68,12 +68,19 @@ const Form_850 = () => {
     Qty: faker.number.int({ min: 1, max: 10 }),
     UOM: faker.helpers.arrayElement(uomEnum),
     Price: Number(faker.commerce.price()),
-    Amount: Number(faker.commerce.price()),
   };
 
   const addLineItem = () => {
     if (templateLayout === "Layout 1") {
-      setLayoutOneItems((prev) => [...prev, randomLayoutOneTemplate]);
+      setLayoutOneItems((prev) => [
+        ...prev,
+        {
+          ...randomLayoutOneTemplate,
+          Amount: randomLayoutOneTemplate.Qty * randomLayoutOneTemplate.Price,
+        },
+      ]);
+
+      console.log(randomLayoutOneTemplate);
     }
   };
 
@@ -86,12 +93,23 @@ const Form_850 = () => {
   const randomizeEverything = () => {
     if (templateLayout === "Layout 1") {
       setLayoutOneItems((prev) =>
-        prev.map((item) => ({
-          ...item,
-          volex_item: faker.string.numeric({ length: 6 }),
-          item_description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
-          uom: faker.helpers.arrayElement(uomEnum),
-        }))
+        prev.map((item) => {
+          const randomLayoutOneTemplateV2 = {
+            "Line #": faker.string.numeric({ length: 1 }),
+            "UPC #": faker.string.numeric({ length: 6 }),
+            "Vendor Item #": faker.string.numeric({ length: 6 }),
+            Description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
+            Qty: faker.number.int({ min: 1, max: 10 }),
+            UOM: faker.helpers.arrayElement(uomEnum),
+            Price: Number(faker.commerce.price()),
+          };
+
+          return {
+            ...item,
+            ...randomLayoutOneTemplateV2,
+            Amount: randomLayoutOneTemplateV2.Qty * randomLayoutOneTemplateV2.Price,
+          };
+        })
       );
     }
   };

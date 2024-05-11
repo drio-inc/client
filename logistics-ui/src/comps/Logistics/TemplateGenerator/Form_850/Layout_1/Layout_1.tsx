@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState, useEffect } from "react";
-import { HiMinus, HiPlus } from "react-icons/hi";
+import Image from "next/image";
+import { HiMinus } from "react-icons/hi";
 
 type RenderTableProps = {
   items: EDI850LayoutOne[];
@@ -8,14 +8,9 @@ type RenderTableProps = {
 };
 
 const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
-  const [forecastId, setForecaseId] = useState<string>("");
-
-  useEffect(() => {
-    if (forecastId) {
-      setItems((prev) => prev.filter((p) => p.id !== forecastId));
-      setForecaseId("");
-    }
-  }, [forecastId, setItems]);
+  const deleteItem = (id: string, index: number) => {
+    setItems((prev) => prev.filter((p) => p.id !== id));
+  };
 
   return (
     <table className="w-full table-fixed">
@@ -34,7 +29,22 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
       <tbody>
         {items?.map((item, index: number) => (
-          <tr key={index} className="custom-table-row">
+          <tr
+            key={index}
+            className="relative custom-table-row"
+            onMouseEnter={(e) => {
+              // Show he Hidden Icons
+              const icons = e.currentTarget.querySelector("#deleteIcon");
+              icons?.classList.remove("hidden");
+              //   icons?.classList.add("flex");
+            }}
+            onMouseLeave={(e) => {
+              // Hide the Hidden Icons
+              const icons = e.currentTarget.querySelector("#deleteIcon");
+              icons?.classList.add("hidden");
+              icons?.classList.remove("flex");
+            }}
+          >
             <td contentEditable>{item["Line #"]}</td>
             <td contentEditable>{item["UPC #"]}</td>
             <td contentEditable>{item["Vendor Item #"]}</td>
@@ -42,14 +52,24 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
             <td contentEditable>{item["Qty"]}</td>
             <td contentEditable>{item["UOM"]}</td>
             <td contentEditable>{item["Price"]}</td>
-            <td contentEditable>{item["Amount"]}</td>
+            <td contentEditable>
+              <span>{(item["Qty"] * item["Price"]).toFixed(2)}</span>
+
+              <span className="hidden absolute -bottom-6 -right-6 p-2" id="deleteIcon">
+                <HiMinus
+                  className="cursor-pointer w-8 h-8"
+                  onClick={() => deleteItem(item.id, index)}
+                />
+              </span>
+            </td>
           </tr>
         )) || null}
 
         <tr className="custom-table-row w-full">
           <td colSpan={3} />
           <td>
-            Total Qty: <span contentEditable>5</span>
+            Total Qty:{" "}
+            <span contentEditable>{items.reduce((acc, cur) => acc + cur["Qty"], 0)}</span>
           </td>
           <td colSpan={4} />
         </tr>
@@ -58,7 +78,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <td colSpan={6} />
           <td className="font-bold border-2 border-black">Total</td>
           <td className="border-2 border-black" contentEditable>
-            249.45
+            {items.reduce((acc, cur) => acc + cur?.["Amount"], 0).toFixed(2)}
           </td>
         </tr>
       </tbody>
@@ -68,20 +88,26 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
 const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
   return (
-    <>
-      <div className="flex flex-col items-end p-4 gap-y-1">
-        <h1 className="text-3xl font-semibold">Purchase Order</h1>
+    <div className="relative">
+      <div className="flex justify-between">
+        <div className="px-8">
+          <Image src="/acmemfg.png" width={250} height={250} alt={"Acme Logo"} />
+        </div>
 
-        <h5>Original</h5>
-        <h5 contentEditable>New Order</h5>
+        <div className="flex flex-col items-end p-4 gap-y-1">
+          <h1 className="text-3xl font-semibold">Purchase Order</h1>
 
-        <h5 contentEditable className="mt-4">
-          Order_12345
-        </h5>
+          <h5>Original</h5>
+          <h5 contentEditable>New Order</h5>
 
-        <h5 contentEditable className="mt-4">
-          6/16/2020
-        </h5>
+          <h5 contentEditable className="mt-4">
+            Order_12345
+          </h5>
+
+          <h5 contentEditable className="mt-4">
+            5/1/2024
+          </h5>
+        </div>
       </div>
 
       <div className="flex justify-between p-4 max-w-6xl mx-auto">
@@ -103,7 +129,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
         <div>
           <h5 className="font-bold">Ship From</h5>
-          <h5 contentEditable>DELL</h5>
+          <h5 contentEditable>Acme Inc</h5>
           <h5>
             Code Type: <span contentEditable>Assigned by Buyer or Buyer's Agent</span>
           </h5>
@@ -190,7 +216,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </tr>
       </table>
 
-      <table className="w-full my-4">
+      <table className="w-full mt-8 mb-4">
         <thead>
           <tr className="custom-table-row bg-gray-200 text-center">
             <td colSpan={4}>FOB</td>
@@ -213,7 +239,9 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
       </table>
 
       <RenderTable items={items} setItems={setItems} />
-    </>
+
+      <span className="text-[8px] text-gray-500 absolute inline-block">Created by Drio Inc.</span>
+    </div>
   );
 };
 
