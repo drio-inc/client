@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { newForecast } from "../constants";
 import { useState, useEffect } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
@@ -139,19 +140,23 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
 const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
   return (
-    <>
-      <div className="flex flex-col items-end p-4 gap-y-1">
-        <h1 className="text-3xl font-semibold">Planning Schedule with Release Capacity</h1>
+    <div className="w-full relative">
+      <div className="flex w-full justify-between">
+        <div>
+          <Image src="/acmemfg.png" width={250} height={250} alt={"Tesla Logo"} />
+        </div>
+        <div className="flex flex-col items-end p-4 gap-y-1">
+          <h1 className="text-3xl font-semibold">Planning Schedule with Release Capacity</h1>
+          <h5>Set Purpose Code</h5>
+          <h5 contentEditable>Mutually Defined</h5>
 
-        <h5>Set Purpose Code</h5>
-        <h5 contentEditable>Mutually Defined</h5>
+          <h5>Reference ID</h5>
+          <h5 contentEditable>1514893</h5>
 
-        <h5>Reference ID</h5>
-        <h5 contentEditable>1514893</h5>
-
-        <div className="mt-4">
-          <h5 className="font-bold">Start Date</h5>
-          <h5 contentEditable>6/16/2020</h5>
+          <div className="mt-4">
+            <h5 className="font-bold">Start Date</h5>
+            <h5 contentEditable>3/16/2024</h5>
+          </div>
         </div>
       </div>
 
@@ -194,7 +199,11 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
       </table>
 
       <RenderTable items={items} setItems={setItems} />
-    </>
+
+      <span className="text-[8px] text-gray-500 absolute inline-block mt-1">
+        Created by Drio Inc.
+      </span>
+    </div>
   );
 };
 

@@ -14,9 +14,9 @@ const documentInformation = {
   "Release Number": "331",
   "Forecast Type Qualifier": "Delivery Based",
   "Forecast Quantity Qualifier": "Actual Discrete Quantities",
-  "Schedule Horizon Start Date": "05/10/2016",
-  "Schedule Horizon End Date": "03/07/2016",
-  "Issue Date": "12/25/2016",
+  "Schedule Horizon Start Date": "04/10/2024",
+  "Schedule Horizon End Date": "03/07/2024",
+  "Issue Date": "02/25/2024",
 };
 
 const referenceInformation = {
@@ -25,9 +25,9 @@ const referenceInformation = {
 };
 
 const shipFromInformation = {
-  "Company Name": "Tesla Motors",
-  "Additional Name": "Tesla Motors",
-  "Assigned by Buyer": "Tesla Motors",
+  "Company Name": "Acme Manufacturing",
+  "Additional Name": "Acme Manufacturing",
+  "Assigned by Buyer": "Acme Manufacturing",
   Address: "",
   "Address 1": "3500 Deer Creek Road",
   "Address 2": "",
@@ -36,9 +36,9 @@ const shipFromInformation = {
 };
 
 const shipToInformation = {
-  "Company Name": "Tesla Motors",
-  "Additional Name": "Tesla Motors",
-  "Assigned by Buyer": "Tesla Motors",
+  "Company Name": "Acme Manufacturing",
+  "Additional Name": "Acme Manufacturing",
+  "Assigned by Buyer": "Acme Manufacturing",
   Address: "",
   "Address 1": "3500 Deer Creek Road",
   "Address 2": "",
@@ -86,11 +86,11 @@ const Layout_2 = ({ items, setItems }: Layout2Props) => {
   };
 
   return (
-    <>
-      <div className="flex justify-between">
+    <div className="relative">
+      <div className="flex justify-between mb-4">
         <div>
-          <h3 className="font-semibold mb-2 text-center">Tesla Motors</h3>
-          <Image src="/tesla.png" width={150} height={150} alt={"Tesla Logo"} />
+          <h3 className="font-semibold mb-2">Acme Manufacturing</h3>
+          <Image src="/acmemfg.png" width={200} height={200} alt={"Tesla Logo"} />
         </div>
 
         <div className="flex flex-col items-end p-4 gap-y-1">
@@ -331,7 +331,11 @@ const Layout_2 = ({ items, setItems }: Layout2Props) => {
           </div>
         </>
       ))}
-    </>
+
+      <span className="text-[8px] text-gray-500 absolute inline-block mt-1">
+        Created by Drio Inc.
+      </span>
+    </div>
   );
 };
 
