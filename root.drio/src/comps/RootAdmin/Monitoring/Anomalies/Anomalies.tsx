@@ -3,12 +3,7 @@ import Table from "@/comps/ui/Table";
 import AnomaliesJSON from "@/data/anomalies.json";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import {
-  setRow,
-  setRows,
-  setRawRows,
-  setSelectedRows,
-} from "@/state/slices/anomaliesSlice";
+import { setRow, setRows, setRawRows, setSelectedRows } from "@/state/slices/anomaliesSlice";
 
 import Modal from "@/comps/ui/Modal";
 import { HiMinusSm } from "react-icons/hi";
@@ -24,6 +19,10 @@ import { mergedDataSourceData } from "@/functions/mergeDataSources";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
 const headers = [
+  {
+    header: "",
+    accessor: "status",
+  },
   {
     header: "Dataset",
     accessor: "name",

@@ -18,5 +18,9 @@
 }
 
 .primary-outline-button {
-  @apply border-2 border-drio-red text-drio-red text-xs py-3 px-8 shadow-sm focus:outline-drio-red-dark hover:border-drio-red-dark hover:text-drio-red-dark;
+  @apply border-2 border-drio-red text-sm text-drio-red py-2 px-8 shadow-sm focus:outline-drio-red-dark hover:border-drio-red-dark hover:text-drio-red-dark;
+}
+
+.success-button {
+  @apply text-white text-sm bg-green-700 border-0 py-2 px-8 focus:outline-gray-700 rounded-md hover:bg-green-800 shadow-sm disabled:bg-gray-300 disabled:text-gray-700;
 }

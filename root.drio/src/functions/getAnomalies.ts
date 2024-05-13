@@ -26,6 +26,7 @@ export default async function getAnomalies(dataSourceIds: Params[]) {
       res?.anomalies.map((anomaly) => ({
         ...anomaly,
         id: uuidv4(),
+        status: "pending",
         anomalies: res.anomalies,
         data_source_id: res?.data_source_id,
         ou: rows.find(({ id }) => id === res?.data_source_id)?.ou as string,
