@@ -4,7 +4,7 @@ import Button from "@/comps/ui/Button";
 import Form_850 from "./Form_850";
 
 const TemplateGenerator = () => {
-  const [tabs, setTabs] = useState<"EDI-830" | "EDI-850">("EDI-850");
+  const [tabs, setTabs] = useState<"EDI-830" | "EDI-850">("EDI-830");
 
   return (
     <div>

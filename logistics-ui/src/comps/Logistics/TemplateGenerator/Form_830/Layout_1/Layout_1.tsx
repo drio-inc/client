@@ -146,7 +146,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         <h5>Set Purpose Code</h5>
         <h5 contentEditable>Mutually Defined</h5>
 
-        <h5>Reference ID</h5>
+        <h5 className="font-bold">Reference ID</h5>
         <h5 contentEditable>1514893</h5>
 
         <div className="mt-4">
