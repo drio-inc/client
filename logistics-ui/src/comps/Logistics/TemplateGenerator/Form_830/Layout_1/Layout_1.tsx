@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { newForecast } from "../constants";
+import { newForecast } from "../../constants";
 import { useState, useEffect } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
 
 type RenderTableProps = {
-  items: TemplateBody[];
-  setItems: React.Dispatch<React.SetStateAction<TemplateBody[]>>;
+  items: EDI830LayoutOne[];
+  setItems: React.Dispatch<React.SetStateAction<EDI830LayoutOne[]>>;
 };
 
 const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
@@ -150,7 +150,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <h5>Set Purpose Code</h5>
           <h5 contentEditable>Mutually Defined</h5>
 
-          <h5>Reference ID</h5>
+          <h5 className="font-bold">Reference ID</h5>
           <h5 contentEditable>1514893</h5>
 
           <div className="mt-4">

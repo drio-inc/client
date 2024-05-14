@@ -2,7 +2,7 @@ type TableRow = {
   [key: string]: any;
 };
 
-type TemplateBody = {
+type EDI830LayoutOne = {
   id: string;
   uom: string;
   volex_item: string;
@@ -15,6 +15,18 @@ type TemplateBody = {
     warehouse_location_id: string;
     interval_grouping_of_forecast: string;
   }[];
+};
+
+type EDI850LayoutOne = {
+  id: string;
+  "Line #": string;
+  "UPC #": string;
+  "Vendor Item #": string;
+  Description: string;
+  Qty: number;
+  UOM: string;
+  Price: number;
+  Amount: number;
 };
 
 interface ItemInformation {
