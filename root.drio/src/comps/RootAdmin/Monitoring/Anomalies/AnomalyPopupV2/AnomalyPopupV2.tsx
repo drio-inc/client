@@ -3,43 +3,58 @@ import Layout from "@/comps/Layout";
 import { HiX } from "react-icons/hi";
 import Button from "@/comps/ui/Button";
 import { setCloseModal } from "@/state/slices/uiSlice";
+import { setRows } from "@/state/slices/anomaliesSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 export default function AnomalyPopupV2() {
   const dispatch = useAppDispatch();
-  const { row } = useAppSelector((state) => state.anomalies);
+  const { row, rows } = useAppSelector((state) => state.anomalies);
+
+  const markAsAnomaly = (id: string) => {
+    const updatedRows = rows.map((r) => {
+      if (r.id === id) {
+        return { ...r, status: "anomaly" };
+      }
+      return r;
+    });
+
+    dispatch(setRows(updatedRows));
+    dispatch(setCloseModal("anomalyDetails"));
+  };
+
+  const markAsNotAnomaly = (id: string) => {
+    const updatedRows = rows.map((r) => {
+      if (r.id === id) {
+        return { ...r, status: "not_anomaly" };
+      }
+      return r;
+    });
+
+    dispatch(setRows(updatedRows));
+    dispatch(setCloseModal("anomalyDetails"));
+  };
 
   const renderDescription = () => {
     switch (row?.event_type) {
       case "datatype_mismatch":
         return (
           <p>
-            <span className="font-bold">'{row?.field ?? "Unknown"}'</span>{" "}
-            attribute of{" "}
-            <span className="font-bold">'{row?.name ?? "unknown"}'</span>{" "}
-            dataset being published on{" "}
-            <span className="font-bold">'{row.ds ?? "unknown source"}'</span>{" "}
-            expected to be a{" "}
-            <span className="font-bold">
-              '{row?.datatype ?? "unknown datatype"}'
-            </span>{" "}
-            was received as{" "}
-            <span className="font-bold">
-              '{row?.new_datatype ?? "unknown datatype"}'
-            </span>
+            <span className="font-bold">'{row?.field ?? "Unknown"}'</span> attribute of{" "}
+            <span className="font-bold">'{row?.name ?? "unknown"}'</span> dataset being published on{" "}
+            <span className="font-bold">'{row.ds ?? "unknown source"}'</span> expected to be a{" "}
+            <span className="font-bold">'{row?.datatype ?? "unknown datatype"}'</span> was received
+            as <span className="font-bold">'{row?.new_datatype ?? "unknown datatype"}'</span>
           </p>
         );
 
       case "added_new_field":
         return (
           <p>
-            A new attribute <span className="font-bold">'{row?.field}'</span> in
-            the dataset{" "}
-            <span className="font-bold">'{row?.name ?? "unknown"}'</span> being
-            published on{" "}
-            <span className="font-bold">'{row?.ds ?? "unknown"}'</span> of data
-            type <span className="font-bold">'{row?.datatype}'</span> has been
-            detected. The attribute was dropped.
+            A new attribute <span className="font-bold">'{row?.field}'</span> in the dataset{" "}
+            <span className="font-bold">'{row?.name ?? "unknown"}'</span> being published on{" "}
+            <span className="font-bold">'{row?.ds ?? "unknown"}'</span> of data type{" "}
+            <span className="font-bold">'{row?.datatype}'</span> has been detected. The attribute
+            was dropped.
           </p>
         );
 
@@ -47,10 +62,9 @@ export default function AnomalyPopupV2() {
         return (
           <p>
             <span className="font-bold">'{row?.field}'</span> field of{" "}
-            <span className="font-bold">'{row?.name}'</span> dataset being
-            published on <span className="font-bold">'{row?.ds}'</span> expected
-            to be <span className="font-bold">{row?.iqr ?? "unknown iqr"}</span>{" "}
-            but received value was{" "}
+            <span className="font-bold">'{row?.name}'</span> dataset being published on{" "}
+            <span className="font-bold">'{row?.ds}'</span> expected to be{" "}
+            <span className="font-bold">{row?.iqr ?? "unknown iqr"}</span> but received value was{" "}
             <span className="font-bold">{row?.value ?? "unknown value"}</span>
           </p>
         );
@@ -59,13 +73,11 @@ export default function AnomalyPopupV2() {
         return (
           <div className="flex flex-col">
             <span>
-              The following <strong>{row?.name}</strong> data field combination
-              was detected to be outside the normal metadata distribution.
+              The following <strong>{row?.name}</strong> data field combination was detected to be
+              outside the normal metadata distribution.
             </span>
 
-            <span className="font-bold text-gray-900 text-xl mt-2">
-              Observation:
-            </span>
+            <span className="font-bold text-gray-900 text-xl mt-2">Observation:</span>
 
             <div>
               <span className="font-medium text-700 block mb-2">
@@ -86,8 +98,7 @@ export default function AnomalyPopupV2() {
 
             <div className="mt-2">
               <span className="font-medium text-700 block mb-2">
-                The {row?.closest_data_points?.length} closest data points seen
-                previously:
+                The {row?.closest_data_points?.length} closest data points seen previously:
               </span>
               <div className="flex flex-col gap-y-2 bg-neutral-50 p-4 rounded">
                 {row?.closest_data_points?.map((point: any, i: number) => (
@@ -166,9 +177,7 @@ export default function AnomalyPopupV2() {
         return (
           <span>
             Anomaly detected based on learned characteristics of the data set on{" "}
-            <strong>
-              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
-            </strong>
+            <strong>{new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}</strong>
           </span>
         );
     }
@@ -188,8 +197,7 @@ export default function AnomalyPopupV2() {
       case "Cluster Anomaly":
         return (
           <span className="w-4/5 block">
-            Data fields combination in the received data appear outside of
-            normal seen previously
+            Data fields combination in the received data appear outside of normal seen previously
           </span>
         );
       default:
@@ -224,29 +232,40 @@ export default function AnomalyPopupV2() {
           <div className="bg-white p-4 flex flex-col gap-y-2 rounded-md">
             <span className="font-medium text-gray-700">Severity</span>
             <div className="border-2 p-4 rounded-md">
-              <span className="text-gray-900">
-                {row?.severity ?? "Informational"}
-              </span>
+              <span className="text-gray-900">{row?.severity ?? "Informational"}</span>
             </div>
           </div>
 
           <div className="bg-white p-4 flex flex-col gap-y-2 rounded-md">
-            <span className="font-medium text-gray-700">
-              Suggested Resolution
-            </span>
+            <span className="font-medium text-gray-700">Suggested Resolution</span>
             <div className="border-2 p-4 rounded-md">
               <span className="text-gray-700">{renderResolution()}</span>
             </div>
           </div>
         </div>
 
-        <div className="inline-flex justify-center w-full mt-4">
+        <div className="flex gap-x-4 justify-center w-full mt-4">
           <Button
-            intent={"primary"}
-            className="w-full lg:w-[10rem]"
+            intent={"primaryOutline"}
             onClick={() => dispatch(setCloseModal("anomalyDetails"))}
           >
-            Close
+            Cancel
+          </Button>
+
+          <Button
+            intent={"success"}
+            disabled={row?.status === "not_anomaly"}
+            onClick={() => markAsNotAnomaly(row?.id)}
+          >
+            {row?.status === "not_anomaly" ? "Marked as Not Anomaly" : "Not an Anomaly"}
+          </Button>
+
+          <Button
+            intent={"primary"}
+            disabled={row?.status === "anomaly"}
+            onClick={() => markAsAnomaly(row?.id)}
+          >
+            {row?.status === "anomaly" ? "Marked as Anomaly" : "Mark as Anomaly"}
           </Button>
         </div>
       </div>

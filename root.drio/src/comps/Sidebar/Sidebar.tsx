@@ -93,8 +93,8 @@ const NavLinks = [
         href: "outbound-contracts",
       },
       {
-        name: "Personas",
-        href: "personas",
+        name: "Consuming App Personas",
+        href: "consuming-app-personas",
       },
     ],
   },

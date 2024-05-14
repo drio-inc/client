@@ -5,12 +5,7 @@ import DashboardFooter from "@ui/Footer/DashbaordFooter";
 import { HiOutlinePencil, HiCheck } from "react-icons/hi";
 import MetaTags from "@/comps/RootAdmin/Datasets/Metadata/MetaTags";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "@ui/Tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@ui/Tooltip";
 import Skeleton from "../Skeleton";
 
 type TableHeader = {
@@ -64,9 +59,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
               >
                 {header.header}
 
-                {header.menu && (
-                  <div className="inline-block ml-2">{header.menu}</div>
-                )}
+                {header.menu && <div className="inline-block ml-2">{header.menu}</div>}
               </th>
             ))}
 
@@ -96,9 +89,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                   <tr
                     key={index}
                     className={`${
-                      isChecked
-                        ? "bg-[#ECF5FF] hover:bg-[#ECF5FF]"
-                        : "hover:bg-gray-50"
+                      isChecked ? "bg-[#ECF5FF] hover:bg-[#ECF5FF]" : "hover:bg-gray-50"
                     } border-t border-b border-gray-100`}
                   >
                     {!noSelection && (
@@ -120,10 +111,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                       return (
                         <>
                           {header.type === "array" ? (
-                            <td
-                              key={index}
-                              className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem]"
-                            >
+                            <td key={index} className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem]">
                               <MetaTags tags={row?.[header.accessor]} />
                             </td>
                           ) : header.type === "object" ? (
@@ -143,8 +131,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                               >
                                 <span>
                                   {header?.accessor === "name" &&
-                                    (row?.status === "learning" ||
-                                      row?.status === "learned") && (
+                                    (row?.status === "learning" || row?.status === "learned") && (
                                       <TooltipProvider delayDuration={0}>
                                         <Tooltip>
                                           <TooltipTrigger>
@@ -156,6 +143,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                                               } mr-2`}
                                             />
                                           </TooltipTrigger>
+
                                           <TooltipContent>
                                             <span>
                                               {row?.status === "learning"
@@ -167,7 +155,29 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                                       </TooltipProvider>
                                     )}
 
-                                  {row?.[header.accessor]?.toString() ?? "NA"}
+                                  {header?.accessor === "status" ? (
+                                    <div>
+                                      {row?.status === "pending" && (
+                                        <div className="bg-yellow-500 rounded-full p-2 w-5 h-5 flex justify-center items-center text-black">
+                                          <span>?</span>
+                                        </div>
+                                      )}
+
+                                      {row?.status === "not_anomaly" && (
+                                        <div className="bg-green-500 rounded-full p-2 w-5 h-5 flex justify-center items-center text-black">
+                                          <span>✓</span>
+                                        </div>
+                                      )}
+
+                                      {row?.status === "anomaly" && (
+                                        <div className="bg-red-500 rounded-full p-2 w-5 h-5 flex justify-center items-center text-white">
+                                          <span>!</span>
+                                        </div>
+                                      )}
+                                    </div>
+                                  ) : (
+                                    row?.[header.accessor]?.toString() ?? "NA"
+                                  )}
                                 </span>
                               </div>
                             </td>

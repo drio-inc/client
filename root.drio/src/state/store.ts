@@ -1,11 +1,7 @@
 import { rootApi } from "./services/apiService";
 import storage from "redux-persist/lib/storage";
 
-import {
-  PreloadedState,
-  configureStore,
-  combineReducers,
-} from "@reduxjs/toolkit";
+import { PreloadedState, configureStore, combineReducers } from "@reduxjs/toolkit";
 
 import {
   FLUSH,
@@ -25,6 +21,7 @@ import uiReducer from "./slices/uiSlice";
 import DDXReducer from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
 import alertsReducer from "./slices/alertsSlice";
+import personaReducer from "./slices/personaSlice";
 import orgUnitReducer from "./slices/orgUnitSlice";
 import datasetReducer from "./slices/datasetSlice";
 import metadataReducer from "./slices/metadataSlice";
@@ -61,6 +58,7 @@ const rootReducer = combineReducers({
   dataset: datasetReducer,
   metadata: metadataReducer,
   policies: policiesReducer,
+  personas: personaReducer,
   auth: persistedAuthReducer,
   anomalies: anomaliesReducer,
   auditLogs: auditLogsReducer,
