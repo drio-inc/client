@@ -30,15 +30,14 @@ export default async function getSchemas(params: Params) {
     let dataset_type = schema.type;
 
     Object.keys(schema.properties).forEach((property) => {
-      let property_type =
-        schema.properties[property as keyof typeof schema.properties].type;
+      let property_type = schema.properties[property as keyof typeof schema.properties].type;
 
       let transformedObject = {
         tags: [],
         id: uuidv4(),
         sample_value: null,
         property: property,
-        visibility: "public",
+        visibility: "hidden",
         dataset_name: dataset_name,
         dataset_type: dataset_type,
         property_type: property_type,
