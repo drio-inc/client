@@ -38,7 +38,6 @@ const Form_830 = () => {
   const dispatch = useAppDispatch();
   const printRef = useRef<HTMLDivElement | null>(null);
   const [templateLayout, setTemplateLayout] = useState("Layout 1");
-  const [tabs, setTabs] = useState<"EDI-830" | "EDI-850">("EDI-830");
 
   const [layoutOneItems, setLayoutOneItems] = useState(EDI_830_Layout_1);
   const [layoutTwoItems, setLayoutTwoItems] = useState(EDI_830_Layout_2);
@@ -67,21 +66,6 @@ const Form_830 = () => {
     } else {
       window.open(data);
     }
-  };
-
-  const randomLayoutOneTemplate = {
-    id: uuid(),
-    volex_item: faker.string.numeric({ length: 6 }),
-    item_description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
-    uom: faker.helpers.arrayElement(uomEnum),
-    forecast_information: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => ({
-      id: uuid(),
-      forecast_code: faker.helpers.arrayElement(forecastCodeEnum),
-      interval_grouping_of_forecast: faker.helpers.arrayElement(intervalGroupingOfForecastEnum),
-      qty: faker.number.int({ min: 100, max: 800 }),
-      forecast_date_load: faker.date.past().toLocaleDateString("en-US"),
-      warehouse_location_id: faker.helpers.arrayElement(warehouseLocationIdEnum),
-    })),
   };
 
   const randomLayoutTwoTemplate = {
@@ -113,6 +97,28 @@ const Form_830 = () => {
   };
 
   const addLineItem = () => {
+    const randomLayoutOneTemplate = {
+      id: uuid(),
+      volex_item: faker.string.numeric({ length: 6 }),
+      item_description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
+      uom: faker.helpers.arrayElement(uomEnum),
+      forecast_information: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => ({
+        id: uuid(),
+        forecast_code: faker.helpers.arrayElement(
+          forecastCodeEnum.filter((code) => code !== "Firm")
+        ),
+        interval_grouping_of_forecast: faker.helpers.arrayElement(intervalGroupingOfForecastEnum),
+        qty: faker.number.int({ min: 1, max: 1000 }),
+        forecast_date_load: faker.date.past().toLocaleDateString("en-US"),
+        warehouse_location_id: faker.helpers.arrayElement(warehouseLocationIdEnum),
+      })),
+    };
+
+    const forecastInformation = randomLayoutOneTemplate.forecast_information;
+    forecastInformation[0].forecast_code = "Firm";
+
+    randomLayoutOneTemplate.forecast_information = forecastInformation;
+
     if (templateLayout === "Layout 1") {
       setLayoutOneItems((prev) => [...prev, randomLayoutOneTemplate]);
     } else {
@@ -136,9 +142,12 @@ const Form_830 = () => {
           volex_item: faker.string.numeric({ length: 6 }),
           item_description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
           uom: faker.helpers.arrayElement(uomEnum),
-          forecast_information: item.forecast_information.map(() => ({
+          forecast_information: item.forecast_information.map((forecast, index) => ({
             id: uuid(),
-            forecast_code: faker.helpers.arrayElement(forecastCodeEnum),
+            forecast_code:
+              index === 0
+                ? forecast.forecast_code
+                : faker.helpers.arrayElement(forecastCodeEnum.filter((code) => code !== "Firm")),
             interval_grouping_of_forecast: faker.helpers.arrayElement(
               intervalGroupingOfForecastEnum
             ),

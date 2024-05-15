@@ -2,6 +2,7 @@ import Image from "next/image";
 import { newForecast } from "../../constants";
 import { useState, useEffect } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
+import showAlert from "@/comps/ui/Alert/Alert";
 
 type RenderTableProps = {
   items: EDI830LayoutOne[];
@@ -10,6 +11,7 @@ type RenderTableProps = {
 
 const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
   const [forecastId, setForecaseId] = useState<string>("");
+  const [disabledBuTton, setDisabledButton] = useState<boolean>(false);
 
   useEffect(() => {
     if (forecastId) {
@@ -51,6 +53,37 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
         return p;
       })
     );
+  };
+
+  const handleInputChange = (
+    event: any,
+    itemId: string,
+    forecastIndex: number,
+    key: string,
+    value: string | number
+  ) => {
+    const currentValue = value;
+    const newValue = event.target.innerText;
+
+    if (newValue === "Firm" || newValue === "firm") {
+      event.target.innerText = value;
+      showAlert("More than one 'Firm' Forecast Code is not allowed", "error");
+    } else {
+      //   setItems((prev) =>
+      //     prev.map((item, index) => {
+      //       if (item.id === itemId) {
+      //         const updatedForecasts = item.forecast_information.map((forecast, index) => {
+      //           if (index === forecastIndex) {
+      //             return { ...forecast, [key]: newValue };
+      //           }
+      //           return forecast;
+      //         });
+      //         return { ...item, forecast_information: updatedForecasts };
+      //       }
+      //       return item;
+      //     })
+      //   );
+    }
   };
 
   return (
@@ -106,10 +139,21 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
                       icons?.classList.remove("flex");
                     }}
                   >
-                    {Object.values(forecast).map((value, index) => (
+                    {Object.entries(forecast).map(([key, value], fIndex) => (
                       <>
-                        {index > 0 && (
-                          <td key={index} contentEditable className="inner-table add-padding">
+                        {fIndex > 0 && (
+                          <td
+                            key={index}
+                            className={`inner-table add-padding ${
+                              key !== "forecast_code" || index > 0
+                                ? "cursor-text"
+                                : "cursor-default"
+                            }`}
+                            contentEditable={key !== "forecast_code" || index > 0}
+                            onInput={(e: React.FormEvent<HTMLTableCellElement>) =>
+                              handleInputChange(e, item.id, fIndex, key, value)
+                            }
+                          >
                             {value}
                           </td>
                         )}
