@@ -206,6 +206,111 @@ const Form_830 = () => {
     setTemplateLayout(layout);
   };
 
+  const pageStyle = `
+    @page {
+	  size: A4;
+	  margin: 0;
+	}
+
+	@media print {
+	  body {
+		margin: 20px;
+		font-family: sans-serif;
+	  }
+
+	  h1{
+		font-size: 1.5rem;
+	  }
+
+	  .edi-830-layout-1-root{
+		width: 100%;
+		position: relative;
+	  }
+
+	  .edi-830-layout-1-top-header-container{
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+	  }
+
+	  .edi-830-layout-1-top-header-image{
+		width: 200px;
+		height: 200px;
+		position:relative;
+	  }
+
+	  .edi-830-layout-1-top-header-image img{
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		object-position: center;
+	  }
+
+	  .edi-830-layout-1-top-header-content-wrapper{
+		display: flex;
+		align-items: flex-end;
+		flex-direction: column;
+	  }
+
+	  .edi-830-layout-1-top-header-content-pair{
+		display: flex;
+		align-items: flex-end;
+		flex-direction: column;
+	  }
+
+	  .edi-830-layout-1-top-header-content-pair-header{
+		font-weight: bold;
+	  }
+
+	  .edi-830-layout-1-bottom-header{
+		display: flex;
+		margin: 1rem 0;
+		row-gap: 0.5rem;
+		flex-direction: column;
+	  }
+
+	  .edi-830-layout-1-bottom-header-pair-header{
+		font-weight: bold;
+	  }
+
+	  .edi-830-layout-1-table-1{
+		width: 100%;
+		margin: 32px 0;
+		border-collapse: collapse;
+	  }
+
+	  .edi-830-layout-1-table-1 th, td{
+		  padding: 8px;
+		border: 2px solid black;
+	  }
+
+	  .edi-830-layout-1-table-2{
+		width: 100%;
+		border: 2px solid black;
+		border-collapse: collapse;
+	  }
+
+	  .edi-830-layout-1-table-2 th, td{
+		border: 2px solid black;
+		padding: 8px;
+	  }
+
+	  .edi-830-layout-1-table-2-parent{
+		width: 100%;
+	  }
+
+	  .edi-830-layout-1-table-2-nested{
+		width: 95%;
+		border-collapse: collapse;
+		margin-left:auto;
+	  }
+
+	  .edi-830-layout-1-table-2-nested-buttons{
+		display: none;
+	  }
+	}
+	  `;
+
   return (
     <div>
       <div className="flex items-center gap-x-4 mb-8">
@@ -260,6 +365,8 @@ const Form_830 = () => {
               </Button>
 
               <ReactToPrint
+                copyStyles={false}
+                pageStyle={pageStyle}
                 content={() => printRef.current}
                 trigger={() => <Button className="w-full">Print PDF</Button>}
                 onAfterPrint={() => showAlert("PDF Downloaded Successfully", "success")}
@@ -269,7 +376,7 @@ const Form_830 = () => {
         </Modal>
       </div>
 
-      <div className="bg-white p-4" ref={printRef} id="documentToPrint">
+      <div className="bg-white p-4 font-inter" ref={printRef} id="documentToPrint">
         {templateLayout === "Layout 1" ? (
           <Layout_1 items={layoutOneItems} setItems={setLayoutOneItems} />
         ) : (

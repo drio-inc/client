@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { newForecast } from "../../constants";
+import showAlert from "@/comps/ui/Alert";
 import { useState, useEffect } from "react";
+import { newForecast } from "../../constants";
 import { HiMinus, HiPlus } from "react-icons/hi";
-import showAlert from "@/comps/ui/Alert/Alert";
 
 type RenderTableProps = {
   items: EDI830LayoutOne[];
@@ -11,7 +11,6 @@ type RenderTableProps = {
 
 const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
   const [forecastId, setForecaseId] = useState<string>("");
-  const [disabledBuTton, setDisabledButton] = useState<boolean>(false);
 
   useEffect(() => {
     if (forecastId) {
@@ -62,7 +61,6 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
     key: string,
     value: string | number
   ) => {
-    const currentValue = value;
     const newValue = event.target.innerText;
 
     if (newValue === "Firm" || newValue === "firm") {
@@ -87,38 +85,32 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
   };
 
   return (
-    <table className="w-full border-2 border-black">
+    <table className="w-full border-2 border-black edi-830-layout-1-table-2">
       <thead>
         <tr className="custom-table-row">
-          <th className="add-padding">Volex Item #</th>
-          <th className="add-padding">Item Description</th>
-          <th className="add-padding">UOM</th>
+          <th>Volex Item #</th>
+          <th>Item Description</th>
+          <th>UOM</th>
         </tr>
       </thead>
 
       {items?.map((item, index: number) => (
         <>
-          <tr key={index} className="outer-table-row">
-            <td contentEditable className="add-padding">
-              {item.volex_item}
-            </td>
-            <td contentEditable className="add-padding">
-              {item.item_description}
-            </td>
-            <td contentEditable className="add-padding">
-              {item.uom}
-            </td>
+          <tr key={index} className="outer-table-row edi-830-layout-1-table-2-parent">
+            <td contentEditable>{item.volex_item}</td>
+            <td contentEditable>{item.item_description}</td>
+            <td contentEditable>{item.uom}</td>
           </tr>
 
           <tr>
             <td colSpan={3}>
-              <table className="w-[95%] ml-auto">
+              <table className="w-[95%] ml-auto edi-830-layout-1-table-2-nested">
                 <tr className="custom-table-row">
-                  <th className="add-padding">Forecast Code</th>
-                  <th className="add-padding">Interval Grouping of Forecast</th>
-                  <th className="add-padding">Qty</th>
-                  <th className="add-padding">Forecast Date Load</th>
-                  <th className="add-padding">Warehouse Location ID</th>
+                  <th>Forecast Code</th>
+                  <th>Interval Grouping of Forecast</th>
+                  <th>Qty</th>
+                  <th>Forecast Date Load</th>
+                  <th>Warehouse Location ID</th>
                 </tr>
 
                 {item?.forecast_information?.map((forecast, index: number) => (
@@ -160,7 +152,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
                       </>
                     ))}
 
-                    <span className="hidden absolute -bottom-6 -right-8 p-2">
+                    <span className="hidden absolute -bottom-6 -right-8 p-2 edi-830-layout-1-table-2-nested-buttons">
                       <HiMinus
                         className="cursor-pointer w-8 h-8"
                         onClick={() => deleteForecast(item.id, index)}
@@ -184,61 +176,70 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
 const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
   return (
-    <div className="w-full relative">
-      <div className="flex w-full justify-between">
-        <div>
-          <Image src="/acmemfg.png" width={250} height={250} alt={"Tesla Logo"} />
+    <div className="w-full relative edi-830-layout-1-root">
+      <div className="flex w-full justify-between edi-830-layout-1-top-header-container">
+        <div className="relative w-[250px] h-[250px] edi-830-layout-1-top-header-image">
+          <Image
+            fill
+            src="/acmemfg.png"
+            alt={"Tesla Logo"}
+            className="object-contain object-center w-full h-full"
+          />
         </div>
-        <div className="flex flex-col items-end p-4 gap-y-1">
-          <h1 className="text-3xl font-semibold">Planning Schedule with Release Capacity</h1>
-          <h5>Set Purpose Code</h5>
-          <h5 contentEditable>Mutually Defined</h5>
 
-          <h5 className="font-bold">Reference ID</h5>
-          <h5 contentEditable>1514893</h5>
+        <div className="flex flex-col items-end p-4 gap-y-1 edi-830-layout-1-top-header-content-wrapper">
+          <h1 className="text-3xl font-semibold">Planning Schedule with Release Capacity</h1>
+
+          <div className="flex flex-col items-end edi-830-layout-1-top-header-content-pair">
+            <span className=" edi-830-layout-1-top-header-content-pair-header">
+              Set Purpose Code
+            </span>
+            <p contentEditable>Mutually Defined</p>
+          </div>
+
+          <span className="font-bold edi-830-layout-1-top-header-content-pair-header">
+            Reference ID
+          </span>
+          <p contentEditable>1514893</p>
 
           <div className="mt-4">
-            <h5 className="font-bold">Start Date</h5>
-            <h5 contentEditable>3/16/2024</h5>
+            <span className="font-bold edi-830-layout-1-top-header-content-pair-header">
+              Start Date
+            </span>
+            <p contentEditable>3/16/2024</p>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col p-4 gap-y-1 my-4">
-        <h5 className="font-bold">Carrier</h5>
-        <h5>
+      <div className="flex flex-col p-4 gap-y-1 my-4 edi-830-layout-1-bottom-header">
+        <span className="font-bold edi-830-layout-1-bottom-header-pair-header">Carrier</span>
+        <span>
           Code: <span contentEditable>USPN</span>
-        </h5>
+        </span>
 
-        <h5 className="font-bold">Ship To</h5>
-        <h5 contentEditable className="w-fit">
+        <span className="font-bold edi-830-layout-1-bottom-header-pair-header">Ship To</span>
+        <span contentEditable className="w-fit">
           DC #1A
-        </h5>
+        </span>
 
-        <h5>
+        <span>
           Code: <span contentEditable>043849</span>
-        </h5>
+        </span>
       </div>
 
-      <table className="w-full my-4">
+      <table className="w-full my-4 edi-830-layout-1-table-1">
         <thead>
           <tr className="custom-table-row">
-            <th className="add-padding">Schedule Type</th>
-            <th className="add-padding">Schedule Qty Code</th>
-            <th className="add-padding">Supplier Code</th>
+            <th>Schedule Type</th>
+            <th>Schedule Qty Code</th>
+            <th>Supplier Code</th>
           </tr>
         </thead>
 
         <tr className="custom-table-row">
-          <td contentEditable className="add-padding">
-            Planned Shipment Based
-          </td>
-          <td contentEditable className="add-padding">
-            Actual Discrete Quantities
-          </td>
-          <td contentEditable className="add-padding">
-            434
-          </td>
+          <td contentEditable>Planned Shipment Based</td>
+          <td contentEditable>Actual Discrete Quantities</td>
+          <td contentEditable>434</td>
         </tr>
       </table>
 
