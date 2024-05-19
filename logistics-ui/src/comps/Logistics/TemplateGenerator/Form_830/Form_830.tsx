@@ -214,7 +214,7 @@ const Form_830 = () => {
 
 	@media print {
 	  body {
-		margin: 20px;
+		margin: 10px;
 		font-family: sans-serif;
 	  }
 
@@ -279,8 +279,9 @@ const Form_830 = () => {
 		border-collapse: collapse;
 	  }
 
-	  .edi-830-layout-1-table-1 th, td{
-		  padding: 8px;
+	  .edi-830-layout-1-table-1 th,
+	  .edi-830-layout-1-table-1 td{
+		padding: 8px;
 		border: 2px solid black;
 	  }
 
@@ -290,23 +291,37 @@ const Form_830 = () => {
 		border-collapse: collapse;
 	  }
 
-	  .edi-830-layout-1-table-2 th, td{
-		border: 2px solid black;
+	  .edi-830-layout-1-table-2 th{
 		padding: 8px;
+		border: 2px solid black;
 	  }
 
-	  .edi-830-layout-1-table-2-parent{
-		width: 100%;
+	  .edi-830-layout-1-table-2-parent td{
+		padding: 8px;
+		border-left: 2px solid black;
 	  }
 
 	  .edi-830-layout-1-table-2-nested{
 		width: 95%;
-		border-collapse: collapse;
 		margin-left:auto;
+		border-collapse: collapse;
+	  }
+
+	.edi-830-layout-1-table-2-nested td{
+		padding: 8px;
+		border: 2px solid black;
 	  }
 
 	  .edi-830-layout-1-table-2-nested-buttons{
 		display: none;
+	  }
+
+	  .edi-830-layout-1-footer{
+		font-size: 8px;
+		margin-top: 4px;
+		position: absolute;
+		display: inline-block;  
+
 	  }
 	}
 	  `;

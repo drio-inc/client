@@ -245,7 +245,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
       <RenderTable items={items} setItems={setItems} />
 
-      <span className="text-[8px] text-gray-500 absolute inline-block mt-1">
+      <span className="text-[8px] text-gray-500 absolute inline-block mt-1 edi-830-layout-1-footer">
         Created by Drio Inc.
       </span>
     </div>
