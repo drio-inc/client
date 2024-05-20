@@ -26,7 +26,15 @@ const MetadataMenu = ({ row }: TableRow) => {
 
           return {
             ...metadataRow,
-            tags: metadataRow.tags.map(
+            key_name_tags: metadataRow.key_name_tags.map(
+              (meta: { id: string; name: string; status: string }) => {
+                return {
+                  ...meta,
+                  status: action,
+                };
+              }
+            ),
+            data_field_tags: metadataRow.data_field_tags.map(
               (meta: { id: string; name: string; status: string }) => {
                 return {
                   ...meta,
@@ -66,11 +74,7 @@ const MetadataMenu = ({ row }: TableRow) => {
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            <AlertModal
-              row={row}
-              accessor={row.dataset}
-              onClick={() => deleteRow(row.id)}
-            />
+            <AlertModal row={row} accessor={row.dataset} onClick={() => deleteRow(row.id)} />
           </span>
 
           <Popover.Close

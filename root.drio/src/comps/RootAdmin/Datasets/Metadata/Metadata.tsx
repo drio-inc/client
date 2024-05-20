@@ -46,15 +46,15 @@ const headers = [
   },
   {
     type: "array",
-    accessor: "tags",
     header: "Key Name Tags",
-    menu: <MetadataPopover />,
+    accessor: "key_name_tags",
+    menu: <MetadataPopover tagType="key_name_tags" />,
   },
   {
     type: "array",
-    accessor: "data_tags",
     header: "Data Field Tags",
-    menu: <MetadataPopover />,
+    accessor: "data_field_tags",
+    menu: <MetadataPopover tagType="data_field_tags" />,
   },
   {
     header: "Last Updated",

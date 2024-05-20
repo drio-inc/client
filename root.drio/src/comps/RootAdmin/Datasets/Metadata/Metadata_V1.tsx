@@ -4,11 +4,7 @@ import Button from "@/comps/ui/Button";
 import MetadataMenu from "./MetadataMenu";
 import metadataJSON from "@/data/metadata.json";
 
-import {
-  setRows,
-  setRawRows,
-  setSelectedRows,
-} from "@/state/slices/metadataSlice";
+import { setRows, setRawRows, setSelectedRows } from "@/state/slices/metadataSlice";
 
 import { useEffect } from "react";
 import { IoRefresh } from "react-icons/io5";
@@ -46,9 +42,9 @@ const headers = [
   },
   {
     type: "array",
-    accessor: "tags",
     header: "Metadata",
-    menu: <MetadataPopover />,
+    accessor: "key_name_tags",
+    menu: <MetadataPopover tagType="key_name_tags" />,
   },
   {
     header: "Last Updated",

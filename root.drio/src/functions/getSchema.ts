@@ -33,14 +33,16 @@ export default async function getSchemas(params: Params) {
       let property_type = schema.properties[property as keyof typeof schema.properties].type;
 
       let transformedObject = {
-        tags: [],
         id: uuidv4(),
+        key_name_tags: [],
         sample_value: null,
+        data_field_tags: [],
         property: property,
-        visibility: "hidden",
+        visibility: "Hidden",
         dataset_name: dataset_name,
         dataset_type: dataset_type,
         property_type: property_type,
+        enhanced_property_type: "N/A",
         data_source_id: schemaPromise?.data?.data_source_id,
         last_updated: new Date(Date.now())?.toLocaleString(),
       };
