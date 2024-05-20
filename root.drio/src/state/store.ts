@@ -30,12 +30,13 @@ import anomaliesReducer from "./slices/anomaliesSlice";
 import auditLogsReducer from "./slices/auditLogsSlice";
 import dataSourceReducer from "./slices/dataSourceSlice";
 import DDXInstanceReducer from "./slices/DDXInstanceSlice";
-import notificationsReducer from "./slices/notificationSlice";
+import alertPoliciesReducer from "./slices/alertPoliciesSlice";
+import notificationsBarReducer from "./slices/notificationSlice";
+import notificationsPageReducer from "./slices/notificationsSlice";
 import inboundContractReducer from "./slices/inboundContractSlice";
 import outboundContractReducer from "./slices/outboundContractSlice";
 import approvedContractReducer from "./slices/approvedContractSlice";
 import datasetMarketplaceReducer from "./slices/datasetMarketplaceSlice";
-import alertsAnomalyPoliciesReducer from "./slices/alertAnomalyPoliciesSlice";
 
 const persistAuthConfig = {
   key: "auth",
@@ -56,20 +57,21 @@ const rootReducer = combineReducers({
   alerts: alertsReducer,
   orgUnit: orgUnitReducer,
   dataset: datasetReducer,
+  personas: personaReducer,
   metadata: metadataReducer,
   policies: policiesReducer,
-  personas: personaReducer,
   auth: persistedAuthReducer,
   anomalies: anomaliesReducer,
   auditLogs: auditLogsReducer,
   dataSource: dataSourceReducer,
   DDXInstance: DDXInstanceReducer,
-  notifications: notificationsReducer,
+  alertPolicies: alertPoliciesReducer,
+  notifications: notificationsBarReducer,
   inboundContract: inboundContractReducer,
   outboundContract: outboundContractReducer,
   approvedContract: approvedContractReducer,
+  notificationsPage: notificationsPageReducer,
   datasetMarketplace: datasetMarketplaceReducer,
-  alertsAnomalyPolicies: alertsAnomalyPoliciesReducer,
   [rootApi.reducerPath]: rootApi.reducer,
 });
 

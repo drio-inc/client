@@ -1,14 +1,10 @@
-import Link from "next/link";
-import Modal from "@/comps/ui/Modal";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 
-import AlertModal from "@/comps/ui/AlertModal";
-import { setOpenModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setRows, setSelectedRows } from "@/state/slices/datasetSlice";
 
-const AlertAnomalyPoliciesMenu = ({ row }: TableRow) => {
+const NotificationsMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
   const datasetState = useAppSelector((state) => state.dataset);
 
@@ -31,11 +27,11 @@ const AlertAnomalyPoliciesMenu = ({ row }: TableRow) => {
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700 flex flex-col"
         >
           <Popover.Close className="cursor-pointer hover:bg-indigo-50 py-2 px-4 text-left">
-            View
+            Edit
           </Popover.Close>
 
           <Popover.Close className="cursor-pointer hover:bg-indigo-50 py-2 px-4 text-left">
-            Edit
+            Disable
           </Popover.Close>
 
           <Popover.Close className="cursor-pointer hover:bg-indigo-50 py-2 px-4 text-left">
@@ -47,4 +43,4 @@ const AlertAnomalyPoliciesMenu = ({ row }: TableRow) => {
   );
 };
 
-export default AlertAnomalyPoliciesMenu;
+export default NotificationsMenu;

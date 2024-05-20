@@ -110,8 +110,16 @@ const NavLinks = [
         href: "data-policies",
       },
       {
-        name: "Alert and Anomaly Policies",
-        href: "alert-anomaly-policies",
+        name: "Alert Policies",
+        href: "alert-policies",
+      },
+      {
+        name: "Notifications",
+        href: "notifications",
+      },
+      {
+        name: "Anomaly Policies",
+        href: "anomaly-policies",
       },
     ],
   },

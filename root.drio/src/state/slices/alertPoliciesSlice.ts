@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type AlertAnomalyPolicyState = {
+type AlertPolicyState = {
   rows: TableRow[];
   selectedRows: number[];
 };
 
-const initialState: AlertAnomalyPolicyState = {
+const initialState: AlertPolicyState = {
   rows: [
     {
       id: "1",
@@ -14,14 +14,15 @@ const initialState: AlertAnomalyPolicyState = {
       dataResource: "SAP Inventory",
       thresholdValue: "40%",
       message: "Out of range by 40%",
+      notification: "Webhook: notify.teams.outlook.com",
       occurenceHistory: "",
     },
   ],
   selectedRows: [],
 };
 
-const alertAnomalyPoliciesState = createSlice({
-  name: "alertsAnomalyPolicies",
+const alertPoliciesState = createSlice({
+  name: "alertPolicies",
   initialState,
   reducers: {
     setRows(state, action) {
@@ -36,6 +37,6 @@ const alertAnomalyPoliciesState = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = alertAnomalyPoliciesState.actions;
+export const { setRows, setSelectedRows } = alertPoliciesState.actions;
 
-export default alertAnomalyPoliciesState.reducer;
+export default alertPoliciesState.reducer;

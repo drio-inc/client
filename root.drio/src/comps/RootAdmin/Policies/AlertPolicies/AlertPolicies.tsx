@@ -1,6 +1,6 @@
 import Table from "@/comps/ui/Table";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import { setSelectedRows } from "@/state/slices/alertAnomalyPoliciesSlice";
+import { setSelectedRows } from "@/state/slices/alertPoliciesSlice";
 
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
@@ -9,16 +9,12 @@ import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import ThumbnailChart from "./ThumbnailChart";
-import AlertAnomalyPoliciesMenu from "./AlertAnomalyPoliciesMenu";
+import AlertPoliciesMenu from "./AlertPoliciesMenu";
 
 const headers = [
   {
     header: "Alert Rule",
     accessor: "alertRule",
-  },
-  {
-    header: "Trigger",
-    accessor: "trigger",
   },
   {
     header: "Data Resource",
@@ -33,17 +29,19 @@ const headers = [
     accessor: "message",
   },
   {
+    header: "Notification",
+    accessor: "notification",
+  },
+  {
     type: "object",
     header: "Occurence History",
     accessor: "occurenceHistory",
   },
 ];
 
-const AlertAnomalyPolicies = () => {
+const AlertPolicies = () => {
   const dispatch = useAppDispatch();
-  const { rows, selectedRows } = useAppSelector(
-    (state) => state.alertsAnomalyPolicies
-  );
+  const { rows, selectedRows } = useAppSelector((state) => state.alertPolicies);
 
   const handleCheckbox = (index: number) => {
     if (selectedRows.includes(index)) {
@@ -79,6 +77,7 @@ const AlertAnomalyPolicies = () => {
         dataResource: row.dataResource,
         thresholdValue: row.thresholdValue,
         message: row.message,
+        notification: row.notification,
         occurenceHistory: <ThumbnailChart />,
       };
     });
@@ -114,9 +113,7 @@ const AlertAnomalyPolicies = () => {
             <Button
               icon={<HiPlus />}
               intent={"primary"}
-              onClick={() =>
-                dispatch(setOpenModal("addAlertAnomalyPolicyForm"))
-              }
+              onClick={() => dispatch(setOpenModal("addAlertAnomalyPolicyForm"))}
             >
               Add New Alert Anomaly Policy
             </Button>
@@ -128,9 +125,7 @@ const AlertAnomalyPolicies = () => {
                 <h3>Form to be added</h3>
                 <Button
                   intent={"secondary"}
-                  onClick={() =>
-                    dispatch(setCloseModal("addAlertAnomalyPolicyForm"))
-                  }
+                  onClick={() => dispatch(setCloseModal("addAlertAnomalyPolicyForm"))}
                 >
                   Cancel
                 </Button>
@@ -142,8 +137,8 @@ const AlertAnomalyPolicies = () => {
         <Table
           headers={headers}
           rows={transformData()}
+          menu={AlertPoliciesMenu}
           selectedRows={selectedRows}
-          menu={AlertAnomalyPoliciesMenu}
           handleCheckbox={handleCheckbox}
         />
       </div>
@@ -151,4 +146,4 @@ const AlertAnomalyPolicies = () => {
   );
 };
 
-export default AlertAnomalyPolicies;
+export default AlertPolicies;

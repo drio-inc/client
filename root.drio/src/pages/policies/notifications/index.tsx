@@ -1,16 +1,16 @@
 import Layout from "@/comps/Layout";
 import withAuth from "@/comps/HOC/withAuth";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
-import AlertAnomalyPolicies from "@/comps/RootAdmin/Policies/AlertAnomalyPolicies";
+import Notifications from "@/comps/RootAdmin/Policies/Notifications";
 
-const PoliciesPage = () => {
+const NotificationsPage = () => {
   return (
     <Layout>
       <DashboardContainer>
-        <AlertAnomalyPolicies />
+        <Notifications />
       </DashboardContainer>
     </Layout>
   );
 };
 
-export default withAuth(PoliciesPage);
+export default withAuth(NotificationsPage);
