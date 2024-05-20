@@ -1,37 +1,39 @@
+import showAlert from "@/comps/ui/Alert/Alert";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 
+import { setRows } from "@/state/slices/metadataSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import { setRows, setSelectedRows } from "@/state/slices/metadataSlice";
-import showAlert from "@/comps/ui/Alert/Alert";
 
-const MetadataPopover = ({ row }: any) => {
+type PopoverProps = {
+  tagType: "key_name_tags" | "data_field_tags";
+};
+
+interface ITag {
+  id: string;
+  name: string;
+  status: string;
+}
+
+const MetadataPopover = ({ tagType }: PopoverProps) => {
   const dispatch = useAppDispatch();
   const metadataState = useAppSelector((state) => state.metadata);
 
   const approveOrRejectAll = (action: "Approved" | "Rejected" = "Approved") => {
-    dispatch(
-      setRows(
-        metadataState.rows.map((row) => {
+    const tagsToUpdate = metadataState.rows.map((row) => {
+      return {
+        ...row,
+        [tagType]: row[tagType].map((tag: ITag) => {
           return {
-            ...row,
-            tags: row.tags.map(
-              (meta: { id: string; name: string; status: string }) => {
-                return {
-                  ...meta,
-                  status: action,
-                };
-              }
-            ),
+            ...tag,
+            status: action,
           };
-        })
-      )
-    );
+        }),
+      };
+    });
 
-    showAlert(
-      `All tags ${action === "Approved" ? "approved" : "rejected"}!`,
-      "success"
-    );
+    dispatch(setRows(tagsToUpdate));
+    showAlert(`All tags ${action === "Approved" ? "approved" : "rejected"}!`, "success");
   };
 
   return (

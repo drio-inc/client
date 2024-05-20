@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "DEVELOPMENT_MODE=development next dev -p 3001",
-    "dev:mock": "DEVELOPMENT_MODE=mock next dev -p 3001",
-    "build:mock": "DEVELOPMENT_MODE=mock next build",
+    "dev": "next dev -p 3001",
+    "dev:mock": "next dev -p 3001",
+    "build:mock": "next build",
     "test": "jest",
     "lint": "next lint",
     "build": "next build",

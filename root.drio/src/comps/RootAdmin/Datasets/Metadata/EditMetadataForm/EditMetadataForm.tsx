@@ -30,6 +30,7 @@ const schema = z.object({
   property: z.string().optional(),
   sample_value: z.string().optional(),
   property_type: z.string().optional(),
+  enhanced_property_type: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -38,48 +39,34 @@ export default function EditMetadataForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [updateMetadata, result] = useEditMetadataMutation();
   const { rows } = useAppSelector((state) => state.metadata);
-
-  console.log(row);
-
-  const [visibility, setVisibility] = useState(
-    row.visibility.toLowerCase() ?? ""
-  );
+  const [visibility, setVisibility] = useState(row.visibility.toLowerCase() ?? "");
 
   const form = useZodForm({
     schema: schema,
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    if (visibility === "") {
-      showAlert("Please select a visibility", "error");
-      return;
-    }
-
     const newData = {
       ...data,
       id: row.id,
       visibility,
-      tags: row.tags,
+      key_name_tags: row.key_name_tags,
+      data_field_tags: row.data_field_tags,
       last_updated: new Date().toLocaleDateString(),
     };
 
-    dispatch(
-      setRows(rows.map((row) => (row.id === newData.id ? newData : row)))
-    );
+    dispatch(setRows(rows.map((row) => (row.id === newData.id ? newData : row))));
 
     form.reset();
     dispatch(setCloseModal("editMetadataForm"));
     showAlert("Metadata updated successfully", "success");
   };
 
-  const approveOrReject = (
-    tag: string,
-    action: "Approved" | "Rejected" = "Approved"
-  ) => {
+  const approveOrRejectKeyNameTag = (tag: string, action: "Approved" | "Rejected" = "Approved") => {
     const findRow = rows.find((r) => r.id === row.id);
-    const findTag = findRow?.tags.find((m: ITag) => m.name === tag);
+    const findKeyNameTag = findRow?.key_name_tags.find((m: ITag) => m.name === tag);
 
-    if (findTag) {
+    if (findKeyNameTag) {
       dispatch(
         setRows(
           rows.map((r) => {
@@ -87,7 +74,7 @@ export default function EditMetadataForm({ row }: TableRow) {
 
             return {
               ...r,
-              tags: r.tags.map((m: ITag) => {
+              key_name_tags: r.key_name_tags.map((m: ITag) => {
                 if (m.name !== tag) return m;
 
                 return {
@@ -102,7 +89,37 @@ export default function EditMetadataForm({ row }: TableRow) {
     }
   };
 
-  const handleTagChange = useCallback(
+  const approveOrRejectDataFieldTag = (
+    tag: string,
+    action: "Approved" | "Rejected" = "Approved"
+  ) => {
+    const findRow = rows.find((r) => r.id === row.id);
+    const findDataFieldTag = findRow?.data_field_tags.find((m: ITag) => m.name === tag);
+
+    if (findDataFieldTag) {
+      dispatch(
+        setRows(
+          rows.map((r) => {
+            if (r.id !== row.id) return r;
+
+            return {
+              ...r,
+              data_field_tags: r.data_field_tags.map((m: ITag) => {
+                if (m.name !== tag) return m;
+
+                return {
+                  ...m,
+                  status: action,
+                };
+              }),
+            };
+          })
+        )
+      );
+    }
+  };
+
+  const handleKeyNameTagChange = useCallback(
     (tag: string) => {
       dispatch(
         setRows(
@@ -111,7 +128,28 @@ export default function EditMetadataForm({ row }: TableRow) {
 
             return {
               ...r,
-              tags: [...r.tags, { id: uuidv4(), name: tag, status: "Pending" }],
+              key_name_tags: [...r.key_name_tags, { id: uuidv4(), name: tag, status: "Pending" }],
+            };
+          })
+        )
+      );
+    },
+    [dispatch, row.id, rows]
+  );
+
+  const handleDataFieldTagChange = useCallback(
+    (tag: string) => {
+      dispatch(
+        setRows(
+          rows.map((r) => {
+            if (r.id !== row.id) return r;
+
+            return {
+              ...r,
+              data_field_tags: [
+                ...r.data_field_tags,
+                { id: uuidv4(), name: tag, status: "Pending" },
+              ],
             };
           })
         )
@@ -128,9 +166,7 @@ export default function EditMetadataForm({ row }: TableRow) {
         onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
       >
         <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
-          <h2 className="text-gray-700 text-2xl font-bold text-center">
-            Edit Metadata
-          </h2>
+          <h2 className="text-gray-700 text-2xl font-bold text-center">Edit Metadata</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             <div className="px-4 py-2 w-full">
@@ -145,11 +181,21 @@ export default function EditMetadataForm({ row }: TableRow) {
 
             <div className="px-4 py-2 w-full">
               <TextInput
-                label={"Enter Data Type"}
+                label={"Enter Basic Data Type"}
                 placeholder={"Enter data type"}
                 defaultValue={row.property_type}
                 {...form.register("property_type")}
                 className="md:text-sm 2xl:text-base"
+              />
+            </div>
+
+            <div className="px-4 py-2 w-full">
+              <TextInput
+                placeholder={"Enter data type"}
+                label={"Enter Enhanced Data Type"}
+                className="md:text-sm 2xl:text-base"
+                defaultValue={row.enhanced_property_type}
+                {...form.register("enhanced_property_type")}
               />
             </div>
 
@@ -163,16 +209,14 @@ export default function EditMetadataForm({ row }: TableRow) {
               />
             </div>
 
-            <h3 className="px-4 inline-block text-gray-700 text-sm font-medium">
-              Set Visibility
-            </h3>
+            <h3 className="px-4 inline-block text-gray-700 text-sm font-medium">Set Visibility</h3>
 
             <div className="px-4 py-2 w-full">
               <RadioGroup.Root
                 value={visibility}
                 aria-label="Set Visibility"
                 onValueChange={setVisibility}
-                className="flex flex-wrap gap-y-2 justify-between w-full"
+                className="flex flex-wrap gap-2 w-full"
               >
                 <div className="flex items-center gap-x-2">
                   <RadioGroup.Item
@@ -180,23 +224,18 @@ export default function EditMetadataForm({ row }: TableRow) {
                     value="internal"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
-                  <label
-                    htmlFor="r1"
-                    className="text-gray-500 text-sm font-medium"
-                  >
+                  <label htmlFor="r1" className="text-gray-500 text-sm font-medium">
                     Internal
                   </label>
                 </div>
+
                 <div className="flex items-center gap-x-2">
                   <RadioGroup.Item
                     id="r2"
                     value="hidden"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
-                  <label
-                    className="text-gray-500 text-sm font-medium"
-                    htmlFor="r2"
-                  >
+                  <label className="text-gray-500 text-sm font-medium" htmlFor="r2">
                     Hidden
                   </label>
                 </div>
@@ -207,11 +246,30 @@ export default function EditMetadataForm({ row }: TableRow) {
                     value="public"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
-                  <label
-                    className="text-gray-500 text-sm font-medium"
-                    htmlFor="r2"
-                  >
+                  <label className="text-gray-500 text-sm font-medium" htmlFor="r2">
                     Public
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-x-2">
+                  <RadioGroup.Item
+                    id="r2"
+                    value="randomize"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label className="text-gray-500 text-sm font-medium" htmlFor="r2">
+                    Randomize
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-x-2">
+                  <RadioGroup.Item
+                    id="r2"
+                    value="hash"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label className="text-gray-500 text-sm font-medium" htmlFor="r2">
+                    Hash
                   </label>
                 </div>
               </RadioGroup.Root>
@@ -219,11 +277,11 @@ export default function EditMetadataForm({ row }: TableRow) {
 
             <div className="px-4 py-2 w-full">
               <TagInput
-                onTagsChange={handleTagChange}
-                label="Metadata Tags (Type and press enter to add)"
+                onTagsChange={handleKeyNameTagChange}
+                label="Key Name Tags (Type and press enter to add)"
               >
                 <ul className={`flex flex-wrap w-auto flex-shrink`}>
-                  {row?.tags?.map((tag: ITag, index: number) => (
+                  {row?.key_name_tags?.map((tag: ITag, index: number) => (
                     <li
                       key={index}
                       className={`flex justify-center items-center rounded-md p-1 border mx-1 my-2 gap-x-1 ${
@@ -238,32 +296,64 @@ export default function EditMetadataForm({ row }: TableRow) {
 
                       {tag.status === "Pending" ? (
                         <>
-                          <span
-                            onClick={() =>
-                              approveOrReject(tag.name, "Approved")
-                            }
-                          >
+                          <span onClick={() => approveOrRejectKeyNameTag(tag.name, "Approved")}>
                             <FaCheckSquare className="text-green-500 cursor-pointer" />
                           </span>
 
-                          <span
-                            onClick={() =>
-                              approveOrReject(tag.name, "Rejected")
-                            }
-                          >
+                          <span onClick={() => approveOrRejectKeyNameTag(tag.name, "Rejected")}>
                             <BsXSquareFill className="text-red-500 cursor-pointer" />
                           </span>
                         </>
                       ) : tag.status === "Approved" ? (
-                        <span
-                          onClick={() => approveOrReject(tag.name, "Rejected")}
-                        >
+                        <span onClick={() => approveOrRejectKeyNameTag(tag.name, "Rejected")}>
                           <BsXSquareFill className="text-red-500 cursor-pointer" />
                         </span>
                       ) : tag.status === "Rejected" ? (
-                        <span
-                          onClick={() => approveOrReject(tag.name, "Approved")}
-                        >
+                        <span onClick={() => approveOrRejectKeyNameTag(tag.name, "Approved")}>
+                          <FaCheckSquare className="text-green-500 cursor-pointer" />
+                        </span>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              </TagInput>
+            </div>
+
+            <div className="px-4 py-2 w-full">
+              <TagInput
+                onTagsChange={handleDataFieldTagChange}
+                label="Key Data Field Tags (Type and press enter to add)"
+              >
+                <ul className={`flex flex-wrap w-auto flex-shrink`}>
+                  {row?.data_field_tags?.map((tag: ITag, index: number) => (
+                    <li
+                      key={index}
+                      className={`flex justify-center items-center rounded-md p-1 border mx-1 my-2 gap-x-1 ${
+                        tag.status === "Approved"
+                          ? "bg-green-100 text-green-700 border-green-700"
+                          : tag.status === "Rejected"
+                          ? "bg-red-100 text-red-700 border-red-700 "
+                          : "text-gray-500 border-gray-500"
+                      }`}
+                    >
+                      <span className="text-sm">{tag.name}</span>
+
+                      {tag.status === "Pending" ? (
+                        <>
+                          <span onClick={() => approveOrRejectDataFieldTag(tag.name, "Approved")}>
+                            <FaCheckSquare className="text-green-500 cursor-pointer" />
+                          </span>
+
+                          <span onClick={() => approveOrRejectDataFieldTag(tag.name, "Rejected")}>
+                            <BsXSquareFill className="text-red-500 cursor-pointer" />
+                          </span>
+                        </>
+                      ) : tag.status === "Approved" ? (
+                        <span onClick={() => approveOrRejectDataFieldTag(tag.name, "Rejected")}>
+                          <BsXSquareFill className="text-red-500 cursor-pointer" />
+                        </span>
+                      ) : tag.status === "Rejected" ? (
+                        <span onClick={() => approveOrRejectDataFieldTag(tag.name, "Approved")}>
                           <FaCheckSquare className="text-green-500 cursor-pointer" />
                         </span>
                       ) : null}
@@ -284,11 +374,7 @@ export default function EditMetadataForm({ row }: TableRow) {
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>
 
-            <Button
-              className="w-full"
-              intent={`primary`}
-              isLoading={result.isLoading}
-            >
+            <Button className="w-full" intent={`primary`} isLoading={result.isLoading}>
               <span className="inline-flex justify-center w-full">Confirm</span>
             </Button>
           </div>

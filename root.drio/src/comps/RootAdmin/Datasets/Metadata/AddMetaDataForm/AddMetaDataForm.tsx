@@ -21,6 +21,7 @@ const schema = z.object({
   property: z.string().optional(),
   sample_value: z.string().optional(),
   property_type: z.string().optional(),
+  enhanced_property_type: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -33,19 +34,20 @@ type ITag = {
 
 export default function AddMetaDataForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [tags, setTags] = useState<ITag[]>([]);
   const [visibility, setVisibility] = useState("");
   const [addMetadata, result] = useAddMetadataMutation();
+  const [keyNameTags, setKeyNameTags] = useState<ITag[]>([]);
+  const [dataFieldTags, setDataFieldTags] = useState<ITag[]>([]);
   const metadataState = useAppSelector((state) => state.metadata);
 
   const form = useZodForm({
     schema: schema,
   });
 
-  const handleTagChange = useCallback(
+  const handleKeyNameTagChange = useCallback(
     (tag: string) => {
-      setTags([
-        ...tags,
+      setKeyNameTags([
+        ...keyNameTags,
         {
           name: tag,
           id: uuidv4(),
@@ -53,7 +55,21 @@ export default function AddMetaDataForm({ row }: TableRow) {
         },
       ]);
     },
-    [tags]
+    [keyNameTags]
+  );
+
+  const handleDataFieldTagChange = useCallback(
+    (tag: string) => {
+      setDataFieldTags([
+        ...dataFieldTags,
+        {
+          name: tag,
+          id: uuidv4(),
+          status: "Pending",
+        },
+      ]);
+    },
+    [dataFieldTags]
   );
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -62,8 +78,13 @@ export default function AddMetaDataForm({ row }: TableRow) {
       return;
     }
 
-    if (tags.length === 0) {
-      showAlert("Please enter at least one tag", "error");
+    if (keyNameTags.length === 0) {
+      showAlert("Please enter at least one key name tag", "error");
+      return;
+    }
+
+    if (dataFieldTags.length === 0) {
+      showAlert("Please enter at least one data field tag", "error");
       return;
     }
 
@@ -73,7 +94,8 @@ export default function AddMetaDataForm({ row }: TableRow) {
         {
           ...data,
           visibility,
-          tags: tags,
+          key_name_tags: keyNameTags,
+          data_field_tags: dataFieldTags,
           last_updated: new Date().toLocaleDateString(),
         },
       ])
@@ -84,8 +106,14 @@ export default function AddMetaDataForm({ row }: TableRow) {
     showAlert("Metadata added successfully", "success");
   };
 
-  const removeTagData = (indexToRemove: number) => {
-    setTags(tags.filter((_, index) => index !== indexToRemove));
+  const removeTagData = (tagType: string, indexToRemove: number) => {
+    if (tagType === "key_name_tags") {
+      setKeyNameTags(keyNameTags.filter((_, index) => index !== indexToRemove));
+    } else if (tagType === "data_field_tags") {
+      setDataFieldTags(dataFieldTags.filter((_, index) => index !== indexToRemove));
+    } else {
+      return;
+    }
   };
 
   return (
@@ -96,9 +124,7 @@ export default function AddMetaDataForm({ row }: TableRow) {
         onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
       >
         <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
-          <h2 className="text-gray-700 text-2xl font-bold text-center">
-            Add Metadata
-          </h2>
+          <h2 className="text-gray-700 text-2xl font-bold text-center">Add Metadata</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             <div className="px-4 py-2 w-full">
@@ -112,10 +138,19 @@ export default function AddMetaDataForm({ row }: TableRow) {
 
             <div className="px-4 py-2 w-full">
               <TextInput
-                label={"Enter Data Type"}
+                label={"Enter Basic Data Type"}
                 placeholder={"Enter data type"}
                 {...form.register("property_type")}
                 className="md:text-sm 2xl:text-base"
+              />
+            </div>
+
+            <div className="px-4 py-2 w-full">
+              <TextInput
+                placeholder={"Enter data type"}
+                label={"Enter Enhanced Data Type"}
+                className="md:text-sm 2xl:text-base"
+                {...form.register("enhanced_property_type")}
               />
             </div>
 
@@ -129,16 +164,14 @@ export default function AddMetaDataForm({ row }: TableRow) {
               />
             </div>
 
-            <h3 className="px-4 inline-block text-gray-700 text-sm font-medium">
-              Set Visibility
-            </h3>
+            <h3 className="px-4 inline-block text-gray-700 text-sm font-medium">Set Visibility</h3>
 
             <div className="px-4 py-2 w-full">
               <RadioGroup.Root
                 value={visibility}
                 aria-label="Set Visibility"
                 onValueChange={setVisibility}
-                className="flex flex-wrap gap-y-2 justify-between w-full"
+                className="flex flex-wrap gap-2 w-full"
               >
                 <div className="flex items-center gap-x-2">
                   <RadioGroup.Item
@@ -146,23 +179,18 @@ export default function AddMetaDataForm({ row }: TableRow) {
                     value="internal"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
-                  <label
-                    htmlFor="r1"
-                    className="text-gray-500 text-sm font-medium"
-                  >
+                  <label htmlFor="r1" className="text-gray-500 text-sm font-medium">
                     Internal
                   </label>
                 </div>
+
                 <div className="flex items-center gap-x-2">
                   <RadioGroup.Item
                     id="r2"
                     value="hidden"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
-                  <label
-                    className="text-gray-500 text-sm font-medium"
-                    htmlFor="r2"
-                  >
+                  <label className="text-gray-500 text-sm font-medium" htmlFor="r2">
                     Hidden
                   </label>
                 </div>
@@ -173,11 +201,30 @@ export default function AddMetaDataForm({ row }: TableRow) {
                     value="public"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
-                  <label
-                    className="text-gray-500 text-sm font-medium"
-                    htmlFor="r2"
-                  >
+                  <label className="text-gray-500 text-sm font-medium" htmlFor="r2">
                     Public
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-x-2">
+                  <RadioGroup.Item
+                    id="r2"
+                    value="randomize"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label className="text-gray-500 text-sm font-medium" htmlFor="r2">
+                    Randomize
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-x-2">
+                  <RadioGroup.Item
+                    id="r2"
+                    value="hash"
+                    className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
+                  />
+                  <label className="text-gray-500 text-sm font-medium" htmlFor="r2">
+                    Hash
                   </label>
                 </div>
               </RadioGroup.Root>
@@ -185,18 +232,40 @@ export default function AddMetaDataForm({ row }: TableRow) {
 
             <div className="px-4 py-2 w-full">
               <TagInput
-                label="Metadata Tags (Type and press enter to add)"
-                onTagsChange={handleTagChange}
-                tags={tags.map((tag) => tag.name)}
+                onTagsChange={handleKeyNameTagChange}
+                tags={keyNameTags.map((tag) => tag.name)}
+                label="Key Name Tags (Type and press enter to add)"
               >
                 <ul className={`flex flex-wrap w-auto flex-shrink`}>
-                  {tags.map((tag, index) => (
+                  {keyNameTags.map((tag, index) => (
                     <li
                       key={index}
                       className="flex justify-center items-center bg-green-100 text-green-700 rounded-md p-1 border border-green-700 mx-1 my-2"
                     >
                       <span className="text-sm">{tag.name}</span>
-                      <span onClick={() => removeTagData(index)}>
+                      <span onClick={() => removeTagData("key_name_tags", index)}>
+                        <HiX className="cursor-pointer" />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </TagInput>
+            </div>
+
+            <div className="px-4 py-2 w-full">
+              <TagInput
+                onTagsChange={handleDataFieldTagChange}
+                tags={dataFieldTags.map((tag) => tag.name)}
+                label="Data Field Tags (Type and press enter to add)"
+              >
+                <ul className={`flex flex-wrap w-auto flex-shrink`}>
+                  {dataFieldTags.map((tag, index) => (
+                    <li
+                      key={index}
+                      className="flex justify-center items-center bg-green-100 text-green-700 rounded-md p-1 border border-green-700 mx-1 my-2"
+                    >
+                      <span className="text-sm">{tag.name}</span>
+                      <span onClick={() => removeTagData("data_field_tags", index)}>
                         <HiX className="cursor-pointer" />
                       </span>
                     </li>
@@ -216,11 +285,7 @@ export default function AddMetaDataForm({ row }: TableRow) {
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>
 
-            <Button
-              className="w-full"
-              intent={`primary`}
-              isLoading={result.isLoading}
-            >
+            <Button className="w-full" intent={`primary`} isLoading={result.isLoading}>
               <span className="inline-flex justify-center w-full">Add</span>
             </Button>
           </div>
