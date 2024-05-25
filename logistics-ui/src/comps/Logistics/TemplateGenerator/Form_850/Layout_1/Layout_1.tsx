@@ -156,8 +156,8 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
         <tr className="custom-table-row">
           <td contentEditable>4783291</td>
-          <td contentEditable></td>
-          <td contentEditable></td>
+          <td contentEditable>2024050</td>
+          <td contentEditable>In Process</td>
           <td contentEditable>5/6/2024</td>
         </tr>
       </table>
@@ -175,9 +175,9 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
         <tr className="custom-table-row">
           <td contentEditable>5/10/2024</td>
-          <td contentEditable></td>
-          <td contentEditable></td>
-          <td contentEditable></td>
+          <td contentEditable>5/08/2024</td>
+          <td contentEditable>5/12/2024</td>
+          <td contentEditable>Origin Carrier, Shipper's Routing (Rail)</td>
           <td contentEditable>Best Way(Shippers Option)</td>
         </tr>
       </table>
@@ -195,8 +195,8 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         <tr className="custom-table-row">
           <td contentEditable>USPS</td>
           <td contentEditable>UPS GROUND</td>
-          <td contentEditable></td>
-          <td contentEditable></td>
+          <td contentEditable>Ground</td>
+          <td contentEditable>No Back Order</td>
         </tr>
       </table>
 
@@ -212,7 +212,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         <tr className="custom-table-row">
           <td contentEditable>U.S. Dollars</td>
           <td contentEditable>54313451</td>
-          <td contentEditable></td>
+          <td contentEditable>Currency Discount</td>
         </tr>
       </table>
 
@@ -231,9 +231,9 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </thead>
 
         <tr className="custom-table-row">
-          <td contentEditable></td>
-          <td contentEditable></td>
-          <td contentEditable></td>
+          <td contentEditable>Collect</td>
+          <td contentEditable>Cost and Freight</td>
+          <td contentEditable>Nearest Cross Street</td>
           <td contentEditable></td>
         </tr>
       </table>
