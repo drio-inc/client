@@ -61,8 +61,7 @@ const Form_850 = () => {
 
   const randomLayoutOneTemplate = {
     id: uuid(),
-    "Line #": faker.string.numeric({ length: 1 }),
-    "UPC #": faker.string.numeric({ length: 6 }),
+    "UPC #": faker.string.numeric({ length: 12 }),
     "Vendor Item #": faker.string.numeric({ length: 6 }),
     Description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
     Qty: faker.number.int({ min: 1, max: 10 }),
@@ -76,11 +75,10 @@ const Form_850 = () => {
         ...prev,
         {
           ...randomLayoutOneTemplate,
+          "Line #": prev.length + 1,
           Amount: randomLayoutOneTemplate.Qty * randomLayoutOneTemplate.Price,
         },
       ]);
-
-      console.log(randomLayoutOneTemplate);
     }
   };
 
@@ -95,8 +93,7 @@ const Form_850 = () => {
       setLayoutOneItems((prev) =>
         prev.map((item) => {
           const randomLayoutOneTemplateV2 = {
-            "Line #": faker.string.numeric({ length: 1 }),
-            "UPC #": faker.string.numeric({ length: 6 }),
+            "UPC #": faker.string.numeric({ length: 12 }),
             "Vendor Item #": faker.string.numeric({ length: 6 }),
             Description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
             Qty: faker.number.int({ min: 1, max: 10 }),
