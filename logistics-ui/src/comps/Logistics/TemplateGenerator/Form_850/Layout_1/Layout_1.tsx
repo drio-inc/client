@@ -177,7 +177,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <td contentEditable>5/10/2024</td>
           <td contentEditable>5/08/2024</td>
           <td contentEditable>5/12/2024</td>
-          <td contentEditable>Origin Carrier, Shipper's Routing (Rail)</td>
+          <td contentEditable>Origin Carrier, Shipper's Routing (Rail),</td>
           <td contentEditable>Best Way(Shippers Option)</td>
         </tr>
       </table>
