@@ -62,9 +62,7 @@ const NavLinks = [
   {
     name: "Monitoring",
     href: "monitoring",
-    icon: (
-      <HiOutlinePresentationChartBar className="inline-block w-6 h-6 mr-2" />
-    ),
+    icon: <HiOutlinePresentationChartBar className="inline-block w-6 h-6 mr-2" />,
   },
 
   {
@@ -77,6 +75,12 @@ const NavLinks = [
   {
     name: "Tools",
     href: "tools",
+    children: [
+      {
+        name: "Rule Templates",
+        href: "rule-templates",
+      },
+    ],
     icon: <HiOutlineKey className="inline-block w-6 h-6 mr-2" />,
   },
 ];
@@ -92,13 +96,15 @@ export default function Sidebar() {
       return;
     }
 
-    // const expanded = !expandedLinks[link.name];
-    // NavLinks.forEach((link) => {
-    //   if (link.children) {
-    //     dispatch(setExpandedLinks({ linkName: link.name, expanded: false }));
-    //   }
-    // });
-    // dispatch(setExpandedLinks({ linkName: link.name, expanded }));
+    const expanded = !expandedLinks[link.name];
+
+    NavLinks.forEach((link) => {
+      if (link.children) {
+        dispatch(setExpandedLinks({ linkName: link.name, expanded: false }));
+      }
+    });
+
+    dispatch(setExpandedLinks({ linkName: link.name, expanded }));
   };
 
   return (
@@ -128,13 +134,7 @@ export default function Sidebar() {
                     className="cursor-pointer"
                     onClick={() => {
                       // showNested(link);
-                      router.push(
-                        `/${
-                          link.default
-                            ? `${link.href}/${link.default}`
-                            : link.href
-                        }`
-                      );
+                      router.push(`/${link.default ? `${link.href}/${link.default}` : link.href}`);
                     }}
                   >
                     <span
@@ -146,11 +146,9 @@ export default function Sidebar() {
                     >
                       {link.icon}
                     </span>
-                    <span className={`text-gray-500 hover:text-gray-600`}>
-                      {link.name}
-                    </span>
+                    <span className={`text-gray-500 hover:text-gray-600`}>{link.name}</span>
                   </div>
-                  {/* {link?.children && (
+                  {link?.children && (
                     <span
                       className="ml-4"
                       onClick={() => {
@@ -163,30 +161,28 @@ export default function Sidebar() {
                         <AiFillCaretDown className="cursor-pointer inline-block w-4 h-4 text-gray-700" />
                       )}
                     </span>
-                  )} */}
+                  )}
                 </div>
 
-                {/* {link.children &&
-                  expandedLinks[link.name] &&
-                  link.children.length > 0 && (
-                    <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-4 my-2">
-                      {link.children.map((child) => (
-                        <li key={child.name}>
-                          <Link href={`/${link.href}/${child.href}`}>
-                            <span
-                              className={`text-sm py-3 px-2 font-medium block my-1 ${
-                                router.pathname.indexOf(child.href) !== -1
-                                  ? "bg-gray-100 text-gray-600 hover:text-gray-500 rounded-lg"
-                                  : "text-gray-500 hover:text-gray-600"
-                              }`}
-                            >
-                              {child.name}
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )} */}
+                {link.children && expandedLinks[link.name] && link.children.length > 0 && (
+                  <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-4 my-2">
+                    {link.children.map((child) => (
+                      <li key={child.name}>
+                        <Link href={`/${link.href}/${child.href}`}>
+                          <span
+                            className={`text-sm py-3 px-2 font-medium block my-1 ${
+                              router.pathname.indexOf(child.href) !== -1
+                                ? "bg-gray-100 text-gray-600 hover:text-gray-500 rounded-lg"
+                                : "text-gray-500 hover:text-gray-600"
+                            }`}
+                          >
+                            {child.name}
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
