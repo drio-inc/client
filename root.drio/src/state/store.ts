@@ -21,6 +21,7 @@ import uiReducer from "./slices/uiSlice";
 import DDXReducer from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
 import alertsReducer from "./slices/alertsSlice";
+import lexiconReducer from "./slices/lexiconSlice";
 import personaReducer from "./slices/personaSlice";
 import orgUnitReducer from "./slices/orgUnitSlice";
 import datasetReducer from "./slices/datasetSlice";
@@ -55,6 +56,7 @@ const rootReducer = combineReducers({
   ui: uiReducer,
   DDX: persistedDDXReducer,
   alerts: alertsReducer,
+  lexicon: lexiconReducer,
   orgUnit: orgUnitReducer,
   dataset: datasetReducer,
   personas: personaReducer,
