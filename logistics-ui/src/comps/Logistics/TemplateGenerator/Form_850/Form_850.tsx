@@ -66,7 +66,7 @@ const Form_850 = () => {
     Description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
     Qty: faker.number.int({ min: 1, max: 10 }),
     UOM: faker.helpers.arrayElement(uomEnum),
-    Price: Number(faker.commerce.price()),
+    Price: faker.number.float({ min: 1, max: 1000, fractionDigits: 2 }),
   };
 
   const addLineItem = () => {
@@ -75,7 +75,7 @@ const Form_850 = () => {
         ...prev,
         {
           ...randomLayoutOneTemplate,
-          "Line #": prev.length + 1,
+          "Line #": `#${prev.length + 1}`,
           Amount: randomLayoutOneTemplate.Qty * randomLayoutOneTemplate.Price,
         },
       ]);
@@ -98,13 +98,13 @@ const Form_850 = () => {
             Description: faker.helpers.arrayElement(['3" Widget', '4" Widget', '5" Sprocket']),
             Qty: faker.number.int({ min: 1, max: 10 }),
             UOM: faker.helpers.arrayElement(uomEnum),
-            Price: Number(faker.commerce.price()),
+            Price: faker.number.float({ min: 1, max: 1000, fractionDigits: 2 }),
           };
 
           return {
             ...item,
             ...randomLayoutOneTemplateV2,
-            Amount: randomLayoutOneTemplateV2.Qty * randomLayoutOneTemplateV2.Price,
+            Amount: randomLayoutOneTemplateV2.Qty * Number(randomLayoutOneTemplateV2.Price),
           };
         })
       );

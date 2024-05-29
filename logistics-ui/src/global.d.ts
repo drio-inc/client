@@ -19,7 +19,7 @@ type EDI830LayoutOne = {
 
 type EDI850LayoutOne = {
   id: string;
-  "Line #": number;
+  "Line #": string;
   "UPC #": string;
   "Vendor Item #": string;
   Description: string;

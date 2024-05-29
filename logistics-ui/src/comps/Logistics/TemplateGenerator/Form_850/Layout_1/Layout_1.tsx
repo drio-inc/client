@@ -20,9 +20,9 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <th>UPC #</th>
           <th>Vendor Item #</th>
           <th>Description</th>
-          <th>Qty</th>
-          <th>UOM</th>
           <th>Price</th>
+          <th>UOM</th>
+          <th>Qty</th>
           <th>Amount</th>
         </tr>
       </thead>
@@ -49,11 +49,11 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
             <td contentEditable>{item["UPC #"]}</td>
             <td contentEditable>{item["Vendor Item #"]}</td>
             <td contentEditable>{item["Description"]}</td>
-            <td contentEditable>{item["Qty"]}</td>
+            <td contentEditable>${item["Price"]}</td>
             <td contentEditable>{item["UOM"]}</td>
-            <td contentEditable>{item["Price"]}</td>
+            <td contentEditable>{item["Qty"]}</td>
             <td contentEditable>
-              <span>{(item["Qty"] * item["Price"]).toFixed(2)}</span>
+              <span>${(item["Qty"] * item["Price"]).toFixed(2)}</span>
 
               <span className="hidden absolute -bottom-6 -right-6 p-2" id="deleteIcon">
                 <HiMinus
@@ -78,7 +78,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <td colSpan={6} />
           <td className="font-bold border-2 border-black">Total</td>
           <td className="border-2 border-black" contentEditable>
-            {items.reduce((acc, cur) => acc + cur?.["Amount"], 0).toFixed(2)}
+            ${items.reduce((acc, cur) => acc + cur?.["Amount"], 0).toFixed(2)}
           </td>
         </tr>
       </tbody>
