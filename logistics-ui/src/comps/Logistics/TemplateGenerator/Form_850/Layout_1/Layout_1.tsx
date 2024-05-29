@@ -48,7 +48,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
             <td contentEditable>{item["Line #"]}</td>
             <td contentEditable>{item["UPC #"]}</td>
             <td contentEditable>{item["Vendor Item #"]}</td>
-            <td contentEditable>{item["Description"]}</td>
+            <td contentEditable>{item["Description"] !== "" ? item["Description"] : "N/A"}</td>
             <td contentEditable>${item["Price"]}</td>
             <td contentEditable>{item["UOM"]}</td>
             <td contentEditable>{item["Qty"]}</td>
@@ -234,7 +234,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <td contentEditable>Collect</td>
           <td contentEditable>Cost and Freight</td>
           <td contentEditable>Nearest Cross Street</td>
-          <td contentEditable></td>
+          <td contentEditable>N/A</td>
         </tr>
       </table>
 
