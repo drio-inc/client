@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import Table from "@/comps/ui/Table";
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
@@ -18,27 +19,43 @@ const columns: ColumnDef<Lexicon>[] = [
     header: ({ table }) => (
       <Checkbox.Root
         className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         checked={
           table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")
         }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
       >
         <Checkbox.Indicator className="text-white">
           <HiCheck />
         </Checkbox.Indicator>
       </Checkbox.Root>
     ),
-    cell: ({ row }) => (
-      <Checkbox.Root
-        className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-      >
-        <Checkbox.Indicator className="text-white">
-          <HiCheck />
-        </Checkbox.Indicator>
-      </Checkbox.Root>
-    ),
+    cell: ({ row }) => {
+      const dispatch = useAppDispatch();
+      const { rows, selectedRows } = useAppSelector((state) => state.lexicon);
+
+      const handleCheckbox = (id: string) => {
+        if (selectedRows.includes(id)) {
+          dispatch(setSelectedRows(selectedRows.filter((row) => row !== id)));
+        } else {
+          dispatch(setSelectedRows([...selectedRows, id]));
+        }
+      };
+
+      return (
+        <Checkbox.Root
+          className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => {
+            handleCheckbox(row.id);
+            row.toggleSelected(!!value);
+          }}
+        >
+          <Checkbox.Indicator className="text-white">
+            <HiCheck />
+          </Checkbox.Indicator>
+        </Checkbox.Root>
+      );
+    },
   },
 
   {
@@ -91,31 +108,12 @@ const Lexicon = () => {
   const dispatch = useAppDispatch();
   const { rows, selectedRows } = useAppSelector((state) => state.lexicon);
 
-  const handleCheckbox = (index: number) => {
-    if (selectedRows.includes(index)) {
-      dispatch(setSelectedRows(selectedRows.filter((row) => row !== index)));
-    } else {
-      dispatch(setSelectedRows([...selectedRows, index]));
-    }
-  };
-
-  const clearSelectedRows = () => dispatch(setSelectedRows([]));
-
   return (
     <div className="w-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div className="rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between">
           {selectedRows.length > 0 && (
             <div className="flex items-center">
-              <Checkbox.Root
-                className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                checked={selectedRows.length > 0}
-                onCheckedChange={() => clearSelectedRows?.()}
-              >
-                <Checkbox.Indicator className="text-white">
-                  <HiMinusSm />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
               <h3 className="font-medium text-sm text-gray-700">
                 {selectedRows.length} Item(s) Selected
               </h3>
@@ -151,15 +149,6 @@ const Lexicon = () => {
             </Modal>
           </div>
         </div>
-
-        {/* 
-        <Table
-          rows={rows}
-          headers={headers}
-          menu={LexiconMenu}
-          selectedRows={selectedRows}
-          handleCheckbox={handleCheckbox}
-        /> */}
 
         <DataTable columns={columns} data={rows} />
       </div>
