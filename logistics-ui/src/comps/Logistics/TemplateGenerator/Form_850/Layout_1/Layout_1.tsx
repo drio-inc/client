@@ -95,9 +95,11 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </div>
 
         <div className="flex flex-col items-end p-4 gap-y-1">
-          <h1 className="text-3xl font-semibold">Purchase Order</h1>
+          <h1 className="text-3xl font-semibold" contentEditable>
+            Purchase Order
+          </h1>
 
-          <h5>Original</h5>
+          <h5 contentEditable>Original</h5>
           <h5 contentEditable>New Order</h5>
 
           <h5 contentEditable className="mt-4">
