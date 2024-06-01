@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type LexiconState = {
-  rows: TableRow[];
+  rows: Lexicon[];
   selectedRows: number[];
 };
 

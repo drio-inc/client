@@ -4,7 +4,11 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setRows, setSelectedRows } from "@/state/slices/lexiconSlice";
 import AlertModal from "@/comps/ui/AlertModal";
 
-const LexiconMenu = ({ row }: TableRow) => {
+type MenuProps = {
+  row: Lexicon;
+};
+
+const LexiconMenu = ({ row }: MenuProps) => {
   const dispatch = useAppDispatch();
   const lexiconState = useAppSelector((state) => state.lexicon);
 

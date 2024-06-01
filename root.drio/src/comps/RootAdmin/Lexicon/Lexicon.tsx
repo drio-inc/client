@@ -3,51 +3,87 @@ import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
 import LexiconMenu from "./LexiconMenu";
 import { IoRefresh } from "react-icons/io5";
-import { HiMinusSm, HiPlus } from "react-icons/hi";
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { HiCheck, HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setSelectedRows } from "@/state/slices/lexiconSlice";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-const headers = [
+import DataTable from "@/comps/ui/Table/DataTable";
+
+const columns: ColumnDef<Lexicon>[] = [
   {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox.Root
+        className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+        checked={
+          table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+      >
+        <Checkbox.Indicator className="text-white">
+          <HiCheck />
+        </Checkbox.Indicator>
+      </Checkbox.Root>
+    ),
+    cell: ({ row }) => (
+      <Checkbox.Root
+        className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+      >
+        <Checkbox.Indicator className="text-white">
+          <HiCheck />
+        </Checkbox.Indicator>
+      </Checkbox.Root>
+    ),
+  },
+
+  {
+    accessorKey: "name",
     header: "Name",
-    accessor: "name",
   },
 
   {
+    accessorKey: "ou",
     header: "Org Unit",
-    accessor: "ou",
   },
 
   {
+    accessorKey: "domain",
     header: "Domain",
-    accessor: "domain",
   },
 
   {
+    accessorKey: "description",
     header: "Description",
-    accessor: "description",
   },
 
   {
+    accessorKey: "docs_in_corpus",
     header: "Docs in Corpus",
-    accessor: "docs_in_corpus",
   },
 
   {
+    accessorKey: "pre_existing",
     header: "Pre-Existing",
-    accessor: "pre_existing",
   },
 
   {
+    accessorKey: "status",
     header: "Status",
-    accessor: "dict_status",
   },
 
   {
+    accessorKey: "last_updated",
     header: "Last Updated",
-    accessor: "last_updated",
+  },
+
+  {
+    id: "actions",
+    cell: ({ row }) => <LexiconMenu row={row.original} />,
   },
 ];
 
@@ -116,13 +152,16 @@ const Lexicon = () => {
           </div>
         </div>
 
+        {/* 
         <Table
           rows={rows}
           headers={headers}
           menu={LexiconMenu}
           selectedRows={selectedRows}
           handleCheckbox={handleCheckbox}
-        />
+        /> */}
+
+        <DataTable columns={columns} data={rows} />
       </div>
     </div>
   );

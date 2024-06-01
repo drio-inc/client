@@ -85,3 +85,15 @@ type DataSource = RegistryData & {
   schema_registries: RegistryData;
   metadata_servers: RegistryData;
 };
+
+type Lexicon = {
+  id: string;
+  ou: string;
+  name: string;
+  domain: string;
+  description: string;
+  dict_status: string;
+  last_updated: string;
+  pre_existing: string;
+  docs_in_corpus: number;
+};
