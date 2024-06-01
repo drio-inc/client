@@ -146,7 +146,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </div>
       </div>
 
-      <table className="w-full">
+      <table className="w-full table-fixed">
         <thead>
           <tr className="custom-table-row">
             <th>Release #</th>
@@ -164,7 +164,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </tr>
       </table>
 
-      <table className="w-full">
+      <table className="w-full table-fixed">
         <thead>
           <tr className="custom-table-row">
             <th>Do Not Ship After</th>
@@ -184,7 +184,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </tr>
       </table>
 
-      <table className="w-full">
+      <table className="w-full table-fixed">
         <thead>
           <tr className="custom-table-row">
             <th>SCAC</th>
@@ -202,7 +202,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </tr>
       </table>
 
-      <table className="w-full">
+      <table className="w-full table-fixed">
         <thead>
           <tr className="custom-table-row">
             <th>Currency</th>
@@ -218,7 +218,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </tr>
       </table>
 
-      <table className="w-full mt-8 mb-4">
+      <table className="w-full mt-8 mb-4 table-fixed">
         <thead>
           <tr className="custom-table-row bg-gray-200 text-center">
             <td colSpan={4}>FOB</td>
