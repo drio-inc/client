@@ -119,7 +119,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <h5>
             Code Type: <span contentEditable>Assigned by Buyer or Buyer's Agent</span>
           </h5>
-          <h5 contentEditable>
+          <h5>
             Code : <span contentEditable>54325</span>
           </h5>
 
@@ -135,7 +135,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <h5>
             Code Type: <span contentEditable>Assigned by Buyer or Buyer's Agent</span>
           </h5>
-          <h5 contentEditable>
+          <h5>
             Code : <span contentEditable>54325</span>
           </h5>
 
