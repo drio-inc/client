@@ -121,6 +121,117 @@ const Form_850 = () => {
     setTemplateLayout(layout);
   };
 
+  const pageStyle = `
+    @page {
+	  size: A4;
+	  margin: 0;
+	}
+
+	@media print {
+	  body {
+		margin: 10px;
+		font-family: sans-serif;
+	  }
+
+	  h1{
+		font-size: 1.5rem;
+	  }
+
+	  .edi-850-layout-1-root{
+		width: 100%;
+		position: relative;
+	  }
+
+	  .edi-850-layout-1-top-header-container{
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+	  }
+
+	  .edi-850-layout-1-top-header-image{
+		width: 200px;
+		height: 200px;
+		position:relative;
+	  }
+
+	  .edi-850-layout-1-top-header-image img{
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		object-position: center;
+	  }
+
+	  .edi-850-layout-1-top-header-content-wrapper{
+		display: flex;
+		row-gap: 1rem;
+		align-items: flex-end;
+		flex-direction: column;
+	  }
+
+	 .edi-850-layout-1-bottom-header-column-header{
+		font-weight: bold;
+	  }
+
+	  .edi-850-layout-1-bottom-header{
+		display: flex;
+		padding: 1rem;
+		margin: 0 auto;
+		font-size: 14px;
+		max-width: 1152px;
+		justify-content: space-between;
+	  }
+
+	  .edi-850-layout-1-bottom-header-column{
+		display: flex;
+		row-gap: 0.6rem;
+		flex-direction: column;
+	  }
+
+	  .edi-850-layout-1-table{
+		width: 100%;
+		border-collapse: collapse;
+	  }
+
+	  .edi-850-layout-1-table th,
+	  .edi-850-layout-1-table td{
+		padding: 8px;
+		border: 2px solid black;
+	  }
+
+	  .edi-850-layout-1-table-gap{
+		margin-top: 32px;
+		margin-botom: 16px;
+	  }
+	  
+	  .edi-850-layout-1-table-header{
+		text-align: center;
+		background-color: #e5e7eb;
+	  }
+
+	  .edi-850-layout-1-table-partial-border th,
+	  .edi-850-layout-1-table-partial-border td{
+		border: none;
+	  }
+
+	  .edi-850-layout-1-table-partial-border td:nth-child(2),
+	  .edi-850-layout-1-table-partial-border td:nth-child(3){
+		border: 2px solid black;
+	  }
+
+	  .edi-850-layout-1-table-buttons{
+		display: none;
+	  }
+
+	  .edi-850-layout-1-footer{
+		font-size: 8px;
+		margin-top: 4px;
+		position: absolute;
+		display: inline-block;  
+
+	  }
+	}
+	  `;
+
   return (
     <div>
       <div className="flex items-center gap-x-4 mb-8">
@@ -175,6 +286,8 @@ const Form_850 = () => {
               </Button>
 
               <ReactToPrint
+                copyStyles={false}
+                pageStyle={pageStyle}
                 content={() => printRef.current}
                 trigger={() => <Button className="w-full">Print PDF</Button>}
                 onAfterPrint={() => showAlert("PDF Downloaded Successfully", "success")}

@@ -13,7 +13,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
   };
 
   return (
-    <table className="w-full table-fixed">
+    <table className="w-full table-fixed edi-850-layout-1-table">
       <thead>
         <tr className="custom-table-row">
           <th>Line #</th>
@@ -55,7 +55,10 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
             <td contentEditable>
               <span>${(item["Qty"] * item["Price"]).toFixed(2)}</span>
 
-              <span className="hidden absolute -bottom-6 -right-6 p-2" id="deleteIcon">
+              <span
+                className="hidden absolute -bottom-6 -right-6 p-2 edi-850-layout-1-table-buttons"
+                id="deleteIcon"
+              >
                 <HiMinus
                   className="cursor-pointer w-8 h-8"
                   onClick={() => deleteItem(item.id, index)}
@@ -74,7 +77,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <td colSpan={4} />
         </tr>
 
-        <tr>
+        <tr className="edi-850-layout-1-table-partial-border">
           <td colSpan={6} />
           <td className="font-bold border-2 border-black">Total</td>
           <td className="border-2 border-black" contentEditable>
@@ -88,63 +91,70 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
 const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
   return (
-    <div className="relative">
-      <div className="flex justify-between">
-        <div className="px-8">
-          <Image src="/acmemfg.png" width={250} height={250} alt={"Acme Logo"} />
+    <div className="w-full relative edi-850-layout-1-root">
+      <div className="flex w-full justify-between edi-850-layout-1-top-header-container">
+        <div className="relative w-[250px] h-[250px] edi-850-layout-1-top-header-image">
+          <Image
+            fill
+            alt={"Acme Logo"}
+            src="/acmemfg.png"
+            className="object-contain object-center w-full h-full"
+          />
         </div>
 
-        <div className="flex flex-col items-end p-4 gap-y-1">
+        <div className="flex flex-col items-end p-4 gap-y-1 edi-850-layout-1-top-header-content-wrapper">
           <h1 className="text-3xl font-semibold">Purchase Order</h1>
 
-          <h5>Original</h5>
-          <h5 contentEditable>New Order</h5>
+          <span>Original</span>
+          <span contentEditable>New Order</span>
 
-          <h5 contentEditable className="mt-4">
+          <span contentEditable className="mt-4">
             Order_12345
-          </h5>
+          </span>
 
-          <h5 contentEditable className="mt-4">
+          <span contentEditable className="mt-4">
             5/1/2024
-          </h5>
+          </span>
         </div>
       </div>
 
-      <div className="flex justify-between p-4 max-w-6xl mx-auto">
-        <div>
-          <h5 className="font-bold">Ship To</h5>
-          <h5 contentEditable>Acme Inc</h5>
-          <h5>
+      <div className="flex justify-between p-4 max-w-6xl mx-auto edi-850-layout-1-bottom-header">
+        <div className="flex flex-col edi-850-layout-1-bottom-header-column">
+          <span className="font-bold edi-850-layout-1-bottom-header-column-header">Ship To</span>
+          <span contentEditable>Acme Inc</span>
+          <span>
             Code Type: <span contentEditable>Assigned by Buyer or Buyer's Agent</span>
-          </h5>
-          <h5 contentEditable>
+          </span>
+          <span contentEditable>
             Code : <span contentEditable>54325</span>
-          </h5>
+          </span>
 
-          <h5 className="font-bold">Store:</h5>
-          <h5>
+          <span className="font-bold edi-850-layout-1-bottom-header-column-header">Store:</span>
+          <span>
             Store #: <span contentEditable>54325</span>
-          </h5>
+          </span>
         </div>
 
-        <div>
-          <h5 className="font-bold">Ship From</h5>
-          <h5 contentEditable>Acme Inc</h5>
-          <h5>
+        <div className="flex flex-col edi-850-layout-1-bottom-header-column">
+          <span className="font-bold edi-850-layout-1-bottom-header-column-header">Ship From</span>
+          <span contentEditable>Acme Inc</span>
+          <span>
             Code Type: <span contentEditable>Assigned by Buyer or Buyer's Agent</span>
-          </h5>
-          <h5 contentEditable>
+          </span>
+          <span contentEditable>
             Code : <span contentEditable>54325</span>
-          </h5>
+          </span>
 
-          <h5 className="font-bold">Distribution Center:</h5>
-          <h5>
+          <span className="font-bold edi-850-layout-1-bottom-header-column-header">
+            Distribution Center:
+          </span>
+          <span>
             DC #: <span contentEditable>54325</span>
-          </h5>
+          </span>
         </div>
       </div>
 
-      <table className="w-full">
+      <table className="w-full edi-850-layout-1-table">
         <thead>
           <tr className="custom-table-row">
             <th>Release #</th>
@@ -162,7 +172,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </tr>
       </table>
 
-      <table className="w-full">
+      <table className="w-full edi-850-layout-1-table">
         <thead>
           <tr className="custom-table-row">
             <th>Do Not Ship After</th>
@@ -182,7 +192,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </tr>
       </table>
 
-      <table className="w-full">
+      <table className="w-full edi-850-layout-1-table">
         <thead>
           <tr className="custom-table-row">
             <th>SCAC</th>
@@ -200,7 +210,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </tr>
       </table>
 
-      <table className="w-full">
+      <table className="w-full edi-850-layout-1-table">
         <thead>
           <tr className="custom-table-row">
             <th>Currency</th>
@@ -216,9 +226,9 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </tr>
       </table>
 
-      <table className="w-full mt-8 mb-4">
+      <table className="w-full mt-8 mb-4 edi-850-layout-1-table edi-850-layout-1-table-gap">
         <thead>
-          <tr className="custom-table-row bg-gray-200 text-center">
+          <tr className="custom-table-row bg-gray-200 text-center edi-850-layout-1-table-header">
             <td colSpan={4}>FOB</td>
           </tr>
 
@@ -240,7 +250,9 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
       <RenderTable items={items} setItems={setItems} />
 
-      <span className="text-[8px] text-gray-500 absolute inline-block">Created by Drio Inc.</span>
+      <span className="text-[8px] text-gray-500 absolute inline-block edi-850-layout-1-footer">
+        Created by Drio Inc.
+      </span>
     </div>
   );
 };
