@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "DEVELOPMENT_MODE=development next dev",
-    "dev:mock": "DEVELOPMENT_MODE=mock next dev",
-    "build:mock": "DEVELOPMENT_MODE=mock next build",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

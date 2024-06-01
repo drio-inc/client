@@ -1,16 +1,16 @@
 import Layout from "@/comps/Layout";
 import withAuth from "@/comps/HOC/withAuth";
+import RuleTemplates from "@/comps/SuperAdmin/RuleTemplates";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
-import Lexicon from "@/comps/RootAdmin/Lexicon";
 
-const LexiconPage = () => {
+const RuleTemplatesPage = () => {
   return (
     <Layout>
       <DashboardContainer>
-        <Lexicon />
+        <RuleTemplates />
       </DashboardContainer>
     </Layout>
   );
 };
 
-export default withAuth(LexiconPage);
+export default withAuth(RuleTemplatesPage);

@@ -20,9 +20,9 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <th>UPC #</th>
           <th>Vendor Item #</th>
           <th>Description</th>
-          <th>Qty</th>
-          <th>UOM</th>
           <th>Price</th>
+          <th>UOM</th>
+          <th>Qty</th>
           <th>Amount</th>
         </tr>
       </thead>
@@ -48,12 +48,12 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
             <td contentEditable>{item["Line #"]}</td>
             <td contentEditable>{item["UPC #"]}</td>
             <td contentEditable>{item["Vendor Item #"]}</td>
-            <td contentEditable>{item["Description"]}</td>
-            <td contentEditable>{item["Qty"]}</td>
+            <td contentEditable>{item["Description"] !== "" ? item["Description"] : "N/A"}</td>
+            <td contentEditable>${item["Price"]}</td>
             <td contentEditable>{item["UOM"]}</td>
-            <td contentEditable>{item["Price"]}</td>
+            <td contentEditable>{item["Qty"]}</td>
             <td contentEditable>
-              <span>{(item["Qty"] * item["Price"]).toFixed(2)}</span>
+              <span>${(item["Qty"] * item["Price"]).toFixed(2)}</span>
 
               <span className="hidden absolute -bottom-6 -right-6 p-2" id="deleteIcon">
                 <HiMinus
@@ -78,7 +78,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <td colSpan={6} />
           <td className="font-bold border-2 border-black">Total</td>
           <td className="border-2 border-black" contentEditable>
-            {items.reduce((acc, cur) => acc + cur?.["Amount"], 0).toFixed(2)}
+            ${items.reduce((acc, cur) => acc + cur?.["Amount"], 0).toFixed(2)}
           </td>
         </tr>
       </tbody>
@@ -179,7 +179,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <td contentEditable>5/10/2024</td>
           <td contentEditable>5/08/2024</td>
           <td contentEditable>5/12/2024</td>
-          <td contentEditable>Origin Carrier, Shipper's Routing (Rail)</td>
+          <td contentEditable>Origin Carrier, Shipper's Routing (Rail),</td>
           <td contentEditable>Best Way(Shippers Option)</td>
         </tr>
       </table>
@@ -236,7 +236,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <td contentEditable>Collect</td>
           <td contentEditable>Cost and Freight</td>
           <td contentEditable>Nearest Cross Street</td>
-          <td contentEditable></td>
+          <td contentEditable>N/A</td>
         </tr>
       </table>
 

@@ -240,9 +240,9 @@ export default function Sidebar() {
                 >
                   <div
                     className="cursor-pointer"
-                    onClick={() => {
-                      router.push(`/${link.default ? `${link.href}/${link.default}` : link.href}`);
-                    }}
+                    onClick={() =>
+                      router.push(`/${link.default ? `${link.href}/${link.default}` : link.href}`)
+                    }
                   >
                     <span
                       className={`                        ${

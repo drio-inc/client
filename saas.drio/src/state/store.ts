@@ -1,11 +1,7 @@
 import { rootApi } from "./services/apiService";
 import storage from "redux-persist/lib/storage";
 
-import {
-  PreloadedState,
-  configureStore,
-  combineReducers,
-} from "@reduxjs/toolkit";
+import { PreloadedState, configureStore, combineReducers } from "@reduxjs/toolkit";
 
 import {
   FLUSH,
@@ -27,6 +23,7 @@ import authReducer from "./slices/authSlice";
 import accountReducer from "./slices/accountSlice";
 import orgUnitReducer from "./slices/orgUnitSlice";
 import licensingReducer from "./slices/licensingSlice";
+import ruleTemplateReducer from "./slices/ruleTemplateSlice";
 
 const persistConfig = {
   key: "auth",
@@ -42,6 +39,7 @@ const rootReducer = combineReducers({
   orgUnit: orgUnitReducer,
   auth: persistedAuthReducer,
   licensing: licensingReducer,
+  ruleTemplate: ruleTemplateReducer,
   [rootApi.reducerPath]: rootApi.reducer,
 });
 
