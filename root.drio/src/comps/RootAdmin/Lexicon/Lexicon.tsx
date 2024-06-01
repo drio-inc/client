@@ -12,23 +12,41 @@ import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import DataTable from "@/comps/ui/Table/DataTable";
+import AddLexiconForm from "./AddLexiconForm";
 
 const columns: ColumnDef<Lexicon>[] = [
   {
     id: "select",
-    header: ({ table }) => (
-      <Checkbox.Root
-        className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        checked={
-          table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")
+    header: ({ table }) => {
+      const dispatch = useAppDispatch();
+      const { rows } = useAppSelector((state) => state.lexicon);
+
+      const handleAllCheckbox = () => {
+        if (table.getIsAllPageRowsSelected()) {
+          dispatch(setSelectedRows([]));
+        } else {
+          dispatch(setSelectedRows(rows.map((row) => row.id)));
         }
-      >
-        <Checkbox.Indicator className="text-white">
-          <HiCheck />
-        </Checkbox.Indicator>
-      </Checkbox.Root>
-    ),
+      };
+
+      return (
+        <Checkbox.Root
+          className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+          onCheckedChange={(value) => {
+            handleAllCheckbox();
+            table.toggleAllPageRowsSelected(!!value);
+          }}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+        >
+          <Checkbox.Indicator className="text-white">
+            <HiCheck />
+          </Checkbox.Indicator>
+        </Checkbox.Root>
+      );
+    },
     cell: ({ row }) => {
       const dispatch = useAppDispatch();
       const { rows, selectedRows } = useAppSelector((state) => state.lexicon);
@@ -137,15 +155,7 @@ const Lexicon = () => {
 
           <div className="hidden">
             <Modal identifier="addNewDictionaryForm">
-              <div className="p-4 flex flex-col justify-center gap-4">
-                <h3>Form to be added</h3>
-                <Button
-                  intent={"secondary"}
-                  onClick={() => dispatch(setCloseModal("addNewDictionaryForm"))}
-                >
-                  Cancel
-                </Button>
-              </div>
+              <AddLexiconForm />
             </Modal>
           </div>
         </div>

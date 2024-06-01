@@ -92,7 +92,7 @@ type Lexicon = {
   name: string;
   domain: string;
   description: string;
-  dict_status: string;
+  status: string;
   last_updated: string;
   pre_existing: string;
   docs_in_corpus: number;
