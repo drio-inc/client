@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import LexiconForm from "./AddLexiconForm";
 import DataTable from "@/comps/ui/Table/DataTable";
 import AddLexiconForm from "./AddLexiconForm";
+import GraphView from "./ReviewLexicon/GraphView";
 
 const columns: ColumnDef<Lexicon>[] = [
   {
@@ -161,6 +162,8 @@ const Lexicon = () => {
         </div>
 
         <DataTable columns={columns} data={rows} />
+
+        <GraphView />
       </div>
     </div>
   );

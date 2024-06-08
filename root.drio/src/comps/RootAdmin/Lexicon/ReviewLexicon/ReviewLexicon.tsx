@@ -1,14 +1,13 @@
 import { useState } from "react";
 import Layout from "@/comps/Layout";
 import { HiX } from "react-icons/hi";
-import { FaFolder } from "react-icons/fa";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
-import { MdExpandMore, MdChevronRight } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/comps/ui/Tabs";
 
 import Button from "@/comps/ui/Button";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import FolderView from "./FolderView";
+import GraphView from "./GraphView";
 
 type LexiconDetail = {
   name: keyof Lexicon;
@@ -53,58 +52,59 @@ const dictionary = {
       },
     },
 
-    ScheduleDetails: [
+    ScheduleDetails: {
+      ScheduleType: "Planned Shipment Based",
+      ScheduleQtyCodeL: "Actual Discrete Quantities",
+      SupplierCode: "434",
+    },
+
+    ForecastItems: [
       {
-        SupplierCode: "434",
-        Items: [
+        VolexItemNumber: "828221",
+        ItemDescription: '4" Widget',
+        UOM: "Case",
+        Forecasts: [
           {
-            VolexItemNumber: "828221",
-            ItemDescription: '4" Widget',
-            UOM: "Case",
-            Forecasts: [
-              {
-                ForecastCode: "Firm",
-                Interval: "Yearly",
-                Quantity: 296,
-                ForecastDate: "7/27/2023",
-                WarehouseLocationID: "2B",
-              },
-              {
-                ForecastCode: "Order",
-                Interval: "Yearly",
-                Quantity: 540,
-                ForecastDate: "1/15/2024",
-                WarehouseLocationID: "3C",
-              },
-              {
-                ForecastCode: "Order",
-                Interval: "Monthly",
-                Quantity: 613,
-                ForecastDate: "5/25/2023",
-                WarehouseLocationID: "5E",
-              },
-            ],
+            ForecastCode: "Firm",
+            Interval: "Yearly",
+            Quantity: 296,
+            ForecastDate: "7/27/2023",
+            WarehouseLocationID: "2B",
           },
           {
-            VolexItemNumber: "554596",
-            ItemDescription: '4" Widget',
-            UOM: "Each",
-            Forecasts: [
-              {
-                ForecastCode: "Firm",
-                Interval: "Yearly",
-                Quantity: 669,
-                ForecastDate: "6/13/2023",
-                WarehouseLocationID: "3C",
-              },
-              {
-                ForecastCode: "Order",
-                Interval: "Yearly",
-                Quantity: 663,
-                ForecastDate: "5/9/2024",
-                WarehouseLocationID: "2B",
-              },
-            ],
+            ForecastCode: "Order",
+            Interval: "Yearly",
+            Quantity: 540,
+            ForecastDate: "1/15/2024",
+            WarehouseLocationID: "3C",
+          },
+          {
+            ForecastCode: "Order",
+            Interval: "Monthly",
+            Quantity: 613,
+            ForecastDate: "5/25/2023",
+            WarehouseLocationID: "5E",
+          },
+        ],
+      },
+      {
+        VolexItemNumber: "554596",
+        ItemDescription: '4" Widget',
+        UOM: "Each",
+        Forecasts: [
+          {
+            ForecastCode: "Firm",
+            Interval: "Yearly",
+            Quantity: 669,
+            ForecastDate: "6/13/2023",
+            WarehouseLocationID: "3C",
+          },
+          {
+            ForecastCode: "Order",
+            Interval: "Yearly",
+            Quantity: 663,
+            ForecastDate: "5/9/2024",
+            WarehouseLocationID: "2B",
           },
         ],
       },
@@ -169,18 +169,13 @@ export default function ReviewLexicon({ row }: ReviewLexiconProps) {
           </div>
 
           <TabsContent value="tree">
-            {/* {Object.keys(dictionary.AcmeManufacturing).map((key) => (
-              <div className="flex flex-col gap-y-4 w-min" key={key}>
-                <div className="flex items-center gap-2 text-gray-700 cursor-pointer font-inter">
-                  <MdChevronRight />
-                  <FaFolder />
-                  <span>{key}</span>
-                </div>
-              </div>
-            ))} */}
             <FolderView data={dictionary} name="Expand" />
           </TabsContent>
-          <TabsContent value="graph">Graph view will appear here</TabsContent>
+
+          <TabsContent value="graph">
+            <GraphView />
+          </TabsContent>
+
           <TabsContent value="wordCloud">Word Cloud view will appear here</TabsContent>
         </Tabs>
 
