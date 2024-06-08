@@ -86,13 +86,20 @@ type DataSource = RegistryData & {
   metadata_servers: RegistryData;
 };
 
+type CustomFile = {
+  id: string;
+  name: string;
+  size: number;
+};
+
 type Lexicon = {
   id: string;
   ou: string;
   name: string;
   domain: string;
-  description: string;
   status: string;
+  files: CustomFile[];
+  description: string;
   last_updated: string;
   pre_existing: string;
   docs_in_corpus: number;

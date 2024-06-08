@@ -1,6 +1,10 @@
+import Modal from "@/comps/ui/Modal";
+import ReviewLexicon from "../ReviewLexicon";
 import AlertModal from "@/comps/ui/AlertModal";
 import { HiDotsVertical } from "react-icons/hi";
+import EditLexiconForm from "../EditLexiconForm";
 import * as Popover from "@radix-ui/react-popover";
+import { setOpenModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setRows, setSelectedRows } from "@/state/slices/lexiconSlice";
 
@@ -30,21 +34,33 @@ const LexiconMenu = ({ row }: MenuProps) => {
           sideOffset={5}
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700 flex flex-col"
         >
+          <span className="cursor-pointer hover:bg-indigo-50">
+            <Modal
+              label="Edit"
+              identifier="editLexiconForm"
+              onClick={() => dispatch(setOpenModal("editLexiconForm"))}
+            >
+              <EditLexiconForm row={row} />
+            </Modal>
+          </span>
+
           <Popover.Close className="cursor-pointer hover:bg-indigo-50 py-2 px-4 text-left">
-            Edit
+            Activate
           </Popover.Close>
 
           <Popover.Close className="cursor-pointer hover:bg-indigo-50 py-2 px-4 text-left">
-            Add to Corpus
+            Deactivate
           </Popover.Close>
 
-          <Popover.Close className="cursor-pointer hover:bg-indigo-50 py-2 px-4 text-left">
-            Disable
-          </Popover.Close>
-
-          <Popover.Close className="cursor-pointer hover:bg-indigo-50 py-2 px-4 text-left">
-            View Lexicon
-          </Popover.Close>
+          <span className="cursor-pointer hover:bg-indigo-50">
+            <Modal
+              label="Review"
+              identifier="reviewLexicon"
+              onClick={() => dispatch(setOpenModal("reviewLexicon"))}
+            >
+              <ReviewLexicon row={row} />
+            </Modal>
+          </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <AlertModal row={row} accessor={row.name} onClick={() => deleteRow(row.id)} />

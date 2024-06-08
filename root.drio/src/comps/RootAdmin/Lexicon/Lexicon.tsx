@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import Table from "@/comps/ui/Table";
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
 import LexiconMenu from "./LexiconMenu";
 import { IoRefresh } from "react-icons/io5";
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { HiCheck, HiMinusSm, HiPlus } from "react-icons/hi";
+import { HiCheck, HiPlus } from "react-icons/hi";
+import { ColumnDef } from "@tanstack/react-table";
 import * as Checkbox from "@radix-ui/react-checkbox";
+import { setOpenModal } from "@/state/slices/uiSlice";
 import { setSelectedRows } from "@/state/slices/lexiconSlice";
-import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
+import LexiconForm from "./AddLexiconForm";
 import DataTable from "@/comps/ui/Table/DataTable";
 import AddLexiconForm from "./AddLexiconForm";
 
@@ -147,14 +147,14 @@ const Lexicon = () => {
             <Button
               icon={<HiPlus />}
               intent={"primary"}
-              onClick={() => dispatch(setOpenModal("addNewDictionaryForm"))}
+              onClick={() => dispatch(setOpenModal("addLexiconForm"))}
             >
-              Add New Dictionary
+              Add New Lexicon
             </Button>
           </div>
 
           <div className="hidden">
-            <Modal identifier="addNewDictionaryForm">
+            <Modal identifier="addLexiconForm">
               <AddLexiconForm />
             </Modal>
           </div>

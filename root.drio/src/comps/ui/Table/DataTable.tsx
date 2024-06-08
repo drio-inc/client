@@ -83,7 +83,7 @@ export default function DataTable<TData, TValue>({ columns, data }: DataTablePro
       <div className="flex items-center justify-between p-4">
         <div />
 
-        <p className="ml-36 text-gray-500">
+        <p className="ml-36 text-gray-500 text-sm">
           Showing {table.getRowModel().rows.length} of {data.length} results
         </p>
 
