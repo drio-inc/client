@@ -15,16 +15,16 @@ const GraphComponent = () => {
   ];
 
   const transformedData = {
-    nodes: data.flatMap((item, index) => [
+    nodes: data.flatMap((item: any, index: number) => [
       { id: `${item.word}-${index}`, label: item.word, glossary: item.glossary, group: item.type },
-      ...item.children.map((child, childIndex) => ({
+      ...item.children.map((child: any, childIndex: number) => ({
         id: `${child.word}-${index}-${childIndex}`,
         label: child.word,
         group: item.type,
       })),
     ]),
-    edges: data.flatMap((item, index) =>
-      item.children.map((child, childIndex) => ({
+    edges: data.flatMap((item: any, index: number) =>
+      item.children.map((child: any, childIndex: number) => ({
         from: `${item.word}-${index}`,
         to: `${child.word}-${index}-${childIndex}`,
       }))
