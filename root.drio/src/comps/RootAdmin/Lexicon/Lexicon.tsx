@@ -2,18 +2,20 @@
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
 import LexiconMenu from "./LexiconMenu";
+import { MdCheck } from "react-icons/md";
 import { IoRefresh } from "react-icons/io5";
 import { HiCheck, HiPlus } from "react-icons/hi";
 import { ColumnDef } from "@tanstack/react-table";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { setOpenModal } from "@/state/slices/uiSlice";
 import { setSelectedRows } from "@/state/slices/lexiconSlice";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import LexiconForm from "./AddLexiconForm";
-import DataTable from "@/comps/ui/Table/DataTable";
 import AddLexiconForm from "./AddLexiconForm";
+import DataTable from "@/comps/ui/Table/DataTable";
 import GraphView from "./ReviewLexicon/GraphView";
+import { MdOutlineCheckCircleOutline, MdOutlineRemoveCircleOutline } from "react-icons/md";
+import ReviewLexicon from "./ReviewLexicon";
 
 const columns: ColumnDef<Lexicon>[] = [
   {
@@ -103,13 +105,45 @@ const columns: ColumnDef<Lexicon>[] = [
   },
 
   {
-    accessorKey: "pre_existing",
     header: "Pre-Existing",
+    accessorKey: "pre_existing",
+    cell: ({ row }) => {
+      const pre_existing = row.original.pre_existing;
+      const color = pre_existing === "Yes" ? "text-green-800" : "text-red-800";
+      return (
+        <span className={`px-2 py-1 rounded font-medium flex items-center gap-x-2 ${color}`}>
+          {pre_existing === "Yes" ? (
+            <MdOutlineCheckCircleOutline className="w-5 h-5" />
+          ) : (
+            <MdOutlineRemoveCircleOutline className="w-5 h-5" />
+          )}
+          {pre_existing}
+        </span>
+      );
+    },
   },
 
   {
-    accessorKey: "status",
     header: "Status",
+    accessorKey: "status",
+    cell: ({ row }) => {
+      const status = row.original.status;
+      const statusEnum = {
+        Disabled: "bg-gray-200 text-gray-800",
+        Deployed: "bg-green-200 text-green-800",
+        Uploaded: "bg-yellow-200 text-yellow-800",
+      };
+
+      return (
+        <span
+          className={`px-2 py-1 rounded font-medium ${
+            statusEnum[status as keyof typeof statusEnum]
+          }`}
+        >
+          {status}
+        </span>
+      );
+    },
   },
 
   {
@@ -125,7 +159,7 @@ const columns: ColumnDef<Lexicon>[] = [
 
 const Lexicon = () => {
   const dispatch = useAppDispatch();
-  const { rows, selectedRows } = useAppSelector((state) => state.lexicon);
+  const { rows, selectedRows, lexiconDetails } = useAppSelector((state) => state.lexicon);
 
   return (
     <div className="w-full">
@@ -163,7 +197,43 @@ const Lexicon = () => {
 
         <DataTable columns={columns} data={rows} />
 
-        <GraphView />
+        <div className="hidden">
+          <Modal
+            label="Success!"
+            identifier="successLexiconAlert"
+            onClick={() => dispatch(setOpenModal("successLexiconAlert"))}
+          >
+            <div className="flex items-center justify-center flex-col gap-y-4 p-8">
+              <span className="w-16 h-16 bg-green-200 rounded-full flex items-center justify-center">
+                <MdCheck className="w-12 h-12 text-green-800" />
+              </span>
+
+              <h2 className="text-gray-700 text-xl font-bold">
+                Custom Lexicon created successfully
+              </h2>
+
+              <div className="flex gap-x-4 justify-center">
+                <Button
+                  intent="secondary"
+                  onClick={() => dispatch(setCloseModal("successLexiconAlert"))}
+                >
+                  Close
+                </Button>
+
+                {/* <Button intent="primary">Review</Button> */}
+                <span className="cursor-pointer hover:bg-indigo-50">
+                  <Modal
+                    label="Review"
+                    identifier="reviewLexicon"
+                    onClick={() => dispatch(setOpenModal("reviewLexicon"))}
+                  >
+                    <ReviewLexicon row={lexiconDetails as Lexicon} />
+                  </Modal>
+                </span>
+              </div>
+            </div>
+          </Modal>
+        </div>
       </div>
     </div>
   );

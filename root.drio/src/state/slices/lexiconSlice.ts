@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 type LexiconState = {
   rows: Lexicon[];
   selectedRows: string[];
+  lexiconDetails: Lexicon | null;
 };
 
 const initialState: LexiconState = {
@@ -15,7 +16,7 @@ const initialState: LexiconState = {
       description: "General dictionary description",
       docs_in_corpus: 1,
       pre_existing: "Yes",
-      status: "Uploaded",
+      status: "Deployed",
       last_updated: "2021-09-01",
       files: [
         {
@@ -34,7 +35,7 @@ const initialState: LexiconState = {
       description: "General dictionary description",
       docs_in_corpus: 5,
       pre_existing: "Yes",
-      status: "Uploaded",
+      status: "Disabled",
       last_updated: "2021-09-01",
       files: [
         {
@@ -138,6 +139,7 @@ const initialState: LexiconState = {
     },
   ],
   selectedRows: [],
+  lexiconDetails: null,
 };
 
 const lexiconSlice = createSlice({
@@ -151,11 +153,15 @@ const lexiconSlice = createSlice({
     setSelectedRows(state, action) {
       state.selectedRows = action.payload;
     },
+
+    setLexiconDetails(state, action) {
+      state.lexiconDetails = action.payload;
+    },
   },
 
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = lexiconSlice.actions;
+export const { setRows, setSelectedRows, setLexiconDetails } = lexiconSlice.actions;
 
 export default lexiconSlice.reducer;

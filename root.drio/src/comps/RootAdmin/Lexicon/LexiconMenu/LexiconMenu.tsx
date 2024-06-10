@@ -21,6 +21,22 @@ const LexiconMenu = ({ row }: MenuProps) => {
     dispatch(setSelectedRows([]));
   };
 
+  const deployLexicon = (id: number | string) => {
+    dispatch(
+      setRows(
+        lexiconState.rows.map((row) => (row.id === id ? { ...row, status: "Deployed" } : row))
+      )
+    );
+  };
+
+  const disableLexicon = (id: number | string) => {
+    dispatch(
+      setRows(
+        lexiconState.rows.map((row) => (row.id === id ? { ...row, status: "Disabled" } : row))
+      )
+    );
+  };
+
   return (
     <Popover.Root>
       <Popover.Trigger>
@@ -44,13 +60,21 @@ const LexiconMenu = ({ row }: MenuProps) => {
             </Modal>
           </span>
 
-          <Popover.Close className="cursor-pointer hover:bg-indigo-50 py-2 px-4 text-left">
-            Activate
-          </Popover.Close>
-
-          <Popover.Close className="cursor-pointer hover:bg-indigo-50 py-2 px-4 text-left">
-            Deactivate
-          </Popover.Close>
+          {row.status !== "Deployed" ? (
+            <Popover.Close
+              onClick={() => deployLexicon(row.id)}
+              className="cursor-pointer hover:bg-indigo-50 py-2 px-4 text-left"
+            >
+              Deploy
+            </Popover.Close>
+          ) : (
+            <Popover.Close
+              onClick={() => disableLexicon(row.id)}
+              className="cursor-pointer hover:bg-indigo-50 py-2 px-4 text-left"
+            >
+              Disable
+            </Popover.Close>
+          )}
 
           <span className="cursor-pointer hover:bg-indigo-50">
             <Modal

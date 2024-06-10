@@ -172,9 +172,7 @@ export default function ReviewLexicon({ row }: ReviewLexiconProps) {
             <FolderView data={dictionary} name="Expand" />
           </TabsContent>
 
-          <TabsContent value="graph">
-            <GraphView />
-          </TabsContent>
+          <TabsContent value="graph">{/* <GraphView /> */}</TabsContent>
 
           <TabsContent value="wordCloud">Word Cloud view will appear here</TabsContent>
         </Tabs>

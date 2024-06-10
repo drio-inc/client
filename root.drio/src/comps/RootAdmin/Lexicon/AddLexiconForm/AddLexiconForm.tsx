@@ -11,10 +11,11 @@ import { z } from "zod";
 import { FiBookOpen } from "react-icons/fi";
 import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
-import { setRows } from "@/state/slices/lexiconSlice";
-import { setCloseModal } from "@/state/slices/uiSlice";
+import { setLexiconDetails, setRows } from "@/state/slices/lexiconSlice";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { RiUploadCloud2Line, RiCloseFill } from "react-icons/ri";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import Modal from "@/comps/ui/Modal";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -105,6 +106,7 @@ export default function AddLexiconForm() {
           {
             ...data,
             id: uuidV4(),
+            status: "Disabled",
             pre_existing: "No",
             files: customFilesToAdd,
             docs_in_corpus: customFilesToAdd.length,
@@ -119,30 +121,30 @@ export default function AddLexiconForm() {
     if (associateLexicon === "pre-existing") {
       const existingFilesToAdd = existingFiles.map((file) => ({
         id: uuidV4(),
-        file: file.file.name,
+        name: file.file.name,
         size: file.file.size,
       }));
 
-      dispatch(
-        setRows([
-          ...rows,
-          {
-            ...data,
-            id: uuidV4(),
-            status: "Active",
-            pre_existing: "Yes",
-            files: existingFilesToAdd,
-            docs_in_corpus: existingFilesToAdd.length,
-            last_updated: new Date().toISOString().split("T")[0],
-            ou: ouOptions.find((ou) => ou.value === data.ou)?.label ?? "",
-            domain: domainOptions.find((domain) => domain.value === data.domain)?.label ?? "",
-          },
-        ])
-      );
+      const rowData = {
+        ...data,
+        id: uuidV4(),
+        status: "Disabled",
+        pre_existing: "Yes",
+        files: existingFilesToAdd,
+        docs_in_corpus: existingFilesToAdd.length,
+        last_updated: new Date().toISOString().split("T")[0],
+        ou: ouOptions.find((ou) => ou.value === data.ou)?.label ?? "",
+        domain: domainOptions.find((domain) => domain.value === data.domain)?.label ?? "",
+      };
+
+      dispatch(setLexiconDetails(rowData));
+      dispatch(setRows([...rows, rowData]));
     }
 
     form.reset();
     dispatch(setCloseModal("addLexiconForm"));
+    dispatch(setOpenModal("successLexiconAlert"));
+    showAlert("Lexicon added successfully", "success");
   };
 
   const handleFileSelect = (
@@ -306,13 +308,13 @@ export default function AddLexiconForm() {
                         </>
                       )}
 
-                      <Button
+                      {/* <Button
                         type="button"
                         intent={`primary`}
                         disabled={!(existingFiles && Array.from(existingFiles).length > 0)}
                       >
                         Upload
-                      </Button>
+                      </Button> */}
                     </div>
                   )}
 
@@ -331,13 +333,15 @@ export default function AddLexiconForm() {
                       </label>
                     </div>
 
-                    <button
-                      type="button"
-                      className="flex items-center gap-x-1 text-sm text-red-800 transition-all duration-200 ease-in-out hover:text-red-900"
-                    >
-                      <FiBookOpen className="text-xl" />
-                      <span className="font-medium">Create Lexicon</span>
-                    </button>
+                    {customfiles && Array.from(customfiles).length > 0 && (
+                      <button
+                        type="button"
+                        className="flex items-center gap-x-1 text-sm text-red-800 transition-all duration-200 ease-in-out hover:text-red-900"
+                      >
+                        <FiBookOpen className="text-xl" />
+                        <span className="font-medium">Create Lexicon</span>
+                      </button>
+                    )}
                   </div>
 
                   {associateLexicon === "create-new" && (
@@ -368,13 +372,13 @@ export default function AddLexiconForm() {
                         </>
                       )}
 
-                      <Button
+                      {/* <Button
                         type="button"
                         intent={`primary`}
                         disabled={!(customfiles && Array.from(customfiles).length > 0)}
                       >
                         Upload
-                      </Button>
+                      </Button> */}
                     </div>
                   )}
                 </RadioGroup.Root>
@@ -392,7 +396,17 @@ export default function AddLexiconForm() {
               <span className="inline-flex justify-center">Cancel</span>
             </Button>
 
-            <Button intent={`primary`} className="w-full" isLoading={false}>
+            <Button
+              intent={`primary`}
+              className="w-full"
+              disabled={
+                !form.formState.isValid ||
+                associateLexicon === "" ||
+                form.formState.isSubmitting ||
+                (associateLexicon === "create-new" && customfiles.length === 0) ||
+                (associateLexicon === "pre-existing" && existingFiles.length === 0)
+              }
+            >
               <span className="inline-flex justify-center">Add Lexicon</span>
             </Button>
           </div>

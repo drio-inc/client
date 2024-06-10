@@ -1,6 +1,7 @@
 import Button from "@ui/Button";
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
+import Modal from "@/comps/ui/Modal";
 import { TbFile } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import { SelectInput, TextInput } from "@ui/Forms/Inputs";
@@ -8,12 +9,14 @@ import * as RadioGroup from "@radix-ui/react-radio-group";
 
 import { z } from "zod";
 import { FiBookOpen } from "react-icons/fi";
+import ReviewLexicon from "../ReviewLexicon";
 import { SubmitHandler } from "react-hook-form";
 import * as Switch from "@radix-ui/react-switch";
 import { useZodForm, Form } from "@ui/Forms/Form";
-import { setCloseModal } from "@/state/slices/uiSlice";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { RiUploadCloud2Line, RiCloseFill } from "react-icons/ri";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { setRows } from "@/state/slices/lexiconSlice";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -45,8 +48,9 @@ const domainOptions = [
 
 export default function LexiconForm({ row }: FormProps) {
   const dispatch = useAppDispatch();
-  const [isActive, setIsActive] = useState(true);
+  const lexicon = useAppSelector((state) => state.lexicon);
   const [associateLexicon, setAssociateLexicon] = useState("");
+  const [isDeployed, setIsDeployed] = useState(row.status === "Deployed");
   const { recursiveRows: ouRows } = useAppSelector((state) => state.orgUnit);
 
   const form = useZodForm({
@@ -60,14 +64,26 @@ export default function LexiconForm({ row }: FormProps) {
     })) ?? [];
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      showAlert("Data source added successfully", "success");
-    } catch (err: any) {
-      showAlert("Something went wrong. Please try again.", "error");
-    }
+    const updatedRow = {
+      ...row,
+      ...data,
+      files: row.files,
+      status: isDeployed ? "Deployed" : "Disabled",
+      ou: ouOptions.find((ou) => ou.value === data.ou)?.label ?? "",
+      domain: domainOptions.find((domain) => domain.value === data.domain)?.label ?? "",
+    };
+
+    dispatch(
+      setRows(
+        lexicon.rows.map((lexiconRow) =>
+          lexiconRow.id === updatedRow.id ? updatedRow : lexiconRow
+        )
+      )
+    );
 
     form.reset();
     dispatch(setCloseModal("editLexiconForm"));
+    dispatch(setOpenModal("reviewLexicon"));
   };
 
   type RenderFilesProps = {
@@ -96,12 +112,10 @@ export default function LexiconForm({ row }: FormProps) {
                 </div>
               </div>
 
-              <div>
-                <RiCloseFill
-                  onClick={() => handleFileRemove(idx)}
-                  className="text-gray-500 cursor-pointer w-6 h-6"
-                />
-              </div>
+              {/* <RiCloseFill
+                onClick={() => handleFileRemove(idx)}
+                className="text-gray-500 cursor-pointer w-6 h-6"
+              /> */}
             </div>
           ))}
         </div>
@@ -116,10 +130,10 @@ export default function LexiconForm({ row }: FormProps) {
           <h2 className="text-gray-700 text-2xl font-bold text-center">Edit Lexicon</h2>
 
           <div className="w-full flex justify-between px-2 mt-4">
-            <span className="text-gray-700 font-medium">Activate Lexicon</span>
+            <span className="text-gray-700 font-medium">Deploy Lexicon</span>
             <Switch.Root
-              checked={isActive}
-              onCheckedChange={() => setIsActive(!isActive)}
+              checked={isDeployed}
+              onCheckedChange={() => setIsDeployed(!isDeployed)}
               className="w-[42px] h-[25px] bg-gray-200 rounded-full shadow-lg data-[state=checked]:bg-drio-red outline-none cursor-pointer"
             >
               <Switch.Thumb className="flex items-center justify-center w-[21px] h-[21px] bg-white rounded-full shadow-sm transition-transform duration-100 translate-x-0.5 will-change-transform data-[state=checked]:translate-x-[19px]" />
@@ -174,7 +188,9 @@ export default function LexiconForm({ row }: FormProps) {
             </div>
 
             <div className="bg-[#F9FAFB] w-full shadow py-2 mx-4">
-              <h3 className="px-4 text-gray-700 text-[18px] font-medium mb-2">Associate Lexicon</h3>
+              <h3 className="px-4 text-gray-700 text-[18px] font-medium mb-2">
+                Associated Lexicon
+              </h3>
 
               <div className="px-4 py-2 w-full">
                 <RadioGroup.Root
