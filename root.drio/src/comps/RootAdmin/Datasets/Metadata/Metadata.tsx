@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import Table from "@/comps/ui/Table";
 import Button from "@/comps/ui/Button";
 import MetadataMenu from "./MetadataMenu";
-
 import { setRows, setCurrentRow, setSelectedRows } from "@/state/slices/metadataSlice";
 
 import { useEffect, useState } from "react";
@@ -19,12 +18,12 @@ import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
+import DemoSchema from "@/data/demo_schema_data.json";
+
 const Modal = dynamic(() => import("@/comps/ui/Modal"));
 const SchemaStats = dynamic(() => import("./SchemaStats"));
 const AddMetaDataForm = dynamic(() => import("./AddMetaDataForm"));
-
 const MetadataPopover = dynamic(() => import("./HeaderPopovers/MetadataPopover"));
-
 const VisibilityPopover = dynamic(() => import("./HeaderPopovers/VisibilityPopover"));
 
 const headers = [
@@ -85,6 +84,7 @@ const Metadata = () => {
 
   useEffect(() => {
     setLoading(true);
+    const myDemoSchema: any = DemoSchema;
     const params = dataSourceRows?.find((row) => row?.id === datasourceId);
 
     getSchema({
@@ -92,7 +92,19 @@ const Metadata = () => {
       datasource_id: params?.id ?? "",
       account_id: params?.account_id ?? "",
     }).then((payload) => {
-      const data = payload?.filter((row) => row?.dataset_name === datasetName);
+      const data = payload
+        ?.filter((row) => row?.dataset_name === datasetName)
+        .map((row) => {
+          if (row?.dataset_name === "SalesforceOrders") {
+            return {
+              ...row,
+              ...myDemoSchema[row.property],
+            };
+          } else {
+            return row;
+          }
+        });
+
       dispatch(setRows([...data]));
       setLoading(false);
     });

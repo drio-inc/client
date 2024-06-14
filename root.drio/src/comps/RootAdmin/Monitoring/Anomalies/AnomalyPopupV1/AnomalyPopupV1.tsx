@@ -1,10 +1,12 @@
 import Layout from "@/comps/Layout";
-import { HiX } from "react-icons/hi";
+import { HiExclamation, HiX } from "react-icons/hi";
 import AnomalyChart from "../AnomalyChart";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import Button from "@/comps/ui/Button";
-import { setRows } from "@/state/slices/anomaliesSlice";
+import { setRow, setRows } from "@/state/slices/anomaliesSlice";
+import showAlert from "@/comps/ui/Alert";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
 
 const statusToColor = {
   Error: "text-red-500",
@@ -17,6 +19,9 @@ export default function AnomalyPopupV1() {
   const { row, rows } = useAppSelector((state) => state.anomalies);
 
   const markAsAnomaly = (id: string) => {
+    const rowToUpdate = rows.find((r) => r.id === id);
+    const markedRow = { ...rowToUpdate, status: "anomaly" };
+
     const updatedRows = rows.map((r) => {
       if (r.id === id) {
         return { ...r, status: "anomaly" };
@@ -24,11 +29,15 @@ export default function AnomalyPopupV1() {
       return r;
     });
 
+    dispatch(setRow(markedRow));
     dispatch(setRows(updatedRows));
-    dispatch(setCloseModal("anomalyDetails"));
+    showAlert("Anomaly marked successfully", "success");
   };
 
   const markAsNotAnomaly = (id: string) => {
+    const rowToUpdate = rows.find((r) => r.id === id);
+    const markedRow = { ...rowToUpdate, status: "not_anomaly" };
+
     const updatedRows = rows.map((r) => {
       if (r.id === id) {
         return { ...r, status: "not_anomaly" };
@@ -36,8 +45,9 @@ export default function AnomalyPopupV1() {
       return r;
     });
 
+    dispatch(setRow(markedRow));
     dispatch(setRows(updatedRows));
-    dispatch(setCloseModal("anomalyDetails"));
+    showAlert("Anomaly marked successfully", "success");
   };
 
   return (
@@ -132,21 +142,79 @@ export default function AnomalyPopupV1() {
             Cancel
           </Button>
 
-          <Button
-            intent={"success"}
-            disabled={row?.status === "not_anomaly"}
-            onClick={() => markAsNotAnomaly(row?.id)}
-          >
-            {row?.status === "not_anomaly" ? "Marked as Not Anomaly" : "Not an Anomaly"}
-          </Button>
+          <AlertDialog.Root>
+            <AlertDialog.Trigger disabled={row?.status === "not_anomaly"}>
+              <Button intent={"success"} disabled={row?.status === "not_anomaly"}>
+                {row?.status === "not_anomaly" ? "Marked as Not Anomaly" : "Not an Anomaly"}
+              </Button>
+            </AlertDialog.Trigger>
 
-          <Button
-            intent={"primary"}
-            disabled={row?.status === "anomaly"}
-            onClick={() => markAsAnomaly(row?.id)}
-          >
-            {row?.status === "anomaly" ? "Marked as Anomaly" : "Mark as Anomaly"}
-          </Button>
+            <AlertDialog.Portal>
+              <AlertDialog.Overlay className="bg-[#6B6B6B] data-[state=open]:animate-overlayShow fixed inset-0 opacity-40 z-[10000]" />
+              <AlertDialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white py-12 px-8 shadow-sm focus:outline-none z-[10000]">
+                <div className="mx-auto w-20 h-20 rounded-full bg-yellow-100 flex items-center justify-center mb-4">
+                  <HiExclamation className="text-yellow-500 w-10 h-10 mx-auto" />
+                </div>
+
+                <AlertDialog.Title className="text-[#223354] text-2xl font-bold text-center">
+                  Are you sure you want to mark this entity as not an anomaly?
+                </AlertDialog.Title>
+
+                <AlertDialog.Description className="text-[#223354] opacity-50 mt-4 mb-5 text-center">
+                  Please review the details before marking as not an anomaly.
+                </AlertDialog.Description>
+
+                <div className="flex justify-center gap-6">
+                  <AlertDialog.Cancel asChild>
+                    <button className="text-[#1A75FF] inline-flex items-center justify-center rounded px-4 outline-none focus:border">
+                      Cancel
+                    </button>
+                  </AlertDialog.Cancel>
+
+                  <AlertDialog.Action asChild>
+                    <Button onClick={() => markAsNotAnomaly(row?.id)}>Confirm</Button>
+                  </AlertDialog.Action>
+                </div>
+              </AlertDialog.Content>
+            </AlertDialog.Portal>
+          </AlertDialog.Root>
+
+          <AlertDialog.Root>
+            <AlertDialog.Trigger disabled={row?.status === "anomaly"}>
+              <Button intent={"primary"} disabled={row?.status === "anomaly"}>
+                {row?.status === "anomaly" ? "Marked as Anomaly" : "Mark as Anomaly"}
+              </Button>
+            </AlertDialog.Trigger>
+
+            <AlertDialog.Portal>
+              <AlertDialog.Overlay className="bg-[#6B6B6B] data-[state=open]:animate-overlayShow fixed inset-0 opacity-40 z-[10000]" />
+              <AlertDialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white py-12 px-8 shadow-sm focus:outline-none z-[10000]">
+                <div className="mx-auto w-20 h-20 rounded-full bg-yellow-100 flex items-center justify-center mb-4">
+                  <HiExclamation className="text-yellow-500 w-10 h-10 mx-auto" />
+                </div>
+
+                <AlertDialog.Title className="text-[#223354] text-2xl font-bold text-center">
+                  Are you sure you want to mark this entity as an anomaly?
+                </AlertDialog.Title>
+
+                <AlertDialog.Description className="text-[#223354] opacity-50 mt-4 mb-5 text-center">
+                  Please review the details before marking as an anomaly.
+                </AlertDialog.Description>
+
+                <div className="flex justify-center gap-6">
+                  <AlertDialog.Cancel asChild>
+                    <button className="text-[#1A75FF] inline-flex items-center justify-center rounded px-4 outline-none focus:border">
+                      Cancel
+                    </button>
+                  </AlertDialog.Cancel>
+
+                  <AlertDialog.Action asChild>
+                    <Button onClick={() => markAsAnomaly(row?.id)}>Confirm</Button>
+                  </AlertDialog.Action>
+                </div>
+              </AlertDialog.Content>
+            </AlertDialog.Portal>
+          </AlertDialog.Root>
         </div>
 
         <span

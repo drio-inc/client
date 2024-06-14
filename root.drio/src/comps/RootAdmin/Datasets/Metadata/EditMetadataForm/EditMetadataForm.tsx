@@ -201,11 +201,11 @@ export default function EditMetadataForm({ row }: TableRow) {
 
             <div className="px-4 py-2 w-full">
               <TextInput
-                defaultValue={"N/A"}
                 label={"Sample Value"}
                 {...form.register("sample_value")}
                 placeholder={"Enter sample value"}
                 className="md:text-sm 2xl:text-base"
+                defaultValue={row?.sample_value ?? "N/A"}
               />
             </div>
 

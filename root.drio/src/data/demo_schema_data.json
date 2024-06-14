@@ -1,0 +1,177 @@
+{
+  "Dealer Name": {
+    "sample_value": "Texas Harley-Davidson",
+    "enhanced_property_type": "string",
+    "key_name_tags": [
+      {
+        "id": "100",
+        "name": "Name",
+        "status": "Pending"
+      },
+      {
+        "id": "101",
+        "name": "Car Dealer",
+        "status": "Pending"
+      }
+    ],
+    "data_field_tags": [
+      {
+        "id": "100",
+        "name": "Org name",
+        "status": "Pending"
+      }
+    ]
+  },
+
+  "Order ID": {
+    "sample_value": "HDC000176568",
+    "enhanced_property_type": "alphanumeric",
+    "key_name_tags": [
+      {
+        "id": "100",
+        "name": "Identifier",
+        "status": "Pending"
+      }
+    ],
+    "data_field_tags": [
+      {
+        "id": "100",
+        "name": "Order identifier",
+        "status": "Pending"
+      }
+    ]
+  },
+  "Product Name": {
+    "sample_value": "ELECTRA GLIDE STANDARD",
+    "enhanced_property_type": "list",
+    "key_name_tags": [
+      {
+        "id": "100",
+        "name": "Name",
+        "status": "Pending"
+      }
+    ],
+    "data_field_tags": [
+      {
+        "id": "100",
+        "name": "product",
+        "status": "Pending"
+      },
+      {
+        "id": "101",
+        "name": "motorcycle",
+        "status": "Pending"
+      },
+      {
+        "id": "102",
+        "name": "brand",
+        "status": "Pending"
+      },
+      {
+        "id": "103",
+        "name": "product identifiable",
+        "status": "Pending"
+      }
+    ]
+  },
+  "SKU": {
+    "sample_value": "167692496",
+    "enhanced_property_type": "numeric",
+    "key_name_tags": [
+      {
+        "id": "100",
+        "name": "Inventory",
+        "status": "Pending"
+      }
+    ],
+    "data_field_tags": [
+      {
+        "id": "100",
+        "name": "number",
+        "status": "Pending"
+      }
+    ]
+  },
+  "Ship Quantity": {
+    "sample_value": "329",
+    "enhanced_property_type": "integer",
+    "key_name_tags": [
+      {
+        "id": "100",
+        "name": "amount shipped",
+        "status": "Pending"
+      }
+    ],
+    "data_field_tags": [
+      {
+        "id": "100",
+        "name": "number",
+        "status": "Pending"
+      }
+    ]
+  },
+  "Price": {
+    "sample_value": "9870000",
+    "enhanced_property_type": "currency",
+    "key_name_tags": [
+      {
+        "id": "100",
+        "name": "Cost",
+        "status": "Pending"
+      },
+      {
+        "id": "101",
+        "name": "Expense",
+        "status": "Pending"
+      }
+    ],
+    "data_field_tags": [
+      {
+        "id": "100",
+        "name": "Monetary",
+        "status": "Pending"
+      }
+    ]
+  },
+  "Desired ETA": {
+    "sample_value": "4/15/2023 12:18",
+    "enhanced_property_type": "date",
+    "key_name_tags": [
+      {
+        "id": "100",
+        "name": "Time of Availability",
+        "status": "Pending"
+      }
+    ],
+    "data_field_tags": [
+      {
+        "id": "100",
+        "name": "Date-Time",
+        "status": "Pending"
+      }
+    ]
+  },
+  "Ship to Location": {
+    "sample_value": "1 Texas Harley Wy, Bedford, TX 76021",
+    "enhanced_property_type": "geolocation",
+    "key_name_tags": [
+      {
+        "id": "100",
+        "name": "Destination",
+        "status": "Pending"
+      },
+      {
+        "id": "101",
+        "name": "Address",
+        "status": "Pending"
+      }
+    ],
+    "data_field_tags": [
+      {
+        "id": "100",
+        "name": "Address",
+        "status": "Pending"
+      }
+    ]
+  }
+}
