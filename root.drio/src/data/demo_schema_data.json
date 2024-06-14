@@ -173,5 +173,43 @@
         "status": "Pending"
       }
     ]
+  },
+  "NOTES": {
+    "sample_value": "John Travis from Texas Harley Davidson at 682-555-1212 is insisting all of this go to his dealership",
+    "enhanced_property_type": "string",
+    "key_name_tags": [
+      {
+        "id": "100",
+        "name": "Text",
+        "status": "Pending"
+      }
+    ],
+    "data_field_tags": [
+      {
+        "id": "100",
+        "name": "Person",
+        "status": "Pending"
+      },
+      {
+        "id": "101",
+        "name": "Org",
+        "status": "Pending"
+      },
+      {
+        "id": "102",
+        "name": "Phone Number",
+        "status": "Pending"
+      },
+      {
+        "id": "103",
+        "name": "Geo Location",
+        "status": "Pending"
+      },
+      {
+        "id": "104",
+        "name": "PII",
+        "status": "Pending"
+      }
+    ]
   }
 }
