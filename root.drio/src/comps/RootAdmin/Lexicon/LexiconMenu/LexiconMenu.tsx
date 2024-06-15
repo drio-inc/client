@@ -7,6 +7,7 @@ import * as Popover from "@radix-ui/react-popover";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setRows, setSelectedRows } from "@/state/slices/lexiconSlice";
+import AddLexiconFilesForm from "../AddLexiconFilesForm";
 
 type MenuProps = {
   row: Lexicon;
@@ -57,6 +58,16 @@ const LexiconMenu = ({ row }: MenuProps) => {
               onClick={() => dispatch(setOpenModal("editLexiconForm"))}
             >
               <EditLexiconForm row={row} />
+            </Modal>
+          </span>
+
+          <span className="cursor-pointer hover:bg-indigo-50">
+            <Modal
+              label="Add Files"
+              identifier="addLexiconFilesForm"
+              onClick={() => dispatch(setOpenModal("addLexiconFilesForm"))}
+            >
+              <AddLexiconFilesForm />
             </Modal>
           </span>
 

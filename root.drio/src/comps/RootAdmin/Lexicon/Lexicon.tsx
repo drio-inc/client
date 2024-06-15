@@ -16,6 +16,7 @@ import DataTable from "@/comps/ui/Table/DataTable";
 import GraphView from "./ReviewLexicon/GraphView";
 import { MdOutlineCheckCircleOutline, MdOutlineRemoveCircleOutline } from "react-icons/md";
 import ReviewLexicon from "./ReviewLexicon";
+import AddLexiconFilesForm from "./AddLexiconFilesForm";
 
 const columns: ColumnDef<Lexicon>[] = [
   {
@@ -191,6 +192,12 @@ const Lexicon = () => {
           <div className="hidden">
             <Modal identifier="addLexiconForm">
               <AddLexiconForm />
+            </Modal>
+          </div>
+
+          <div className="hidden">
+            <Modal identifier="addLexiconFilesForm">
+              <AddLexiconFilesForm />
             </Modal>
           </div>
         </div>

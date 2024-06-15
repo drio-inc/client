@@ -13,4 +13,4 @@ const LexiconPage = () => {
   );
 };
 
-export default withAuth(LexiconPage);
+export default LexiconPage;
