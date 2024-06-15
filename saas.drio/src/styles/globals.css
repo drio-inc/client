@@ -14,3 +14,11 @@
 .custom-container {
   height: calc(100vh - 6rem);
 }
+
+.custom-tab-trigger {
+  display: none;
+  color: white;
+  border-radius: 0.5rem;
+  background-color: white !important;
+  border: 2px solid var(--drio-accent);
+}

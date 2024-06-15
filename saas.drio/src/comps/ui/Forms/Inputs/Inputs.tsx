@@ -54,80 +54,75 @@ const textInputStyles = cva(`${styles[`ui-inputs`]}`, {
   defaultVariants: {},
 });
 
-interface ITextInputProps
-  extends InputProps,
-    VariantProps<typeof textInputStyles> {}
+interface ITextInputProps extends InputProps, VariantProps<typeof textInputStyles> {}
 
-export const TextInput = forwardRef<HTMLInputElement, ITextInputProps>(
-  function TextInput({ label, required, className, ...props }, ref) {
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+export const TextInput = forwardRef<HTMLInputElement, ITextInputProps>(function TextInput(
+  { label, required, className, ...props },
+  ref
+) {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-    const {
-      formState: { errors },
-    } = useFormContext();
+  const {
+    formState: { errors },
+  } = useFormContext();
 
-    if (!props.name) return null;
+  if (!props.name) return null;
 
-    const error = errors[props.name];
+  const error = errors[props.name];
 
-    return (
-      <div
-        className={`${textInputStyles({})} relative flex flex-col ${className}
+  return (
+    <div
+      className={`${textInputStyles({})} relative flex flex-col ${className}
         `}
-      >
-        <label className="flex items-center">
-          <span className="inline-block text-gray-700 text-sm font-medium">
-            {label} {required && <span className="text-red-500">*</span>}
-          </span>
-        </label>
+    >
+      <label className="flex items-center">
+        <span className="inline-block text-gray-700 text-sm font-medium">
+          {label} {required && <span className="text-red-500">*</span>}
+        </span>
+      </label>
 
-        <input
-          ref={ref}
-          {...props}
-          type={isPasswordVisible ? "text" : props.type}
-          className={`transition-colors ease-in-out duration-200 border py-2 px-3 my-1 rounded-md focus:outline-none shadow-sm ${
-            error
-              ? `border-red-300 focus:border-red-300 text-red-900 placeholder-red-900`
-              : `border-gray-300 focus:border-gray-700 text-gray-500`
-          }`}
-        />
+      <input
+        ref={ref}
+        {...props}
+        type={isPasswordVisible ? "text" : props.type}
+        className={`transition-colors ease-in-out duration-200 border py-2 px-3 my-1 rounded-md focus:outline-none shadow-sm ${
+          error
+            ? `border-red-300 focus:border-red-300 text-red-900 placeholder-red-900`
+            : `border-gray-300 focus:border-gray-700 text-gray-500`
+        }`}
+      />
 
-        {error && (
-          <HiExclamationCircle className="absolute right-3 top-9 text-red-500 w-5 h-5" />
-        )}
+      {error && <HiExclamationCircle className="absolute right-3 top-9 text-red-500 w-5 h-5" />}
 
-        {!error && (
-          <>
-            {props.type === "password" && (
-              <>
-                <HiEyeOff
-                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                  className={`absolute right-3 top-9 text-gray-500 w-5 h-5 cursor-pointer ${
-                    isPasswordVisible ? `block` : `hidden`
-                  }`}
-                />
-                <HiEye
-                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                  className={`absolute right-3 top-9 text-gray-500 w-5 h-5 cursor-pointer ${
-                    isPasswordVisible ? `hidden` : `block`
-                  }`}
-                />
-              </>
-            )}
-          </>
-        )}
+      {!error && (
+        <>
+          {props.type === "password" && (
+            <>
+              <HiEyeOff
+                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                className={`absolute right-3 top-9 text-gray-500 w-5 h-5 cursor-pointer ${
+                  isPasswordVisible ? `block` : `hidden`
+                }`}
+              />
+              <HiEye
+                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                className={`absolute right-3 top-9 text-gray-500 w-5 h-5 cursor-pointer ${
+                  isPasswordVisible ? `hidden` : `block`
+                }`}
+              />
+            </>
+          )}
+        </>
+      )}
 
-        <FieldError name={props.name} />
-      </div>
-    );
-  }
-);
+      <FieldError name={props.name} />
+    </div>
+  );
+});
 
 const { Option, Control, Menu, Input } = components;
 
-const CustomSelectInput = (props: SelectInputProps) => (
-  <Input {...props} autoComplete="nope" />
-);
+const CustomSelectInput = (props: SelectInputProps) => <Input {...props} autoComplete="nope" />;
 
 const CustomSelectControl = ({
   registerName,
@@ -170,12 +165,8 @@ const CustomSelectOption = (props: OptionProps) => {
       <div
         className={`cursor-pointer hover:bg-gray-50 flex justify-between items-center text-gray-900 p-2`}
       >
-        <span className={`${props.isSelected && `font-medium`} text-sm`}>
-          {props.label}
-        </span>
-        <HiCheck
-          className={`${props.isSelected ? "visible" : "hidden"} text-drio-red`}
-        />
+        <span className={`${props.isSelected && `font-medium`} text-sm`}>{props.label}</span>
+        <HiCheck className={`${props.isSelected ? "visible" : "hidden"} text-drio-red`} />
       </div>
     </Option>
   );
@@ -237,8 +228,7 @@ export const SelectInput = ({
                 ),
 
                 IndicatorSeparator: () => null,
-                DropdownIndicator: () =>
-                  hasPlusIndicator ? <HiPlus /> : <HiChevronDown />,
+                DropdownIndicator: () => (hasPlusIndicator ? <HiPlus /> : <HiChevronDown />),
               }}
             />
           );
@@ -246,9 +236,7 @@ export const SelectInput = ({
       />
 
       {error && (
-        <span className="text-xs md:text-sm text-gray-500">
-          {error?.message as string}
-        </span>
+        <span className="text-xs md:text-sm text-gray-500">{error?.message as string}</span>
       )}
     </div>
   );
