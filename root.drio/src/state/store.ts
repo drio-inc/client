@@ -35,6 +35,7 @@ import alertPoliciesReducer from "./slices/alertPoliciesSlice";
 import notificationsBarReducer from "./slices/notificationSlice";
 import notificationsPageReducer from "./slices/notificationsSlice";
 import inboundContractReducer from "./slices/inboundContractSlice";
+import anomalyPoliciesReducer from "./slices/anomalyPoliciesSlice";
 import outboundContractReducer from "./slices/outboundContractSlice";
 import approvedContractReducer from "./slices/approvedContractSlice";
 import datasetMarketplaceReducer from "./slices/datasetMarketplaceSlice";
@@ -69,6 +70,7 @@ const rootReducer = combineReducers({
   DDXInstance: DDXInstanceReducer,
   alertPolicies: alertPoliciesReducer,
   notifications: notificationsBarReducer,
+  anomalyPolicies: anomalyPoliciesReducer,
   inboundContract: inboundContractReducer,
   outboundContract: outboundContractReducer,
   approvedContract: approvedContractReducer,

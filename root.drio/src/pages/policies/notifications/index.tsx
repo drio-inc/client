@@ -13,4 +13,4 @@ const NotificationsPage = () => {
   );
 };
 
-export default withAuth(NotificationsPage);
+export default NotificationsPage;

@@ -1,42 +1,33 @@
 import Table from "@/comps/ui/Table";
-import { setSelectedRows } from "@/state/slices/notificationsSlice";
+import { setSelectedRows } from "@/state/slices/anomalyPoliciesSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
 import { IoRefresh } from "react-icons/io5";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
-import NotificationsMenu from "./NotificationsMenu";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import AddNotificationForm from "./AddNotificationForm";
+import AlertPoliciesMenu from "./AnomalyPoliciesMenu";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 const headers = [
   {
-    header: "Name",
-    accessor: "name",
+    header: "Anomaly Type",
+    accessor: "anomaly_type",
   },
   {
-    header: "Channel Type",
-    accessor: "channel_type",
+    header: "Sensitivity",
+    accessor: "sensitivity",
   },
   {
-    header: "URL",
-    accessor: "url",
-  },
-  {
-    header: "Times Used",
-    accessor: "times_used",
-  },
-  {
-    header: "Enabled",
-    accessor: "enabled",
+    header: "Notification",
+    accessor: "notification",
   },
 ];
 
-const Notifications = () => {
+const AlertPolicies = () => {
   const dispatch = useAppDispatch();
-  const { rows, selectedRows } = useAppSelector((state) => state.notificationsPage);
+  const { rows, selectedRows } = useAppSelector((state) => state.anomalyPolicies);
 
   const handleCheckbox = (index: number) => {
     if (selectedRows.includes(index)) {
@@ -78,15 +69,23 @@ const Notifications = () => {
             <Button
               icon={<HiPlus />}
               intent={"primary"}
-              onClick={() => dispatch(setOpenModal("addNotificationForm"))}
+              onClick={() => dispatch(setOpenModal("addAnomalyPolicyForm"))}
             >
-              Add New Notification Channel
+              Add New Alert Anomaly Policy
             </Button>
           </div>
 
           <div className="hidden">
-            <Modal identifier="addNotificationForm">
-              <AddNotificationForm />
+            <Modal identifier="addAnomalyPolicyForm">
+              <div className="p-4 flex flex-col justify-center gap-4">
+                <h3>Form to be added</h3>
+                <Button
+                  intent={"secondary"}
+                  onClick={() => dispatch(setCloseModal("addAnomalyPolicyForm"))}
+                >
+                  Cancel
+                </Button>
+              </div>
             </Modal>
           </div>
         </div>
@@ -94,7 +93,7 @@ const Notifications = () => {
         <Table
           rows={rows}
           headers={headers}
-          menu={NotificationsMenu}
+          menu={AlertPoliciesMenu}
           selectedRows={selectedRows}
           handleCheckbox={handleCheckbox}
         />
@@ -103,4 +102,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications;
+export default AlertPolicies;
