@@ -14,11 +14,11 @@ import AddNewRuleTemplateForm from "./AddNewRuleTemplateForm";
 const headers = [
   {
     header: "Name",
-    accessor: "name",
+    accessor: "rule_name",
   },
   {
     header: "Description",
-    accessor: "description",
+    accessor: "rule_description",
   },
   {
     header: "Times Queried",

@@ -5,16 +5,16 @@ import Layout from "@/comps/Layout";
 import { useForm } from "react-hook-form";
 import { Separator } from "@/comps/ui/Separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SelectInput, TextInput } from "@ui/Forms/Inputs";
-import * as RadioGroup from "@radix-ui/react-radio-group";
+import { RadioGroup, RadioGroupItem } from "@/comps/ui/RadioGroup";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/comps/ui/Tabs";
 
+import { v4 as uuiv4 } from "uuid";
 import { useState } from "react";
-import { HiCheck, HiChevronDown } from "react-icons/hi";
 import { setCloseModal } from "@/state/slices/uiSlice";
+import { HiCheck, HiChevronDown } from "react-icons/hi";
+import { setRows } from "@/state/slices/ruleTemplateSlice";
 import { Button as ButtonV2 } from "@/comps/ui/Button/ButtonV2";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
-
 import {
   Form,
   FormItem,
@@ -60,6 +60,10 @@ const schema = z.object({
     required_error: "Please select an option",
   }),
 
+  window_type: z.enum(["sliding", "step"], {
+    required_error: "You need to select a window type.",
+  }),
+
   window_function: z.string().min(3, { message: "Window function is too short" }),
 
   composite_stream: z.string().min(3, { message: "Composite stream is too short" }),
@@ -100,8 +104,8 @@ const datasetOptions = [
 
 export default function AddNewRuleTEmplateForm() {
   const dispatch = useAppDispatch();
-  const [windowType, setWindowType] = useState("");
   const [openDatasetPopover, setOpenDatasetPopover] = useState(false);
+  const ruleTemplates = useAppSelector((state) => state.ruleTemplate);
   const [openDataSourcePopover, setOpenDataSourcePopover] = useState(false);
   const [tabValue, setTabValue] = useState("rule" as "rule" | "stream" | "threshold");
 
@@ -113,8 +117,22 @@ export default function AddNewRuleTEmplateForm() {
     console.log(data);
 
     try {
-      console.log(data);
+      // API CALL
 
+      dispatch(
+        setRows([
+          ...ruleTemplates.rows,
+          {
+            ...data,
+            id: uuiv4(),
+            enabled: "no",
+            times_used: 0,
+            times_queried: 0,
+            number_of_fields: 0,
+            number_of_streams: 0,
+          },
+        ])
+      );
       showAlert("Template added successfully", "success");
     } catch (err: any) {
       showAlert(err?.data?.message ?? "Something went wrong. Please try again.", "error");
@@ -246,13 +264,6 @@ export default function AddNewRuleTEmplateForm() {
               <Separator className="w-full mt-2" />
 
               <div className="py-2 w-full">
-                {/* <TextInput
-                  label={"Stream Name"}
-                  placeholder={"Stream 1"}
-                  {...form.register("stream_name")}
-                  className="md:text-sm 2xl:text-base"
-                /> */}
-
                 <FormField
                   name="stream_name"
                   control={form.control}
@@ -325,18 +336,19 @@ export default function AddNewRuleTEmplateForm() {
                                   <CommandItem
                                     key={source.value}
                                     value={source.label}
+                                    className="flex justify-between"
                                     onSelect={() => {
                                       form.setValue("data_source_id", source.value);
                                       setOpenDataSourcePopover(false);
                                     }}
                                   >
+                                    {source.label}
                                     <HiCheck
                                       className={cn(
-                                        "mr-2 h-4 w-4",
+                                        "mr-2 h-4 w-4 text-drio-red-dark",
                                         source.value === field.value ? "opacity-100" : "opacity-0"
                                       )}
                                     />
-                                    {source.label}
                                   </CommandItem>
                                 ))}
                               </CommandGroup>
@@ -385,6 +397,7 @@ export default function AddNewRuleTEmplateForm() {
                               <CommandGroup>
                                 {datasetOptions.map((source) => (
                                   <CommandItem
+                                    className="flex justify-between"
                                     key={source.value}
                                     value={source.label}
                                     onSelect={() => {
@@ -392,13 +405,13 @@ export default function AddNewRuleTEmplateForm() {
                                       setOpenDatasetPopover(false);
                                     }}
                                   >
+                                    {source.label}
                                     <HiCheck
                                       className={cn(
-                                        "mr-2 h-4 w-4",
+                                        "mr-2 h-4 w-4 text-drio-red-dark",
                                         source.value === field.value ? "opacity-100" : "opacity-0"
                                       )}
                                     />
-                                    {source.label}
                                   </CommandItem>
                                 ))}
                               </CommandGroup>
@@ -412,37 +425,37 @@ export default function AddNewRuleTEmplateForm() {
                 />
               </div>
 
-              <h3 className="text-gray-700 text-sm font-medium">Window Type</h3>
-
               <div className="py-2 w-full">
-                <RadioGroup.Root
-                  value={windowType}
-                  aria-label="Window Type"
-                  onValueChange={setWindowType}
-                  className="flex flex-wrap gap-y-2 gap-x-4 w-full"
-                >
-                  <div className="flex items-center gap-x-2">
-                    <RadioGroup.Item
-                      id="r1"
-                      value={"sliding"}
-                      className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
-                    />
-                    <label htmlFor="r1" className="text-gray-500 text-sm font-medium">
-                      Sliding
-                    </label>
-                  </div>
-
-                  <div className="flex items-center gap-x-2">
-                    <RadioGroup.Item
-                      id="r2"
-                      value={"step"}
-                      className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
-                    />
-                    <label htmlFor="r2" className="text-gray-500 text-sm font-medium">
-                      Step
-                    </label>
-                  </div>
-                </RadioGroup.Root>
+                <FormField
+                  control={form.control}
+                  name="window_type"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel>Window Type</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-wrap gap-y-2 gap-x-4 w-full"
+                        >
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="sliding" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Sliding</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="step" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Step</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <div className="py-2 w-full">
@@ -481,7 +494,19 @@ export default function AddNewRuleTEmplateForm() {
                   type="button"
                   intent={`primary`}
                   className="w-full"
-                  onClick={() => setTabValue("threshold")}
+                  onClick={async () => {
+                    const validate = await form.trigger([
+                      "dataset_id",
+                      "stream_name",
+                      "window_type",
+                      "data_source_id",
+                      "window_function",
+                      "stream_description",
+                    ]);
+
+                    if (!validate) return;
+                    setTabValue("threshold");
+                  }}
                 >
                   <span className="inline-flex justify-center w-full">Next</span>
                 </Button>
