@@ -13,4 +13,4 @@ const AlertPoliciesPage = () => {
   );
 };
 
-export default withAuth(AlertPoliciesPage);
+export default AlertPoliciesPage;

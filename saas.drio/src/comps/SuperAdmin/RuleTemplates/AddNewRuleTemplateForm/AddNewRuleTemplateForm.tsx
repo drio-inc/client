@@ -1,8 +1,9 @@
 import { z } from "zod";
+import cn from "@/utils/cn";
 import Button from "@ui/Button";
 import showAlert from "@ui/Alert";
 import Layout from "@/comps/Layout";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Separator } from "@/comps/ui/Separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RadioGroup, RadioGroupItem } from "@/comps/ui/RadioGroup";
@@ -26,17 +27,17 @@ import {
 
 import { Input } from "@/comps/ui/Input";
 import { Textarea } from "@/comps/ui/Textarea";
-
 import { Popover, PopoverContent, PopoverTrigger } from "@/comps/ui/Popover";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/comps/ui/Accordion";
+
 import {
   Command,
   CommandItem,
+  CommandList,
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandList,
 } from "@/comps/ui/Command";
-import cn from "@/utils/cn";
 
 const schema = z.object({
   rule_name: z
@@ -46,25 +47,26 @@ const schema = z.object({
 
   rule_description: z.string().min(10, { message: "Description is too short" }),
 
-  stream_name: z
-    .string()
-    .min(3, { message: "Name is too short" })
-    .max(50, { message: "Name is too long" }),
-  stream_description: z.string().min(3, { message: "Description is too short" }),
+  streams: z.array(
+    z.object({
+      stream_name: z.string().min(3, { message: "Stream name is too short" }),
+      stream_description: z.string().min(10, { message: "Stream description is too short" }),
 
-  data_source_id: z.string({
-    required_error: "Please select an option",
-  }),
+      data_source_id: z.string({
+        required_error: "Please select an option",
+      }),
 
-  dataset_id: z.string({
-    required_error: "Please select an option",
-  }),
+      dataset_id: z.string({
+        required_error: "Please select an option",
+      }),
 
-  window_type: z.enum(["sliding", "step"], {
-    required_error: "You need to select a window type.",
-  }),
+      window_type: z.enum(["sliding", "step"], {
+        required_error: "You need to select a window type.",
+      }),
 
-  window_function: z.string().min(3, { message: "Window function is too short" }),
+      window_function: z.string().min(3, { message: "Window function is too short" }),
+    })
+  ),
 
   composite_stream: z.string().min(3, { message: "Composite stream is too short" }),
   threshold_condition: z.string().min(3, { message: "Threshold condition is too short" }),
@@ -106,19 +108,35 @@ export default function AddNewRuleTEmplateForm() {
   const dispatch = useAppDispatch();
   const [openDatasetPopover, setOpenDatasetPopover] = useState(false);
   const ruleTemplates = useAppSelector((state) => state.ruleTemplate);
+  const [defaultAccordionValue, setDefaultAccordionValue] = useState("0");
   const [openDataSourcePopover, setOpenDataSourcePopover] = useState(false);
   const [tabValue, setTabValue] = useState("rule" as "rule" | "stream" | "threshold");
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      streams: [
+        {
+          stream_name: "",
+          dataset_id: "",
+          data_source_id: "",
+          window_function: "",
+          stream_description: "",
+          window_type: undefined,
+        },
+      ],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "streams",
   });
 
   const onSubmit = async (data: FormData) => {
     console.log(data);
 
     try {
-      // API CALL
-
       dispatch(
         setRows([
           ...ruleTemplates.rows,
@@ -129,7 +147,7 @@ export default function AddNewRuleTEmplateForm() {
             times_used: 0,
             times_queried: 0,
             number_of_fields: 0,
-            number_of_streams: 0,
+            number_of_streams: fields.length,
           },
         ])
       );
@@ -147,7 +165,7 @@ export default function AddNewRuleTEmplateForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full mx-auto bg-white p-8 rounded-lg min-w-[22vw]"
+          className="w-full mx-auto bg-white py-8 px-4 rounded-lg min-w-[400px]"
         >
           <h2 className="text-gray-700 text-2xl font-bold my-4 text-center">
             Add New Rule Template
@@ -158,7 +176,7 @@ export default function AddNewRuleTEmplateForm() {
             className="w-full flex flex-col justify-center mt-8"
             onValueChange={(val) => setTabValue(val as "rule" | "stream" | "threshold")}
           >
-            <TabsList className="flex justify-around w-full">
+            <TabsList className="flex justify-around w-full px-4">
               <TabsTrigger
                 value="rule"
                 className="flex flex-col data-[state=active]:bg-white data-[state=active]:text-drio-red rounded-lg border-none p-0 data-[state=inactive]:bg-transparent"
@@ -174,7 +192,7 @@ export default function AddNewRuleTEmplateForm() {
                 className="flex flex-col data-[state=active]:bg-white data-[state=active]:text-drio-red rounded-lg border-none p-0 data-[state=inactive]:bg-transparent"
               >
                 <span className="border-2 px-5 py-4 rounded-lg">2</span>
-                <span> Stream</span>
+                <span>Stream</span>
               </TabsTrigger>
 
               <Separator className="w-[40px] mx-2" />
@@ -188,9 +206,11 @@ export default function AddNewRuleTEmplateForm() {
               </TabsTrigger>
             </TabsList>
 
-            <Separator className="w-full mt-8" />
+            <div className="px-4">
+              <Separator className="w-full mt-8" />
+            </div>
 
-            <TabsContent value="rule">
+            <TabsContent value="rule" className="px-4">
               <div className="py-2 w-full">
                 <FormField
                   name="rule_name"
@@ -253,234 +273,285 @@ export default function AddNewRuleTEmplateForm() {
             </TabsContent>
 
             <TabsContent value="stream">
-              <div className="flex items-center justify-between gap-x-4">
+              <div className="flex items-center justify-between gap-x-4 px-4">
                 <span className="text-[20px] text-gray-700 font-medium">Stream Definition</span>
-                <span className="text-drio-red border-2 border-drio-red rounded px-2 flex items-center gap-x-1">
+                <button
+                  type="button"
+                  className="text-drio-red border-2 border-drio-red rounded px-2 flex items-center gap-x-1"
+                  onClick={() => {
+                    setDefaultAccordionValue(`${fields.length}`);
+
+                    append({
+                      stream_name: "",
+                      dataset_id: "",
+                      data_source_id: "",
+                      window_function: "",
+                      stream_description: "",
+                      window_type: "sliding",
+                    });
+                  }}
+                >
                   <span className="">+</span>
-                  <span className="font-medium text-sm"> Add New Stream</span>
-                </span>
+                  <span className="font-medium text-sm">Add New Stream</span>
+                </button>
               </div>
 
-              <Separator className="w-full mt-2" />
-
-              <div className="py-2 w-full">
-                <FormField
-                  name="stream_name"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Stream Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Stream 1" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <div className="px-4">
+                <Separator className="w-full mt-2" />
               </div>
 
-              <div className="py-2 w-full">
-                <FormField
-                  control={form.control}
-                  name="stream_description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Stream Description</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          {...field}
-                          className="resize-none"
-                          placeholder="x=(stream-1.avg_data_cpu_usage+stream-2.avg_data_cpu_usage)/2; if x>50 then alert; end;"
+              <Accordion
+                collapsible
+                type="single"
+                value={defaultAccordionValue}
+                onValueChange={setDefaultAccordionValue}
+              >
+                {fields.map((item, index) => (
+                  <AccordionItem key={item.id} value={`${index}`}>
+                    <AccordionTrigger>Stream {index + 1}</AccordionTrigger>
+
+                    <AccordionContent>
+                      <div className="py-2 w-full">
+                        <FormField
+                          name={`streams.${index}.stream_name`}
+                          control={form.control}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Stream Name</FormLabel>
+                              <FormControl>
+                                <Input placeholder={`Stream ${index + 1}`} {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                      </div>
 
-              <div className="py-2 w-full">
-                <FormField
-                  control={form.control}
-                  name="data_source_id"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Data Source</FormLabel>
-                      <Popover open={openDataSourcePopover} onOpenChange={setOpenDataSourcePopover}>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <ButtonV2
-                              role="combobox"
-                              variant="outline"
-                              className={cn(
-                                "w-full justify-between",
-                                !field.value && "text-gray-400"
-                              )}
-                            >
-                              {field.value
-                                ? dataSourceOptions.find((source) => source.value === field.value)
-                                    ?.label
-                                : "Select data source"}
-                              <HiChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                            </ButtonV2>
-                          </FormControl>
-                        </PopoverTrigger>
+                      <div className="py-2 w-full">
+                        <FormField
+                          control={form.control}
+                          name={`streams.${index}.stream_description`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Stream Description</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  {...field}
+                                  className="resize-none"
+                                  placeholder="x=(stream-1.avg_data_cpu_usage+stream-2.avg_data_cpu_usage)/2; if x>50 then alert; end;"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
 
-                        <PopoverContent className="w-[320px] p-0 z-[1003] bg-white">
-                          <Command>
-                            <CommandInput placeholder="Search data source..." />
-                            <CommandList>
-                              <CommandEmpty>No data source found.</CommandEmpty>
-                              <CommandGroup>
-                                {dataSourceOptions.map((source) => (
-                                  <CommandItem
-                                    key={source.value}
-                                    value={source.label}
-                                    className="flex justify-between"
-                                    onSelect={() => {
-                                      form.setValue("data_source_id", source.value);
-                                      setOpenDataSourcePopover(false);
-                                    }}
-                                  >
-                                    {source.label}
-                                    <HiCheck
+                      <div className="py-2 w-full">
+                        <FormField
+                          control={form.control}
+                          name={`streams.${index}.data_source_id`}
+                          render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                              <FormLabel>Data Source</FormLabel>
+                              <Popover
+                                open={openDataSourcePopover}
+                                onOpenChange={setOpenDataSourcePopover}
+                              >
+                                <PopoverTrigger asChild>
+                                  <FormControl>
+                                    <ButtonV2
+                                      role="combobox"
+                                      variant="outline"
                                       className={cn(
-                                        "mr-2 h-4 w-4 text-drio-red-dark",
-                                        source.value === field.value ? "opacity-100" : "opacity-0"
+                                        "w-full justify-between",
+                                        !field.value && "text-gray-400"
                                       )}
-                                    />
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                                    >
+                                      {field.value
+                                        ? dataSourceOptions.find(
+                                            (source) => source.value === field.value
+                                          )?.label
+                                        : "Select data source"}
+                                      <HiChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                    </ButtonV2>
+                                  </FormControl>
+                                </PopoverTrigger>
 
-              <div className="py-2 w-full">
-                <FormField
-                  control={form.control}
-                  name="dataset_id"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Dataset</FormLabel>
-                      <Popover open={openDatasetPopover} onOpenChange={setOpenDatasetPopover}>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <ButtonV2
-                              role="combobox"
-                              variant="outline"
-                              className={cn(
-                                "w-full justify-between",
-                                !field.value && "text-gray-400"
-                              )}
-                            >
-                              {field.value
-                                ? datasetOptions.find((source) => source.value === field.value)
-                                    ?.label
-                                : "Select dataset"}
-                              <HiChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                            </ButtonV2>
-                          </FormControl>
-                        </PopoverTrigger>
+                                <PopoverContent className="w-[320px] p-0 z-[1003] bg-white">
+                                  <Command>
+                                    <CommandInput placeholder="Search data source..." />
+                                    <CommandList>
+                                      <CommandEmpty>No data source found.</CommandEmpty>
+                                      <CommandGroup>
+                                        {dataSourceOptions.map((source) => (
+                                          <CommandItem
+                                            key={source.value}
+                                            value={source.label}
+                                            className="flex justify-between"
+                                            onSelect={() => {
+                                              form.setValue(
+                                                `streams.${index}.data_source_id`,
+                                                source.value
+                                              );
 
-                        <PopoverContent className="w-[320px] p-0 z-[1003] bg-white">
-                          <Command>
-                            <CommandInput placeholder="Search dataset..." />
-                            <CommandList>
-                              <CommandEmpty>No dataset found.</CommandEmpty>
-                              <CommandGroup>
-                                {datasetOptions.map((source) => (
-                                  <CommandItem
-                                    className="flex justify-between"
-                                    key={source.value}
-                                    value={source.label}
-                                    onSelect={() => {
-                                      form.setValue("dataset_id", source.value);
-                                      setOpenDatasetPopover(false);
-                                    }}
-                                  >
-                                    {source.label}
-                                    <HiCheck
+                                              setOpenDataSourcePopover(false);
+                                            }}
+                                          >
+                                            {source.label}
+                                            <HiCheck
+                                              className={cn(
+                                                "mr-2 h-4 w-4 text-drio-red-dark",
+                                                source.value === field.value
+                                                  ? "opacity-100"
+                                                  : "opacity-0"
+                                              )}
+                                            />
+                                          </CommandItem>
+                                        ))}
+                                      </CommandGroup>
+                                    </CommandList>
+                                  </Command>
+                                </PopoverContent>
+                              </Popover>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="py-2 w-full">
+                        <FormField
+                          control={form.control}
+                          name={`streams.${index}.dataset_id`}
+                          render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                              <FormLabel>Dataset</FormLabel>
+                              <Popover
+                                open={openDatasetPopover}
+                                onOpenChange={setOpenDatasetPopover}
+                              >
+                                <PopoverTrigger asChild>
+                                  <FormControl>
+                                    <ButtonV2
+                                      role="combobox"
+                                      variant="outline"
                                       className={cn(
-                                        "mr-2 h-4 w-4 text-drio-red-dark",
-                                        source.value === field.value ? "opacity-100" : "opacity-0"
+                                        "w-full justify-between",
+                                        !field.value && "text-gray-400"
                                       )}
-                                    />
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                                    >
+                                      {field.value
+                                        ? datasetOptions.find(
+                                            (source) => source.value === field.value
+                                          )?.label
+                                        : "Select dataset"}
+                                      <HiChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                    </ButtonV2>
+                                  </FormControl>
+                                </PopoverTrigger>
 
-              <div className="py-2 w-full">
-                <FormField
-                  control={form.control}
-                  name="window_type"
-                  render={({ field }) => (
-                    <FormItem className="space-y-3">
-                      <FormLabel>Window Type</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex flex-wrap gap-y-2 gap-x-4 w-full"
-                        >
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="sliding" />
-                            </FormControl>
-                            <FormLabel className="font-normal">Sliding</FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="step" />
-                            </FormControl>
-                            <FormLabel className="font-normal">Step</FormLabel>
-                          </FormItem>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                                <PopoverContent className="w-[320px] p-0 z-[1003] bg-white">
+                                  <Command>
+                                    <CommandInput placeholder="Search dataset..." />
+                                    <CommandList>
+                                      <CommandEmpty>No dataset found.</CommandEmpty>
+                                      <CommandGroup>
+                                        {datasetOptions.map((source) => (
+                                          <CommandItem
+                                            className="flex justify-between"
+                                            key={source.value}
+                                            value={source.label}
+                                            onSelect={() => {
+                                              form.setValue(
+                                                `streams.${index}.dataset_id`,
+                                                source.value
+                                              );
+                                              setOpenDatasetPopover(false);
+                                            }}
+                                          >
+                                            {source.label}
+                                            <HiCheck
+                                              className={cn(
+                                                "mr-2 h-4 w-4 text-drio-red-dark",
+                                                source.value === field.value
+                                                  ? "opacity-100"
+                                                  : "opacity-0"
+                                              )}
+                                            />
+                                          </CommandItem>
+                                        ))}
+                                      </CommandGroup>
+                                    </CommandList>
+                                  </Command>
+                                </PopoverContent>
+                              </Popover>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
 
-              <div className="py-2 w-full">
-                <div className="py-2 w-full">
-                  <FormField
-                    control={form.control}
-                    name="window_function"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Window Function</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            {...field}
-                            className="resize-none"
-                            placeholder="WinF1 = STDDEV (attr1) + AVG(attr2), Winf2 = attr3 + attr7 - attr11,"
+                      <div className="py-2 w-full">
+                        <FormField
+                          control={form.control}
+                          name={`streams.${index}.window_type`}
+                          render={({ field }) => (
+                            <FormItem className="space-y-3">
+                              <FormLabel>Window Type</FormLabel>
+                              <FormControl>
+                                <RadioGroup
+                                  defaultValue={field.value}
+                                  onValueChange={field.onChange}
+                                  className="flex flex-wrap gap-y-2 gap-x-4 w-full"
+                                >
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                      <RadioGroupItem value="sliding" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">Sliding</FormLabel>
+                                  </FormItem>
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                      <RadioGroupItem value="step" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">Step</FormLabel>
+                                  </FormItem>
+                                </RadioGroup>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="py-2 w-full">
+                        <div className="py-2 w-full">
+                          <FormField
+                            control={form.control}
+                            name={`streams.${index}.window_function`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Window Function</FormLabel>
+                                <FormControl>
+                                  <Textarea
+                                    {...field}
+                                    className="resize-none"
+                                    placeholder="WinF1 = STDDEV (attr1) + AVG(attr2), Winf2 = attr3 + attr7 - attr11,"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
                           />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
 
-              <div className="py-2 flex gap-x-4 justify-center w-full mt-4">
+              <div className="py-2 flex gap-x-4 justify-center w-full mt-4 px-4">
                 <Button
                   type="button"
                   intent={`secondary`}
@@ -495,16 +566,13 @@ export default function AddNewRuleTEmplateForm() {
                   intent={`primary`}
                   className="w-full"
                   onClick={async () => {
-                    const validate = await form.trigger([
-                      "dataset_id",
-                      "stream_name",
-                      "window_type",
-                      "data_source_id",
-                      "window_function",
-                      "stream_description",
-                    ]);
+                    const validate = await form.trigger(["streams"]);
 
-                    if (!validate) return;
+                    if (!validate) {
+                      showAlert("Please fill all the stream fields", "error");
+                      return;
+                    }
+
                     setTabValue("threshold");
                   }}
                 >
@@ -513,7 +581,7 @@ export default function AddNewRuleTEmplateForm() {
               </div>
             </TabsContent>
 
-            <TabsContent value="threshold">
+            <TabsContent value="threshold" className="px-4">
               <div className="flex items-center justify-between">
                 <span className="text-[20px] text-gray-700 font-medium">
                   Set Threshold Condition

@@ -5,11 +5,12 @@ import { setSelectedRows } from "@/state/slices/alertPoliciesSlice";
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
 import { IoRefresh } from "react-icons/io5";
+import ThumbnailChart from "./ThumbnailChart";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
+import AlertPoliciesMenu from "./AlertPoliciesMenu";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
-import ThumbnailChart from "./ThumbnailChart";
-import AlertPoliciesMenu from "./AlertPoliciesMenu";
+import AddAlertPolicyForm from "./AddAlertPolicyForm";
 
 const headers = [
   {
@@ -52,22 +53,6 @@ const AlertPolicies = () => {
   };
 
   const clearSelectedRows = () => dispatch(setSelectedRows([]));
-
-  const History = () => {
-    return (
-      <div className="flex gap-4">
-        <div className="flex flex-col gap-1">
-          <span className="text-xs text-gray-500">Last Occurence</span>
-          <span className="text-sm font-medium">2 days ago</span>
-        </div>
-
-        <div className="flex flex-col gap-1">
-          <span className="text-xs text-gray-500">Total Occurences</span>
-          <span className="text-sm font-medium">2</span>
-        </div>
-      </div>
-    );
-  };
 
   const transformData = () => {
     return rows.map((row: TableRow) => {
@@ -113,23 +98,15 @@ const AlertPolicies = () => {
             <Button
               icon={<HiPlus />}
               intent={"primary"}
-              onClick={() => dispatch(setOpenModal("addAlertAnomalyPolicyForm"))}
+              onClick={() => dispatch(setOpenModal("addAlertPolicyForm"))}
             >
-              Add New Alert Anomaly Policy
+              Add New Alert Policy
             </Button>
           </div>
 
           <div className="hidden">
-            <Modal identifier="addAlertAnomalyPolicyForm">
-              <div className="p-4 flex flex-col justify-center gap-4">
-                <h3>Form to be added</h3>
-                <Button
-                  intent={"secondary"}
-                  onClick={() => dispatch(setCloseModal("addAlertAnomalyPolicyForm"))}
-                >
-                  Cancel
-                </Button>
-              </div>
+            <Modal identifier="addAlertPolicyForm">
+              <AddAlertPolicyForm />
             </Modal>
           </div>
         </div>
