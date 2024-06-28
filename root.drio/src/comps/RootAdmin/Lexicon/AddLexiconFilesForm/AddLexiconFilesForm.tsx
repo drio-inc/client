@@ -1,13 +1,15 @@
-import React, { useState } from "react";
-import { TbFile } from "react-icons/tb";
-import { FiBookOpen } from "react-icons/fi";
-import * as RadioGroup from "@radix-ui/react-radio-group";
-import { RiUploadCloud2Line, RiCloseFill } from "react-icons/ri";
-import showAlert from "@/comps/ui/Alert";
-import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
-import { useAppDispatch } from "@/hooks/useStoreTypes";
 import Layout from "@/comps/Layout";
+import { v4 as uuidV4 } from "uuid";
 import Button from "@/comps/ui/Button";
+import React, { useState } from "react";
+import showAlert from "@/comps/ui/Alert";
+import RenderFiles from "../RenderFiles";
+import { FiBookOpen } from "react-icons/fi";
+import { RiUploadCloud2Line } from "react-icons/ri";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import * as RadioGroup from "@radix-ui/react-radio-group";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
+import { setRows } from "@/state/slices/lexiconSlice";
 
 type FilesState = {
   file: File;
@@ -20,23 +22,20 @@ type FilesState = {
     | "processing"
     | "upload_failed"
     | "process_failed";
+  fileType: "custom" | "pre-existing";
 }[];
-
-type RenderFilesProps = {
-  filesToRender: FilesState;
-  renderType: "custom" | "existing";
-};
 
 const AddLexiconFilesForm = () => {
   const dispatch = useAppDispatch();
   const [associateLexicon, setAssociateLexicon] = useState<string>("");
+  const { rows, lexiconDetails } = useAppSelector((state) => state.lexicon);
 
   const [customfiles, setCustomFiles] = useState<FilesState>([]);
   const [existingFiles, setExistingFiles] = useState<FilesState>([]);
 
   const handleFileSelect = (
     event: React.ChangeEvent<HTMLInputElement>,
-    uploadType: "custom" | "existing"
+    uploadType: "custom" | "pre-existing"
   ) => {
     const selectedFiles = event.target.files;
 
@@ -44,6 +43,7 @@ const AddLexiconFilesForm = () => {
       const enhancedFiles: FilesState = Array.from(selectedFiles).map((file) => ({
         file,
         status: "idle",
+        fileType: associateLexicon === "pre-existing" ? "pre-existing" : "custom",
       }));
 
       if (uploadType === "custom") setCustomFiles(enhancedFiles);
@@ -51,76 +51,77 @@ const AddLexiconFilesForm = () => {
     }
   };
 
-  const renderFiles = ({ filesToRender, renderType }: RenderFilesProps) => {
-    const handleFileRemove = (idx: number) => {
-      if (renderType === "custom") {
-        setCustomFiles(customfiles.filter((_, i) => i !== idx));
-      } else {
-        setExistingFiles(existingFiles.filter((_, i) => i !== idx));
-      }
-    };
+  const handleFileRemove = (fileType: "custom" | "pre-existing", idx: number) => {
+    if (fileType === "custom") {
+      setCustomFiles(customfiles.filter((_, i) => i !== idx));
+    } else {
+      setExistingFiles(existingFiles.filter((_, i) => i !== idx));
+    }
+  };
 
-    const onUpload = async () => {
-      if (associateLexicon === "") {
-        showAlert("Please select an option for Associate Lexicon", "error");
-        return;
-      }
+  const onFilesSubmit = async () => {
+    if (associateLexicon === "create-new") {
+      const customFilesToAdd = customfiles.map((file) => ({
+        id: uuidV4(),
+        file: file.file.name,
+        size: file.file.size,
+      }));
 
-      if (associateLexicon === "pre-existing" && existingFiles.length === 0) {
-        showAlert("Please upload a file for pre-existing lexicon", "error");
-        return;
-      }
+      dispatch(
+        setRows(
+          rows.map((row) => {
+            if (row.id === lexiconDetails?.id) {
+              return {
+                ...row,
+                pre_existing: "No",
+                files: customFilesToAdd,
+                docs_in_corpus: customFilesToAdd.length,
+                last_updated: new Date().toISOString().split("T")[0],
+              };
+            }
 
-      if (associateLexicon === "create-new" && customfiles.length === 0) {
-        showAlert("Please upload a file for custom lexicon", "error");
-        return;
-      }
+            return row;
+          })
+        )
+      );
+    }
 
-      dispatch(setOpenModal("successLexiconAlert"));
-    };
+    if (associateLexicon === "pre-existing") {
+      const existingFilesToAdd = existingFiles.map((file) => ({
+        id: uuidV4(),
+        name: file.file.name,
+        size: file.file.size,
+      }));
 
-    return (
-      filesToRender && (
-        <div className="w-full flex flex-col gap-y-4 mb-4">
-          {filesToRender.map((enhancedFile, idx) => (
-            <div
-              className="flex justify-between items-center  bg-white p-4 rounded-md border text-gray-700"
-              key={idx}
-            >
-              <div className="flex gap-x-2 ">
-                <TbFile className="w-6 h-6 mt-1" />
+      dispatch(
+        setRows(
+          rows.map((row) => {
+            if (row.id === lexiconDetails?.id) {
+              return {
+                ...row,
+                pre_existing: "Yes",
+                files: existingFilesToAdd,
+                docs_in_corpus: existingFilesToAdd.length,
+                last_updated: new Date().toISOString().split("T")[0],
+              };
+            }
 
-                <div className="flex flex-col">
-                  <span className="font-bold text-sm">
-                    {enhancedFile.file.name.substring(0, 30)}...
-                  </span>
-                  <span className="text-xs">
-                    {(enhancedFile.file.size / (1024 * 1024)).toFixed(2)}
-                    mb
-                  </span>
-                </div>
-              </div>
+            return row;
+          })
+        )
+      );
+    }
 
-              <div className="blo">
-                <RiCloseFill
-                  onClick={() => handleFileRemove(idx)}
-                  className="text-gray-500 cursor-pointer w-6 h-6"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      )
-    );
+    dispatch(setCloseModal("addLexiconFilesForm"));
+    showAlert("Files added successfully", "success");
   };
 
   return (
     <Layout>
-      <div className="mx-auto bg-white py-8 px-6 rounded-lg w-[400px]">
-        <h2 className="text-gray-700 text-2xl font-bold text-center">Add Files to Lexicon</h2>
-        <div className="bg-[#F9FAFB] w-full shadow py-2 ">
-          <h3 className="px-4 text-gray-700 text-[18px] font-medium mb-2">Associate Lexicon</h3>
+      <div className="mx-auto bg-white py-8 rounded-lg px-4 w-[400px]">
+        <h2 className="text-gray-700 text-2xl font-bold text-center mb-4">Add Files to Lexicon</h2>
 
+        <div className="bg-[#F9FAFB] w-full shadow py-2">
           <div className="px-4 py-2 w-full">
             <RadioGroup.Root
               value={associateLexicon}
@@ -142,7 +143,10 @@ const AddLexiconFilesForm = () => {
               {associateLexicon === "pre-existing" && (
                 <div>
                   {existingFiles && Array.from(existingFiles).length > 0 ? (
-                    renderFiles({ filesToRender: existingFiles, renderType: "existing" })
+                    RenderFiles({
+                      filesToRender: existingFiles,
+                      handleFileRemove,
+                    })
                   ) : (
                     <>
                       <label
@@ -162,7 +166,7 @@ const AddLexiconFilesForm = () => {
                         accept="pdf/*"
                         className="hidden"
                         id="upload-existing-lexicon"
-                        onChange={(e) => handleFileSelect(e, "existing")}
+                        onChange={(e) => handleFileSelect(e, "pre-existing")}
                       />
                     </>
                   )}
@@ -195,7 +199,7 @@ const AddLexiconFilesForm = () => {
               {associateLexicon === "create-new" && (
                 <div>
                   {customfiles && Array.from(customfiles).length > 0 ? (
-                    renderFiles({ filesToRender: customfiles, renderType: "custom" })
+                    RenderFiles({ filesToRender: customfiles, handleFileRemove })
                   ) : (
                     <>
                       <label
@@ -223,30 +227,31 @@ const AddLexiconFilesForm = () => {
               )}
             </RadioGroup.Root>
           </div>
+        </div>
 
-          <div className="flex gap-x-4 p-4">
-            <Button
-              type="button"
-              className="w-full"
-              intent={`secondary`}
-              onClick={() => dispatch(setCloseModal("addLexiconFilesForm"))}
-            >
-              <span className="inline-flex justify-center">Cancel</span>
-            </Button>
+        <div className="flex gap-x-4 p-4">
+          <Button
+            type="button"
+            className="w-full"
+            intent={`secondary`}
+            onClick={() => dispatch(setCloseModal("addLexiconFilesForm"))}
+          >
+            Cancel
+          </Button>
 
-            <Button
-              type="button"
-              intent={`primary`}
-              className="w-full"
-              disabled={
-                associateLexicon === "" ||
-                (associateLexicon === "create-new" && customfiles.length === 0) ||
-                (associateLexicon === "pre-existing" && existingFiles.length === 0)
-              }
-            >
-              Upload
-            </Button>
-          </div>
+          <Button
+            type="button"
+            intent={`primary`}
+            className="w-full"
+            onClick={onFilesSubmit}
+            disabled={
+              associateLexicon === "" ||
+              (associateLexicon === "create-new" && customfiles.length === 0) ||
+              (associateLexicon === "pre-existing" && existingFiles.length === 0)
+            }
+          >
+            Add to Lexicon
+          </Button>
         </div>
       </div>
     </Layout>

@@ -51,17 +51,12 @@ export default function LexiconForm({ row }: FormProps) {
   const lexicon = useAppSelector((state) => state.lexicon);
   const [associateLexicon, setAssociateLexicon] = useState("");
   const [isDeployed, setIsDeployed] = useState(row.status === "Deployed");
-  const { recursiveRows: ouRows } = useAppSelector((state) => state.orgUnit);
 
   const form = useZodForm({
     schema: schema,
   });
 
-  const ouOptions =
-    ouRows?.map((row) => ({
-      label: row.name,
-      value: row.id,
-    })) ?? [];
+  const ouOptions = [{ label: "Corp", value: "corp" }];
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const updatedRow = {

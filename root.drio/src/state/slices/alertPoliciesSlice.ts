@@ -9,13 +9,12 @@ const initialState: AlertPolicyState = {
   rows: [
     {
       id: "1",
-      alertRule: "Range Anomaly",
-      trigger: "Range",
-      dataResource: "SAP Inventory",
-      thresholdValue: "40%",
+      rule_template: "Range Anomaly",
+      data_source: "SAP Inventory",
+      threshold_value: "40%",
       message: "Out of range by 40%",
       notification: "Webhook: notify.teams.outlook.com",
-      occurenceHistory: "",
+      occurence_history: "",
     },
   ],
   selectedRows: [],

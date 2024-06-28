@@ -5,9 +5,9 @@ import { HiDotsVertical } from "react-icons/hi";
 import EditLexiconForm from "../EditLexiconForm";
 import * as Popover from "@radix-ui/react-popover";
 import { setOpenModal } from "@/state/slices/uiSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import { setRows, setSelectedRows } from "@/state/slices/lexiconSlice";
 import AddLexiconFilesForm from "../AddLexiconFilesForm";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import { setRows, setSelectedRows, setLexiconDetails } from "@/state/slices/lexiconSlice";
 
 type MenuProps = {
   row: Lexicon;
@@ -65,7 +65,10 @@ const LexiconMenu = ({ row }: MenuProps) => {
             <Modal
               label="Add Files"
               identifier="addLexiconFilesForm"
-              onClick={() => dispatch(setOpenModal("addLexiconFilesForm"))}
+              onClick={() => {
+                dispatch(setLexiconDetails(row));
+                dispatch(setOpenModal("addLexiconFilesForm"));
+              }}
             >
               <AddLexiconFilesForm />
             </Modal>

@@ -9,21 +9,21 @@ import ThumbnailChart from "./ThumbnailChart";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
 import AlertPoliciesMenu from "./AlertPoliciesMenu";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import AddAlertPolicyForm from "./AddAlertPolicyForm";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 const headers = [
   {
     header: "Alert Rule",
-    accessor: "alertRule",
+    accessor: "rule_template",
   },
   {
-    header: "Data Resource",
-    accessor: "dataResource",
+    header: "Data Source",
+    accessor: "data_source",
   },
   {
     header: "Threshold Value",
-    accessor: "thresholdValue",
+    accessor: "threshold_value",
   },
   {
     header: "Message",
@@ -36,7 +36,7 @@ const headers = [
   {
     type: "object",
     header: "Occurence History",
-    accessor: "occurenceHistory",
+    accessor: "occurence_history",
   },
 ];
 
@@ -57,13 +57,13 @@ const AlertPolicies = () => {
   const transformData = () => {
     return rows.map((row: TableRow) => {
       return {
-        alertRule: row.alertRule,
+        rule_template: row.rule_template,
         trigger: row.trigger,
-        dataResource: row.dataResource,
-        thresholdValue: row.thresholdValue,
+        data_source: row.data_source,
+        threshold_value: row.threshold_value,
         message: row.message,
         notification: row.notification,
-        occurenceHistory: <ThumbnailChart />,
+        occurence_history: <ThumbnailChart />,
       };
     });
   };

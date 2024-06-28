@@ -111,6 +111,7 @@ const columns: ColumnDef<Lexicon>[] = [
     cell: ({ row }) => {
       const pre_existing = row.original.pre_existing;
       const color = pre_existing === "Yes" ? "text-green-800" : "text-red-800";
+
       return (
         <span className={`px-2 py-1 rounded font-medium flex items-center gap-x-2 ${color}`}>
           {pre_existing === "Yes" ? (
@@ -192,12 +193,6 @@ const Lexicon = () => {
           <div className="hidden">
             <Modal identifier="addLexiconForm">
               <AddLexiconForm />
-            </Modal>
-          </div>
-
-          <div className="hidden">
-            <Modal identifier="addLexiconFilesForm">
-              <AddLexiconFilesForm />
             </Modal>
           </div>
         </div>
