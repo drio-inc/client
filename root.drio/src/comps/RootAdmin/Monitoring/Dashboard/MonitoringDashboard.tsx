@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import StatCards from "./StatCards";
 import DatasetAccessChart from "./DatasetAccessChart";
 import AnomaliesAndErrorsChart from "./AnomaliesAndErrorsChart";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/comps/ui/Accordion";
 
 import "rsuite/dist/rsuite.css";
 import { DateRangePicker } from "rsuite";
@@ -23,17 +24,32 @@ const Monitoring = () => {
           placement="rightStart"
           onChange={setDateRange}
           onClean={() => setDateRange([new Date(), new Date()])}
-          placeholder={`${formatDate(dateRange[0])} - ${formatDate(
-            dateRange[1]
-          )}`}
-          renderValue={(value: DateRange, format: string) =>
-            `${formatDate(value[0])} - ${formatDate(value[1])}`
-          }
+          placeholder={`${formatDate(dateRange[0])} - ${formatDate(dateRange[1])}`}
+          renderValue={(value: DateRange) => `${formatDate(value[0])} - ${formatDate(value[1])}`}
         />
       </div>
 
-      <DatasetAccessChart />
-      <AnomaliesAndErrorsChart />
+      <Accordion type="multiple">
+        <AccordionItem value="dataset-access-chart">
+          <AccordionTrigger>
+            <div className="p-4 bg-white rounded-md">Dataset Access Chart</div>
+          </AccordionTrigger>
+
+          <AccordionContent>
+            <DatasetAccessChart />
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="anomalies-and-errors-chart">
+          <AccordionTrigger>
+            <div className="p-4 bg-white rounded-md">Anomalies and Errors Chart</div>
+          </AccordionTrigger>
+
+          <AccordionContent>
+            <AnomaliesAndErrorsChart />
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 };
