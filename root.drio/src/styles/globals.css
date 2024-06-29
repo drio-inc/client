@@ -15,9 +15,9 @@
   min-height: calc(100vh - 4rem);
 }
 
-canvas {
+/* canvas {
   height: 200px !important;
-}
+} */
 
 #thumbnail-chart canvas {
   height: 50px !important;

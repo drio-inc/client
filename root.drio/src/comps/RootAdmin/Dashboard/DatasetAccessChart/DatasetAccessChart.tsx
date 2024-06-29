@@ -35,14 +35,7 @@ export const Data = [
   },
 ];
 
-const chart = ChartJS.register(
-  Title,
-  Legend,
-  Tooltip,
-  BarElement,
-  LinearScale,
-  CategoryScale
-);
+const chart = ChartJS.register(Title, Legend, Tooltip, BarElement, LinearScale, CategoryScale);
 
 export const options = {
   barPercentage: 0.6,
@@ -127,61 +120,26 @@ export const data = {
 };
 
 const DatasetAccessChart = () => {
-  const [filter, setFilter] = useState<string>("");
-  const [hiddenDatasets, setHiddenDatasets] = useState<number | string | any>(
-    []
-  );
+  const [hiddenDatasets, setHiddenDatasets] = useState<number | string | any>([]);
 
   const toggleDataset = (index: number) => {
     const isHidden = hiddenDatasets.includes(index);
 
     if (isHidden) {
-      setHiddenDatasets(
-        hiddenDatasets.filter((item: number) => item !== index)
-      );
+      setHiddenDatasets(hiddenDatasets.filter((item: number) => item !== index));
     } else {
       setHiddenDatasets([...hiddenDatasets, index]);
     }
   };
 
-  const filteredDatasets = data.datasets.filter(
-    (_, index) => !hiddenDatasets.includes(index)
-  );
+  const filteredDatasets = data.datasets.filter((_, index) => !hiddenDatasets.includes(index));
 
   return (
-    <div className="p-4 bg-white rounded-md">
-      <div className="flex flex-wrap justify-between items-center">
-        <h2 className="text-[#223354] text-2xl font-semibold">
-          Top Datasets Accessed
-        </h2>
-
-        <div className="flex flex-wrap items-center gap-x-4">
-          <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 p-1 flex gap-x-1 items-center rounded border-2 border-indigo-200 text-drio-red-dark">
-            <IoRefresh className="font-bold" />
-            <span className="text-xs font-medium">Re-run</span>
-          </button>
-
-          <span className="inline-block p-2 bg-indigo-50 rounded border-2 border-indigo-200">
-            <HiOutlineFilter className="text-drio-red w-3 h-3" />
-          </span>
-
-          <StatelessSelectInput
-            label=""
-            placeholder="Filter by"
-            registerName="filterBy"
-            onChange={(value: any) => setFilter(value)}
-            options={[
-              { label: "Last 7 days", value: "last_7_days" },
-              { label: "Last 30 days", value: "last_30_days" },
-              { label: "Last 90 days", value: "last_90_days" },
-            ]}
-          />
-        </div>
-      </div>
-
+    <div className="p-4 -mx-4 bg-white">
       <div className="pl-16">
         <Bar options={options} data={{ ...data, datasets: filteredDatasets }} />
       </div>
+
       <div className="w-full flex gap-x-8 mt-2">
         {data.datasets.map((dataset, i) => (
           <div
@@ -195,9 +153,7 @@ const DatasetAccessChart = () => {
               className="py-2 px-2 md:px-4 lg:px-8 rounded-md"
               style={{ backgroundColor: dataset.backgroundColor }}
             >
-              <span className="inline-block text-white font-medium">
-                {dataset.label}
-              </span>
+              <span className="inline-block text-white font-medium">{dataset.label}</span>
             </div>
           </div>
         ))}
