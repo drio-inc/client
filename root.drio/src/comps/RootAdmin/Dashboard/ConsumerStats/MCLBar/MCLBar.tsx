@@ -153,7 +153,9 @@ const MCLBar = () => {
   return (
     <div className="p-4 bg-white -mx-4">
       <div className="flex flex-wrap justify-between">
-        <h2 className="text-[#223354] text-2xl font-semibold mb-4">Input Data Throughput</h2>
+        <h2 className="text-[#223354] text-2xl font-semibold mb-4">
+          Max. Consumer Lag For Each Data Source
+        </h2>
       </div>
 
       <div className="h-[300px]">
@@ -170,7 +172,7 @@ const MCLBar = () => {
             }`}
           >
             <div
-              className="py-2 px-2 md:px-4 lg:px-8 rounded-md"
+              className="py-2 px-4 rounded-md"
               style={{ backgroundColor: dataset.backgroundColor }}
             >
               <span className="inline-block text-white font-medium">{dataset.label}</span>

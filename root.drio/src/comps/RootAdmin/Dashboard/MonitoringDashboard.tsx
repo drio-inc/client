@@ -6,12 +6,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 import "rsuite/dist/rsuite.css";
 import { DateRangePicker } from "rsuite";
+import { DLArea, DRULine } from "./DDXSources";
+import { KLBar, MCLBar, OCERArea, TCTMLine } from "./ConsumerStats";
 import { DateRange } from "rsuite/esm/DateRangePicker";
-import { IDTBar, TMLBar } from "./StreamProducerStats";
 import { MSDoughnut, MSStacked } from "./MonitoringSources";
 import { DPRDoughnut, DPRStacked } from "./DataProductionRate";
 import { DSPRDoughnut, DSPRStacked } from "./DataSourceProductionRate";
-import { KLBar, MCLBar } from "./ConsumerStats";
+import { IDTBar, TMLBar, IQRULine, MLRArea } from "./StreamProducerStats";
 
 const Monitoring = () => {
   const [dateRange, setDateRange] = useState<any>([new Date(), new Date()]);
@@ -34,7 +35,7 @@ const Monitoring = () => {
         />
       </div>
 
-      <Accordion type="multiple" defaultValue={["data-source-production-rate"]}>
+      <Accordion type="multiple" defaultValue={["ddx"]}>
         <AccordionItem value="data-production-rate">
           <AccordionTrigger className="w-full bg-white">
             <div className="py-4 text-[#223354] text-2xl font-semibold">Data Production Rate</div>
@@ -92,8 +93,14 @@ const Monitoring = () => {
             <div className="py-4 text-[#223354] text-2xl font-semibold">DDX</div>
           </AccordionTrigger>
 
-          <AccordionContent>
-            <DatasetAccessChart />
+          <AccordionContent className="flex w-full justify-between bg-white gap-x-4 overflow-auto">
+            <div className="flex-1 border p-4 rounded-md">
+              <DLArea />
+            </div>
+
+            <div className="flex-1 border p-4 rounded-md">
+              <DRULine />
+            </div>
           </AccordionContent>
         </AccordionItem>
 
@@ -102,13 +109,25 @@ const Monitoring = () => {
             <div className="py-4 text-[#223354] text-2xl font-semibold">Stream Producer Stats</div>
           </AccordionTrigger>
 
-          <AccordionContent className="flex w-full justify-between bg-white gap-x-4 overflow-auto">
-            <div className="border p-4 rounded-md flex-1">
-              <IDTBar />
+          <AccordionContent className="flex flex-col bg-white gap-y-4">
+            <div className="flex gap-x-4 overflow-auto w-full">
+              <div className="flex-1 border p-4 rounded-md">
+                <IDTBar />
+              </div>
+
+              <div className="flex-1 border p-4 rounded-md">
+                <TMLBar />
+              </div>
             </div>
 
-            <div className="flex-1 border p-4 rounded-md">
-              <TMLBar />
+            <div className="flex gap-x-4 overflow-auto w-full">
+              <div className="flex-1 border p-4 rounded-md">
+                <IQRULine />
+              </div>
+
+              <div className="flex-1 border p-4 rounded-md">
+                <MLRArea />
+              </div>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -118,36 +137,26 @@ const Monitoring = () => {
             <div className="py-4 text-[#223354] text-2xl font-semibold">Consumer Stats</div>
           </AccordionTrigger>
 
-          <AccordionContent className="flex w-full justify-between bg-white gap-x-4 overflow-auto">
-            <div className="border p-4 rounded-md">
-              <MCLBar />
+          <AccordionContent className="flex flex-col bg-white gap-y-4">
+            <div className="flex gap-x-4 overflow-auto w-full">
+              <div className="flex-1 border p-4 rounded-md">
+                <MCLBar />
+              </div>
+
+              <div className="flex-1 border p-4 rounded-md">
+                <KLBar />
+              </div>
             </div>
 
-            <div className="border p-4 rounded-md">
-              <KLBar />
+            <div className="flex gap-x-4 overflow-auto w-full">
+              <div className="flex-1 border p-4 rounded-md">
+                <TCTMLine />
+              </div>
+
+              <div className="flex-1 border p-4 rounded-md">
+                <OCERArea />
+              </div>
             </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="dataset-access-chart">
-          <AccordionTrigger className="w-full bg-white">
-            <div className="py-4 text-[#223354] text-2xl font-semibold">Dataset Access Chart</div>
-          </AccordionTrigger>
-
-          <AccordionContent>
-            <DatasetAccessChart />
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="anomalies-and-errors-chart">
-          <AccordionTrigger className="w-full bg-white">
-            <div className="py-4 text-[#223354] text-2xl font-semibold">
-              Anomalies and Errors Chart
-            </div>
-          </AccordionTrigger>
-
-          <AccordionContent>
-            <AnomaliesAndErrorsChart />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
