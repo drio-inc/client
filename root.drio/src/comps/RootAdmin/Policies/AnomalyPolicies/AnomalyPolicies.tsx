@@ -12,11 +12,10 @@ import AlertPoliciesMenu from "./AnomalyPoliciesMenu";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/comps/ui/Accordion";
 
+import { useState } from "react";
 import { Slider } from "@/comps/ui/Slider";
 import { ColumnDef } from "@tanstack/react-table";
 import DataTable from "@/comps/ui/Table/DataTable";
-import clsx from "clsx";
-import { useState } from "react";
 
 const AlertPolicies = () => {
   const dispatch = useAppDispatch();

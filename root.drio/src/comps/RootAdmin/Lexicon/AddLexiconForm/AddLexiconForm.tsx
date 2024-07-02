@@ -7,6 +7,8 @@ import * as RadioGroup from "@radix-ui/react-radio-group";
 
 import { z } from "zod";
 import Layout from "@/comps/Layout";
+import RenderFiles from "../RenderFiles";
+import { FiBookOpen } from "react-icons/fi";
 import { SubmitHandler } from "react-hook-form";
 import { Separator } from "@/comps/ui/Separator";
 import { useZodForm, Form } from "@ui/Forms/Form";
@@ -15,9 +17,7 @@ import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 import { setLexiconDetails, setRows } from "@/state/slices/lexiconSlice";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/comps/ui/Tabs";
-import RenderFiles from "../RenderFiles";
 import { RiUploadCloud2Line } from "react-icons/ri";
-import { FiBookOpen } from "react-icons/fi";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
