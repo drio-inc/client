@@ -104,3 +104,11 @@ type Lexicon = {
   pre_existing: string;
   docs_in_corpus: number;
 };
+
+type AnomalyPolicy = {
+  id: string;
+  active: boolean;
+  sensitivity: number;
+  anomaly_type: string;
+  notification: string;
+};

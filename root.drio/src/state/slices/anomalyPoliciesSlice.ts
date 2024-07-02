@@ -1,28 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type AnomalyPolicyState = {
-  rows: TableRow[];
-  selectedRows: number[];
+  rows: AnomalyPolicy[];
+  selectedRows: string[];
 };
 
 const initialState: AnomalyPolicyState = {
   rows: [
     {
       id: "1",
+      active: true,
       anomaly_type: "IQR anomalies for attributes of a dataset",
-      sensitivity: "10",
+      sensitivity: 45,
       notification: "Teams",
     },
     {
       id: "2",
+      active: true,
       anomaly_type: "Cluster anomalies for attributes of a dataset",
-      sensitivity: "10",
+      sensitivity: 67,
       notification: "Jira",
     },
     {
       id: "3",
+      active: false,
       anomaly_type: "Type mismatch anomalies for a dataset",
-      sensitivity: "10",
+      sensitivity: 89,
       notification: "Service Now",
     },
   ],

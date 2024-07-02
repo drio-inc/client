@@ -1,43 +1,144 @@
-import Table from "@/comps/ui/Table";
 import { setSelectedRows } from "@/state/slices/anomalyPoliciesSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
 import { IoRefresh } from "react-icons/io5";
-import { HiMinusSm, HiPlus } from "react-icons/hi";
+import { MdCheckCircle } from "react-icons/md";
+import { HiCheck, HiPlus } from "react-icons/hi";
+import { RiCloseCircleFill } from "react-icons/ri";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import AlertPoliciesMenu from "./AnomalyPoliciesMenu";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/comps/ui/Accordion";
 
-const headers = [
-  {
-    header: "Anomaly Type",
-    accessor: "anomaly_type",
-  },
-  {
-    header: "Sensitivity",
-    accessor: "sensitivity",
-  },
-  {
-    header: "Notification",
-    accessor: "notification",
-  },
-];
+import { Slider } from "@/comps/ui/Slider";
+import { ColumnDef } from "@tanstack/react-table";
+import DataTable from "@/comps/ui/Table/DataTable";
+import clsx from "clsx";
+import { useState } from "react";
 
 const AlertPolicies = () => {
   const dispatch = useAppDispatch();
   const { rows, selectedRows } = useAppSelector((state) => state.anomalyPolicies);
 
-  const handleCheckbox = (index: number) => {
-    if (selectedRows.includes(index)) {
-      dispatch(setSelectedRows(selectedRows.filter((row) => row !== index)));
+  const handleCheckbox = (id: string) => {
+    if (selectedRows.includes(id)) {
+      dispatch(setSelectedRows(selectedRows.filter((row) => row !== id)));
     } else {
-      dispatch(setSelectedRows([...selectedRows, index]));
+      dispatch(setSelectedRows([...selectedRows, id]));
     }
   };
 
-  const clearSelectedRows = () => dispatch(setSelectedRows([]));
+  const columns: ColumnDef<AnomalyPolicy>[] = [
+    {
+      id: "select",
+      header: ({ table }) => {
+        return (
+          <Checkbox.Root
+            className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+            onCheckedChange={(value) => {
+              if (table.getIsAllPageRowsSelected()) {
+                dispatch(setSelectedRows([]));
+              } else {
+                dispatch(setSelectedRows(rows.map((row) => row.id)));
+              }
+
+              table.toggleAllPageRowsSelected(!!value);
+            }}
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+          >
+            <Checkbox.Indicator className="text-white">
+              <HiCheck />
+            </Checkbox.Indicator>
+          </Checkbox.Root>
+        );
+      },
+
+      cell: ({ row }) => {
+        return (
+          <Checkbox.Root
+            className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => {
+              handleCheckbox(row.id);
+              row.toggleSelected(!!value);
+            }}
+          >
+            <Checkbox.Indicator className="text-white">
+              <HiCheck />
+            </Checkbox.Indicator>
+          </Checkbox.Root>
+        );
+      },
+    },
+    {
+      header: "Anomaly Type",
+      accessorKey: "anomaly_type",
+      cell: ({ row }) => {
+        const active = row.original.active;
+        const color = active ? "text-green-800" : "text-red-800";
+
+        return (
+          <span className={`px-2 py-1 rounded font-medium flex items-center gap-x-2`}>
+            {active ? (
+              <MdCheckCircle className={`${color} w-5 h-5`} />
+            ) : (
+              <RiCloseCircleFill className={`${color} w-5 h-5`} />
+            )}
+            {active}
+            {row.original.anomaly_type}
+          </span>
+        );
+      },
+    },
+    {
+      header: "Sensitivity",
+      accessorKey: "sensitivity",
+      cell: ({ row }) => {
+        const max = 100;
+        const [sliderValue, setSliderValue] = useState(row.original.sensitivity);
+
+        return (
+          <div>
+            <Accordion collapsible type="single">
+              <AccordionItem value={row.original.id} className="border-none">
+                <AccordionTrigger className="justify-start">{sliderValue}</AccordionTrigger>
+
+                <AccordionContent className="mt-2">
+                  <Slider
+                    max={max}
+                    step={1}
+                    value={[sliderValue]}
+                    onValueChange={(value) => setSliderValue(value[0])}
+                  />
+
+                  <div className="mt-1.5 flex flex-row justify-between">
+                    {Array.from({ length: max + 1 }).map((_, i) => (
+                      <span key={i} className={"text-sm font-light"}>
+                        {i === 0 || i === max ? i : ""}
+                      </span>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        );
+      },
+    },
+    {
+      header: "Notification",
+      accessorKey: "notification",
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => <AlertPoliciesMenu />,
+    },
+  ];
 
   return (
     <div className="w-full">
@@ -45,15 +146,6 @@ const AlertPolicies = () => {
         <div className="rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between">
           {selectedRows.length > 0 && (
             <div className="flex items-center">
-              <Checkbox.Root
-                className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                checked={selectedRows.length > 0}
-                onCheckedChange={() => clearSelectedRows?.()}
-              >
-                <Checkbox.Indicator className="text-white">
-                  <HiMinusSm />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
               <h3 className="font-medium text-sm text-gray-700">
                 {selectedRows.length} Item(s) Selected
               </h3>
@@ -71,7 +163,7 @@ const AlertPolicies = () => {
               intent={"primary"}
               onClick={() => dispatch(setOpenModal("addAnomalyPolicyForm"))}
             >
-              Add New Alert Anomaly Policy
+              Add New Anomaly Policy
             </Button>
           </div>
 
@@ -90,13 +182,7 @@ const AlertPolicies = () => {
           </div>
         </div>
 
-        <Table
-          rows={rows}
-          headers={headers}
-          menu={AlertPoliciesMenu}
-          selectedRows={selectedRows}
-          handleCheckbox={handleCheckbox}
-        />
+        <DataTable columns={columns} data={rows} />
       </div>
     </div>
   );

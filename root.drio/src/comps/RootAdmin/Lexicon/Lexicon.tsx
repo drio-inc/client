@@ -11,157 +11,148 @@ import { setSelectedRows } from "@/state/slices/lexiconSlice";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import AddLexiconForm from "./AddLexiconForm";
-import DataTable from "@/comps/ui/Table/DataTable";
-import GraphView from "./ReviewLexicon/GraphView";
-import { MdOutlineCheckCircleOutline, MdOutlineRemoveCircleOutline } from "react-icons/md";
 import ReviewLexicon from "./ReviewLexicon";
-import AddLexiconFilesForm from "./AddLexiconFilesForm";
-
-const columns: ColumnDef<Lexicon>[] = [
-  {
-    id: "select",
-    header: ({ table }) => {
-      const dispatch = useAppDispatch();
-      const { rows } = useAppSelector((state) => state.lexicon);
-
-      const handleAllCheckbox = () => {
-        if (table.getIsAllPageRowsSelected()) {
-          dispatch(setSelectedRows([]));
-        } else {
-          dispatch(setSelectedRows(rows.map((row) => row.id)));
-        }
-      };
-
-      return (
-        <Checkbox.Root
-          className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-          onCheckedChange={(value) => {
-            handleAllCheckbox();
-            table.toggleAllPageRowsSelected(!!value);
-          }}
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-        >
-          <Checkbox.Indicator className="text-white">
-            <HiCheck />
-          </Checkbox.Indicator>
-        </Checkbox.Root>
-      );
-    },
-    cell: ({ row }) => {
-      const dispatch = useAppDispatch();
-      const { rows, selectedRows } = useAppSelector((state) => state.lexicon);
-
-      const handleCheckbox = (id: string) => {
-        if (selectedRows.includes(id)) {
-          dispatch(setSelectedRows(selectedRows.filter((row) => row !== id)));
-        } else {
-          dispatch(setSelectedRows([...selectedRows, id]));
-        }
-      };
-
-      return (
-        <Checkbox.Root
-          className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => {
-            handleCheckbox(row.id);
-            row.toggleSelected(!!value);
-          }}
-        >
-          <Checkbox.Indicator className="text-white">
-            <HiCheck />
-          </Checkbox.Indicator>
-        </Checkbox.Root>
-      );
-    },
-  },
-
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-
-  {
-    accessorKey: "ou",
-    header: "Org Unit",
-  },
-
-  {
-    accessorKey: "domain",
-    header: "Domain",
-  },
-
-  {
-    accessorKey: "description",
-    header: "Description",
-  },
-
-  {
-    accessorKey: "docs_in_corpus",
-    header: "Docs in Corpus",
-  },
-
-  {
-    header: "Pre-Existing",
-    accessorKey: "pre_existing",
-    cell: ({ row }) => {
-      const pre_existing = row.original.pre_existing;
-      const color = pre_existing === "Yes" ? "text-green-800" : "text-red-800";
-
-      return (
-        <span className={`px-2 py-1 rounded font-medium flex items-center gap-x-2 ${color}`}>
-          {pre_existing === "Yes" ? (
-            <MdOutlineCheckCircleOutline className="w-5 h-5" />
-          ) : (
-            <MdOutlineRemoveCircleOutline className="w-5 h-5" />
-          )}
-          {pre_existing}
-        </span>
-      );
-    },
-  },
-
-  {
-    header: "Status",
-    accessorKey: "status",
-    cell: ({ row }) => {
-      const status = row.original.status;
-      const statusEnum = {
-        Disabled: "bg-gray-200 text-gray-800",
-        Deployed: "bg-green-200 text-green-800",
-        Uploaded: "bg-yellow-200 text-yellow-800",
-      };
-
-      return (
-        <span
-          className={`px-2 py-1 rounded font-medium ${
-            statusEnum[status as keyof typeof statusEnum]
-          }`}
-        >
-          {status}
-        </span>
-      );
-    },
-  },
-
-  {
-    accessorKey: "last_updated",
-    header: "Last Updated",
-  },
-
-  {
-    id: "actions",
-    cell: ({ row }) => <LexiconMenu row={row.original} />,
-  },
-];
+import AddLexiconForm from "./AddLexiconForm";
+import GraphView from "./ReviewLexicon/GraphView";
+import DataTable from "@/comps/ui/Table/DataTable";
+import { MdOutlineCheckCircleOutline, MdOutlineRemoveCircleOutline } from "react-icons/md";
 
 const Lexicon = () => {
   const dispatch = useAppDispatch();
   const { rows, selectedRows, lexiconDetails } = useAppSelector((state) => state.lexicon);
+
+  const handleCheckbox = (id: string) => {
+    if (selectedRows.includes(id)) {
+      dispatch(setSelectedRows(selectedRows.filter((row) => row !== id)));
+    } else {
+      dispatch(setSelectedRows([...selectedRows, id]));
+    }
+  };
+
+  const columns: ColumnDef<Lexicon>[] = [
+    {
+      id: "select",
+      header: ({ table }) => {
+        return (
+          <Checkbox.Root
+            className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+            onCheckedChange={(value) => {
+              if (table.getIsAllPageRowsSelected()) {
+                dispatch(setSelectedRows([]));
+              } else {
+                dispatch(setSelectedRows(rows.map((row) => row.id)));
+              }
+
+              table.toggleAllPageRowsSelected(!!value);
+            }}
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+          >
+            <Checkbox.Indicator className="text-white">
+              <HiCheck />
+            </Checkbox.Indicator>
+          </Checkbox.Root>
+        );
+      },
+
+      cell: ({ row }) => {
+        return (
+          <Checkbox.Root
+            className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => {
+              handleCheckbox(row.id);
+              row.toggleSelected(!!value);
+            }}
+          >
+            <Checkbox.Indicator className="text-white">
+              <HiCheck />
+            </Checkbox.Indicator>
+          </Checkbox.Root>
+        );
+      },
+    },
+
+    {
+      accessorKey: "name",
+      header: "Name",
+    },
+
+    {
+      accessorKey: "ou",
+      header: "Org Unit",
+    },
+
+    {
+      accessorKey: "domain",
+      header: "Domain",
+    },
+
+    {
+      accessorKey: "description",
+      header: "Description",
+    },
+
+    {
+      accessorKey: "docs_in_corpus",
+      header: "Docs in Corpus",
+    },
+
+    {
+      header: "Pre-Existing",
+      accessorKey: "pre_existing",
+      cell: ({ row }) => {
+        const pre_existing = row.original.pre_existing;
+        const color = pre_existing === "Yes" ? "text-green-800" : "text-red-800";
+
+        return (
+          <span className={`px-2 py-1 rounded font-medium flex items-center gap-x-2 ${color}`}>
+            {pre_existing === "Yes" ? (
+              <MdOutlineCheckCircleOutline className="w-5 h-5" />
+            ) : (
+              <MdOutlineRemoveCircleOutline className="w-5 h-5" />
+            )}
+            {pre_existing}
+          </span>
+        );
+      },
+    },
+
+    {
+      header: "Status",
+      accessorKey: "status",
+      cell: ({ row }) => {
+        const status = row.original.status;
+        const statusEnum = {
+          Disabled: "bg-gray-200 text-gray-800",
+          Deployed: "bg-green-200 text-green-800",
+          Uploaded: "bg-yellow-200 text-yellow-800",
+        };
+
+        return (
+          <span
+            className={`px-2 py-1 rounded font-medium ${
+              statusEnum[status as keyof typeof statusEnum]
+            }`}
+          >
+            {status}
+          </span>
+        );
+      },
+    },
+
+    {
+      accessorKey: "last_updated",
+      header: "Last Updated",
+    },
+
+    {
+      id: "actions",
+      cell: ({ row }) => <LexiconMenu row={row.original} />,
+    },
+  ];
 
   return (
     <div className="w-full">
