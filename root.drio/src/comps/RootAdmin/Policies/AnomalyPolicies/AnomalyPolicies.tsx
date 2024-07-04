@@ -99,6 +99,7 @@ const AlertPolicies = () => {
       accessorKey: "sensitivity",
       cell: ({ row }) => {
         const max = 100;
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const [sliderValue, setSliderValue] = useState(row.original.sensitivity);
 
         return (
