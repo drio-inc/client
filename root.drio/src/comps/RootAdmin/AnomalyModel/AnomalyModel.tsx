@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { useRouter } from "next/router";
-import { SelectInput, TextInput } from "@/comps/ui/Forms/Inputs";
+import { SelectInput } from "@/comps/ui/Forms/Inputs";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import Button from "@/comps/ui/Button";
@@ -18,21 +18,29 @@ import {
   FormControl,
 } from "@/comps/ui/Forms/FormV2";
 import { useState } from "react";
+import { Switch } from "@/comps/ui/Switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@comps/ui/Select";
+import { Input } from "@/comps/ui/Input";
+import { RadioGroup, RadioGroupItem } from "@/comps/ui/RadioGroup";
 
 const schema = z.object({
-  min_cluster_size: z.array(z.number()).nonempty("Please Enter a value"),
+  min_samples: z.array(z.number()).nonempty("Please Select a value"),
+  min_cluster_size: z.array(z.number()).nonempty("Please Select a value"),
 
-  min_samples: z.string({
-    required_error: "Please select a type",
+  re_learning_enabled: z.boolean(),
+  re_learning_preiod: z.number().min(1, "Please enter a valid number"),
+
+  trigger: z.enum(["time_limit_based", "test_criteria_based"], {
+    required_error: "You need to select a trigger type.",
   }),
 
-  contract: z.string({
-    required_error: "Please select a contract",
+  stream_learning_time_limit: z.number().min(1, "Please enter a valid number"),
+
+  completion_criteria: z.string({
+    required_error: "Please select a completion criteria",
   }),
 
-  persona: z.string({
-    required_error: "Please select a persona",
-  }),
+  min_number_of_samples: z.number().min(1, "Please enter a valid number"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -51,16 +59,16 @@ const AnomalyModel = () => {
 
   return (
     <div className="w-full">
-      <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        <div className="py-4 px-8 border-b">
-          <h2 className="text-gray-700 text-xl font-bold">HDBSCAN Parameters</h2>
-        </div>
-
+      <div className={"px-4 flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col flex-wrap w-full mb-4"
           >
+            <div className="py-4 px-8 border-b">
+              <h2 className="text-gray-700 text-xl font-bold">HDBSCAN Parameters</h2>
+            </div>
+
             <div className="flex flex-wrap justify-around">
               <div className="py-2 w-full md:w-[45%]">
                 <FormField
@@ -69,14 +77,16 @@ const AnomalyModel = () => {
                   render={({ field }) => {
                     return (
                       <FormItem>
-                        <FormLabel>Min Cluster Size - {field.value}</FormLabel>
+                        <FormLabel className="text-sm text-gray-700">
+                          Min Cluster Size - {field.value ?? 0}
+                        </FormLabel>
                         <FormControl>
                           <>
                             <Slider
                               step={1}
                               max={100}
-                              defaultValue={field.value}
                               onValueChange={field.onChange}
+                              defaultValue={field.value ?? [0]}
                             />
 
                             <div className="mt-1.5 flex flex-row justify-between">
@@ -96,59 +106,233 @@ const AnomalyModel = () => {
               </div>
 
               <div className="py-2 w-full md:w-[45%]">
-                <SelectInput
-                  label="For Contract"
-                  registerName="contract"
-                  placeholder="Select contract"
-                  options={[
-                    { label: "UPS", value: "ups" },
-                    { label: "DHL", value: "dhl" },
-                    { label: "Xtime", value: "xtime" },
-                    { label: "Kintetsu", value: "kintetsu" },
-                    { label: "kbb", value: "Kelly Blue Book" },
-                    { label: "Wells Fargo", value: "wells_fargo" },
-                    { label: "Market Analytics", value: "market_analytics" },
-                  ]}
+                <FormField
+                  control={form.control}
+                  name={`min_samples`}
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel className="text-sm text-gray-700">
+                          Min Samples - {field.value ?? 0}
+                        </FormLabel>
+                        <FormControl>
+                          <>
+                            <Slider
+                              step={1}
+                              max={100}
+                              onValueChange={field.onChange}
+                              defaultValue={field.value ?? [0]}
+                            />
+
+                            <div className="mt-1.5 flex flex-row justify-between">
+                              {Array.from({ length: 100 + 1 }).map((_, i) => (
+                                <span key={i} className={"text-sm font-light"}>
+                                  {i === 0 || i === 100 ? i : ""}
+                                </span>
+                              ))}
+                            </div>
+                          </>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
               </div>
             </div>
 
-            <div className="flex flex-wrap ml-8 w-4/5">
-              <div className="px-4 py-2 w-full md:w-1/2 xl:w-1/3">
-                <SelectInput
-                  label="Type"
-                  registerName="type"
-                  placeholder="Select type"
-                  options={[
-                    { label: "Privacy", value: "privacy" },
-                    { label: "Security", value: "security" },
-                    { label: "Regulatory", value: "regulatory" },
-                    { label: "Contractual", value: "contractual" },
-                  ]}
+            <div className="flex flex-wrap justify-around items-center">
+              <div className="py-2 w-full md:w-[45%]">
+                <FormField
+                  control={form.control}
+                  name="re_learning_enabled"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center gap-x-8">
+                      <FormLabel className="text-sm text-gray-700">Re Learning Enabled</FormLabel>
+
+                      <FormControl>
+                        <Switch
+                          aria-readonly
+                          className="!mt-0"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
                 />
               </div>
 
-              <div className="px-4 py-2 w-full md:w-1/2 xl:w-1/3">
-                <SelectInput
-                  label="Persona"
-                  registerName="persona"
-                  placeholder="Select persona"
-                  options={[
-                    { label: "Fraud", value: "fraud" },
-                    { label: "Logistics", value: "logistics" },
-                    { label: "Financial", value: "financial" },
-                    { label: "Marketing", value: "marketing" },
-                    { label: "Fin Compliance", value: "fin_compliance" },
-                  ]}
+              <div className="py-2 w-full md:w-[45%]">
+                <FormField
+                  control={form.control}
+                  name="re_learning_preiod"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">Re Learning Period</FormLabel>
+
+                      <div className="flex border rounded-md">
+                        <FormControl className="flex-grow">
+                          <Input
+                            {...field}
+                            className="border-none"
+                            placeholder="Re learning period"
+                          />
+                        </FormControl>
+
+                        <Select
+                          defaultValue="mins"
+                          onValueChange={() => console.log("value changed")}
+                        >
+                          <SelectTrigger className="w-min border-none">
+                            <SelectValue placeholder="Select a time range" />
+                          </SelectTrigger>
+
+                          <SelectContent side="left">
+                            <SelectItem value="mins">mins</SelectItem>
+                            <SelectItem value="hours">hours</SelectItem>
+                            <SelectItem value="days">days</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
             </div>
 
-            <div className="flex mb-4 justify-end mr-4">
+            <div className="py-4 px-8 border-b">
+              <h2 className="text-gray-700 text-xl font-bold">Learning Complete Trigger</h2>
+            </div>
+
+            <div className="flex flex-wrap justify-around items-center">
+              <div className="py-2 w-full md:w-[45%]">
+                <FormField
+                  control={form.control}
+                  name="trigger"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormControl>
+                        <RadioGroup
+                          defaultValue={field.value}
+                          className="flex space-y-1"
+                          onValueChange={field.onChange}
+                        >
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="time_limit_based" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Time Limit Based</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="test_criteria_based" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Test Criteria Based</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="py-2 w-full md:w-[45%]">
+                <FormField
+                  control={form.control}
+                  name="stream_learning_time_limit"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">Stream Learning Time Limit</FormLabel>
+
+                      <div className="flex border rounded-md">
+                        <FormControl className="flex-grow">
+                          <Input
+                            {...field}
+                            className="border-none"
+                            placeholder="Enter time limit"
+                          />
+                        </FormControl>
+
+                        <Select
+                          defaultValue="mins"
+                          onValueChange={() => console.log("value changed")}
+                        >
+                          <SelectTrigger className="w-min border-none">
+                            <SelectValue placeholder="Select a time range" />
+                          </SelectTrigger>
+
+                          <SelectContent side="left">
+                            <SelectItem value="mins">mins</SelectItem>
+                            <SelectItem value="hours">hours</SelectItem>
+                            <SelectItem value="days">days</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-wrap justify-around">
+              <div className="py-2 w-full md:w-[45%]">
+                <FormField
+                  control={form.control}
+                  name="completion_criteria"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">Completion Criteria</FormLabel>
+
+                      <Select defaultValue={field.value} onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a criteria" />
+                          </SelectTrigger>
+                        </FormControl>
+
+                        <SelectContent>
+                          <SelectItem value="mins">0 change for 100 samples</SelectItem>
+                          <SelectItem value="hours">0 change for 100 samples in 2 hours</SelectItem>
+                          <SelectItem value="days">0 change for 100 samples in 2 days</SelectItem>
+                        </SelectContent>
+                      </Select>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="py-2 w-full md:w-[45%]">
+                <FormField
+                  control={form.control}
+                  name="min_number_of_samples"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">Minimum Number of Sample</FormLabel>
+
+                      <FormControl className="flex-grow">
+                        <Input {...field} placeholder="Enter number of samples" />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className="flex my-4 ml-auto mr-9 ">
               <Button
+                type="button"
                 intent={"primary"}
                 className="w-[128px]"
-                type="button"
                 onClick={() => onSubmit(form.getValues())}
               >
                 Save
