@@ -29,6 +29,21 @@ type EDI850LayoutOne = {
   Amount: number;
 };
 
+type EDI810LayoutOne = {
+  id: string;
+  "Line #": string;
+  "Buyer's Part #": string;
+  "Vendor Item #": string;
+  Description: {
+    "Grainger PO #": string;
+    "Shipping Cost Description": string;
+  };
+  Qty: number;
+  UOM: string;
+  Price: number;
+  Amount: number;
+};
+
 interface ItemInformation {
   id: string;
   "Line #": string;
