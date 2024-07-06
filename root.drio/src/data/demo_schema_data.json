@@ -6,19 +6,22 @@
       {
         "id": "100",
         "name": "Name",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       },
       {
         "id": "101",
         "name": "Car Dealer",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ],
     "data_field_tags": [
       {
         "id": "100",
         "name": "Org name",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ]
   },
@@ -30,14 +33,16 @@
       {
         "id": "100",
         "name": "Identifier",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ],
     "data_field_tags": [
       {
         "id": "100",
         "name": "Order identifier",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ]
   },
@@ -48,29 +53,34 @@
       {
         "id": "100",
         "name": "Name",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ],
     "data_field_tags": [
       {
         "id": "100",
         "name": "product",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       },
       {
         "id": "101",
         "name": "motorcycle",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       },
       {
         "id": "102",
         "name": "brand",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       },
       {
         "id": "103",
         "name": "product identifiable",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ]
   },
@@ -81,14 +91,16 @@
       {
         "id": "100",
         "name": "Inventory",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ],
     "data_field_tags": [
       {
         "id": "100",
         "name": "number",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ]
   },
@@ -99,14 +111,16 @@
       {
         "id": "100",
         "name": "amount shipped",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ],
     "data_field_tags": [
       {
         "id": "100",
         "name": "number",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ]
   },
@@ -117,19 +131,22 @@
       {
         "id": "100",
         "name": "Cost",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       },
       {
         "id": "101",
         "name": "Expense",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ],
     "data_field_tags": [
       {
         "id": "100",
         "name": "Monetary",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ]
   },
@@ -140,14 +157,16 @@
       {
         "id": "100",
         "name": "Time of Availability",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ],
     "data_field_tags": [
       {
         "id": "100",
         "name": "Date-Time",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ]
   },
@@ -158,19 +177,22 @@
       {
         "id": "100",
         "name": "Destination",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       },
       {
         "id": "101",
         "name": "Address",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ],
     "data_field_tags": [
       {
         "id": "100",
         "name": "Address",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ]
   },
@@ -181,34 +203,40 @@
       {
         "id": "100",
         "name": "Text",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ],
     "data_field_tags": [
       {
         "id": "100",
         "name": "Person",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       },
       {
         "id": "101",
         "name": "Org",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       },
       {
         "id": "102",
         "name": "Phone Number",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       },
       {
         "id": "103",
         "name": "Geo Location",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       },
       {
         "id": "104",
         "name": "PII",
-        "status": "Pending"
+        "status": "Pending",
+        "addedByUser": false
       }
     ]
   }

@@ -2,6 +2,9 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaCheckSquare } from "react-icons/fa";
 import { BsXSquareFill } from "react-icons/bs";
+import { MdPersonOutline } from "react-icons/md";
+
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comps/ui/Tooltip";
 
 type MetaTagsProps = {
   tags: {
@@ -9,6 +12,7 @@ type MetaTagsProps = {
     name: string;
     type?: string;
     status: string;
+    addedByUser: boolean;
   }[];
 };
 
@@ -22,6 +26,8 @@ const mapStatusToColor = {
 type MapStatusToColor = keyof typeof mapStatusToColor;
 
 const MetaTags = ({ tags }: MetaTagsProps) => {
+  console.log(tags);
+
   return (
     <div className="flex flex-wrap gap-1 py-[10px]">
       {tags?.map((tag, index) => (
@@ -29,28 +35,34 @@ const MetaTags = ({ tags }: MetaTagsProps) => {
           key={index}
           className={`flex justify-center border ${
             mapStatusToColor[tag.status as MapStatusToColor]
-          } rounded-md px-2 py-1 items-center gap-x-2`}
+          } rounded-md px-2 py-1 items-center`}
           // style={{ minWidth: "calc(25% - 8px)" }}
         >
-          {tag.status === "Rejected" && (
-            <BsXSquareFill className="text-red-500" />
-          )}
+          <div className="flex items-center">
+            {tag.status === "Rejected" && <BsXSquareFill className="text-red-500" />}
 
-          {tag.status === "Approved" && (
-            <FaCheckSquare className="text-green-500" />
-          )}
+            {tag.status === "Approved" && <FaCheckSquare className="text-green-500" />}
 
-          {tag.status === "Pending" && (
-            <Image
-              width={18}
-              height={18}
-              alt="pending logo"
-              src="/pending.svg"
-            />
-          )}
+            {tag.status === "Pending" && (
+              <Image width={18} height={18} alt="pending logo" src="/pending.svg" />
+            )}
+
+            {tag.addedByUser && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <MdPersonOutline />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Added by User</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+          </div>
 
           <span
-            className={`text-xs capitalize ${
+            className={`inline-block ml-1 mt-0.5 text-xs capitalize ${
               mapStatusToColor[tag.status as MapStatusToColor]
             } font-medium`}
           >
