@@ -42,6 +42,9 @@ const schema = z.object({
 
   endpoints: z.string().nonempty("Please Enter a value"),
 
+  metric_port: z.string().optional(),
+  fetch_interval: z.number().optional(),
+
   encoding: z.string().optional(),
 
   // schemaRegistryName: z.string().optional(),
@@ -56,12 +59,8 @@ type FormData = z.infer<typeof schema>;
 export default function EditDatasourceForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [patch, patchResult] = usePatchDataSourceMutation();
-  const [schemaBoxVisibility, setSchemaBoxVisibility] = useState(
-    !!row.schema_registry
-  );
-  const [catalogBoxVisibility, setCatalogBoxVisibility] = useState(
-    !!row.metadata_server
-  );
+  const [schemaBoxVisibility, setSchemaBoxVisibility] = useState(!!row.schema_registry);
+  const [catalogBoxVisibility, setCatalogBoxVisibility] = useState(!!row.metadata_server);
 
   const ddxState = useAppSelector((state) => state.DDX);
 
@@ -79,21 +78,20 @@ export default function EditDatasourceForm({ row }: TableRow) {
 
   console.log(row, ddxState?.rows);
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const cluster = ddxState?.rows?.find(
-      (row) => row?.id === data?.cluster_id
-    ) as DDXCluster;
+    const cluster = ddxState?.rows?.find((row) => row?.id === data?.cluster_id) as DDXCluster;
 
-    let patchData: Omit<DataSourceFormdata, "secure" | "insecure_skip_verify"> =
-      {
-        name: data.name,
-        kind: data.kind,
-        endpoints: data.endpoints,
+    let patchData: Omit<DataSourceFormdata, "secure" | "insecure_skip_verify"> = {
+      name: data.name,
+      kind: data.kind,
+      endpoints: data.endpoints,
+      //   metric_port: data.metric_port,
+      //   fetch_interval: data.fetch_interval,
 
-        cluster_name: cluster?.name,
-        cluster_id: data.cluster_id,
-        ou_id: cluster?.ou_id as string,
-        account_id: cluster?.account_id as string,
-      };
+      cluster_name: cluster?.name,
+      cluster_id: data.cluster_id,
+      ou_id: cluster?.ou_id as string,
+      account_id: cluster?.account_id as string,
+    };
 
     if (schemaBoxVisibility) {
       patchData = {
@@ -125,10 +123,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
 
       showAlert("Data source updated successfully.", "success");
     } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
+      showAlert(err?.data?.message ?? "Something went wrong. Please try again.", "error");
     }
 
     form.reset();
@@ -140,9 +135,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
       <Layout>
         <Form form={form} onSubmit={onSubmit}>
           <div className="mx-auto bg-white px-6 py-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
-            <h2 className="text-gray-700 text-2xl font-bold text-center">
-              Edit Data Source
-            </h2>
+            <h2 className="text-gray-700 text-2xl font-bold text-center">Edit Data Source</h2>
 
             <div className="flex flex-wrap -m-2 rounded-lg my-4">
               <div className="px-4 py-2 w-full">
@@ -175,9 +168,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                   registerName="kind"
                   className="md:text-sm 2xl:text-base"
                   placeholder={row.type ?? "Enter type"}
-                  defaultSelectedValue={options.find(
-                    (option) => option.value === row.kind
-                  )}
+                  defaultSelectedValue={options.find((option) => option.value === row.kind)}
                 />
               </div>
 
@@ -188,6 +179,35 @@ export default function EditDatasourceForm({ row }: TableRow) {
                   {...form.register("endpoints")}
                   className="md:text-sm 2xl:text-base"
                   placeholder={"Enter broker endpoint"}
+                />
+              </div>
+
+              <div className="px-4 py-2 w-full">
+                <TextInput
+                  maxLength={4}
+                  pattern="[0-9]*"
+                  label={"Metric Port"}
+                  {...form.register("metric_port")}
+                  className="md:text-sm 2xl:text-base"
+                  placeholder={"Enter port number - e.g. 9093"}
+                />
+              </div>
+
+              <div className="px-4 py-2 w-full">
+                <SelectInput
+                  label={"Fetch Interval"}
+                  registerName="fetch_interval"
+                  placeholder={"Select interval"}
+                  className="md:text-sm 2xl:text-base"
+                  options={[
+                    { label: "1 min", value: 1 },
+                    { label: "5 mins", value: 5 },
+                    { label: "10 mins", value: 10 },
+                    { label: "15 mins", value: 15 },
+                    { label: "20 mins", value: 20 },
+                    { label: "25 mins", value: 25 },
+                    { label: "30 mins", value: 30 },
+                  ]}
                 />
               </div>
 
@@ -207,17 +227,13 @@ export default function EditDatasourceForm({ row }: TableRow) {
                   <Checkbox.Root
                     className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                     checked={schemaBoxVisibility}
-                    onCheckedChange={() =>
-                      setSchemaBoxVisibility(!schemaBoxVisibility)
-                    }
+                    onCheckedChange={() => setSchemaBoxVisibility(!schemaBoxVisibility)}
                   >
                     <Checkbox.Indicator className="text-white">
                       <HiCheck />
                     </Checkbox.Indicator>
                   </Checkbox.Root>
-                  <span className="text-sm">
-                    Is there any Schema-Registry available?
-                  </span>
+                  <span className="text-sm">Is there any Schema-Registry available?</span>
                 </div>
               </div>
 
@@ -226,9 +242,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                   <Checkbox.Root
                     className="flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                     checked={catalogBoxVisibility}
-                    onCheckedChange={() =>
-                      setCatalogBoxVisibility(!catalogBoxVisibility)
-                    }
+                    onCheckedChange={() => setCatalogBoxVisibility(!catalogBoxVisibility)}
                   >
                     <Checkbox.Indicator className="text-white">
                       <HiCheck />
@@ -295,11 +309,7 @@ export default function EditDatasourceForm({ row }: TableRow) {
                 <span className="inline-flex justify-center">Cancel</span>
               </Button>
 
-              <Button
-                intent={`primary`}
-                className="w-full"
-                isLoading={patchResult.isLoading}
-              >
+              <Button intent={`primary`} className="w-full" isLoading={patchResult.isLoading}>
                 <span className="inline-flex justify-center">Update</span>
               </Button>
             </div>

@@ -12,11 +12,7 @@ import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import {
-  setOpenModal,
-  setCloseModal,
-  setNotification,
-} from "@/state/slices/uiSlice";
+import { setOpenModal, setCloseModal, setNotification } from "@/state/slices/uiSlice";
 import { setRows, setDefaultSource } from "@/state/slices/dataSourceSlice";
 
 import { HiCheck } from "react-icons/hi";
@@ -37,10 +33,11 @@ const schema = z.object({
 
   endpoints: z.string().nonempty("Please Enter a value"),
 
-  // schemaRegistryName: z.string().optional(),
+  metric_port: z.string().optional(),
+  fetch_interval: z.number().optional(),
+
   schemaEndpoints: z.string().url().optional(),
 
-  // catalogName: z.string().optional(),
   catalogEndpoints: z.string().url().optional(),
 });
 
@@ -68,18 +65,17 @@ export default function AddDataSourceForm() {
       value: row.id,
     })) ?? [];
 
-  const skipVerifyValue = () =>
-    (secure === "true" && skipVerify === "false") || secure !== "true";
+  const skipVerifyValue = () => (secure === "true" && skipVerify === "false") || secure !== "true";
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const cluster = ddxRows?.find(
-      (row) => row.id === data.cluster_id
-    ) as (typeof ddxRows)[0];
+    const cluster = ddxRows?.find((row) => row.id === data.cluster_id) as (typeof ddxRows)[0];
 
     let createData: DataSourceFormdata = {
       name: data.name,
       kind: data.kind,
       endpoints: data.endpoints,
+      //   metric_port: data.metric_port,
+      //   fetch_interval: data.fetch_interval,
 
       cluster_name: cluster?.name,
       cluster_id: data.cluster_id,
@@ -133,10 +129,7 @@ export default function AddDataSourceForm() {
 
       showAlert("Data source added successfully", "success");
     } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
+      showAlert(err?.data?.message ?? "Something went wrong. Please try again.", "error");
     }
 
     form.reset();
@@ -147,9 +140,7 @@ export default function AddDataSourceForm() {
     <Layout>
       <Form form={form} onSubmit={onSubmit}>
         <div className="mx-auto bg-white py-8 px-6 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
-          <h2 className="text-gray-700 text-2xl font-bold text-center">
-            Add New Data Source
-          </h2>
+          <h2 className="text-gray-700 text-2xl font-bold text-center">Add New Data Source</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             <div className="px-4 py-2 w-full">
@@ -195,6 +186,35 @@ export default function AddDataSourceForm() {
               />
             </div>
 
+            <div className="px-4 py-2 w-full">
+              <TextInput
+                maxLength={4}
+                pattern="[0-9]*"
+                label={"Metric Port"}
+                {...form.register("metric_port")}
+                className="md:text-sm 2xl:text-base"
+                placeholder={"Enter port number - e.g. 9093"}
+              />
+            </div>
+
+            <div className="px-4 py-2 w-full">
+              <SelectInput
+                label={"Fetch Interval"}
+                registerName="fetch_interval"
+                placeholder={"Select interval"}
+                className="md:text-sm 2xl:text-base"
+                options={[
+                  { label: "1 min", value: 1 },
+                  { label: "5 mins", value: 5 },
+                  { label: "10 mins", value: 10 },
+                  { label: "15 mins", value: 15 },
+                  { label: "20 mins", value: 20 },
+                  { label: "25 mins", value: 25 },
+                  { label: "30 mins", value: 30 },
+                ]}
+              />
+            </div>
+
             <h3 className="px-4 text-gray-700 text-sm font-medium">Secure?</h3>
 
             <div className="px-4 py-2 w-full">
@@ -210,10 +230,7 @@ export default function AddDataSourceForm() {
                     value={"true"}
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
-                  <label
-                    htmlFor="r1"
-                    className="text-gray-500 text-sm font-medium"
-                  >
+                  <label htmlFor="r1" className="text-gray-500 text-sm font-medium">
                     True
                   </label>
                 </div>
@@ -224,10 +241,7 @@ export default function AddDataSourceForm() {
                     value={"false"}
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
-                  <label
-                    htmlFor="r2"
-                    className="text-gray-500 text-sm font-medium"
-                  >
+                  <label htmlFor="r2" className="text-gray-500 text-sm font-medium">
                     False
                   </label>
                 </div>
@@ -253,10 +267,7 @@ export default function AddDataSourceForm() {
                         value={"true"}
                         className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                       />
-                      <label
-                        htmlFor="r3"
-                        className="text-gray-500 text-sm font-medium"
-                      >
+                      <label htmlFor="r3" className="text-gray-500 text-sm font-medium">
                         True
                       </label>
                     </div>
@@ -267,10 +278,7 @@ export default function AddDataSourceForm() {
                         value={"false"}
                         className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                       />
-                      <label
-                        htmlFor="r4"
-                        className="text-gray-500 text-sm font-medium"
-                      >
+                      <label htmlFor="r4" className="text-gray-500 text-sm font-medium">
                         False
                       </label>
                     </div>
@@ -292,9 +300,7 @@ export default function AddDataSourceForm() {
                     <HiCheck />
                   </Checkbox.Indicator>
                 </Checkbox.Root>
-                <span className="text-sm">
-                  Is there any Schema-Registry available?
-                </span>
+                <span className="text-sm">Is there any Schema-Registry available?</span>
               </div>
             </div>
 
@@ -372,11 +378,7 @@ export default function AddDataSourceForm() {
               <span className="inline-flex justify-center">Cancel</span>
             </Button>
 
-            <Button
-              intent={`primary`}
-              className="w-full"
-              isLoading={result.isLoading}
-            >
+            <Button intent={`primary`} className="w-full" isLoading={result.isLoading}>
               <span className="inline-flex justify-center">Add</span>
             </Button>
           </div>
