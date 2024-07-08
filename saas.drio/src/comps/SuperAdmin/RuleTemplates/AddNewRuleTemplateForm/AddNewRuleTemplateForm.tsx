@@ -38,6 +38,8 @@ import {
   CommandGroup,
   CommandInput,
 } from "@/comps/ui/Command";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/comps/ui/Select";
+import { Switch } from "@/comps/ui/Switch";
 
 const schema = z.object({
   rule_name: z
@@ -63,6 +65,12 @@ const schema = z.object({
       window_type: z.enum(["sliding", "step"], {
         required_error: "You need to select a window type.",
       }),
+
+      window_size: z.string().min(0, { message: "Window size is too short" }),
+
+      max_samples_enabled: z.boolean(),
+
+      max_samples: z.string().optional(),
 
       window_function: z.string().min(3, { message: "Window function is too short" }),
     })
@@ -119,10 +127,13 @@ export default function AddNewRuleTEmplateForm() {
         {
           stream_name: "",
           dataset_id: "",
+          max_samples: "",
+          window_size: "",
           data_source_id: "",
           window_function: "",
           stream_description: "",
           window_type: undefined,
+          max_samples_enabled: false,
         },
       ],
     },
@@ -283,11 +294,14 @@ export default function AddNewRuleTEmplateForm() {
 
                     append({
                       stream_name: "",
+                      window_size: "0",
                       dataset_id: "",
+                      max_samples: "0",
                       data_source_id: "",
                       window_function: "",
                       stream_description: "",
                       window_type: "sliding",
+                      max_samples_enabled: false,
                     });
                   }}
                 >
@@ -523,6 +537,95 @@ export default function AddNewRuleTEmplateForm() {
                             </FormItem>
                           )}
                         />
+                      </div>
+
+                      <div className="py-2 w-full">
+                        <FormField
+                          control={form.control}
+                          name={`streams.${index}.window_size`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-700">Window Size</FormLabel>
+
+                              <div className="flex border rounded-md">
+                                <FormControl className="flex-grow">
+                                  <Input
+                                    {...field}
+                                    type="number"
+                                    className="border-none"
+                                    placeholder="Enter size"
+                                  />
+                                </FormControl>
+
+                                <Select
+                                  defaultValue="mins"
+                                  onValueChange={() => console.log("value changed")}
+                                >
+                                  <SelectTrigger className="w-min border-none">
+                                    <SelectValue placeholder="Select a time range" />
+                                  </SelectTrigger>
+
+                                  <SelectContent className="z-[1003]">
+                                    <SelectItem value="mins">mins</SelectItem>
+                                    <SelectItem value="hours">hours</SelectItem>
+                                    <SelectItem value="days">days</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="flex items-center gap-x-4">
+                        <div>
+                          <FormField
+                            control={form.control}
+                            name={`streams.${index}.max_samples_enabled`}
+                            render={({ field }) => {
+                              return (
+                                <FormItem className="flex items-center gap-x-4">
+                                  <FormControl>
+                                    <Switch
+                                      aria-readonly
+                                      className="!mt-0"
+                                      checked={field.value}
+                                      onCheckedChange={field.onChange}
+                                    />
+                                  </FormControl>
+
+                                  <FormLabel className="text-sm text-gray-700 !mt-0">
+                                    Max Samples
+                                  </FormLabel>
+
+                                  <FormMessage />
+                                </FormItem>
+                              );
+                            }}
+                          />
+                        </div>
+
+                        {form.watch(`streams.${index}.max_samples_enabled`) && (
+                          <div>
+                            <FormField
+                              name={`streams.${index}.max_samples`}
+                              control={form.control}
+                              render={({ field }) => (
+                                <FormItem className="flex items-center gap-x-2">
+                                  <FormControl className="w-[80px]">
+                                    <Input placeholder="0" {...field} />
+                                  </FormControl>
+
+                                  <FormLabel className="!mt-0">Samples</FormLabel>
+
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                        )}
                       </div>
 
                       <div className="py-2 w-full">
