@@ -100,9 +100,7 @@ const Metadata = () => {
               ...row,
               ...myDemoSchema[row.property],
             };
-          } else {
-            return row;
-          }
+          } else return row;
         });
 
       dispatch(setRows([...data]));

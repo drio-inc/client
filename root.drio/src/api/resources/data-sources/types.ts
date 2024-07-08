@@ -4,7 +4,9 @@ export type DataSourceFormdata = DefaultParams & {
   secure: boolean;
   endpoints: string;
   cluster_id: string;
+  metric_port?: string;
   cluster_name: string;
+  fetch_interval?: number;
   insecure_skip_verify: boolean;
 
   schema_registry?: {

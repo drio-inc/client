@@ -30,6 +30,7 @@ type ITag = {
   id: string;
   name: string;
   status: string;
+  addedByUser?: boolean;
 };
 
 export default function AddMetaDataForm({ row }: TableRow) {
@@ -52,6 +53,7 @@ export default function AddMetaDataForm({ row }: TableRow) {
           name: tag,
           id: uuidv4(),
           status: "Pending",
+          addedByUser: true,
         },
       ]);
     },
@@ -66,6 +68,7 @@ export default function AddMetaDataForm({ row }: TableRow) {
           name: tag,
           id: uuidv4(),
           status: "Pending",
+          addedByUser: true,
         },
       ]);
     },

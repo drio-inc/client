@@ -24,6 +24,7 @@ interface ITag {
   id: string;
   name: string;
   status: string;
+  addedByUser?: boolean;
 }
 
 const schema = z.object({
@@ -128,7 +129,10 @@ export default function EditMetadataForm({ row }: TableRow) {
 
             return {
               ...r,
-              key_name_tags: [...r.key_name_tags, { id: uuidv4(), name: tag, status: "Pending" }],
+              key_name_tags: [
+                ...r.key_name_tags,
+                { id: uuidv4(), name: tag, status: "Pending", addedByUser: true },
+              ],
             };
           })
         )
@@ -148,7 +152,7 @@ export default function EditMetadataForm({ row }: TableRow) {
               ...r,
               data_field_tags: [
                 ...r.data_field_tags,
-                { id: uuidv4(), name: tag, status: "Pending" },
+                { id: uuidv4(), name: tag, status: "Pending", addedByUser: true },
               ],
             };
           })
