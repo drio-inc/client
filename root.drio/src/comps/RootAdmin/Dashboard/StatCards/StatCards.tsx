@@ -21,7 +21,7 @@ const Stats = [
   },
   {
     value: 1,
-    unit: "",
+    unit: "/ Sec",
     title: "Dataset Prod Rate",
   },
 
@@ -34,14 +34,14 @@ const Stats = [
         title: "Errors",
       },
       {
-        value: 10,
+        value: 7,
         unit: "",
         title: "Anomalies",
       },
     ],
   },
   {
-    value: 78,
+    value: 8,
     unit: "",
     title: "Alerts",
   },
@@ -49,7 +49,7 @@ const Stats = [
 
 const StatCards = () => {
   return (
-    <div className="grid grid-cols-7 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-7 gap-4">
       {Stats.map((stat, index) => {
         return (
           <>
@@ -71,17 +71,14 @@ const StatCards = () => {
                 </div>
               </div>
             ) : (
-              <div className="bg-white flex justify-between divide-x-2 divide-dashed">
+              <div className="bg-white flex flex-wrap justify-between divide-x-2 divide-dashed rounded-md">
                 {stat.value.map((stat, index) => (
                   <div
                     key={index}
-                    className="p-4 bg-white flex flex-wrap flex-col justify-between gap-y-4 w-1/2"
+                    className="p-4 flex flex-wrap flex-col justify-between gap-y-4 w-full lg:w-1/2"
                   >
                     <span className="text-gray-700 font-medium">{stat.title}</span>
-
-                    <div className="flex items-center">
-                      <span className="text-3xl font-bold text-drio-red">{stat.value}</span>
-                    </div>
+                    <span className="text-3xl font-bold text-drio-red">{stat.value}</span>
                   </div>
                 ))}
               </div>

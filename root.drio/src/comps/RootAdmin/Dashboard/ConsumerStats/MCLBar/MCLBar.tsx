@@ -99,35 +99,35 @@ export const data = {
   datasets: [
     {
       borderRadius: 5,
-      label: "Source 1: 50%",
+      label: "Source 1",
       borderSkipped: false,
       backgroundColor: "#4285F4",
       data: labels.map(() => Data[0].userGain),
     },
     {
       borderRadius: 5,
-      label: "Source 2: 30%",
+      label: "Source 2",
       borderSkipped: false,
       backgroundColor: "#EB5757",
       data: labels.map(() => Data[1].userGain),
     },
     {
       borderRadius: 5,
-      label: "Source 3: 30%",
+      label: "Source 3",
       borderSkipped: false,
       backgroundColor: "#6FCF97",
       data: labels.map(() => Data[2].userGain),
     },
     {
       borderRadius: 5,
-      label: "Source 4: 30%",
+      label: "Source 4",
       borderSkipped: false,
       backgroundColor: "#807DFF",
       data: labels.map(() => Data[3].userGain),
     },
     {
       borderRadius: 5,
-      label: "Source 5: 30%",
+      label: "Source 5",
       borderSkipped: false,
       backgroundColor: "#FDAD00",
       data: labels.map(() => Data[4].userGain),
@@ -136,7 +136,7 @@ export const data = {
 };
 
 const MCLBar = () => {
-  const [hiddenDatasets, setHiddenDatasets] = useState<number | string | any>([]);
+  const [hiddenDatasets, setHiddenDatasets] = useState<any>([]);
 
   const toggleDataset = (index: number) => {
     const isHidden = hiddenDatasets.includes(index);
@@ -158,27 +158,38 @@ const MCLBar = () => {
         </h2>
       </div>
 
-      <div className="h-[300px]">
-        <Bar options={options} data={{ ...data, datasets: filteredDatasets }} />
+      <div className="flex items-center gap-x-4 border p-4 rounded-md mb-4">
+        <div className="border-[6px] border-drio-red w-12 h-12 rounded-full" />
+        <div className="flex flex-col text-gray-700">
+          <span>
+            <span className="font-bold font-inter">9</span> Messages
+          </span>
+          <span>Max Lag in Last 24 Hours</span>
+        </div>
       </div>
 
-      <div className="w-full flex gap-x-4 mt-4 justify-center">
+      <div className="flex gap-x-4">
         {data.datasets.map((dataset, i) => (
           <div
             key={i}
             onClick={() => toggleDataset(i)}
-            className={`flex items-center cursor-pointer ${
+            className={`flex items-center mb-2 cursor-pointer ${
               hiddenDatasets.includes(i) && "opacity-50"
             }`}
           >
             <div
-              className="py-2 px-4 rounded-md"
-              style={{ backgroundColor: dataset.backgroundColor }}
-            >
-              <span className="inline-block text-white font-medium">{dataset.label}</span>
-            </div>
+              className={`w-8 h-[10px] rounded mr-2`}
+              style={{
+                backgroundColor: dataset.backgroundColor,
+              }}
+            />
+            <p className="text-[#223354] text-sm font-semibold">{dataset.label}</p>
           </div>
         ))}
+      </div>
+
+      <div className="h-[300px]">
+        <Bar options={options} data={{ ...data, datasets: filteredDatasets }} />
       </div>
     </div>
   );

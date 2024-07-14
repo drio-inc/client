@@ -1,18 +1,16 @@
 import StatCards from "./StatCards";
 import React, { useState } from "react";
-import DatasetAccessChart from "./DatasetAccessChart";
-import AnomaliesAndErrorsChart from "./AnomaliesAndErrorsChart";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/comps/ui/Accordion";
 
 import "rsuite/dist/rsuite.css";
 import { DateRangePicker } from "rsuite";
 import { DLArea, DRULine } from "./DDXSources";
-import { KLBar, MCLBar, OCERArea, TCTMLine } from "./ConsumerStats";
 import { DateRange } from "rsuite/esm/DateRangePicker";
 import { MSDoughnut, MSStacked } from "./MonitoringSources";
-import { DPRDoughnut, DPRStacked } from "./DataProductionRate";
-import { DSPRDoughnut, DSPRStacked } from "./DataSourceProductionRate";
-import { IDTBar, TMLBar, IQRULine, MLRArea } from "./StreamProducerStats";
+import { DCRDoughnut, DCRStacked } from "./DataConsumptionRate";
+import { KLBar, MCLBar, OCERArea, TCTMLine } from "./ConsumerStats";
+import { IDTBar, TMLBar, IQRULine, MLRLine } from "./StreamProducerStats";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/comps/ui/Select";
 
 const Monitoring = () => {
   const [dateRange, setDateRange] = useState<any>([new Date(), new Date()]);
@@ -25,7 +23,7 @@ const Monitoring = () => {
     <div>
       <StatCards />
 
-      <div className="flex my-4 p-4 bg-white rounded-md">
+      <div className="flex gap-x-4 my-4 p-4 bg-white rounded-md">
         <DateRangePicker
           placement="rightStart"
           onChange={setDateRange}
@@ -33,39 +31,34 @@ const Monitoring = () => {
           placeholder={`${formatDate(dateRange[0])} - ${formatDate(dateRange[1])}`}
           renderValue={(value: DateRange) => `${formatDate(value[0])} - ${formatDate(value[1])}`}
         />
+
+        <Select>
+          <SelectTrigger className="w-[255px] h-fit mr-3">
+            <SelectValue placeholder="Filter by Organization" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="source-1">Corp 1</SelectItem>
+            <SelectItem value="source-2">Corp 2</SelectItem>
+            <SelectItem value="source-3">Corp 3</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      <Accordion type="multiple" defaultValue={["ddx"]}>
-        <AccordionItem value="data-production-rate">
-          <AccordionTrigger className="w-full bg-white">
-            <div className="py-4 text-[#223354] text-2xl font-semibold">Data Production Rate</div>
-          </AccordionTrigger>
-
-          <AccordionContent className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
-            <div className="border p-4 rounded-md">
-              <DPRDoughnut />
-            </div>
-
-            <div className="flex-1">
-              <DPRStacked />
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="data-source-production-rate">
+      <Accordion type="multiple" defaultValue={["data-consumption-rate"]}>
+        <AccordionItem value="data-consumption-rate">
           <AccordionTrigger className="w-full bg-white">
             <div className="py-4 text-[#223354] text-2xl font-semibold">
-              Data Production Rate of Source
+              Data Consumption Rate by Consumer
             </div>
           </AccordionTrigger>
 
           <AccordionContent className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
             <div className="border p-4 rounded-md">
-              <DSPRDoughnut />
+              <DCRDoughnut />
             </div>
 
             <div className="flex-1">
-              <DSPRStacked />
+              <DCRStacked />
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -126,7 +119,7 @@ const Monitoring = () => {
               </div>
 
               <div className="flex-1 border p-4 rounded-md">
-                <MLRArea />
+                <MLRLine />
               </div>
             </div>
           </AccordionContent>

@@ -82,22 +82,22 @@ export const data = {
   labels,
   datasets: [
     {
-      label: "Dataset 1",
+      label: "CPU%",
       borderColor: "#FF8B8C",
       data: [75, 55, 85, 55, 65, 68, 95, 68, 105, 65, 70, 65],
     },
     {
-      label: "Dataset 2",
+      label: "Disk%",
       borderColor: "#FDAD00",
       data: [30, 32, 28, 35, 33, 37, 34, 36, 35, 38, 36, 39],
     },
     {
-      label: "Dataset 3",
+      label: "Memory%",
       borderColor: "#6FCF97",
       data: [25, 27, 24, 28, 26, 30, 27, 29, 28, 31, 29, 32],
     },
     {
-      label: "Dataset 4",
+      label: "I/O Per Sec",
       borderColor: "#42B9F4",
       data: [20, 22, 21, 24, 22, 26, 23, 25, 24, 27, 25, 28],
     },
@@ -108,7 +108,20 @@ export default function DRULine() {
   return (
     <div className="p-4 bg-white -mx-4">
       <div className="flex flex-wrap justify-between">
-        <h2 className="text-[#223354] text-2xl font-semibold mb-4">DDX Resource Utilisation</h2>
+        <h2 className="text-[#223354] text-2xl font-semibold mb-4">DDX Resource Utilization</h2>
+      </div>
+      <div className="flex gap-x-4">
+        {data.datasets.map((dataset, index) => (
+          <div key={index} className="flex items-center mb-2">
+            <div
+              className={`w-8 h-[10px] rounded mr-2`}
+              style={{
+                backgroundColor: dataset.borderColor,
+              }}
+            />
+            <p className="text-[#223354] text-sm font-semibold">{dataset.label}</p>
+          </div>
+        ))}
       </div>
       <Line options={options} data={data} />;
     </div>

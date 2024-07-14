@@ -70,7 +70,7 @@ export const data = {
   datasets: [
     {
       fill: true,
-      label: "Dataset 1",
+      label: "Consumer 1",
       borderColor: "rgba(255, 139, 140, 1)",
       backgroundColor: "rgba(255, 139, 140, 0.2)",
       data: [20, 5, 40, 25, 56, 45, 65, 38, 78, 5, 10],
@@ -86,6 +86,26 @@ export default function OCERArea() {
           Overall Consumer Error Rate %
         </h2>
       </div>
+      <div className="flex items-center gap-x-4 border p-4 rounded-md mb-4">
+        <div className="border-[6px] border-drio-red w-12 h-12 rounded-full" />
+        <div className="flex flex-col text-gray-700">
+          <span>
+            <span className="font-bold font-inter">9</span> Messages
+          </span>
+          <span>Max Lag in Last 24 Hours</span>
+        </div>
+      </div>
+      {data.datasets.map((dataset, index) => (
+        <div key={index} className="flex items-center mb-2">
+          <div
+            className="w-8 h-[10px] rounded mr-2"
+            style={{
+              backgroundColor: dataset.borderColor,
+            }}
+          ></div>
+          <p className="text-[#223354] text-sm font-semibold">{dataset.label}</p>
+        </div>
+      ))}
       <Line options={options} data={data} />;
     </div>
   );

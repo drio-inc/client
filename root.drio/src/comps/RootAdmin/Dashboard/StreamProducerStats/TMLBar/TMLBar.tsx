@@ -75,14 +75,14 @@ export const data = {
   datasets: [
     {
       borderRadius: 5,
-      label: "Org 50%",
+      label: "DDX 1",
       borderSkipped: false,
       backgroundColor: "#FDAD00",
       data: labels.map(() => Data[0].userGain),
     },
     {
       borderRadius: 5,
-      label: "Org 30%",
+      label: "DDX 2",
       borderSkipped: false,
       backgroundColor: "#EB5757",
       data: labels.map(() => Data[1].userGain),
@@ -113,27 +113,28 @@ const TMLBar = () => {
         </h2>
       </div>
 
-      <div className="h-[300px]">
-        <Bar options={options} data={{ ...data, datasets: filteredDatasets }} />
-      </div>
-
-      <div className="w-full flex gap-x-8 mt-4 justify-center">
+      <div className="flex gap-x-4">
         {data.datasets.map((dataset, i) => (
           <div
             key={i}
             onClick={() => toggleDataset(i)}
-            className={`flex items-center cursor-pointer ${
+            className={`flex items-center mb-2 cursor-pointer ${
               hiddenDatasets.includes(i) && "opacity-50"
             }`}
           >
             <div
-              className="py-2 px-2 md:px-4 lg:px-8 rounded-md"
-              style={{ backgroundColor: dataset.backgroundColor }}
-            >
-              <span className="inline-block text-white font-medium">{dataset.label}</span>
-            </div>
+              className={`w-8 h-[10px] rounded mr-2`}
+              style={{
+                backgroundColor: dataset.backgroundColor,
+              }}
+            />
+            <p className="text-[#223354] text-sm font-semibold">{dataset.label}</p>
           </div>
         ))}
+      </div>
+
+      <div className="h-[300px]">
+        <Bar options={options} data={{ ...data, datasets: filteredDatasets }} />
       </div>
     </div>
   );

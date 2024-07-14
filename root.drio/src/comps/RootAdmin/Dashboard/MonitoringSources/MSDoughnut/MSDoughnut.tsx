@@ -37,12 +37,12 @@ const DPRDoughnut = () => {
         {data.labels.map((label, index) => (
           <div key={index} className="flex justify-center gap-2 w-1/2">
             <div
-              className="w-4 h-4 rounded mt-1"
+              className="w-3 h-3 rounded mt-2"
               style={{ backgroundColor: data.datasets[0].backgroundColor[index] }}
             />
             <div className="flex flex-col">
-              <span className="font-bold text-xl">{label}</span>
-              {/* <span className="text-base">Data Source {index}</span> */}
+              <span className="font-bold text-lg">{label}</span>
+              <span className="text-xs">Data Consumer {index + 1}</span>
             </div>
           </div>
         ))}
