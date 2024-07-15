@@ -10,6 +10,7 @@ import {
 } from "chart.js";
 
 import { Bar } from "react-chartjs-2";
+import KPILogs from "../../DashboardComps/KPILogs";
 
 export const Data = [
   {
@@ -113,15 +114,7 @@ const KLBar = () => {
         </h2>
       </div>
 
-      <div className="flex items-center gap-x-4 border p-4 rounded-md mb-4">
-        <div className="border-[6px] border-drio-red w-12 h-12 rounded-full" />
-        <div className="flex flex-col text-gray-700">
-          <span>
-            <span className="font-bold font-inter">32</span> Messages
-          </span>
-          <span>Max Lag in Last 24 Hours</span>
-        </div>
-      </div>
+      <KPILogs messages={9} text="Max lag in Last 24 Hours" />
 
       <div className="flex gap-x-4">
         {data.datasets.map((dataset, i) => (

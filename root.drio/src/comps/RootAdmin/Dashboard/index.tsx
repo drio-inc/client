@@ -1,1 +1,1 @@
-export { default } from "./MonitoringDashboard";
+export { default } from "./Dashboard";

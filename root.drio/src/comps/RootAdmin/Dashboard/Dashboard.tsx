@@ -1,5 +1,5 @@
-import StatCards from "./StatCards";
 import React, { useState } from "react";
+import StatCards from "./DashboardComps/StatCards";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/comps/ui/Accordion";
 
 import "rsuite/dist/rsuite.css";
@@ -12,7 +12,7 @@ import { KLBar, MCLBar, OCERArea, TCTMLine } from "./ConsumerStats";
 import { IDTBar, TMLBar, IQRULine, MLRLine } from "./StreamProducerStats";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/comps/ui/Select";
 
-const Monitoring = () => {
+const Dashboard = () => {
   const [dateRange, setDateRange] = useState<any>([new Date(), new Date()]);
 
   const formatDate = (date: Date) => {
@@ -44,39 +44,52 @@ const Monitoring = () => {
         </Select>
       </div>
 
-      <Accordion type="multiple" defaultValue={["data-consumption-rate"]}>
-        <AccordionItem value="data-consumption-rate">
+      <Accordion
+        type="multiple"
+        defaultValue={[
+          "ddx",
+          "consumer-stats",
+          "monitoring-sources",
+          "stream-producer-stats",
+          "data-consumption-rate",
+        ]}
+      >
+        <AccordionItem value="data-consumption-rate" className="bg-white">
           <AccordionTrigger className="w-full bg-white">
             <div className="py-4 text-[#223354] text-2xl font-semibold">
               Data Consumption Rate by Consumer
             </div>
           </AccordionTrigger>
 
-          <AccordionContent className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
-            <div className="border p-4 rounded-md">
-              <DCRDoughnut />
-            </div>
+          <AccordionContent className="flex flex-col">
+            <div className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
+              <div className="border p-4 rounded-md">
+                <DCRDoughnut />
+              </div>
 
-            <div className="flex-1">
-              <DCRStacked />
+              <div className="flex-1">
+                <DCRStacked />
+              </div>
             </div>
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="monitoring-sources">
+        <AccordionItem value="monitoring-sources" className="bg-white">
           <AccordionTrigger className="w-full bg-white">
             <div className="py-4 text-[#223354] text-2xl font-semibold">
               Events, Anomalies, Errors and Alert by Sources
             </div>
           </AccordionTrigger>
 
-          <AccordionContent className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
-            <div className="border p-4 rounded-md">
-              <MSDoughnut />
-            </div>
+          <AccordionContent className="flex flex-col">
+            <div className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
+              <div className="border p-4 rounded-md">
+                <MSDoughnut />
+              </div>
 
-            <div className="flex-1">
-              <MSStacked />
+              <div className="flex-1">
+                <MSStacked />
+              </div>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -157,4 +170,4 @@ const Monitoring = () => {
   );
 };
 
-export default Monitoring;
+export default Dashboard;
