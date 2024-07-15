@@ -13,9 +13,9 @@ const Authentication = () => {
   return (
     <div className="bg-white px-8 py-4 rounded">
       <div className="flex justify-between border-b pb-4">
-        <h2 className="text-gray-700 text-2xl font-bold">Authentication</h2>
+        <h2 className="text-gray-700 text-2xl font-bold">Details</h2>
         <button
-          className="border-2 border-drio-red rounded-md text-drio-red px-2 font-medium flex items-center gap-x-1"
+          className="transition-colors duration-200 ease-in-out border-2 border-drio-red rounded-md text-drio-red px-2 font-medium flex items-center gap-x-1 hover:border-drio-red-dark hover:text-drio-red-dark"
           onClick={() => dispatch(setOpenModal("authConfigForm"))}
         >
           <FiEdit2 />
