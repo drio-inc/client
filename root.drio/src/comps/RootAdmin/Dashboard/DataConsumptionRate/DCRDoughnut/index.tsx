@@ -1,1 +1,1 @@
-export { default } from "./DPRDoughnut";
+export { default } from "./DCRDoughnut";

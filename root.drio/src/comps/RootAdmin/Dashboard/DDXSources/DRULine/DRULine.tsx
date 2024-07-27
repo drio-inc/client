@@ -116,7 +116,7 @@ export default function DRULine() {
             <div
               className={`w-8 h-[10px] rounded mr-2`}
               style={{
-                backgroundColor: dataset.borderColor,
+                backgroundColor: dataset.label === "CPU%" ? "#FF0002" : dataset.borderColor,
               }}
             />
             <p className="text-[#223354] text-sm font-semibold">{dataset.label}</p>

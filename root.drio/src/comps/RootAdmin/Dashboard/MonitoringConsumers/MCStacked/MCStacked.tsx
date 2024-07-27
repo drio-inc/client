@@ -17,7 +17,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 export const options = {
   responsive: true,
-  categoryPercentage: 0.2,
+  categoryPercentage: 0.6,
   maintainAspectRatio: false,
 
   plugins: {
@@ -75,12 +75,6 @@ export const data = {
       borderRadius: 5,
       label: "Dataset 3",
       backgroundColor: "#42B9F4",
-      data: labels.map(() => Math.floor(Math.random() * 20)),
-    },
-    {
-      borderRadius: 5,
-      label: "Dataset 4",
-      backgroundColor: "#EB5757",
       data: labels.map(() => Math.floor(Math.random() * 20)),
     },
   ],

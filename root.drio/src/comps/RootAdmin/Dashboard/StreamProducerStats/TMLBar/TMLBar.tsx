@@ -75,14 +75,14 @@ export const data = {
   datasets: [
     {
       borderRadius: 5,
-      label: "DDX 1",
+      label: "Source 1",
       borderSkipped: false,
       backgroundColor: "#FDAD00",
       data: labels.map(() => Data[0].userGain),
     },
     {
       borderRadius: 5,
-      label: "DDX 2",
+      label: "Source 2",
       borderSkipped: false,
       backgroundColor: "#EB5757",
       data: labels.map(() => Data[1].userGain),

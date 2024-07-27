@@ -75,14 +75,14 @@ export const data = {
   datasets: [
     {
       borderRadius: 5,
-      label: "DDX1",
+      label: "Source 1",
       borderSkipped: false,
       backgroundColor: "#42B9F4",
       data: labels.map(() => Data[0].userGain),
     },
     {
       borderRadius: 5,
-      label: "DDX 2",
+      label: "Source 2",
       borderSkipped: false,
       backgroundColor: "#6FCF97",
       data: labels.map(() => Data[1].userGain),
@@ -108,7 +108,9 @@ const IDTBar = () => {
   return (
     <div className="p-4 bg-white -mx-4">
       <div className="flex flex-wrap justify-between">
-        <h2 className="text-[#223354] text-2xl font-semibold mb-4">Input Data Throughput by DDX</h2>
+        <h2 className="text-[#223354] text-2xl font-semibold mb-4">
+          Input Data Throughput by Source
+        </h2>
       </div>
 
       <div className="flex gap-x-4">

@@ -42,7 +42,7 @@ const DPRDoughnut = () => {
             />
             <div className="flex flex-col">
               <span className="font-bold text-lg">{label}</span>
-              <span className="text-xs">Source {index + 1}</span>
+              <span className="text-xs">Consumer {index + 1}</span>
             </div>
           </div>
         ))}

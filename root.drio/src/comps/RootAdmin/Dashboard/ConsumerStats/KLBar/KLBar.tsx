@@ -110,7 +110,7 @@ const KLBar = () => {
     <div className="p-4 bg-white -mx-4">
       <div className="flex flex-wrap justify-between">
         <h2 className="text-[#223354] text-2xl font-semibold mb-4">
-          Kafka Log For Each Data Source
+          Kafka Lag For Each Data Source
         </h2>
       </div>
 

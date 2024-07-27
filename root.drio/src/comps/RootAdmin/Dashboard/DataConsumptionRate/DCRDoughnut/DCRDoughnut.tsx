@@ -8,7 +8,7 @@ const options: ChartOptions<"doughnut"> = {
   //   responsive: true,
   //   maintainAspectRatio: false,
 
-  cutout: "80%",
+  cutout: "50%",
   spacing: 2,
 
   plugins: {
@@ -51,7 +51,7 @@ const DPRDoughnut = () => {
             />
             <div className="flex flex-col">
               <span className="font-bold text-lg">{label}</span>
-              <span className="text-xs">By Source {index + 1}</span>
+              <span className="text-xs">Consumer {index + 1}</span>
             </div>
           </div>
         ))}

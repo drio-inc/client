@@ -5,6 +5,9 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from "cha
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const options: ChartOptions<"doughnut"> = {
+  //   responsive: true,
+  //   maintainAspectRatio: false,
+
   cutout: "50%",
   spacing: 2,
 
@@ -17,13 +20,19 @@ const options: ChartOptions<"doughnut"> = {
 };
 
 const data = {
-  labels: ["45%", "56%", "34%"],
+  labels: ["40%", "50%", "30%", "25%"],
 
   datasets: [
     {
-      data: [12, 10, 13],
       label: "# of Datasets",
-      backgroundColor: ["rgba(66, 185, 244, 1)", "rgba(247, 144, 9, 1)", "rgba(111, 207, 151, 1)"],
+      data: [12, 10, 13, 8],
+
+      backgroundColor: [
+        "rgba(235, 87, 87, 1)",
+        "rgba(66, 185, 244, 1)",
+        "rgba(247, 144, 9, 1)",
+        "rgba(111, 207, 151, 1)",
+      ],
     },
   ],
 };

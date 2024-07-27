@@ -77,6 +77,12 @@ export const data = {
       backgroundColor: "#42B9F4",
       data: labels.map(() => Math.floor(Math.random() * 20)),
     },
+    {
+      borderRadius: 5,
+      label: "Dataset 4",
+      backgroundColor: "#EB5757",
+      data: labels.map(() => Math.floor(Math.random() * 20)),
+    },
   ],
 };
 

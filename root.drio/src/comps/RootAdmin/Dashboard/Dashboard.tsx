@@ -9,8 +9,10 @@ import { DateRange } from "rsuite/esm/DateRangePicker";
 import { MSDoughnut, MSStacked } from "./MonitoringSources";
 import { DCRDoughnut, DCRStacked } from "./DataConsumptionRate";
 import { KLBar, MCLBar, OCERArea, TCTMLine } from "./ConsumerStats";
-import { IDTBar, TMLBar, IQRULine, MLRLine } from "./StreamProducerStats";
+import { IDTBar, TMLBar, DRULine as SDRULine, IQRULine } from "./StreamProducerStats";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/comps/ui/Select";
+import { DPRDoughnut, DPRStacked } from "./DataProductionRate";
+import { MCDoughnut, MCStacked } from "./MonitoringConsumers";
 
 const Dashboard = () => {
   const [dateRange, setDateRange] = useState<any>([new Date(), new Date()]);
@@ -34,12 +36,23 @@ const Dashboard = () => {
 
         <Select>
           <SelectTrigger className="w-[255px] h-fit mr-3">
-            <SelectValue placeholder="Filter by Organization" />
+            <SelectValue placeholder="Filter by Organization Unit" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="source-1">Corp 1</SelectItem>
             <SelectItem value="source-2">Corp 2</SelectItem>
             <SelectItem value="source-3">Corp 3</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select>
+          <SelectTrigger className="w-[255px] h-fit mr-3">
+            <SelectValue placeholder="Filter by DDX" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="source-1">DDX 1</SelectItem>
+            <SelectItem value="source-2">DDX 2</SelectItem>
+            <SelectItem value="source-3">DDX 3</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -50,49 +63,95 @@ const Dashboard = () => {
           "ddx",
           "consumer-stats",
           "monitoring-sources",
+          "monitoring-consumers",
+          "data-production-rate",
           "stream-producer-stats",
           "data-consumption-rate",
         ]}
       >
-        <AccordionItem value="data-consumption-rate" className="bg-white">
-          <AccordionTrigger className="w-full bg-white">
-            <div className="py-4 text-[#223354] text-2xl font-semibold">
-              Data Consumption Rate by Consumer
-            </div>
-          </AccordionTrigger>
-
-          <AccordionContent className="flex flex-col">
-            <div className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
-              <div className="border p-4 rounded-md">
-                <DCRDoughnut />
+        <div className="flex w-full">
+          <AccordionItem value="data-production-rate" className="bg-white w-1/2">
+            <AccordionTrigger className="w-full bg-white">
+              <div className="py-4 text-[#223354] text-2xl font-semibold">
+                Data Production Rate by Sources
               </div>
+            </AccordionTrigger>
 
-              <div className="flex-1">
-                <DCRStacked />
+            <AccordionContent className="flex gap-x-4">
+              <div className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
+                <div className="border p-4 rounded-md w-[30%]">
+                  <DPRDoughnut />
+                </div>
+
+                <div className="w-[70%]">
+                  <DPRStacked />
+                </div>
               </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+            </AccordionContent>
+          </AccordionItem>
 
-        <AccordionItem value="monitoring-sources" className="bg-white">
-          <AccordionTrigger className="w-full bg-white">
-            <div className="py-4 text-[#223354] text-2xl font-semibold">
-              Events, Anomalies, Errors and Alert by Sources
-            </div>
-          </AccordionTrigger>
-
-          <AccordionContent className="flex flex-col">
-            <div className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
-              <div className="border p-4 rounded-md">
-                <MSDoughnut />
+          <AccordionItem value="data-consumption-rate" className="bg-white w-1/2">
+            <AccordionTrigger className="w-full bg-white">
+              <div className="py-4 text-[#223354] text-2xl font-semibold">
+                Data Consumption Rate by Consumers
               </div>
+            </AccordionTrigger>
 
-              <div className="flex-1">
-                <MSStacked />
+            <AccordionContent className="flex gap-x-4">
+              <div className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
+                <div className="border p-4 rounded-md w-[30%]">
+                  <DCRDoughnut />
+                </div>
+
+                <div className="w-[70%]">
+                  <DCRStacked />
+                </div>
               </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+            </AccordionContent>
+          </AccordionItem>
+        </div>
+
+        <div className="flex w-full">
+          <AccordionItem value="monitoring-sources" className="bg-white w-1/2">
+            <AccordionTrigger className="w-full bg-white">
+              <div className="py-4 text-[#223354] text-2xl font-semibold">
+                Events, Anomalies, Errors and Alerts by Sources
+              </div>
+            </AccordionTrigger>
+
+            <AccordionContent className="flex flex-col">
+              <div className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
+                <div className="border p-4 rounded-md w-[30%]">
+                  <MSDoughnut />
+                </div>
+
+                <div className="w-[70%]">
+                  <MSStacked />
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="monitoring-consumers" className="bg-white w-1/2">
+            <AccordionTrigger className="w-full bg-white">
+              <div className="py-4 text-[#223354] text-2xl font-semibold">
+                Events, Anomalies, Errors and Alerts by Consumers
+              </div>
+            </AccordionTrigger>
+
+            <AccordionContent className="flex flex-col">
+              <div className="flex w-full justify-between bg-white gap-x-8 overflow-auto">
+                <div className="border p-4 rounded-md w-[30%]">
+                  <MCDoughnut />
+                </div>
+
+                <div className="w-[70%]">
+                  <MCStacked />
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </div>
 
         <AccordionItem value="ddx">
           <AccordionTrigger className="w-full bg-white">
@@ -128,11 +187,11 @@ const Dashboard = () => {
 
             <div className="flex gap-x-4 overflow-auto w-full">
               <div className="flex-1 border p-4 rounded-md">
-                <IQRULine />
+                <SDRULine />
               </div>
 
               <div className="flex-1 border p-4 rounded-md">
-                <MLRLine />
+                <IQRULine />
               </div>
             </div>
           </AccordionContent>

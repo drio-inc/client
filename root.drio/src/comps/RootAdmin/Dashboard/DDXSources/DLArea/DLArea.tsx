@@ -70,7 +70,7 @@ export const data = {
   datasets: [
     {
       fill: true,
-      label: "By Consumer",
+      label: "msec",
       borderColor: "rgba(255, 139, 140, 1)",
       backgroundColor: "rgba(255, 139, 140, 0.2)",
       data: [20, 5, 40, 25, 56, 45, 65, 38, 78, 5, 10],
@@ -86,12 +86,7 @@ export default function DLArea() {
       </div>
       {data.datasets.map((dataset, index) => (
         <div key={index} className="flex items-center mb-2">
-          <div
-            className="w-8 h-[10px] rounded mr-2"
-            style={{
-              backgroundColor: dataset.borderColor,
-            }}
-          ></div>
+          <div className="w-8 h-[10px] rounded mr-2 bg-[#FF0002]" />
           <p className="text-[#223354] text-sm font-semibold">{dataset.label}</p>
         </div>
       ))}
