@@ -18,10 +18,7 @@ import getDatasets from "@/functions/getDatasets";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";
 
-import {
-  setRawRows,
-  setRows as setDatasetRows,
-} from "@/state/slices/datasetSlice";
+import { setRawRows, setRows as setDatasetRows } from "@/state/slices/datasetSlice";
 
 type ExtendedDataSource = DataSource & {
   datasets: number;
@@ -63,9 +60,17 @@ const headers = [
     accessor: "metadata_endpoints",
   },
   {
-    header: "Documentation",
-    accessor: "documentation",
+    header: "Metrics Enabled",
+    accessor: "metrics_enabled",
   },
+  {
+    header: "Metrics Port",
+    accessor: "metrics_port",
+  },
+  //   {
+  //     header: "Documentation",
+  //     accessor: "documentation",
+  //   },
 ];
 
 const DataSources = () => {

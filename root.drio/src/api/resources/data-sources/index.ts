@@ -1,8 +1,4 @@
-import {
-  DataSourceParams,
-  DataSourceFormdata,
-  DataSourceResponse,
-} from "./types";
+import { DataSourceParams, DataSourceFormdata, DataSourceResponse } from "./types";
 import { rootApi } from "@/state/services/apiService";
 
 export const dataSourcesApi = rootApi.injectEndpoints({
@@ -21,10 +17,7 @@ export const dataSourcesApi = rootApi.injectEndpoints({
       }),
     }),
 
-    createDataSource: builder.mutation<
-      DataSourceResponse,
-      DataSourceFormdata & DefaultParams
-    >({
+    createDataSource: builder.mutation<DataSourceResponse, DataSourceFormdata & DefaultParams>({
       query: ({ account_id, ou_id, ...payload }) => ({
         url: `/resources/accounts/${account_id}/ous/${ou_id}/data-sources`,
         method: "POST",
@@ -33,10 +26,7 @@ export const dataSourcesApi = rootApi.injectEndpoints({
       invalidatesTags: ["Account", "Data_Sources", "Organization_Units"],
     }),
 
-    updateDataSource: builder.mutation<
-      DataSourceResponse,
-      DataSourceFormdata & DataSourceParams
-    >({
+    updateDataSource: builder.mutation<DataSourceResponse, DataSourceFormdata & DataSourceParams>({
       query: ({ account_id, ou_id, id, ...payload }) => ({
         url: `/resources/accounts/${account_id}/ous/${ou_id}/data-sources/${id}`,
         method: "PUT",
@@ -47,8 +37,7 @@ export const dataSourcesApi = rootApi.injectEndpoints({
 
     patchDataSource: builder.mutation<
       DataSourceResponse,
-      Omit<DataSourceFormdata, "secure" | "insecure_skip_verify"> &
-        DataSourceParams
+      Omit<DataSourceFormdata, "secure" | "insecure_skip_verify"> & DataSourceParams
     >({
       query: ({ account_id, ou_id, ...payload }) => ({
         url: `/resources/accounts/${account_id}/ous/${ou_id}/data-sources/${payload.id}`,

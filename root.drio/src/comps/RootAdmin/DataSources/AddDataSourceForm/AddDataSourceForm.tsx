@@ -19,27 +19,49 @@ import { HiCheck } from "react-icons/hi";
 
 import { useState } from "react";
 import { useCreateDataSourceMutation } from "@/api/resources/data-sources";
+import { Switch } from "@/comps/ui/Switch";
 
-const schema = z.object({
-  name: z.string().nonempty("Please Enter a value"),
+const schema = z
+  .object({
+    name: z.string().nonempty("Please Enter a value"),
 
-  cluster_id: z.string({
-    required_error: "Please select an option",
-  }),
+    cluster_id: z.string({
+      required_error: "Please select an option",
+    }),
 
-  kind: z.string({
-    required_error: "Please select an option",
-  }),
+    kind: z.string({
+      required_error: "Please select an option",
+    }),
 
-  endpoints: z.string().nonempty("Please Enter a value"),
+    endpoints: z.string().nonempty("Please Enter a value"),
 
-  metric_port: z.string().optional(),
-  fetch_interval: z.number().optional(),
+    metrics_port: z.string().optional(),
+    fetch_interval: z.number().optional(),
+    metrics_enabled: z.boolean().optional(),
 
-  schemaEndpoints: z.string().url().optional(),
+    schemaEndpoints: z.string().url().optional(),
 
-  catalogEndpoints: z.string().url().optional(),
-});
+    catalogEndpoints: z.string().url().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.metrics_enabled) {
+      if (data.fetch_interval === undefined) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Please select an option",
+          path: ["fetch_interval"],
+        });
+      }
+
+      if (data.metrics_port === undefined || data.metrics_port === "") {
+        ctx.addIssue({
+          code: "custom",
+          message: "Please enter a value",
+          path: ["metrics_port"],
+        });
+      }
+    }
+  });
 
 type FormData = z.infer<typeof schema>;
 
@@ -57,6 +79,9 @@ export default function AddDataSourceForm() {
 
   const form = useZodForm({
     schema: schema,
+    defaultValues: {
+      metrics_enabled: false,
+    },
   });
 
   const ddxOptions =
@@ -74,8 +99,9 @@ export default function AddDataSourceForm() {
       name: data.name,
       kind: data.kind,
       endpoints: data.endpoints,
-      //   metric_port: data.metric_port,
-      //   fetch_interval: data.fetch_interval,
+      metrics_enabled: data.metrics_enabled,
+      fetch_interval: (data?.fetch_interval && data?.fetch_interval * 60) ?? 0,
+      metrics_port: isNaN(Number(data.metrics_port)) ? 0 : Number(data.metrics_port),
 
       cluster_name: cluster?.name,
       cluster_id: data.cluster_id,
@@ -104,6 +130,8 @@ export default function AddDataSourceForm() {
         },
       };
     }
+
+    console.log(createData);
 
     try {
       const res = await create(createData).unwrap();
@@ -186,34 +214,58 @@ export default function AddDataSourceForm() {
               />
             </div>
 
-            <div className="px-4 py-2 w-full">
-              <TextInput
-                maxLength={4}
-                pattern="[0-9]*"
-                label={"Metric Port"}
-                {...form.register("metric_port")}
-                className="md:text-sm 2xl:text-base"
-                placeholder={"Enter port number - e.g. 9093"}
+            <div className="px-4 py-2 w-full flex flex-col gap-y-2">
+              <span className="text-sm font-medium text-gray-700">Metrics Enabled</span>
+
+              <Switch
+                aria-readonly
+                className="!mt-0"
+                checked={form.watch("metrics_enabled")}
+                onCheckedChange={() => {
+                  form.setValue("metrics_enabled", !form.watch("metrics_enabled"));
+
+                  if (form.watch("metrics_enabled") === false) {
+                    form.setValue("metrics_port", "");
+                    form.setValue("fetch_interval", 0);
+                  }
+                }}
               />
             </div>
 
-            <div className="px-4 py-2 w-full">
-              <SelectInput
-                label={"Fetch Interval"}
-                registerName="fetch_interval"
-                placeholder={"Select interval"}
-                className="md:text-sm 2xl:text-base"
-                options={[
-                  { label: "1 min", value: 1 },
-                  { label: "5 mins", value: 5 },
-                  { label: "10 mins", value: 10 },
-                  { label: "15 mins", value: 15 },
-                  { label: "20 mins", value: 20 },
-                  { label: "25 mins", value: 25 },
-                  { label: "30 mins", value: 30 },
-                ]}
-              />
-            </div>
+            {form.watch("metrics_enabled") && (
+              <>
+                <div className="px-4 py-2 w-full">
+                  <TextInput
+                    minLength={1}
+                    maxLength={5}
+                    pattern="[0-9]*"
+                    label={"Metrics Port"}
+                    {...form.register("metrics_port")}
+                    className="md:text-sm 2xl:text-base"
+                    placeholder={"Enter port number - e.g. 9093"}
+                  />
+                </div>
+
+                <div className="px-4 py-2 w-full">
+                  <SelectInput
+                    label={"Fetch Interval"}
+                    registerName="fetch_interval"
+                    placeholder={"Select interval"}
+                    className="md:text-sm 2xl:text-base"
+                    options={[
+                      { label: "30 secs", value: 0.5 },
+                      { label: "1 min", value: 1 },
+                      { label: "5 mins", value: 5 },
+                      { label: "10 mins", value: 10 },
+                      { label: "15 mins", value: 15 },
+                      { label: "20 mins", value: 20 },
+                      { label: "25 mins", value: 25 },
+                      { label: "30 mins", value: 30 },
+                    ]}
+                  />
+                </div>
+              </>
+            )}
 
             <h3 className="px-4 text-gray-700 text-sm font-medium">Secure?</h3>
 
