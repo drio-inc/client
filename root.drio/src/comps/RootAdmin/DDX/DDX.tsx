@@ -1,11 +1,7 @@
 import { useEffect } from "react";
 import Table from "@/comps/ui/Table";
 
-import {
-  setRows,
-  setSelectedRows,
-  setCurrentDDXCluster,
-} from "@/state/slices/DDXSlice";
+import { setRows, setSelectedRows, setCurrentDDXCluster } from "@/state/slices/DDXSlice";
 
 import AddDDXForm from "./AddDDXForm";
 import DDXMenu from "@/comps/RootAdmin/DDX/DDXMenu";

@@ -11,7 +11,7 @@ const Authentication = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="bg-white px-8 py-4 rounded">
+    <div className="bg-white px-8 py-4 rounded shadow">
       <div className="flex justify-between border-b pb-4">
         <h2 className="text-gray-700 text-2xl font-bold">Details</h2>
         <button

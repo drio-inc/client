@@ -25,6 +25,7 @@ import lexiconReducer from "./slices/lexiconSlice";
 import personaReducer from "./slices/personaSlice";
 import orgUnitReducer from "./slices/orgUnitSlice";
 import datasetReducer from "./slices/datasetSlice";
+import settingsReducer from "./slices/settingsSlice";
 import metadataReducer from "./slices/metadataSlice";
 import policiesReducer from "./slices/policiesSlice";
 import anomaliesReducer from "./slices/anomaliesSlice";
@@ -64,6 +65,7 @@ const rootReducer = combineReducers({
   personas: personaReducer,
   metadata: metadataReducer,
   policies: policiesReducer,
+  settings: settingsReducer,
   auth: persistedAuthReducer,
   anomalies: anomaliesReducer,
   auditLogs: auditLogsReducer,

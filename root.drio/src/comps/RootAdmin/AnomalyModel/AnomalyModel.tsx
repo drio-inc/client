@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { useRouter } from "next/router";
-import { SelectInput } from "@/comps/ui/Forms/Inputs";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import Button from "@/comps/ui/Button";
@@ -17,11 +16,11 @@ import {
   FormMessage,
   FormControl,
 } from "@/comps/ui/Forms/FormV2";
-import { useState } from "react";
-import { Switch } from "@/comps/ui/Switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@comps/ui/Select";
+
 import { Input } from "@/comps/ui/Input";
+import { Switch } from "@/comps/ui/Switch";
 import { RadioGroup, RadioGroupItem } from "@/comps/ui/RadioGroup";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@comps/ui/Select";
 
 const schema = z.object({
   min_samples: z.array(z.number()).nonempty("Please Select a value"),
