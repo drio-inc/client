@@ -2,27 +2,38 @@
 import React from "react";
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
+import NTPServerForm from "./NTPServerForm";
 import EmailServerForm from "./EmailServerForm";
 import { HiOutlinePencil } from "react-icons/hi";
 import { setOpenModal } from "@/state/slices/uiSlice";
+import AuthConfigForm from "../Authentication/AuthConfigForm";
+import { setTemplateType } from "@/state/slices/settingsSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import EmailTemplateForm from "./EmailTemplateForm";
+import { AuthenticationData } from "@/state/slices/authenticationSlice";
 
 const Settings = () => {
   const dispatch = useAppDispatch();
-  const { emailServer } = useAppSelector((state) => state.settings);
+  const { data } = useAppSelector((state) => state.authentication);
+  const { emailServer, ntpServer, emailTemplate } = useAppSelector((state) => state.settings);
+
   return (
     <div className="flex flex-col gap-y-8">
       <div className={"flex flex-col w-full shadow rounded-lg bg-white px-8 py-6 text-gray-700"}>
         <div className="flex items-center justify-between w-full border-b pb-4">
           <span className="text-xl font-bold font-inter">NTP Servers</span>
-          <Button icon={<HiOutlinePencil />} intent={"primaryOutline"} onClick={() => {}}>
+          <Button
+            intent={"primaryOutline"}
+            icon={<HiOutlinePencil />}
+            onClick={() => dispatch(setOpenModal("ntpServerForm"))}
+          >
             Edit
           </Button>
         </div>
 
         <div className="flex flex-col my-4 font-medium">
           <span className="text-xs">Server/URL</span>
-          <span>time.google.server 2</span>
+          <span>{ntpServer.primary_server_address}</span>
         </div>
       </div>
 
@@ -62,41 +73,55 @@ const Settings = () => {
       <div className={"flex flex-col w-full shadow rounded-lg bg-white px-8 py-6 text-gray-700"}>
         <div className="flex items-center justify-between w-full border-b pb-4">
           <span className="text-xl font-bold font-inter">Authentication</span>
-          <Button icon={<HiOutlinePencil />} intent={"primaryOutline"} onClick={() => {}}>
+          <Button
+            intent={"primaryOutline"}
+            icon={<HiOutlinePencil />}
+            onClick={() => dispatch(setOpenModal("authConfigForm"))}
+          >
             Edit
           </Button>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between my-4">
-          <div className="flex flex-col font-medium">
-            <span className="text-xs">Type</span>
-            <span>LDAP</span>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-4">
+          {data.authenticationType && (
+            <div className="flex flex-wrap flex-col py-2">
+              <span className="text-gray-700 capitalize text-xs">Type</span>
+              <span className="text-gray-700 uppercase font-medium">{data.authenticationType}</span>
+            </div>
+          )}
 
-          <div className="flex flex-col font-medium">
-            <span className="text-xs">Port</span>
-            <span>8080</span>
-          </div>
+          {data.ldap &&
+            data.authenticationType === "ldap" &&
+            Object.keys(data.ldap).map((key) => (
+              <div key={key} className="flex flex-wrap flex-col py-2">
+                <span className="text-gray-700 capitalize text-xs">{key.replaceAll("_", " ")}</span>
+                <span className="text-gray-700 font-medium">
+                  {data?.ldap && data?.ldap[key as keyof AuthenticationData["ldap"]]}
+                </span>
+              </div>
+            ))}
 
-          <div className="flex flex-col font-medium">
-            <span className="text-xs">Retries</span>
-            <span>3</span>
-          </div>
+          {data.oauth &&
+            data.authenticationType === "oauth" &&
+            Object.keys(data.oauth).map((key) => (
+              <div key={key} className="flex flex-wrap flex-col py-2">
+                <span className="text-gray-700 capitalize text-xs">{key.replaceAll("_", " ")}</span>
+                <span className="text-gray-700 font-medium">
+                  {data?.oauth && data?.oauth[key as keyof AuthenticationData["oauth"]]}
+                </span>
+              </div>
+            ))}
 
-          <div className="flex flex-col font-medium">
-            <span className="text-xs">CN</span>
-            <span>ON</span>
-          </div>
-
-          <div className="flex flex-col font-medium">
-            <span className="text-xs">DN String</span>
-            <span>ON</span>
-          </div>
-
-          <div className="flex flex-col font-medium">
-            <span className="text-xs">LDAP Version</span>
-            <span>2.2</span>
-          </div>
+          {data.google &&
+            data.authenticationType === "google" &&
+            Object.keys(data.google).map((key) => (
+              <div key={key} className="flex flex-wrap flex-col py-2">
+                <span className="text-gray-700 capitalize text-xs">{key.replaceAll("_", " ")}</span>
+                <span className="text-gray-700 font-medium">
+                  {data?.google && data?.google[key as keyof AuthenticationData["google"]]}
+                </span>
+              </div>
+            ))}
         </div>
       </div>
 
@@ -151,7 +176,14 @@ const Settings = () => {
         <div>
           <div className="flex items-center justify-between w-full border-b pb-4">
             <span className="text-base font-bold font-inter">User Welcome Email</span>
-            <Button icon={<HiOutlinePencil />} intent={"primaryOutline"} onClick={() => {}}>
+            <Button
+              icon={<HiOutlinePencil />}
+              intent={"primaryOutline"}
+              onClick={() => {
+                dispatch(setTemplateType("welcome"));
+                dispatch(setOpenModal("emailTemplateForm"));
+              }}
+            >
               Edit
             </Button>
           </div>
@@ -159,25 +191,13 @@ const Settings = () => {
           <div className="flex flex-col gap-y-4 text-gray-700 font-inter mt-4">
             <span className="flex flex-col">
               <span className="font-bold">Subject</span>
-              <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                Ipsum has been the industry's standard dummy text ever since the 1500s,
-              </p>
+              <p>{emailTemplate.welcomeEmailTemplate.subject}</p>
             </span>
 
             <span>
               <span className="font-bold">Body</span>
 
-              <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                Ipsum has been the industry's standard dummy text ever since the 1500s,Lorem
-                Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply
-                dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                industry's standard dummy text ever since the 1500s,Lorem Ipsum is simply dummy text
-                of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                standard dummy text ever since the 1500s,
-              </p>
+              <p>{emailTemplate.welcomeEmailTemplate.body}</p>
             </span>
           </div>
         </div>
@@ -185,7 +205,14 @@ const Settings = () => {
         <div className="mt-8">
           <div className="flex items-center justify-between w-full border-b pb-4">
             <span className="text-base font-bold font-inter">User Activation Email</span>
-            <Button icon={<HiOutlinePencil />} intent={"primaryOutline"} onClick={() => {}}>
+            <Button
+              icon={<HiOutlinePencil />}
+              intent={"primaryOutline"}
+              onClick={() => {
+                dispatch(setTemplateType("activation"));
+                dispatch(setOpenModal("emailTemplateForm"));
+              }}
+            >
               Edit
             </Button>
           </div>
@@ -193,33 +220,39 @@ const Settings = () => {
           <div className="flex flex-col gap-y-4 text-gray-700 font-inter mt-4">
             <span className="flex flex-col">
               <span className="font-bold">Subject</span>
-              <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                Ipsum has been the industry's standard dummy text ever since the 1500s,
-              </p>
+              <p>{emailTemplate.activationEmailTemplate.subject}</p>
             </span>
 
             <span>
               <span className="font-bold">Body</span>
 
-              <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                Ipsum has been the industry's standard dummy text ever since the 1500s,Lorem
-                Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply
-                dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                industry's standard dummy text ever since the 1500s,Lorem Ipsum is simply dummy text
-                of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                standard dummy text ever since the 1500s,
-              </p>
+              <p>{emailTemplate.activationEmailTemplate.body}</p>
             </span>
           </div>
         </div>
       </div>
 
       <div className="hidden">
+        <Modal identifier="ntpServerForm">
+          <NTPServerForm />
+        </Modal>
+      </div>
+
+      <div className="hidden">
         <Modal identifier="emailServerForm">
           <EmailServerForm />
+        </Modal>
+      </div>
+
+      <div className="hidden">
+        <Modal identifier="authConfigForm">
+          <AuthConfigForm />
+        </Modal>
+      </div>
+
+      <div className="hidden">
+        <Modal identifier="emailTemplateForm">
+          <EmailTemplateForm />
         </Modal>
       </div>
     </div>

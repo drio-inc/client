@@ -21,6 +21,14 @@ import { Input } from "@/comps/ui/Input";
 import { HiChevronRight, HiX } from "react-icons/hi";
 import { setCloseModal } from "@/state/slices/uiSlice";
 import { RadioGroup, RadioGroupItem } from "@/comps/ui/RadioGroup";
+
+import {
+  setLDAP,
+  setGoogle,
+  setOAuth,
+  setAuthenticationType,
+} from "@/state/slices/authenticationSlice";
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@comps/ui/Select";
 
 const baseSchema = z.object({
@@ -74,51 +82,87 @@ type LDAPSchema = z.infer<typeof ldapSchema>;
 type OAuthSchema = z.infer<typeof oauthSchema>;
 type GoogleSchema = z.infer<typeof googleSchema>;
 
-const AuthConfig = () => {
+const AuthConfigForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { data } = useAppSelector((state) => state.authentication);
 
   const baseForm = useForm<BaseFormSchema>({
     resolver: zodResolver(baseSchema),
+    defaultValues: {
+      authentication_type: data.authenticationType || "",
+    },
   });
 
   const ldapForm = useForm<LDAPSchema>({
     resolver: zodResolver(ldapSchema),
+    defaultValues: {
+      dn_pattern: data.ldap?.dn_pattern || "",
+      host_address: data.ldap?.host_address || "",
+      group_base_dn: data.ldap?.group_base_dn || "",
+      last_name_attribute: data.ldap?.last_name_attribute || "",
+      dn: (data.ldap?.dn as "user_dn" | "search_user_dn") || "",
+      first_name_attribute: data.ldap?.first_name_attribute || "",
+      group_object_classes: data.ldap?.group_object_classes || "",
+      group_membership_attribute:
+        (data.ldap?.group_membership_attribute as "user_entry" | "group_entry" | "both") || "",
+    },
   });
 
   const oauthForm = useForm<OAuthSchema>({
     resolver: zodResolver(oauthSchema),
+    defaultValues: {
+      oauth_key: data.oauth?.oauth_key || "",
+      oauth_url: data.oauth?.oauth_url || "",
+      oauth_name: data.oauth?.oauth_name || "",
+      oauth_secret: data.oauth?.oauth_secret || "",
+      accounting_port: data.oauth?.accounting_port || "",
+    },
   });
 
   const googleForm = useForm<GoogleSchema>({
     resolver: zodResolver(googleSchema),
+    defaultValues: {
+      google_client_id: data.google?.google_client_id || "",
+      google_client_email: data.google?.google_client_email || "",
+    },
   });
 
   const authenticationType = baseForm.watch("authentication_type");
 
-  console.log({ authenticationType });
-
   const onSubmit = async (data: BaseFormSchema) => {
-    dispatch(setCloseModal("authConfigForm"));
+    dispatch(setCloseModal("FormForm"));
     showAlert("Setings saved successfully", "success");
   };
 
   const onOAuthSubmit = async (data: OAuthSchema) => {
+    dispatch(setOAuth(data));
+    dispatch(setAuthenticationType("oauth"));
     dispatch(setCloseModal("authConfigForm"));
-    showAlert("Setings saved successfully", "success");
-    console.log({ ...data, authentication_type: baseForm.getValues("authentication_type") });
+    showAlert("Settings saved successfully", "success");
   };
 
   const onLDAPSubmit = async (data: LDAPSchema) => {
+    dispatch(
+      setLDAP({
+        ...data,
+        cn: "ON",
+        retries: 2,
+        port: 8080,
+        dn_string: "ON",
+        ldap_version: "2.22",
+      })
+    );
+    dispatch(setAuthenticationType("ldap"));
     dispatch(setCloseModal("authConfigForm"));
-    showAlert("Setings saved successfully", "success");
-    console.log({ ...data, authentication_type: baseForm.getValues("authentication_type") });
+    showAlert("Settings saved successfully", "success");
   };
 
   const onGoogleSubmit = async (data: GoogleSchema) => {
+    dispatch(setGoogle(data));
+    dispatch(setAuthenticationType("google"));
     dispatch(setCloseModal("authConfigForm"));
-    showAlert("Setings saved successfully", "success");
-    console.log({ ...data, authentication_type: baseForm.getValues("authentication_type") });
+    showAlert("Settings saved successfully", "success");
   };
 
   return (
@@ -610,4 +654,4 @@ const AuthConfig = () => {
   );
 };
 
-export default AuthConfig;
+export default AuthConfigForm;
