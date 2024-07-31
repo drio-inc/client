@@ -13,4 +13,4 @@ const RuleTemplatesPage = () => {
   );
 };
 
-export default withAuth(RuleTemplatesPage);
+export default RuleTemplatesPage;

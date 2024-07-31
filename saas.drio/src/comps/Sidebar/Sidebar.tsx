@@ -73,12 +73,16 @@ const NavLinks = [
   },
 
   {
-    name: "Tools",
-    href: "tools",
+    name: "Customer Tools",
+    href: "customer-tools",
     children: [
       {
         name: "Rule Templates",
         href: "rule-templates",
+      },
+      {
+        name: "Vertical Onboarding",
+        href: "vertical-onboarding",
       },
     ],
     icon: <HiOutlineKey className="inline-block w-6 h-6 mr-2" />,
@@ -165,7 +169,7 @@ export default function Sidebar() {
                 </div>
 
                 {link.children && expandedLinks[link.name] && link.children.length > 0 && (
-                  <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-4 my-2">
+                  <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-8 my-2">
                     {link.children.map((child) => (
                       <li key={child.name}>
                         <Link href={`/${link.href}/${child.href}`}>

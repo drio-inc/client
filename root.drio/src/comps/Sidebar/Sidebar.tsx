@@ -267,7 +267,7 @@ export default function Sidebar() {
                 </div>
 
                 {link.children && expandedLinks[link.name] && link.children.length > 0 && (
-                  <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-4 my-2">
+                  <ul className="md:flex-col md:min-w-full flex flex-col list-none md:pl-8 my-2">
                     {link.children.map((child) => (
                       <li key={child.name}>
                         <Link href={`/${link.href}/${child.href}`}>
