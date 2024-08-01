@@ -41,44 +41,57 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/comps/ui/Select";
 import { Switch } from "@/comps/ui/Switch";
 
-const schema = z.object({
-  rule_name: z
-    .string()
-    .min(3, { message: "Name is too short" })
-    .max(50, { message: "Name is too long" }),
+const schema = z
+  .object({
+    rule_name: z
+      .string()
+      .min(3, { message: "Name is too short" })
+      .max(50, { message: "Name is too long" }),
 
-  rule_description: z.string().min(10, { message: "Description is too short" }),
+    rule_description: z.string().min(10, { message: "Description is too short" }),
 
-  streams: z.array(
-    z.object({
-      stream_name: z.string().min(3, { message: "Stream name is too short" }),
-      stream_description: z.string().min(10, { message: "Stream description is too short" }),
+    streams: z.array(
+      z.object({
+        stream_name: z.string().min(3, { message: "Stream name is too short" }),
+        stream_description: z.string().min(10, { message: "Stream description is too short" }),
 
-      data_source_id: z.string({
-        required_error: "Please select an option",
-      }),
+        data_source_id: z.string({
+          required_error: "Please select an option",
+        }),
 
-      dataset_id: z.string({
-        required_error: "Please select an option",
-      }),
+        dataset_id: z.string({
+          required_error: "Please select an option",
+        }),
 
-      window_type: z.enum(["sliding", "step"], {
-        required_error: "You need to select a window type.",
-      }),
+        window_type: z.enum(["sliding", "step"], {
+          required_error: "You need to select a window type.",
+        }),
 
-      window_size: z.string().min(0, { message: "Window size is too short" }),
+        window_size: z.string().min(0, { message: "Window size is too short" }),
 
-      max_samples_enabled: z.boolean(),
+        max_samples_enabled: z.boolean(),
 
-      max_samples: z.string().optional(),
+        max_samples: z.string().optional(),
 
-      window_function: z.string().min(3, { message: "Window function is too short" }),
-    })
-  ),
+        window_function: z.string().min(3, { message: "Window function is too short" }),
+      })
+    ),
 
-  composite_stream: z.string().min(3, { message: "Composite stream is too short" }),
-  threshold_condition: z.string().min(3, { message: "Threshold condition is too short" }),
-});
+    composite_stream: z.string().optional(),
+    threshold_condition: z.string().min(3, { message: "Threshold condition is too short" }),
+  })
+  .superRefine((data, ctx) => {
+    if (
+      data.streams.length > 1 &&
+      (data.composite_stream === undefined || data.composite_stream === "")
+    ) {
+      return ctx.addIssue({
+        code: "custom",
+        message: "Composite stream cannot be empty",
+        path: ["composite_stream"],
+      });
+    }
+  });
 
 type FormData = z.infer<typeof schema>;
 
@@ -137,8 +150,6 @@ export default function AddNewRuleTEmplateForm() {
   });
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
-
     try {
       dispatch(
         setRows([
@@ -151,6 +162,7 @@ export default function AddNewRuleTEmplateForm() {
             times_queried: 0,
             number_of_fields: 0,
             number_of_streams: fields.length,
+            composite_stream: data.composite_stream ?? "",
           },
         ])
       );
@@ -685,25 +697,27 @@ export default function AddNewRuleTEmplateForm() {
 
               <Separator className="w-full mt-2" />
 
-              <div className="py-2 w-full">
-                <FormField
-                  control={form.control}
-                  name="composite_stream"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Composite Stream</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          {...field}
-                          className="resize-none"
-                          placeholder="CompSF1 = Stream1.attr7 + Stream2.WinF2 , CompSF2 = Srtream3.attr2, CompSF3 = ABS ( MAX(CompSF1)  STDDEV(stream2.WinF1) )"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              {form.watch("streams").length > 1 && (
+                <div className="py-2 w-full">
+                  <FormField
+                    control={form.control}
+                    name="composite_stream"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Composite Stream</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            {...field}
+                            className="resize-none"
+                            placeholder="CompSF1 = Stream1.attr7 + Stream2.WinF2 , CompSF2 = Srtream3.attr2, CompSF3 = ABS ( MAX(CompSF1)  STDDEV(stream2.WinF1) )"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
 
               <div className="py-2 w-full">
                 <FormField
