@@ -213,7 +213,7 @@ export default function AddNewRuleTEmplateForm() {
                 className="flex flex-col data-[state=active]:bg-white data-[state=active]:text-drio-red rounded-lg border-none p-0 data-[state=inactive]:bg-transparent"
               >
                 <span className="border-2 px-5 py-4 rounded-lg">3</span>
-                <span> Threshold</span>
+                <span>Threshold</span>
               </TabsTrigger>
             </TabsList>
 
@@ -249,7 +249,7 @@ export default function AddNewRuleTEmplateForm() {
                         <Textarea
                           {...field}
                           className="resize-none"
-                          placeholder="x=(stream-1.avg_data_cpu_usage+stream-2.avg_data_cpu_usage)/2; if x>50 then alert; end;"
+                          placeholder="E.g. This rule will trigger if the numeric metric or function value of a stream goes above a threshold"
                         />
                       </FormControl>
                       <FormMessage />
@@ -352,7 +352,7 @@ export default function AddNewRuleTEmplateForm() {
                                 <Textarea
                                   {...field}
                                   className="resize-none"
-                                  placeholder="x=(stream-1.avg_data_cpu_usage+stream-2.avg_data_cpu_usage)/2; if x>50 then alert; end;"
+                                  placeholder="E.g. This stream is assumed to be one that has the volume metric"
                                 />
                               </FormControl>
                               <FormMessage />
