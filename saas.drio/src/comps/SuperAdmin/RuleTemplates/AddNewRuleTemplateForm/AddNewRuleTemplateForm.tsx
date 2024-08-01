@@ -84,31 +84,23 @@ type FormData = z.infer<typeof schema>;
 
 const dataSourceOptions = [
   {
-    label: "Kafka",
-    value: "kafka",
+    label: "Any",
+    value: "any",
   },
   {
-    label: "Amazon Kinesis",
-    value: "amazon_kinesis",
-  },
-  {
-    label: "Azure Event Hub",
-    value: "azure_event_hub",
+    label: "User to Specify",
+    value: "user_specify",
   },
 ];
 
 const datasetOptions = [
   {
-    label: "Dataset 1",
-    value: "dataset_1",
+    label: "Any",
+    value: "any",
   },
   {
-    label: "Dataset 2",
-    value: "dataset_2",
-  },
-  {
-    label: "Dataset 3",
-    value: "dataset_3",
+    label: "User to Specify",
+    value: "user_specify",
   },
 ];
 
