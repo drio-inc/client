@@ -12,10 +12,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/comps/ui/Tabs";
 import { v4 as uuiv4 } from "uuid";
 import { useState } from "react";
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { HiCheck, HiChevronDown } from "react-icons/hi";
+import { HiCheck, HiChevronDown, HiX } from "react-icons/hi";
 import { setRows } from "@/state/slices/ruleTemplateSlice";
 import { Button as ButtonV2 } from "@/comps/ui/Button/ButtonV2";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+
 import {
   Form,
   FormItem,
@@ -67,7 +68,7 @@ const schema = z
           required_error: "You need to select a window type.",
         }),
 
-        window_size: z.string().min(0, { message: "Window size is too short" }),
+        window_size: z.string().min(1, { message: "Window size is too short" }),
 
         max_samples_enabled: z.boolean(),
 
@@ -117,7 +118,7 @@ const datasetOptions = [
   },
 ];
 
-export default function AddNewRuleTEmplateForm() {
+export default function AddNewRuleTemplateForm() {
   const dispatch = useAppDispatch();
   const [openDatasetPopover, setOpenDatasetPopover] = useState(false);
   const ruleTemplates = useAppSelector((state) => state.ruleTemplate);
@@ -131,10 +132,8 @@ export default function AddNewRuleTEmplateForm() {
       streams: [
         {
           stream_name: "",
-          dataset_id: "",
           max_samples: "",
           window_size: "",
-          data_source_id: "",
           window_function: "",
           stream_description: "",
           window_type: undefined,
@@ -163,6 +162,10 @@ export default function AddNewRuleTEmplateForm() {
             number_of_fields: 0,
             number_of_streams: fields.length,
             composite_stream: data.composite_stream ?? "",
+            streams: data.streams.map((stream) => ({
+              ...stream,
+              id: uuiv4(),
+            })),
           },
         ])
       );
@@ -180,11 +183,18 @@ export default function AddNewRuleTEmplateForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full mx-auto bg-white py-8 px-4 rounded-lg min-w-[400px]"
+          className="relative w-full mx-auto bg-white py-8 px-4 rounded-lg min-w-[400px]"
         >
           <h2 className="text-gray-700 text-2xl font-bold my-4 text-center">
             Add New Rule Template
           </h2>
+
+          <span>
+            <HiX
+              className="h-8 w-8 text-drio-red cursor-pointer absolute top-4 right-4"
+              onClick={() => dispatch(setCloseModal("addNewRuleTemplateForm"))}
+            />
+          </span>
 
           <Tabs
             value={tabValue}
@@ -297,15 +307,15 @@ export default function AddNewRuleTEmplateForm() {
                     setDefaultAccordionValue(`${fields.length}`);
 
                     append({
+                      dataset_id: "",
                       stream_name: "",
                       window_size: "0",
-                      dataset_id: "",
                       max_samples: "0",
                       data_source_id: "",
                       window_function: "",
                       stream_description: "",
-                      window_type: "sliding",
                       max_samples_enabled: false,
+                      window_type: undefined as unknown as "sliding" | "step",
                     });
                   }}
                 >
