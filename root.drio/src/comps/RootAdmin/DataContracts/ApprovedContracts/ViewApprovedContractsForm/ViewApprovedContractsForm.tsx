@@ -21,12 +21,7 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
     <div className="h-full flex items-center justify-center p-4">
       <Layout>
         <div className="flex items-center bg-white mb-4 p-6 rounded-lg">
-          <Image
-            height={40}
-            width={40}
-            alt="bank-logo"
-            src="/images/bank-of-america.svg"
-          />
+          <Image height={40} width={40} alt="bank-logo" src="/images/bank-of-america.svg" />
 
           <h2 className="text-gray-700 ml-4 text-2xl font-bold">
             Data Sharing Contract with B Bank
@@ -138,29 +133,21 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
 
             {/* App Authentication Mechanism */}
             <div className="w-full px-4 my-2">
-              <h3 className="text-xl font-bold">
-                App Authentication Mechanism
-              </h3>
+              <h3 className="text-xl font-bold">App Authentication Mechanism</h3>
 
               <div className="flex flex-col divide-y-2">
                 <div className="w-full flex justify-between items-center py-4">
-                  <span className="text-gray-700 font-bold">
-                    ldap://coreldap.bbank.com
-                  </span>
+                  <span className="text-gray-700 font-bold">ldap://coreldap.bbank.com</span>
                   <FaArrowRight className="w-5 h-5 text-drio-red" />
                 </div>
 
                 <div className="w-full flex justify-between items-center py-4">
-                  <span className="text-gray-700 font-bold">
-                    ldap://coreldap.bbank.com
-                  </span>
+                  <span className="text-gray-700 font-bold">ldap://coreldap.bbank.com</span>
                   <FaArrowRight className="w-5 h-5 text-drio-red" />
                 </div>
 
                 <div className="w-full flex justify-between items-center py-4">
-                  <span className="text-gray-700 font-bold">
-                    ldap://coreldap.bbank.com
-                  </span>
+                  <span className="text-gray-700 font-bold">ldap://coreldap.bbank.com</span>
                   <FaArrowRight className="w-5 h-5 text-drio-red" />
                 </div>
               </div>
@@ -173,9 +160,7 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
 
                 <div className="w-full flex flex-col divide-y-2">
                   <div className="w-full flex flex-col gap-2 py-6">
-                    <span className="font-bold text-xl text-gray-700">
-                      Privacy
-                    </span>
+                    <span className="font-bold text-xl text-gray-700">Privacy</span>
                     <p className="text-gray-500">
                       Contains all the Privacy T&C related to this contract
                     </p>
@@ -185,15 +170,13 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
                         iconPosition="right"
                         icon={<AiFillCaretRight className="ml-2" />}
                       >
-                        View Policy
+                        View Contract Rule
                       </Button>
                     </div>
                   </div>
 
                   <div className="w-full flex flex-col gap-2 py-6">
-                    <span className="font-bold text-xl text-gray-700">
-                      Regulatory
-                    </span>
+                    <span className="font-bold text-xl text-gray-700">Regulatory</span>
                     <p className="text-gray-500">
                       Contains all the Regulatory T&C related to this contract
                     </p>
@@ -203,7 +186,7 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
                         iconPosition="right"
                         icon={<AiFillCaretRight className="ml-2" />}
                       >
-                        View Policy
+                        View Contract Rule
                       </Button>
                     </div>
                   </div>
@@ -227,14 +210,10 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
 
                 <div className="bg-[#F9FBFD] text-blue-500 border-dashed border-2 rounded-lg  border-blue-300 flex flex-col items-center justify-center py-8 px-12">
                   <RiUploadCloud2Line className="w-10 h-10 mb-4" />
-                  <span className="text-lg font-semibold">
-                    Upload signature here
-                  </span>
+                  <span className="text-lg font-semibold">Upload signature here</span>
                 </div>
 
-                <span className="text-center font-bold text-xl text-gray-700">
-                  Marsha Smith
-                </span>
+                <span className="text-center font-bold text-xl text-gray-700">Marsha Smith</span>
               </div>
             </div>
 
@@ -245,27 +224,18 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
                 intent={`secondary`}
                 onClick={() => dispatch(setCloseModal("editDatasetForm"))}
               >
-                <span className="inline-flex justify-center w-full">
-                  Reject
-                </span>
+                <span className="inline-flex justify-center w-full">Reject</span>
               </Button>
 
               <Button type="button" intent={`primary`}>
-                <span className="inline-flex justify-center w-full">
-                  Approve
-                </span>
+                <span className="inline-flex justify-center w-full">Approve</span>
               </Button>
             </div>
           </div>
         </div>
 
         <div className="flex items-center bg-white mb-4 p-6 rounded-lg mt-4">
-          <Image
-            width={40}
-            height={40}
-            alt="bank-logo"
-            src="/images/bank-of-america.svg"
-          />
+          <Image width={40} height={40} alt="bank-logo" src="/images/bank-of-america.svg" />
 
           <h2 className="text-gray-700 ml-4 text-2xl font-bold">
             B Bank Consumption Requirements and Approvals
@@ -312,23 +282,17 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
 
             <div className="flex flex-col divide-y-2">
               <div className="w-full flex justify-between items-center py-4">
-                <span className="text-gray-700 font-bold">
-                  ldap://coreldap.bbank.com
-                </span>
+                <span className="text-gray-700 font-bold">ldap://coreldap.bbank.com</span>
                 <FaArrowRight className="w-5 h-5 text-drio-red" />
               </div>
 
               <div className="w-full flex justify-between items-center py-4">
-                <span className="text-gray-700 font-bold">
-                  ldap://coreldap.bbank.com
-                </span>
+                <span className="text-gray-700 font-bold">ldap://coreldap.bbank.com</span>
                 <FaArrowRight className="w-5 h-5 text-drio-red" />
               </div>
 
               <div className="w-full flex justify-between items-center py-4">
-                <span className="text-gray-700 font-bold">
-                  ldap://coreldap.bbank.com
-                </span>
+                <span className="text-gray-700 font-bold">ldap://coreldap.bbank.com</span>
                 <FaArrowRight className="w-5 h-5 text-drio-red" />
               </div>
             </div>
@@ -369,26 +333,17 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
           <div className="flex flex-col items-center my-8 w-full">
             <div className="flex flex-col gap-y-4">
               <div className="flex items-center gap-x-2">
-                <Image
-                  width={40}
-                  height={40}
-                  alt="bank-logo"
-                  src="/images/cox-automotive-2.jpeg"
-                />
+                <Image width={40} height={40} alt="bank-logo" src="/images/cox-automotive-2.jpeg" />
 
                 <span>Cox Automotive Signatory</span>
               </div>
 
               <div className="bg-[#F9FBFD] text-blue-500 border-dashed border-2 rounded-lg  border-blue-300 flex flex-col items-center justify-center py-8 px-12">
                 <RiUploadCloud2Line className="w-10 h-10 mb-4" />
-                <span className="text-lg font-semibold">
-                  Upload signature here
-                </span>
+                <span className="text-lg font-semibold">Upload signature here</span>
               </div>
 
-              <span className="text-center font-bold text-xl text-gray-700">
-                Marsha Smith
-              </span>
+              <span className="text-center font-bold text-xl text-gray-700">Marsha Smith</span>
             </div>
           </div>
 

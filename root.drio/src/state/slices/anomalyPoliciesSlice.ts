@@ -1,39 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type AnomalyPolicyState = {
-  rows: AnomalyPolicy[];
+type AnomalyRuleState = {
+  rows: AnomalyRule[];
   selectedRows: string[];
 };
 
-const initialState: AnomalyPolicyState = {
+const initialState: AnomalyRuleState = {
   rows: [
     {
       id: "1",
       active: true,
       anomaly_type: "IQR anomalies for attributes of a dataset",
       sensitivity: 45,
-      notification: "Teams",
+      trigger: "Teams",
     },
     {
       id: "2",
       active: true,
       anomaly_type: "Cluster anomalies for attributes of a dataset",
       sensitivity: 67,
-      notification: "Jira",
+      trigger: "Jira",
     },
     {
       id: "3",
       active: false,
       anomaly_type: "Type mismatch anomalies for a dataset",
       sensitivity: 89,
-      notification: "Service Now",
+      trigger: "Service Now",
     },
   ],
   selectedRows: [],
 };
 
-const anomalyPoliciesSlice = createSlice({
-  name: "anomalyPolicies",
+const anomalyRuleSlice = createSlice({
+  name: "anomalyRule",
   initialState,
   reducers: {
     setRows(state, action) {
@@ -48,6 +48,6 @@ const anomalyPoliciesSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = anomalyPoliciesSlice.actions;
+export const { setRows, setSelectedRows } = anomalyRuleSlice.actions;
 
-export default anomalyPoliciesSlice.reducer;
+export default anomalyRuleSlice.reducer;

@@ -13,7 +13,7 @@ const initialState: AlertPolicyState = {
       data_source: "SAP Inventory",
       threshold_value: "40%",
       message: "Out of range by 40%",
-      notification: "Webhook: notify.teams.outlook.com",
+      trigger: "notify.teams.outlook.com",
       occurence_history: "",
     },
   ],

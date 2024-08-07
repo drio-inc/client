@@ -105,10 +105,10 @@ type Lexicon = {
   docs_in_corpus: number;
 };
 
-type AnomalyPolicy = {
+type AnomalyRule = {
   id: string;
   active: boolean;
+  trigger: string;
   sensitivity: number;
   anomaly_type: string;
-  notification: string;
 };

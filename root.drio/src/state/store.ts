@@ -17,30 +17,44 @@ import {
 import { setupListeners } from "@reduxjs/toolkit/query";
 import storageSession from "redux-persist/lib/storage/session";
 
+//Global reducers
 import uiReducer from "./slices/uiSlice";
-import DDXReducer from "./slices/DDXSlice";
 import authReducer from "./slices/authSlice";
-import alertsReducer from "./slices/alertsSlice";
-import lexiconReducer from "./slices/lexiconSlice";
-import personaReducer from "./slices/personaSlice";
+import notificationsReducer from "./slices/notificationSlice";
+
+//Accounts reducers
 import orgUnitReducer from "./slices/orgUnitSlice";
-import datasetReducer from "./slices/datasetSlice";
-import settingsReducer from "./slices/settingsSlice";
-import metadataReducer from "./slices/metadataSlice";
-import policiesReducer from "./slices/policiesSlice";
-import anomaliesReducer from "./slices/anomaliesSlice";
-import auditLogsReducer from "./slices/auditLogsSlice";
-import dataSourceReducer from "./slices/dataSourceSlice";
-import DDXInstanceReducer from "./slices/DDXInstanceSlice";
-import alertPoliciesReducer from "./slices/alertPoliciesSlice";
 import authenticationReducer from "./slices/authenticationSlice";
-import notificationsBarReducer from "./slices/notificationSlice";
-import notificationsPageReducer from "./slices/notificationsSlice";
+
+//Datasets reducers
+import datasetReducer from "./slices/datasetSlice";
+import metadataReducer from "./slices/metadataSlice";
+import dataSourceReducer from "./slices/dataSourceSlice";
+import datasetMarketplaceReducer from "./slices/datasetMarketplaceSlice";
+
+//DDX reducers
+import DDXReducer from "./slices/DDXSlice";
+import DDXInstanceReducer from "./slices/DDXInstanceSlice";
+
+//Data contracts reducers
+import personaReducer from "./slices/personaSlice";
 import inboundContractReducer from "./slices/inboundContractSlice";
-import anomalyPoliciesReducer from "./slices/anomalyPoliciesSlice";
 import outboundContractReducer from "./slices/outboundContractSlice";
 import approvedContractReducer from "./slices/approvedContractSlice";
-import datasetMarketplaceReducer from "./slices/datasetMarketplaceSlice";
+
+//Trigger reducers
+import contractRuleReducer from "./slices/contractRuleSlice";
+import alertPoliciesReducer from "./slices/alertPoliciesSlice";
+import triggerChannelReducer from "./slices/triggerChannelSlice";
+import anomalyPoliciesReducer from "./slices/anomalyPoliciesSlice";
+
+//Monitoring reducers
+import alertsReducer from "./slices/alertsSlice";
+import anomaliesReducer from "./slices/anomaliesSlice";
+import auditLogsReducer from "./slices/auditLogsSlice";
+
+import lexiconReducer from "./slices/lexiconSlice";
+import settingsReducer from "./slices/settingsSlice";
 
 const persistAuthConfig = {
   key: "auth",
@@ -64,21 +78,21 @@ const rootReducer = combineReducers({
   dataset: datasetReducer,
   personas: personaReducer,
   metadata: metadataReducer,
-  policies: policiesReducer,
   settings: settingsReducer,
   auth: persistedAuthReducer,
   anomalies: anomaliesReducer,
   auditLogs: auditLogsReducer,
   dataSource: dataSourceReducer,
   DDXInstance: DDXInstanceReducer,
+  contractRule: contractRuleReducer,
+  notifications: notificationsReducer,
   alertPolicies: alertPoliciesReducer,
+  triggerChannel: triggerChannelReducer,
   authentication: authenticationReducer,
-  notifications: notificationsBarReducer,
   anomalyPolicies: anomalyPoliciesReducer,
   inboundContract: inboundContractReducer,
   outboundContract: outboundContractReducer,
   approvedContract: approvedContractReducer,
-  notificationsPage: notificationsPageReducer,
   datasetMarketplace: datasetMarketplaceReducer,
   [rootApi.reducerPath]: rootApi.reducer,
 });

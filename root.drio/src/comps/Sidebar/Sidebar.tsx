@@ -4,15 +4,13 @@ import { useRouter } from "next/router";
 
 import { BiBrain } from "react-icons/bi";
 import { setExpandedLinks } from "@/state/slices/uiSlice";
-import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import { IoGridOutline, IoLayersOutline } from "react-icons/io5";
-
+import { AiFillCaretDown, AiFillCaretUp, AiOutlineThunderbolt } from "react-icons/ai";
 import {
   HiOutlineCog,
   HiOutlineCloud,
   HiOutlineLibrary,
   HiOutlineDocumentReport,
-  HiOutlineClipboardCheck,
   HiOutlinePresentationChartBar,
   HiOutlinePresentationChartLine,
 } from "react-icons/hi";
@@ -100,26 +98,26 @@ const NavLinks = [
   },
 
   {
-    name: "Policies",
-    href: "policies",
-    default: "data-policies",
-    icon: <HiOutlineClipboardCheck className="inline-block w-6 h-6 mr-2" />,
+    name: "Triggers",
+    href: "triggers",
+    default: "contract-rules",
+    icon: <AiOutlineThunderbolt className="inline-block w-6 h-6 mr-2" />,
     children: [
       {
-        name: "Data Policies",
-        href: "data-policies",
+        name: "Contract Rules",
+        href: "contract-rules",
       },
       {
-        name: "Alert Policies",
-        href: "alert-policies",
+        name: "Trigger Rules",
+        href: "trigger-rules",
       },
       {
-        name: "Notifications",
-        href: "notifications",
+        name: "Trigger Channels",
+        href: "trigger-channels",
       },
       {
-        name: "Anomaly Policies",
-        href: "anomaly-policies",
+        name: "Anomaly Rules",
+        href: "anomaly-rules",
       },
     ],
   },

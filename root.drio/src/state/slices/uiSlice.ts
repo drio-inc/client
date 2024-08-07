@@ -27,8 +27,8 @@ const initialState: UIState = {
     accounts: "Accounts",
     licensing: "Licensing",
     ou: "Organization Units",
-    "new policy": "Policies",
     metadata: "Discovered Metadata",
+    "new contract rule": "Contract Rules",
   },
 };
 

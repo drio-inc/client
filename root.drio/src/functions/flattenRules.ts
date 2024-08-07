@@ -1,4 +1,4 @@
-import type { Rule } from "@/state/slices/policiesSlice";
+import type { Rule } from "@/state/slices/contractRuleSlice";
 
 export interface FlattenedRule {
   id: string;
@@ -13,22 +13,22 @@ export interface FlattenedRule {
   subrule_conditions: string;
 }
 
-export const transformPolicyRules = (rules: Rule[]) => {
+export const transformContractRules = (rules: Rule[]) => {
   const flattenedArray: FlattenedRule[] = [];
 
   rules?.forEach((rule) => {
-    rule?.subrules.forEach((subrule) => {
+    rule?.subrules?.forEach((subrule) => {
       const flattenedRule: FlattenedRule = {
         id: rule.id ?? "",
-        name: rule.name,
-        dataset: rule.dataset,
+        name: rule.name ?? "",
         action: rule.action ?? "",
+        dataset: rule.dataset ?? "",
         subrule_value: subrule.value,
         subrule_id: subrule.id ?? "",
-        defaultAllow: rule.defaultAllow,
         subrule_subrule: subrule.subrule,
         subrule_metadata: subrule.metadata,
         subrule_conditions: subrule.conditions,
+        defaultAllow: rule.defaultAllow ?? false,
       };
 
       flattenedArray.push(flattenedRule);
