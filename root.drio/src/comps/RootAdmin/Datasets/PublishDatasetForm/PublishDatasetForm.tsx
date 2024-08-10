@@ -28,10 +28,7 @@ const schema = z.object({
     required_error: "Please select an option",
   }),
 
-  baseURL: z
-    .string()
-    .nonempty("Please Enter a value")
-    .url("Please enter a valid URL"),
+  baseURL: z.string().nonempty("Please Enter a value").url("Please enter a valid URL"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -74,9 +71,7 @@ export default function PublishDatasetForm() {
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const dataSource = dataSourceState?.rows?.find(
-      (row) => row.id === data.data_source_id
-    );
+    const dataSource = dataSourceState?.rows?.find((row) => row.id === data.data_source_id);
 
     if (visibility === "") {
       showAlert("Please select a visibility", "error");
@@ -107,9 +102,7 @@ export default function PublishDatasetForm() {
     <Layout>
       <Form form={form} onSubmit={onSubmit}>
         <div className="mx-auto bg-white p-4 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
-          <h2 className="text-gray-700 text-2xl font-bold text-center">
-            Publish Dataset
-          </h2>
+          <h2 className="text-gray-700 text-2xl font-bold text-center">Publish Dataset</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             <div className="px-4 py-2 w-full">
@@ -119,20 +112,14 @@ export default function PublishDatasetForm() {
                 defaultSelectedValue={
                   {
                     label: dataSourceState?.defaultSource?.sourceName,
-                    value: dataSourceState?.defaultSource?.id
-                      .split(" ")
-                      .join("_")
-                      .toLowerCase(),
+                    value: dataSourceState?.defaultSource?.id.split(" ").join("_").toLowerCase(),
                   } ?? null
                 }
                 label={"Select Data Source"}
                 registerName="data_source_id"
                 onChangeCustomAction={onAddNew}
                 className="md:text-sm 2xl:text-base"
-                options={[
-                  ...dataSourceOptions,
-                  { label: "Add New", value: "add_new" },
-                ]}
+                options={[...dataSourceOptions, { label: "Add New", value: "add_new" }]}
               />
             </div>
 
@@ -180,10 +167,7 @@ export default function PublishDatasetForm() {
                     value="private"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
-                  <label
-                    htmlFor="r1"
-                    className="text-gray-500 text-sm font-medium"
-                  >
+                  <label htmlFor="r1" className="text-gray-500 text-sm font-medium">
                     Private
                   </label>
                 </div>
@@ -193,10 +177,7 @@ export default function PublishDatasetForm() {
                     value="contractual"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
-                  <label
-                    className="text-gray-500 text-sm font-medium"
-                    htmlFor="r2"
-                  >
+                  <label className="text-gray-500 text-sm font-medium" htmlFor="r2">
                     Contractual
                   </label>
                 </div>
@@ -207,10 +188,7 @@ export default function PublishDatasetForm() {
                     value="public"
                     className="bg-white w-[16px] h-[16px] rounded-full outline-none border-2 border-gray-300 data-[state=checked]:border-[5px] data-[state=checked]:border-drio-red"
                   />
-                  <label
-                    className="text-gray-500 text-sm font-medium"
-                    htmlFor="r2"
-                  >
+                  <label className="text-gray-500 text-sm font-medium" htmlFor="r2">
                     Public
                   </label>
                 </div>
@@ -235,9 +213,7 @@ export default function PublishDatasetForm() {
                 id="upload-json"
                 accept=".json,application/json"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setSelectedJSON(
-                    event?.target?.files && event?.target?.files[0]
-                  );
+                  setSelectedJSON(event?.target?.files && event?.target?.files[0]);
                 }}
               />
             </div>

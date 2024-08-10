@@ -42,7 +42,7 @@ const headers = [
     accessor: "subrule_subrule",
   },
   {
-    header: "Action",
+    header: "Trigger",
     accessor: "action",
   },
 ];
@@ -86,14 +86,14 @@ const RulesTable = ({ rows, editable = false, modal = false }: PolicyProps) => {
   return (
     <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
       <div className="bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between border-t">
-        <h2 className="text-gray-700 text-2xl font-bold">Rules</h2>
+        <h2 className="text-gray-700 text-2xl font-bold">Contract</h2>
 
         {modal ? (
           <Button
             intent={"primary"}
             className="ml-auto"
             onClick={() => {
-              dispatch(setCloseModal("policyRulesTable"));
+              dispatch(setCloseModal("contractRulesTable"));
               router.push("/triggers/contract-rules/new-contract-rule");
             }}
           >
@@ -119,7 +119,7 @@ const RulesTable = ({ rows, editable = false, modal = false }: PolicyProps) => {
           <span>
             <HiX
               className="w-8 h-8 cursor-pointer hover:text-drio-red-dark transition-all duration-200 ml-4"
-              onClick={() => dispatch(setCloseModal("policyRulesTable"))}
+              onClick={() => dispatch(setCloseModal("contractRulesTable"))}
             />
           </span>
         )}

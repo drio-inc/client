@@ -52,8 +52,8 @@ const PoliciesMenu = ({ row }: TableRow) => {
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <Modal
               label="View"
-              identifier="policyRulesTable"
-              onClick={() => dispatch(setOpenModal("policyRulesTable"))}
+              identifier="contractRulesTable"
+              onClick={() => dispatch(setOpenModal("contractRulesTable"))}
             >
               <PolicyRulesTable modal={true} rows={transformContractRules(row.rules)} />
             </Modal>

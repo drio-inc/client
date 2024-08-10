@@ -51,7 +51,7 @@ export default function AddTriggerChannelForm() {
           },
         ])
       );
-      showAlert("Notification channel  added successfully", "success");
+      showAlert("Trigger channel added successfully", "success");
     } catch (err: any) {
       showAlert(err?.data?.message ?? "Something went wrong. Please try again.", "error");
     }

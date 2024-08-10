@@ -10,7 +10,7 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import { SubmitHandler, useFieldArray } from "react-hook-form";
 
 import { HiOutlineTrash } from "react-icons/hi";
-import { setCloseModal } from "@/state/slices/uiSlice";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { setRuleRows } from "@/state/slices/contractRuleSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
@@ -72,26 +72,36 @@ const allowOptions = [
 ];
 
 const actionOptions = [
-  { label: "Mask", value: "mask" },
-  { label: "Keep", value: "keep" },
-  { label: "Index", value: "index" },
-  { label: "Remove", value: "remove" },
-  { label: "Generate", value: "generate" },
-  { label: "Obfuscate", value: "obfuscate" },
-  { label: "Quarantine", value: "quarantine" },
+  { label: "Mask Data", value: "mask_data" },
+  { label: "Keep Data", value: "keep_data" },
+  { label: "Index Data", value: "index_data" },
+  { label: "Remove Data", value: "remove_data" },
+  { label: "Generate Data", value: "generate_data" },
+  { label: "Obfuscate Data", value: "obfuscate_data" },
+  { label: "Quarantine Data", value: "quarantine_data" },
   { label: 'Convert "FName"', value: "convert_fname" },
+
+  { label: "Add New", value: "add_new" },
 ];
 
 export default function EditRuleForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [showActionField, setShowActionField] = useState(false);
   const { ruleRows } = useAppSelector((state) => state.contractRule);
+  const triggerActionState = useAppSelector((state) => state.triggerAction);
 
-  console.log(row);
+  const triggerActionRows = triggerActionState.rows.map((row) => ({
+    label: row.name,
+    value: row.name.toLowerCase().replace(" ", "_"),
+  }));
+
+  const enhancedActionOptions = [...triggerActionRows, ...actionOptions];
 
   useEffect(() => {
     if (row.action !== undefined) setShowActionField(true);
   }, [row]);
+
+  console.log(enhancedActionOptions.find((option) => option.value.toLowerCase() === row.action));
 
   const form = useZodForm({
     schema: schema,
@@ -116,6 +126,14 @@ export default function EditRuleForm({ row }: TableRow) {
     control: form.control,
     name: "subrules",
   });
+
+  const onAddNew = (selectedOption?: string) => {
+    if (selectedOption === "add_new") {
+      dispatch(setCloseModal("editRuleForm"));
+      dispatch(setOpenModal("addTriggerActionForm"));
+      return;
+    }
+  };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const updatedRules = ruleRows.map((rule) => {
@@ -337,13 +355,16 @@ export default function EditRuleForm({ row }: TableRow) {
           {showActionField && (
             <div className="mx-auto px-8 pt-3 pb-4 w-full lg:w-1/2 2xl:w-1/3 bg-gray-50">
               <SelectInput
-                label={"Add Action"}
+                label={"Add Trigger"}
                 registerName="action"
                 placeholder={"Select"}
-                options={actionOptions}
+                onChangeCustomAction={onAddNew}
+                options={enhancedActionOptions}
                 className="md:text-sm 2xl:text-base"
                 defaultSelectedValue={
-                  actionOptions.find((option) => option.label.toLowerCase() === row.action) ?? {
+                  enhancedActionOptions.find(
+                    (option) => option.value.toLowerCase() === row.action
+                  ) ?? {
                     label: "",
                     value: "",
                   }

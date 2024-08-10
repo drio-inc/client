@@ -13,7 +13,7 @@
     "rules": [
       {
         "id": "2aad2760-113d-4325-bbcb-dad75f3c13b9",
-        "action": "remove",
+        "action": "remove_data",
         "defaultAllow": true,
         "dataset": "shipping_data",
         "name": "Disallow product details",
@@ -57,7 +57,7 @@
     "rules": [
       {
         "id": "094e0248-35ad-43e7-9529-9313757794c3",
-        "action": "remove",
+        "action": "remove_data",
         "defaultAllow": true,
         "dataset": "shipping_data",
         "name": "Disallow product details",
@@ -108,7 +108,7 @@
     "rules": [
       {
         "id": "7c81e7ea-a0b9-45d8-a801-82ab197d7c03",
-        "action": "remove",
+        "action": "remove_data",
         "defaultAllow": true,
         "dataset": "shipping_data",
         "name": "Disallow product details",

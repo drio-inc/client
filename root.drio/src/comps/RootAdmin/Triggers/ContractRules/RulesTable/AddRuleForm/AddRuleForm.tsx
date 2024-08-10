@@ -10,7 +10,7 @@ import { SubmitHandler, useFieldArray } from "react-hook-form";
 
 import { useState } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
-import { setCloseModal } from "@/state/slices/uiSlice";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { setRuleRows } from "@/state/slices/contractRuleSlice";
 import { useAddRuleMutation } from "@/api/resources/triggers/contract-rules";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
@@ -60,8 +60,9 @@ type FormData = z.infer<typeof schema>;
 export default function AddNewRuleForm() {
   const dispatch = useAppDispatch();
   const [addRule, result] = useAddRuleMutation();
-  const policyState = useAppSelector((state) => state.contractRule);
   const [showActionField, setShowActionField] = useState(false);
+  const contractRuleState = useAppSelector((state) => state.contractRule);
+  const triggerActionState = useAppSelector((state) => state.triggerAction);
 
   const form = useZodForm({
     schema: schema,
@@ -82,6 +83,14 @@ export default function AddNewRuleForm() {
     name: "subrules",
   });
 
+  const onAddNew = (selectedOption?: string) => {
+    if (selectedOption === "add_new") {
+      dispatch(setCloseModal("addRuleForm"));
+      dispatch(setOpenModal("addTriggerActionForm"));
+      return;
+    }
+  };
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const rule = {
       id: uuidv4(),
@@ -99,7 +108,7 @@ export default function AddNewRuleForm() {
         })) ?? [],
     };
 
-    dispatch(setRuleRows([...policyState.ruleRows, rule]));
+    dispatch(setRuleRows([...contractRuleState.ruleRows, rule]));
 
     form.reset();
     dispatch(setCloseModal("addRuleForm"));
@@ -309,19 +318,27 @@ export default function AddNewRuleForm() {
           {showActionField && (
             <div className="mx-auto px-8 pt-3 pb-4 w-full lg:w-1/2 2xl:w-1/3 bg-gray-50">
               <SelectInput
-                label={"Add Action"}
+                label={"Add Trigger"}
                 registerName="action"
                 placeholder={"Select"}
+                onChangeCustomAction={onAddNew}
                 className="md:text-sm 2xl:text-base"
                 options={[
-                  { label: "Mask", value: "mask" },
-                  { label: "Keep", value: "keep" },
-                  { label: "Index", value: "index" },
-                  { label: "Remove", value: "remove" },
-                  { label: "Generate", value: "generate" },
-                  { label: "Obfuscate", value: "obfuscate" },
-                  { label: "Quarantine", value: "quarantine" },
+                  ...triggerActionState.rows.map((action) => ({
+                    label: action.name,
+                    value: action.name,
+                  })),
+
+                  { label: "Mask Data", value: "mask_data" },
+                  { label: "Keep Data", value: "keep_data" },
+                  { label: "Index Data", value: "index_data" },
+                  { label: "Remove Data", value: "remove_data" },
+                  { label: "Generate Data", value: "generate_data" },
+                  { label: "Obfuscate Data", value: "obfuscate_data" },
+                  { label: "Quarantine Data", value: "quarantine_data" },
                   { label: 'Convert "FName"', value: "convert_fname" },
+
+                  { label: "Add New", value: "add_new" },
                 ]}
               />
             </div>

@@ -9,6 +9,8 @@ import Button from "@/comps/ui/Button";
 import showAlert from "@/comps/ui/Alert";
 import ContractRulesTable from "../RulesTable";
 import { transformContractRules } from "@/functions/flattenRules";
+import Modal from "@/comps/ui/Modal";
+import AddTriggerActionForm from "../../TriggerActions/AddTriggerActionForm";
 
 const contractRuleSchema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -29,6 +31,7 @@ const contractRuleSchema = z.object({
 type FormData = z.infer<typeof contractRuleSchema>;
 
 const contractOptions = [
+  { label: "All", value: "all" },
   { label: "UPS", value: "ups" },
   { label: "DHL", value: "dhl" },
   { label: "Xtime", value: "xtime" },
@@ -172,6 +175,10 @@ const EditContractRuleForm = () => {
           Save Contract Rule
         </Button>
       </div>
+
+      <Modal identifier="addTriggerActionForm">
+        <AddTriggerActionForm />
+      </Modal>
     </div>
   );
 };

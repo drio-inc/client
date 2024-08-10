@@ -9,9 +9,9 @@ const initialState: TriggerActionState = {
   rows: [
     {
       id: "1",
-      name: "Teams",
+      name: "Slack",
       channel_type: "webhook",
-      url: "notify.teams.outlook.com",
+      url: "notify.slack.com",
       times_used: 7,
       enabled: "yes",
     },
