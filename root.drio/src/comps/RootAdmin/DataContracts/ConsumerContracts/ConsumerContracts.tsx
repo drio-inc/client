@@ -1,8 +1,7 @@
 import Table from "@/comps/ui/Table";
-import { setSelectedRows } from "@/state/slices/approvedContractSlice";
+import { setSelectedRows } from "@/state/slices/consumerContractSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-
-import ApprovedContractsMenu from "./ApprovedContractsMenu/ApprovedContractsMenu";
+import ConsumerContractsMenu from "./ConsumerContractsMenu/ConsumerContractsMenu";
 
 import { HiMinusSm } from "react-icons/hi";
 import { IoRefresh } from "react-icons/io5";
@@ -29,8 +28,13 @@ const headers = [
   },
 
   {
-    header: "Date Approved",
-    accessor: "dateOfApproval",
+    header: "Status",
+    accessor: "state",
+    status: {
+      "Being Approved": "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      Pending: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      Rejected: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
+    },
   },
 
   {
@@ -39,20 +43,25 @@ const headers = [
   },
 
   {
+    header: "Expiry Date",
+    accessor: "expiryDate",
+  },
+
+  {
     header: "Alerts (7 days)",
     accessor: "alerts",
   },
 ];
 
-const ApprovedContracts = () => {
+const ConsumerContracts = () => {
   const dispatch = useAppDispatch();
-  const approvedContractState = useAppSelector((state) => state.approvedContract);
+  const consumerContractState = useAppSelector((state) => state.consumerContract);
 
   const handleCheckbox = (index: number) => {
-    if (approvedContractState.selectedRows.includes(index)) {
-      dispatch(setSelectedRows(approvedContractState.selectedRows.filter((row) => row !== index)));
+    if (consumerContractState.selectedRows.includes(index)) {
+      dispatch(setSelectedRows(consumerContractState.selectedRows.filter((row) => row !== index)));
     } else {
-      dispatch(setSelectedRows([...approvedContractState.selectedRows, index]));
+      dispatch(setSelectedRows([...consumerContractState.selectedRows, index]));
     }
   };
 
@@ -61,19 +70,19 @@ const ApprovedContracts = () => {
   };
 
   return (
-    <div className="w-full mt-4">
+    <div className="py-2 w-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <span className="text-lg text-gray-700 font-semibold inline-block p-4 my-1 bg-white">
-          Approved Contracts
+          Contracts to Approve
         </span>
-        {approvedContractState.selectedRows.length > 0 && (
+        {consumerContractState.selectedRows.length > 0 && (
           <div
             className={`rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between`}
           >
             <div className="flex items-center">
               <Checkbox.Root
                 className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
-                checked={approvedContractState.selectedRows.length > 0}
+                checked={consumerContractState.selectedRows.length > 0}
                 onCheckedChange={() => {
                   clearSelectedRows?.();
                 }}
@@ -83,7 +92,7 @@ const ApprovedContracts = () => {
                 </Checkbox.Indicator>
               </Checkbox.Root>
               <h3 className={"font-medium text-sm text-gray-700"}>
-                {approvedContractState.selectedRows.length} Item(s) Selected
+                {consumerContractState.selectedRows.length} Item(s) Selected
               </h3>
 
               <button className="transition-all duration-200 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 flex items-center ml-3 rounded border-2 border-indigo-200 text-drio-red-dark">
@@ -96,14 +105,14 @@ const ApprovedContracts = () => {
 
         <Table
           headers={headers}
-          menu={ApprovedContractsMenu}
-          rows={approvedContractState.rows}
+          menu={ConsumerContractsMenu}
           handleCheckbox={handleCheckbox}
-          selectedRows={approvedContractState.selectedRows}
+          rows={consumerContractState.rows}
+          selectedRows={consumerContractState.selectedRows}
         />
       </div>
     </div>
   );
 };
 
-export default ApprovedContracts;
+export default ConsumerContracts;

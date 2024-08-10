@@ -38,8 +38,8 @@ import DDXInstanceReducer from "./slices/DDXInstanceSlice";
 
 //Data contracts reducers
 import personaReducer from "./slices/personaSlice";
-import inboundContractReducer from "./slices/inboundContractSlice";
-import outboundContractReducer from "./slices/outboundContractSlice";
+import consumerContractReducer from "./slices/consumerContractSlice";
+import subscriptionContractReducer from "./slices/subscriptionContractSlice";
 import approvedContractReducer from "./slices/approvedContractSlice";
 
 //Trigger reducers
@@ -90,8 +90,8 @@ const rootReducer = combineReducers({
   authentication: authenticationReducer,
   learnedContract: learnedContractReducer,
   anomalyPolicies: anomalyPoliciesReducer,
-  inboundContract: inboundContractReducer,
-  outboundContract: outboundContractReducer,
+  consumerContract: consumerContractReducer,
+  subscriptionContract: subscriptionContractReducer,
   approvedContract: approvedContractReducer,
   datasetMarketplace: datasetMarketplaceReducer,
   [rootApi.reducerPath]: rootApi.reducer,
