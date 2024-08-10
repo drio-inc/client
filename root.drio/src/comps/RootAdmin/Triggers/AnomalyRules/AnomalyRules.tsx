@@ -84,9 +84,9 @@ const AlertPolicies = () => {
         return (
           <span className={`px-2 py-1 rounded font-medium flex items-center gap-x-2`}>
             {active ? (
-              <MdCheckCircle className={`${color} w-5 h-5`} />
+              <MdCheckCircle className={`${color} bg-green-800 rounded-full w-5 h-5`} />
             ) : (
-              <RiCloseCircleFill className={`${color} w-5 h-5`} />
+              <RiCloseCircleFill className={`${color} bg-red-800 rounded-full w-5 h-5`} />
             )}
             {active}
             {row.original.anomaly_type}
@@ -136,7 +136,7 @@ const AlertPolicies = () => {
     },
     {
       id: "actions",
-      cell: ({ row }) => <AnomalyRulesMenu />,
+      cell: ({ row }) => <AnomalyRulesMenu row={row.original} />,
     },
   ];
 
