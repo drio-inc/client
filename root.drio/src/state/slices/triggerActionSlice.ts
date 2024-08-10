@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type TriggerChannelState = {
+type TriggerActionState = {
   rows: TableRow[];
   selectedRows: number[];
 };
 
-const initialState: TriggerChannelState = {
+const initialState: TriggerActionState = {
   rows: [
     {
       id: "1",
@@ -35,8 +35,8 @@ const initialState: TriggerChannelState = {
   selectedRows: [],
 };
 
-const triggerChannelSlice = createSlice({
-  name: "triggerChannel",
+const triggerActionSlice = createSlice({
+  name: "triggerAction",
   initialState,
   reducers: {
     setRows(state, action) {
@@ -51,6 +51,6 @@ const triggerChannelSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows } = triggerChannelSlice.actions;
+export const { setRows, setSelectedRows } = triggerActionSlice.actions;
 
-export default triggerChannelSlice.reducer;
+export default triggerActionSlice.reducer;

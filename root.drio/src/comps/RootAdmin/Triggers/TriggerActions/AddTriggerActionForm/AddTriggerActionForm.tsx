@@ -10,7 +10,7 @@ import { useZodForm, Form } from "@ui/Forms/Form";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 import { setCloseModal } from "@/state/slices/uiSlice";
-import { setRows } from "@/state/slices/triggerChannelSlice";
+import { setRows } from "@/state/slices/triggerActionSlice";
 
 const schema = z.object({
   name: z.string().nonempty("Please Enter a value"),
@@ -26,7 +26,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function AddTriggerChannelForm() {
   const dispatch = useAppDispatch();
-  const { rows } = useAppSelector((state) => state.triggerChannel);
+  const { rows } = useAppSelector((state) => state.triggerAction);
   const form = useZodForm({
     schema: schema,
   });
@@ -58,14 +58,14 @@ export default function AddTriggerChannelForm() {
     7;
 
     form.reset();
-    dispatch(setCloseModal("addNotificationForm"));
+    dispatch(setCloseModal("addTriggerActionForm"));
   };
 
   return (
     <Layout>
       <Form form={form} onSubmit={onSubmit}>
         <div className="mx-auto bg-white py-8 px-6 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
-          <h2 className="text-gray-700 text-2xl font-bold text-center">Add Trigger Channel</h2>
+          <h2 className="text-gray-700 text-2xl font-bold text-center">Add Trigger Action</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             <div className="px-4 py-2 w-full">
@@ -80,8 +80,8 @@ export default function AddTriggerChannelForm() {
             <div className="px-4 py-2 w-full">
               <SelectInput
                 label={"Channel Type"}
-                options={webhookOptions ?? []}
                 registerName="channel_type"
+                options={webhookOptions ?? []}
                 placeholder={"Select Channel Type"}
                 className="md:text-sm 2xl:text-base"
               />
@@ -103,13 +103,13 @@ export default function AddTriggerChannelForm() {
               type="button"
               intent={`secondary`}
               className="w-full"
-              onClick={() => dispatch(setCloseModal("addNotificationForm"))}
+              onClick={() => dispatch(setCloseModal("addTriggerActionForm"))}
             >
               <span className="inline-flex justify-center">Cancel</span>
             </Button>
 
             <Button intent={`primary`} className="w-full">
-              <span className="inline-flex justify-center">Add Channel</span>
+              <span className="inline-flex justify-center">Add Action</span>
             </Button>
           </div>
         </div>

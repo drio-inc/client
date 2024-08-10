@@ -1,14 +1,14 @@
 import Table from "@/comps/ui/Table";
-import { setSelectedRows } from "@/state/slices/triggerChannelSlice";
+import { setSelectedRows } from "@/state/slices/triggerActionSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
 import { IoRefresh } from "react-icons/io5";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
-import TriggerChannelsMenu from "./TriggerChannelsMenu";
+import TriggerChannelsMenu from "./TriggerActionsMenu";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import AddTriggerChannelForm from "./AddTriggerChannelsForm";
+import AddTriggerChannelForm from "./AddTriggerActionForm";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 const headers = [
@@ -36,7 +36,7 @@ const headers = [
 
 const TriggerChannels = () => {
   const dispatch = useAppDispatch();
-  const { rows, selectedRows } = useAppSelector((state) => state.triggerChannel);
+  const { rows, selectedRows } = useAppSelector((state) => state.triggerAction);
 
   const handleCheckbox = (index: number) => {
     if (selectedRows.includes(index)) {
@@ -78,14 +78,14 @@ const TriggerChannels = () => {
             <Button
               icon={<HiPlus />}
               intent={"primary"}
-              onClick={() => dispatch(setOpenModal("addNotificationForm"))}
+              onClick={() => dispatch(setOpenModal("addTriggerActionForm"))}
             >
-              Add New Trigger Channel
+              Add New Trigger Action
             </Button>
           </div>
 
           <div className="hidden">
-            <Modal identifier="addNotificationForm">
+            <Modal identifier="addTriggerActionForm">
               <AddTriggerChannelForm />
             </Modal>
           </div>

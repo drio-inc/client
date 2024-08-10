@@ -45,7 +45,7 @@ import approvedContractReducer from "./slices/approvedContractSlice";
 //Trigger reducers
 import contractRuleReducer from "./slices/contractRuleSlice";
 import alertPoliciesReducer from "./slices/alertPoliciesSlice";
-import triggerChannelReducer from "./slices/triggerChannelSlice";
+import triggerActionReducer from "./slices/triggerActionSlice";
 import anomalyPoliciesReducer from "./slices/anomalyPoliciesSlice";
 
 //Monitoring reducers
@@ -87,7 +87,7 @@ const rootReducer = combineReducers({
   contractRule: contractRuleReducer,
   notifications: notificationsReducer,
   alertPolicies: alertPoliciesReducer,
-  triggerChannel: triggerChannelReducer,
+  triggerAction: triggerActionReducer,
   authentication: authenticationReducer,
   anomalyPolicies: anomalyPoliciesReducer,
   inboundContract: inboundContractReducer,

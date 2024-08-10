@@ -112,8 +112,8 @@ const NavLinks = [
         href: "trigger-rules",
       },
       {
-        name: "Trigger Channels",
-        href: "trigger-channels",
+        name: "Trigger Actions",
+        href: "trigger-actions",
       },
       {
         name: "Anomaly Rules",

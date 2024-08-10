@@ -1,16 +1,16 @@
 import Layout from "@/comps/Layout";
 import withAuth from "@/comps/HOC/withAuth";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
-import TriggerChannels from "@/comps/RootAdmin/Triggers/TriggerChannels";
+import TriggerActions from "@/comps/RootAdmin/Triggers/TriggerActions";
 
-const TriggerChannelsPage = () => {
+const TriggerActionsPage = () => {
   return (
     <Layout>
       <DashboardContainer>
-        <TriggerChannels />
+        <TriggerActions />
       </DashboardContainer>
     </Layout>
   );
 };
 
-export default TriggerChannelsPage;
+export default TriggerActionsPage;
