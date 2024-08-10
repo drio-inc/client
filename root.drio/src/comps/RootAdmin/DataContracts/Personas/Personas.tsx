@@ -20,7 +20,10 @@ const headers = [
     header: "Consuming Domain",
     accessor: "domain",
   },
-
+  {
+    header: "Contract Rule Name",
+    accessor: "rule_name",
+  },
   {
     header: "# of Datasets",
     accessor: "datasets",
