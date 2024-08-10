@@ -40,10 +40,25 @@ type AuthenticationState = {
 
 const initialState: AuthenticationState = {
   data: {
-    ldap: null,
+    ldap: {
+      cn: "",
+      dn: "",
+      type: "",
+      port: 0,
+      retries: 0,
+      dn_string: "",
+      dn_pattern: "",
+      host_address: "",
+      ldap_version: "",
+      group_base_dn: "",
+      last_name_attribute: "",
+      first_name_attribute: "",
+      group_object_classes: "",
+      group_membership_attribute: "",
+    },
     oauth: null,
     google: null,
-    authenticationType: null,
+    authenticationType: "ldap",
   },
 };
 

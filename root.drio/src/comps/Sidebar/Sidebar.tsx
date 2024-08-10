@@ -133,16 +133,16 @@ const NavLinks = [
         href: "alerts",
       },
       {
-        name: "Reports",
-        href: "reports",
-      },
-      {
         name: "Anomalies",
         href: "anomalies",
       },
       {
         name: "Audit Logs",
         href: "audit-logs",
+      },
+      {
+        name: "Reports",
+        href: "reports",
       },
     ],
   },
@@ -170,16 +170,16 @@ const NavLinks = [
         href: "org-units",
       },
       {
-        name: "Agreements and Assets",
-        href: "agreements-and-assets",
-      },
-      {
         name: "Authentication",
         href: "authentication",
       },
       {
         name: "Roles",
         href: "roles",
+      },
+      {
+        name: "Agreements and Assets",
+        href: "agreements-and-assets",
       },
     ],
   },
