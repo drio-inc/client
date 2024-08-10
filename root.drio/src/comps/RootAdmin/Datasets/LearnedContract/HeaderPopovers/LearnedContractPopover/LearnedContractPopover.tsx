@@ -2,7 +2,7 @@ import showAlert from "@/comps/ui/Alert/Alert";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 
-import { setRows } from "@/state/slices/metadataSlice";
+import { setRows } from "@/state/slices/learnedContractSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 type PopoverProps = {
@@ -15,12 +15,12 @@ interface ITag {
   status: string;
 }
 
-const MetadataPopover = ({ tagType }: PopoverProps) => {
+const LearnedContractPopover = ({ tagType }: PopoverProps) => {
   const dispatch = useAppDispatch();
-  const metadataState = useAppSelector((state) => state.metadata);
+  const learnedContractState = useAppSelector((state) => state.learnedContract);
 
   const approveOrRejectAll = (action: "Approved" | "Rejected" = "Approved") => {
-    const tagsToUpdate = metadataState.rows.map((row) => {
+    const tagsToUpdate = learnedContractState.rows.map((row) => {
       return {
         ...row,
         [tagType]: row[tagType].map((tag: ITag) => {
@@ -68,4 +68,4 @@ const MetadataPopover = ({ tagType }: PopoverProps) => {
   );
 };
 
-export default MetadataPopover;
+export default LearnedContractPopover;

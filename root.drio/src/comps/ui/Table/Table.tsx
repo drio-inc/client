@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import DashboardFooter from "@ui/Footer/DashbaordFooter";
 import { HiOutlinePencil, HiCheck } from "react-icons/hi";
-import MetaTags from "@/comps/RootAdmin/Datasets/Metadata/MetaTags";
+import LearnedTags from "@/comps/RootAdmin/Datasets/LearnedContract/LearnedTags";
 
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@ui/Tooltip";
 import Skeleton from "../Skeleton";
@@ -112,7 +112,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                         <>
                           {header.type === "array" ? (
                             <td key={index} className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem]">
-                              <MetaTags tags={row?.[header.accessor]} />
+                              <LearnedTags tags={row?.[header.accessor]} />
                             </td>
                           ) : header.type === "object" ? (
                             <td key={index} className="w-[200px]">

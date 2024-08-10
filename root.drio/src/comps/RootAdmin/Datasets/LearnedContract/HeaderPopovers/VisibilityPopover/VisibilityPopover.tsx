@@ -2,19 +2,19 @@ import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 
 import showAlert from "@/comps/ui/Alert/Alert";
-import { setRows } from "@/state/slices/metadataSlice";
+import { setRows } from "@/state/slices/learnedContractSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 const VisibilityPopover = () => {
   const dispatch = useAppDispatch();
-  const metadataState = useAppSelector((state) => state.metadata);
+  const learnedContractState = useAppSelector((state) => state.learnedContract);
 
   const setVisibility = (
     action: "Public" | "Hidden" | "Internal" | "Randomize" | "Hash" = "Hidden"
   ) => {
     dispatch(
       setRows(
-        metadataState.rows.map((row) => {
+        learnedContractState.rows.map((row) => {
           return {
             ...row,
             visibility: action,

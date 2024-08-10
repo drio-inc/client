@@ -5,28 +5,28 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
 import AlertModal from "@/comps/ui/AlertModal";
 import showAlert from "@/comps/ui/Alert/Alert";
-import EditMetadataForm from "../EditMetadataForm";
 import { setOpenModal } from "@/state/slices/uiSlice";
-import { setRows, setSelectedRows } from "@/state/slices/metadataSlice";
+import EditLearnedContractForm from "../EditLearnedContractForm";
+import { setRows, setSelectedRows } from "@/state/slices/learnedContractSlice";
 
-const MetadataMenu = ({ row }: TableRow) => {
+const LearnedContractMenu = ({ row }: TableRow) => {
   const dispatch = useAppDispatch();
-  const metadataState = useAppSelector((state) => state.metadata);
+  const learnedContractState = useAppSelector((state) => state.learnedContract);
 
   const deleteRow = (id: number | string) => {
-    dispatch(setRows(metadataState.rows.filter((row) => row.id !== id)));
+    dispatch(setRows(learnedContractState.rows.filter((row) => row.id !== id)));
     dispatch(setSelectedRows([]));
   };
 
   const approveOrRejectAll = (action: "Approved" | "Rejected" = "Approved") => {
     dispatch(
       setRows(
-        metadataState.rows.map((metadataRow) => {
-          if (metadataRow.id !== row.id) return metadataRow;
+        learnedContractState.rows.map((learnedContractRow) => {
+          if (learnedContractRow.id !== row.id) return learnedContractRow;
 
           return {
-            ...metadataRow,
-            key_name_tags: metadataRow.key_name_tags.map(
+            ...learnedContractRow,
+            key_name_tags: learnedContractRow.key_name_tags.map(
               (meta: { id: string; name: string; status: string }) => {
                 return {
                   ...meta,
@@ -34,7 +34,7 @@ const MetadataMenu = ({ row }: TableRow) => {
                 };
               }
             ),
-            data_field_tags: metadataRow.data_field_tags.map(
+            data_field_tags: learnedContractRow.data_field_tags.map(
               (meta: { id: string; name: string; status: string }) => {
                 return {
                   ...meta,
@@ -66,10 +66,10 @@ const MetadataMenu = ({ row }: TableRow) => {
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
             <Modal
               label="Edit"
-              identifier="editMetadataForm"
-              onClick={() => dispatch(setOpenModal("editMetadataForm"))}
+              identifier="editLearnedContractForm"
+              onClick={() => dispatch(setOpenModal("editLearnedContractForm"))}
             >
-              <EditMetadataForm row={row} />
+              <EditLearnedContractForm row={row} />
             </Modal>
           </span>
 
@@ -96,4 +96,4 @@ const MetadataMenu = ({ row }: TableRow) => {
   );
 };
 
-export default MetadataMenu;
+export default LearnedContractMenu;

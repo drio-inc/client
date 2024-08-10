@@ -1,6 +1,6 @@
 import Layout from "@/comps/Layout";
 import withAuth from "@/comps/HOC/withAuth";
-import Metadata from "@/comps/RootAdmin/Datasets/Metadata";
+import Metadata from "@/comps/RootAdmin/Datasets/LearnedContract";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
 const MetadataPage = () => {

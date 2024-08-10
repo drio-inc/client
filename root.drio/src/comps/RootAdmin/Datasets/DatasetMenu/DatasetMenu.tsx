@@ -35,9 +35,7 @@ const DatasetMenu = ({ row }: TableRow) => {
           className="bg-white rounded-lg shadow-lg text-sm text-gray-700"
         >
           <Link href={`/datasets/my-datasets/${row?.id}/view`}>
-            <span className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4">
-              View
-            </span>
+            <span className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4">View</span>
           </Link>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
@@ -51,18 +49,14 @@ const DatasetMenu = ({ row }: TableRow) => {
           </span>
 
           <span className={"cursor-pointer hover:bg-indigo-50 w-full block"}>
-            <AlertModal
-              row={row}
-              accessor={row?.dataset}
-              onClick={() => deleteRow(row.id)}
-            />
+            <AlertModal row={row} accessor={row?.dataset} onClick={() => deleteRow(row.id)} />
           </span>
 
           <Link
-            href={`/datasets/my-datasets/${row?.data_source_id}/metadata?dataset=${row?.name}`}
+            href={`/datasets/my-datasets/${row?.data_source_id}/learned-contract?dataset=${row?.name}`}
           >
             <span className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4">
-              Metadata
+              Learned Contract
             </span>
           </Link>
         </Popover.Content>

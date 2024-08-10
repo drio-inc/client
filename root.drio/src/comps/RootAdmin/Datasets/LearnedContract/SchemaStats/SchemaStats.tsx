@@ -14,7 +14,7 @@ const SchemaStats = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [stats, setStats] = useState<Fields | null>(null);
-  const { currentRow } = useAppSelector((state) => state.metadata);
+  const { currentRow } = useAppSelector((state) => state.learnedContract);
   const { rows: dataSourceRows } = useAppSelector((state) => state.dataSource);
 
   const datasetName = router.query.dataset;
@@ -47,8 +47,7 @@ const SchemaStats = () => {
       </span>
       <div className="bg-white px-8 py-4 rounded-lg">
         <h2 className="text-gray-700 text-2xl font-bold text-center">
-          Stats for{" "}
-          <span className="text-drio-red">'{currentRow?.property}'</span>
+          Stats for <span className="text-drio-red">'{currentRow?.property}'</span>
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 my-4 text-gray-700 text-sm gap-y-2 shadow-sm border rounded-md bg-indigo-50 p-4">

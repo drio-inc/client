@@ -6,7 +6,7 @@ import { MdPersonOutline } from "react-icons/md";
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comps/ui/Tooltip";
 
-type MetaTagsProps = {
+type LearnedTagsProps = {
   tags: {
     id: string;
     name: string;
@@ -25,7 +25,7 @@ const mapStatusToColor = {
 
 type MapStatusToColor = keyof typeof mapStatusToColor;
 
-const MetaTags = ({ tags }: MetaTagsProps) => {
+const LearnedTags = ({ tags }: LearnedTagsProps) => {
   console.log(tags);
 
   return (
@@ -74,4 +74,4 @@ const MetaTags = ({ tags }: MetaTagsProps) => {
   );
 };
 
-export default MetaTags;
+export default LearnedTags;

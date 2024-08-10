@@ -28,8 +28,8 @@ import authenticationReducer from "./slices/authenticationSlice";
 
 //Datasets reducers
 import datasetReducer from "./slices/datasetSlice";
-import metadataReducer from "./slices/metadataSlice";
 import dataSourceReducer from "./slices/dataSourceSlice";
+import learnedContractReducer from "./slices/learnedContractSlice";
 import datasetMarketplaceReducer from "./slices/datasetMarketplaceSlice";
 
 //DDX reducers
@@ -77,7 +77,6 @@ const rootReducer = combineReducers({
   orgUnit: orgUnitReducer,
   dataset: datasetReducer,
   personas: personaReducer,
-  metadata: metadataReducer,
   settings: settingsReducer,
   auth: persistedAuthReducer,
   anomalies: anomaliesReducer,
@@ -89,6 +88,7 @@ const rootReducer = combineReducers({
   alertPolicies: alertPoliciesReducer,
   triggerAction: triggerActionReducer,
   authentication: authenticationReducer,
+  learnedContract: learnedContractReducer,
   anomalyPolicies: anomalyPoliciesReducer,
   inboundContract: inboundContractReducer,
   outboundContract: outboundContractReducer,

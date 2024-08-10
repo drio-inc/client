@@ -8,14 +8,14 @@ import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { setRows } from "@/state/slices/metadataSlice";
+import { setRows } from "@/state/slices/learnedContractSlice";
 import { setCloseModal } from "@/state/slices/uiSlice";
 
 import { HiX } from "react-icons/hi";
 import { useCallback, useState } from "react";
 import { TagInput } from "@/comps/ui/Forms/Inputs/Inputs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
-import { useAddMetadataMutation } from "@/api/resources/metadata";
+import { useAddLearnedContractMutation } from "@/api/resources/learned-contract";
 
 const schema = z.object({
   property: z.string().optional(),
@@ -33,13 +33,13 @@ type ITag = {
   addedByUser?: boolean;
 };
 
-export default function AddMetaDataForm({ row }: TableRow) {
+export default function AddLearnedContractForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
   const [visibility, setVisibility] = useState("");
-  const [addMetadata, result] = useAddMetadataMutation();
   const [keyNameTags, setKeyNameTags] = useState<ITag[]>([]);
   const [dataFieldTags, setDataFieldTags] = useState<ITag[]>([]);
-  const metadataState = useAppSelector((state) => state.metadata);
+  const [addLearnedContract, result] = useAddLearnedContractMutation();
+  const learnedContractState = useAppSelector((state) => state.learnedContract);
 
   const form = useZodForm({
     schema: schema,
@@ -93,7 +93,7 @@ export default function AddMetaDataForm({ row }: TableRow) {
 
     dispatch(
       setRows([
-        ...metadataState.rows,
+        ...learnedContractState.rows,
         {
           ...data,
           visibility,
@@ -105,8 +105,8 @@ export default function AddMetaDataForm({ row }: TableRow) {
     );
 
     form.reset();
-    dispatch(setCloseModal("addMetadataForm"));
-    showAlert("Metadata added successfully", "success");
+    dispatch(setCloseModal("addLearnedContractForm"));
+    showAlert("Entity added successfully", "success");
   };
 
   const removeTagData = (tagType: string, indexToRemove: number) => {
@@ -127,14 +127,14 @@ export default function AddMetaDataForm({ row }: TableRow) {
         onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
       >
         <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
-          <h2 className="text-gray-700 text-2xl font-bold text-center">Add Metadata</h2>
+          <h2 className="text-gray-700 text-2xl font-bold text-center">Add Entity</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             <div className="px-4 py-2 w-full">
               <TextInput
-                label={"Metadata Name"}
+                label={"Entity Name"}
                 {...form.register("property")}
-                placeholder={"Enter metadata name"}
+                placeholder={"Enter entity name"}
                 className="md:text-sm 2xl:text-base"
               />
             </div>
@@ -283,7 +283,7 @@ export default function AddMetaDataForm({ row }: TableRow) {
               type="button"
               className="w-full"
               intent={`secondary`}
-              onClick={() => dispatch(setCloseModal("addMetadataForm"))}
+              onClick={() => dispatch(setCloseModal("addLearnedContractForm"))}
             >
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>

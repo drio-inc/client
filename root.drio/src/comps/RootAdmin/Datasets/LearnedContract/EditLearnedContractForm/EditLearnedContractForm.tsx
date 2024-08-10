@@ -9,13 +9,13 @@ import { SubmitHandler } from "react-hook-form";
 import { useZodForm, Form } from "@ui/Forms/Form";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
-import { setRows } from "@/state/slices/metadataSlice";
+import { setRows } from "@/state/slices/learnedContractSlice";
 import { setCloseModal } from "@/state/slices/uiSlice";
 
 import { useCallback, useState } from "react";
 import { TagInput } from "@/comps/ui/Forms/Inputs/Inputs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
-import { useEditMetadataMutation } from "@/api/resources/metadata";
+import { useEditLearnedContractMutation } from "@/api/resources/learned-contract";
 
 import { FaCheckSquare } from "react-icons/fa";
 import { BsXSquareFill } from "react-icons/bs";
@@ -36,10 +36,10 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function EditMetadataForm({ row }: TableRow) {
+export default function EditLearnedContract({ row }: TableRow) {
   const dispatch = useAppDispatch();
-  const [updateMetadata, result] = useEditMetadataMutation();
-  const { rows } = useAppSelector((state) => state.metadata);
+  const { rows } = useAppSelector((state) => state.learnedContract);
+  const [updateLearnedContract, result] = useEditLearnedContractMutation();
   const [visibility, setVisibility] = useState(row.visibility.toLowerCase() ?? "");
 
   const form = useZodForm({
@@ -59,8 +59,8 @@ export default function EditMetadataForm({ row }: TableRow) {
     dispatch(setRows(rows.map((row) => (row.id === newData.id ? newData : row))));
 
     form.reset();
-    dispatch(setCloseModal("editMetadataForm"));
-    showAlert("Metadata updated successfully", "success");
+    dispatch(setCloseModal("editLearnedContractForm"));
+    showAlert("Entity updated successfully", "success");
   };
 
   const approveOrRejectKeyNameTag = (tag: string, action: "Approved" | "Rejected" = "Approved") => {
@@ -170,15 +170,15 @@ export default function EditMetadataForm({ row }: TableRow) {
         onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
       >
         <div className="mx-auto bg-white p-8 rounded-lg xl:max-w-[25vw] 2xl:max-w-[22vw]">
-          <h2 className="text-gray-700 text-2xl font-bold text-center">Edit Metadata</h2>
+          <h2 className="text-gray-700 text-2xl font-bold text-center">Edit Entity</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             <div className="px-4 py-2 w-full">
               <TextInput
-                label={"Metadata Name"}
+                label={"Entity Name"}
                 defaultValue={row.property}
                 {...form.register("property")}
-                placeholder={"Enter metadata name"}
+                placeholder={"Enter entity name"}
                 className="md:text-sm 2xl:text-base"
               />
             </div>
@@ -373,7 +373,7 @@ export default function EditMetadataForm({ row }: TableRow) {
               type="button"
               intent={`secondary`}
               className="w-full"
-              onClick={() => dispatch(setCloseModal("editMetadataForm"))}
+              onClick={() => dispatch(setCloseModal("editLearnedContractForm"))}
             >
               <span className="inline-flex justify-center w-full">Cancel</span>
             </Button>

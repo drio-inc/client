@@ -1,22 +1,21 @@
-import metadata from "@/data/metadata.json";
 import { createSlice } from "@reduxjs/toolkit";
 
-type MetadataSlice = {
+type LearnedContractSlice = {
   rows: TableRow[];
   rawRows: TableRow[];
   selectedRows: number[];
   currentRow: TableRow | null;
 };
 
-const initialState: MetadataSlice = {
+const initialState: LearnedContractSlice = {
   rows: [],
   rawRows: [],
   selectedRows: [],
   currentRow: null,
 };
 
-const metadatSlice = createSlice({
-  name: "metadata",
+const learnedContractSlice = createSlice({
+  name: "learnedContract",
   initialState,
   reducers: {
     setRows(state, action) {
@@ -39,7 +38,6 @@ const metadatSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { setRows, setSelectedRows, setRawRows, setCurrentRow } =
-  metadatSlice.actions;
+export const { setRows, setSelectedRows, setRawRows, setCurrentRow } = learnedContractSlice.actions;
 
-export default metadatSlice.reducer;
+export default learnedContractSlice.reducer;

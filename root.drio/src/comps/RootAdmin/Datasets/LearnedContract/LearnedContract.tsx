@@ -1,62 +1,81 @@
+import dynamic from "next/dynamic";
 import Table from "@/comps/ui/Table";
-import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
-import MetadataMenu from "./MetadataMenu";
-import metadataJSON from "@/data/metadata.json";
+import LearnedContractMenu from "./LearnedContractMenu";
+import { setRows, setCurrentRow, setSelectedRows } from "@/state/slices/learnedContractSlice";
 
-import { setRows, setRawRows, setSelectedRows } from "@/state/slices/metadataSlice";
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IoRefresh } from "react-icons/io5";
-import AddMetaDataForm from "./AddMetaDataForm";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { setOpenModal } from "@/state/slices/uiSlice";
-import MetadataPopover from "./HeaderPopovers/MetadataPopover";
-import VisibilityPopover from "./HeaderPopovers/VisibilityPopover";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import getSchemas from "@/functions/legacy/getSchemas";
+import { useRouter } from "next/router";
+import getSchema from "@/functions/getSchema";
 import { mergedDDXData } from "@/functions/mergeDDXData";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
 
+import DemoSchema from "@/data/demo_schema_data.json";
+
+const Modal = dynamic(() => import("@/comps/ui/Modal"));
+const SchemaStats = dynamic(() => import("./SchemaStats"));
+const VisibilityPopover = dynamic(() => import("./HeaderPopovers/VisibilityPopover"));
+const AddLearnedContractDataForm = dynamic(() => import("./AddNewLearnedContractForm"));
+const LearnedContractPopover = dynamic(() => import("./HeaderPopovers/LearnedContractPopover"));
+
 const headers = [
   {
-    header: "Dataset Name",
-    accessor: "name",
+    header: "Attribute",
+    accessor: "property",
   },
   {
     header: "Sample Value",
     accessor: "sample_value",
   },
   {
-    header: "Data Type",
-    accessor: "type",
+    header: "Basic Data Type",
+    accessor: "property_type",
   },
   {
-    header: "Visibility",
-    accessor: "visibility",
-    menu: <VisibilityPopover />,
+    header: "Enhanced Data Type",
+    accessor: "enhanced_property_type",
   },
   {
     type: "array",
-    header: "Metadata",
+    header: "Key Name Tags",
     accessor: "key_name_tags",
-    menu: <MetadataPopover tagType="key_name_tags" />,
+    menu: <LearnedContractPopover tagType="key_name_tags" />,
+  },
+  {
+    type: "array",
+    header: "Data Field Tags",
+    accessor: "data_field_tags",
+    menu: <LearnedContractPopover tagType="data_field_tags" />,
   },
   {
     header: "Last Updated",
     accessor: "last_updated",
   },
+  {
+    header: "Discoverability",
+    accessor: "visibility",
+    menu: <VisibilityPopover />,
+  },
 ];
 
-const Metadata = () => {
+const LearnedContract = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
   const { recursiveRows } = useAppSelector((state) => state.orgUnit);
-  const { rows, selectedRows } = useAppSelector((state) => state.metadata);
   const { rows: dataSourceRows } = useAppSelector((state) => state.dataSource);
+  const { rows, selectedRows } = useAppSelector((state) => state.learnedContract);
+
+  const datasetName = router?.query?.dataset;
+  const datasourceId = router.asPath.split("/")[3];
 
   useEffect(() => {
     dispatch(setDDXRows(mergedDDXData()));
@@ -64,17 +83,30 @@ const Metadata = () => {
   }, [dispatch, recursiveRows]);
 
   useEffect(() => {
-    const dataSourceIds = dataSourceRows.map((row) => ({
-      ou_id: row.ou_id,
-      datasource_id: row.id,
-      account_id: row.account_id,
-    }));
+    setLoading(true);
+    const myDemoSchema: any = DemoSchema;
+    const params = dataSourceRows?.find((row) => row?.id === datasourceId);
 
-    getSchemas(dataSourceIds).then((payload) => {
-      dispatch(setRows([...payload.data]));
-      dispatch(setRawRows(payload.rawData));
+    getSchema({
+      ou_id: params?.ou_id ?? "",
+      datasource_id: params?.id ?? "",
+      account_id: params?.account_id ?? "",
+    }).then((payload) => {
+      const data = payload
+        ?.filter((row) => row?.dataset_name === datasetName)
+        .map((row) => {
+          if (row?.dataset_name === "SalesforceOrders") {
+            return {
+              ...row,
+              ...myDemoSchema[row.property],
+            };
+          } else return row;
+        });
+
+      dispatch(setRows([...data]));
+      setLoading(false);
     });
-  }, [dataSourceRows, dispatch]);
+  }, [dataSourceRows, datasetName, datasourceId, dispatch]);
 
   const handleCheckbox = (index: number) => {
     if (selectedRows.includes(index)) {
@@ -84,6 +116,11 @@ const Metadata = () => {
     }
   };
 
+  const handlelRowClick = (row: TableRow) => {
+    dispatch(setCurrentRow(row));
+    dispatch(setOpenModal("schemStatsDetails"));
+  };
+
   const clearSelectedRows = () => dispatch(setSelectedRows([]));
 
   return (
@@ -91,7 +128,7 @@ const Metadata = () => {
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div className="rounded-lg bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between">
           {selectedRows.length > 0 && (
-            <div className="flex items-center">
+            <div className="flex items-center mr-2">
               <Checkbox.Root
                 className="mr-3 flex h-4 w-4 appearance-none items-center justify-center rounded bg-white data-[state=checked]:bg-drio-red outline-none data-[state=unchecked]:border border-gray-300"
                 checked={selectedRows.length > 0}
@@ -112,33 +149,43 @@ const Metadata = () => {
             </div>
           )}
 
+          <span className="font-medium">Dataset: {datasetName}</span>
+
           <div className="flex gap-4 ml-auto">
             <Button
               icon={<HiPlus />}
               intent={"primary"}
-              onClick={() => dispatch(setOpenModal("addMetadataForm"))}
+              onClick={() => dispatch(setOpenModal("addLearnedContractForm"))}
             >
-              Add New Metadata
+              Add Custom Entity to Contract
             </Button>
           </div>
 
           <div className="hidden">
-            <Modal identifier="addMetadataForm">
-              <AddMetaDataForm />
+            <Modal identifier="addLearnedContractForm">
+              <AddLearnedContractDataForm />
+            </Modal>
+          </div>
+
+          <div className="hidden">
+            <Modal identifier="schemStatsDetails">
+              <SchemaStats />
             </Modal>
           </div>
         </div>
 
         <Table
           rows={rows}
+          loading={loading}
           headers={headers}
-          menu={MetadataMenu}
+          menu={LearnedContractMenu}
           selectedRows={selectedRows}
           handleCheckbox={handleCheckbox}
+          handleRowClick={handlelRowClick}
         />
       </div>
     </div>
   );
 };
 
-export default Metadata;
+export default LearnedContract;
