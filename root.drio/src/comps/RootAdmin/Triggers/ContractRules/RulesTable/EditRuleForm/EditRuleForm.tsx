@@ -204,7 +204,7 @@ export default function EditRuleForm({ row }: TableRow) {
     <Layout>
       <Form form={form} onSubmit={onSubmit}>
         <div className="mx-auto bg-white p-6 rounded-lg w-[60vw]">
-          <h2 className="text-gray-700 text-2xl font-bold">Edit Rules</h2>
+          <h2 className="text-gray-700 text-2xl font-bold">Edit Contract</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4 border bg-gray-50">
             <div className="px-4 py-2 w-full lg:w-1/2 2xl:w-1/3">
