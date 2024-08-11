@@ -36,6 +36,14 @@ const headers = [
     accessor: "sample_value",
   },
   {
+    header: "Is List",
+    accessor: "is_list",
+  },
+  {
+    header: "Optional",
+    accessor: "optional",
+  },
+  {
     header: "Basic Data Type",
     accessor: "property_type",
   },

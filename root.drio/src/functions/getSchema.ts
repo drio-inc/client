@@ -34,6 +34,8 @@ export default async function getSchemas(params: Params) {
 
       let transformedObject = {
         id: uuidv4(),
+        is_list: "No",
+        optional: false,
         key_name_tags: [],
         sample_value: null,
         data_field_tags: [],

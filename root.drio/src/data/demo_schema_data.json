@@ -2,6 +2,8 @@
   "Dealer Name": {
     "sample_value": "Texas Harley-Davidson",
     "enhanced_property_type": "string",
+    "is_list": "No",
+    "optional": false,
     "key_name_tags": [
       {
         "id": "100",
@@ -29,6 +31,8 @@
   "Order ID": {
     "sample_value": "HDC000176568",
     "enhanced_property_type": "alphanumeric",
+    "is_list": "No",
+    "optional": false,
     "key_name_tags": [
       {
         "id": "100",
@@ -49,6 +53,8 @@
   "Product Name": {
     "sample_value": "ELECTRA GLIDE STANDARD",
     "enhanced_property_type": "list",
+    "is_list": "No",
+    "optional": false,
     "key_name_tags": [
       {
         "id": "100",
@@ -87,6 +93,8 @@
   "SKU": {
     "sample_value": "167692496",
     "enhanced_property_type": "numeric",
+    "is_list": "No",
+    "optional": false,
     "key_name_tags": [
       {
         "id": "100",
@@ -106,6 +114,8 @@
   },
   "Ship Quantity": {
     "sample_value": "329",
+    "is_list": "Yes",
+    "optional": true,
     "enhanced_property_type": "integer",
     "key_name_tags": [
       {
@@ -127,6 +137,8 @@
   "Price": {
     "sample_value": "9870000",
     "enhanced_property_type": "currency",
+    "is_list": "No",
+    "optional": true,
     "key_name_tags": [
       {
         "id": "100",
@@ -153,6 +165,8 @@
   "Desired ETA": {
     "sample_value": "4/15/2023 12:18",
     "enhanced_property_type": "date",
+    "is_list": "Yes",
+    "optional": false,
     "key_name_tags": [
       {
         "id": "100",
@@ -173,6 +187,8 @@
   "Ship to Location": {
     "sample_value": "1 Texas Harley Wy, Bedford, TX 76021",
     "enhanced_property_type": "geolocation",
+    "is_list": "No",
+    "optional": false,
     "key_name_tags": [
       {
         "id": "100",
@@ -199,6 +215,8 @@
   "NOTES": {
     "sample_value": "John Travis from Texas Harley Davidson at 682-555-1212 is insisting all of this go to his dealership",
     "enhanced_property_type": "string",
+    "is_list": "No",
+    "optional": false,
     "key_name_tags": [
       {
         "id": "100",
