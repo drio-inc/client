@@ -45,6 +45,18 @@ export default function AnomalyPopupV2() {
   };
 
   const renderDescription = () => {
+    const convertExcelDateToUTC = (excelDate: number) => {
+      const utc_days = Math.floor(excelDate - 25569);
+      const utc_value = utc_days * 86400;
+      const date_info = new Date(utc_value * 1000);
+
+      const day = date_info.getUTCDate();
+      const year = date_info.getUTCFullYear();
+      const month = date_info.getUTCMonth() + 1;
+
+      return `${month}/${day}/${year}`;
+    };
+
     switch (row?.event_type) {
       case "datatype_mismatch":
         return (
@@ -99,7 +111,11 @@ export default function AnomalyPopupV2() {
                   <div className="flex flex-col text-drio-red" key={key}>
                     <div className="flex gap-x-1">
                       <span className="font-medium">{key}:</span>
-                      <span>{row?.record[key]}</span>
+                      <span>
+                        {key === "Desired ETA"
+                          ? convertExcelDateToUTC(row?.record[key])
+                          : row?.record[key]}
+                      </span>
                     </div>
                   </div>
                 )) ?? "No data found"}
@@ -165,29 +181,21 @@ export default function AnomalyPopupV2() {
 
       case "added_new_field":
         return (
-          <span className="text-gray-900 block mb-4">
-            Detected deviation from learned schema on{" "}
-            <span className="font-bold">
-              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
-            </span>
-          </span>
+          <span className="text-gray-900 block mb-4">Data attribute has unexpected meta tag</span>
         );
 
       case "anomaly":
         return (
           <span className="text-gray-900 block">
-            <span>
-              Detected deviation from learned data field characteristics on{" "}
-              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
-            </span>
+            <span>Data attribute value found to be outside expected range</span>
           </span>
         );
 
       case "Cluster Anomaly":
         return (
           <span>
-            Anomaly detected based on learned characteristics of the data set on{" "}
-            <strong>{new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}</strong>
+            The combination of the dataset attributes values seems to be unexpected per the learned
+            contract
           </span>
         );
     }
@@ -196,20 +204,16 @@ export default function AnomalyPopupV2() {
   const renderHeading = () => {
     switch (row?.event_type) {
       case "datatype_mismatch":
-        return "Data Type Mismatch";
+        return "Learned Contract Violation";
 
       case "added_new_field":
-        return "New field added to a dataset";
+        return "Learned Contract Violation";
 
       case "anomaly":
-        return "Data field outside expected range";
+        return "Learned Contract Violation";
 
       case "Cluster Anomaly":
-        return (
-          <span className="w-4/5 block">
-            Data fields combination in the received data appear outside of normal seen previously
-          </span>
-        );
+        return <span className="w-4/5 block">Learned Contract Violation</span>;
       default:
         return "Unknown Event";
     }
@@ -233,9 +237,15 @@ export default function AnomalyPopupV2() {
 
         <div className="flex flex-col gap-y-4">
           <div className="bg-white mt-2 flex flex-col gap-y-2 rounded-md">
-            <span className="font-medium text-gray-700">Details</span>
             <div className="border-2 p-4 rounded-md">
               <p className="text-gray-900">{renderDescription()}</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-4 flex flex-col gap-y-2 rounded-md">
+            <span className="font-medium text-gray-700">Consumbers of this Data</span>
+            <div className="border-2 p-4 rounded-md">
+              <span className="text-gray-900">{row?.name ?? "Unknown"}</span>
             </div>
           </div>
 
