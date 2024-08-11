@@ -22,7 +22,7 @@ const headers = [
   },
   {
     header: "Contract Rule Name",
-    accessor: "rule_name",
+    accessor: "ruleset_name",
   },
   {
     header: "# of Datasets",
