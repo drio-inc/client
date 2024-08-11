@@ -56,18 +56,18 @@ const NavLinks = [
   },
 
   {
-    name: "Data Domain Learning",
-    href: "data-domain-learning",
-    default: "lexicon",
+    name: "Data Learning",
+    href: "data-learning",
+    default: "domain-learning",
     icon: <BiBrain className="inline-block w-6 h-6 mr-2" />,
     children: [
       {
-        name: "Lexicon",
-        href: "lexicon",
+        name: "Domain Learning",
+        href: "domain-learning",
       },
       {
-        name: "Anomaly Model",
-        href: "anomaly-model",
+        name: "Contract Learning",
+        href: "contract-learning",
       },
     ],
   },

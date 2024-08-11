@@ -1,11 +1,11 @@
 import Modal from "@/comps/ui/Modal";
-import ReviewLexicon from "../ReviewLexicon";
+import ReviewLexicon from "../ReviewDomain";
 import AlertModal from "@/comps/ui/AlertModal";
 import { HiDotsVertical } from "react-icons/hi";
-import EditLexiconForm from "../EditLexiconForm";
+import EditLexiconForm from "../EditDomainForm";
 import * as Popover from "@radix-ui/react-popover";
 import { setOpenModal } from "@/state/slices/uiSlice";
-import AddLexiconFilesForm from "../AddLexiconFilesForm";
+import AddLexiconFilesForm from "../AddDomainFilesForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setRows, setSelectedRows, setLexiconDetails } from "@/state/slices/lexiconSlice";
 

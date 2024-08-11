@@ -1,16 +1,16 @@
 import Layout from "@/comps/Layout";
 import withAuth from "@/comps/HOC/withAuth";
+import ContractLearning from "@/comps/RootAdmin/ContractLearning";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
-import Lexicon from "@/comps/RootAdmin/Lexicon";
 
-const LexiconPage = () => {
+const ContractLearningPage = () => {
   return (
     <Layout>
       <DashboardContainer>
-        <Lexicon />
+        <ContractLearning />
       </DashboardContainer>
     </Layout>
   );
 };
 
-export default LexiconPage;
+export default withAuth(ContractLearningPage);

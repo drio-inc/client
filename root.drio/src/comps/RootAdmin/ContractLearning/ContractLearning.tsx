@@ -44,7 +44,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const AnomalyModel = () => {
+const ContractLearning = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const form = useForm<FormData>({
@@ -65,10 +65,10 @@ const AnomalyModel = () => {
             className="flex flex-col flex-wrap w-full mb-4"
           >
             <div className="py-4 px-8 border-b">
-              <h2 className="text-gray-700 text-xl font-bold">HDBSCAN Parameters</h2>
+              <h2 className="text-gray-700 text-xl font-bold">Learning Generalization</h2>
             </div>
 
-            <div className="flex flex-wrap justify-around">
+            <div className="flex flex-wrap px-8">
               <div className="py-2 w-full md:w-[45%]">
                 <FormField
                   control={form.control}
@@ -76,8 +76,10 @@ const AnomalyModel = () => {
                   render={({ field }) => {
                     return (
                       <FormItem>
-                        <FormLabel className="text-sm text-gray-700">
-                          Min Cluster Size - {field.value ?? 0}
+                        <FormLabel className="text-sm text-gray-700 flex justify-between">
+                          <span>Tight Learning </span>
+                          <span>{field.value ?? 0}</span>
+                          <span>Generalized Learning</span>
                         </FormLabel>
                         <FormControl>
                           <>
@@ -104,7 +106,7 @@ const AnomalyModel = () => {
                 />
               </div>
 
-              <div className="py-2 w-full md:w-[45%]">
+              {/* <div className="py-2 w-full md:w-[45%]">
                 <FormField
                   control={form.control}
                   name={`min_samples`}
@@ -137,7 +139,11 @@ const AnomalyModel = () => {
                     );
                   }}
                 />
-              </div>
+              </div> */}
+            </div>
+
+            <div className="py-4 px-8 border-b">
+              <h2 className="text-gray-700 text-xl font-bold">Triggered Re-Learning</h2>
             </div>
 
             <div className="flex flex-wrap justify-around items-center">
@@ -203,7 +209,7 @@ const AnomalyModel = () => {
             </div>
 
             <div className="py-4 px-8 border-b">
-              <h2 className="text-gray-700 text-xl font-bold">Learning Complete Trigger</h2>
+              <h2 className="text-gray-700 text-xl font-bold">Learning Completion Criteria</h2>
             </div>
 
             <div className="flex flex-wrap justify-around items-center">
@@ -344,4 +350,4 @@ const AnomalyModel = () => {
   );
 };
 
-export default AnomalyModel;
+export default ContractLearning;

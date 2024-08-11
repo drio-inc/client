@@ -9,7 +9,7 @@ import * as RadioGroup from "@radix-ui/react-radio-group";
 
 import { z } from "zod";
 import { FiBookOpen } from "react-icons/fi";
-import ReviewLexicon from "../ReviewLexicon";
+import ReviewLexicon from "../ReviewDomain";
 import { SubmitHandler } from "react-hook-form";
 import * as Switch from "@radix-ui/react-switch";
 import { useZodForm, Form } from "@ui/Forms/Form";

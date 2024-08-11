@@ -12,7 +12,7 @@ import { FiBookOpen } from "react-icons/fi";
 import { SubmitHandler } from "react-hook-form";
 import { Separator } from "@/comps/ui/Separator";
 import { useZodForm, Form } from "@ui/Forms/Form";
-import AddLexiconFilesForm from "../AddLexiconFilesForm";
+import AddLexiconFilesForm from "../AddDomainFilesForm";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 import { setLexiconDetails, setRows } from "@/state/slices/lexiconSlice";

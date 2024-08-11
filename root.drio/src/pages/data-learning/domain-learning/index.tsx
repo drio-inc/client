@@ -1,16 +1,16 @@
 import Layout from "@/comps/Layout";
 import withAuth from "@/comps/HOC/withAuth";
-import AnomalyModel from "@/comps/RootAdmin/AnomalyModel";
+import DomainLearning from "@/comps/RootAdmin/DomainLearning";
 import DashboardContainer from "@ui/Containers/DashboardContainer";
 
-const AnomalyModelPage = () => {
+const DomainLearningPage = () => {
   return (
     <Layout>
       <DashboardContainer>
-        <AnomalyModel />
+        <DomainLearning />
       </DashboardContainer>
     </Layout>
   );
 };
 
-export default withAuth(AnomalyModelPage);
+export default DomainLearningPage;

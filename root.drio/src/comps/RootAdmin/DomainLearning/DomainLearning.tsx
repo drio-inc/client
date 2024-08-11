@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import Modal from "@/comps/ui/Modal";
 import Button from "@/comps/ui/Button";
-import LexiconMenu from "./LexiconMenu";
+import LexiconMenu from "./DomainLearningMenu";
 import { MdCheck } from "react-icons/md";
 import { IoRefresh } from "react-icons/io5";
 import { HiCheck, HiPlus } from "react-icons/hi";
@@ -11,9 +11,9 @@ import { setSelectedRows } from "@/state/slices/lexiconSlice";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import ReviewLexicon from "./ReviewLexicon";
-import AddLexiconForm from "./AddLexiconForm";
-import GraphView from "./ReviewLexicon/GraphView";
+import ReviewLexicon from "./ReviewDomain";
+import AddLexiconForm from "./AddDomainForm";
+import GraphView from "./ReviewDomain/GraphView";
 import DataTable from "@/comps/ui/Table/DataTable";
 import { MdOutlineCheckCircleOutline, MdOutlineRemoveCircleOutline } from "react-icons/md";
 
