@@ -1,20 +1,30 @@
+import Link from "next/link";
 import Button from "@ui/Button";
+import { useState } from "react";
 import Layout from "@/comps/Layout";
 import { SubmitHandler } from "react-hook-form";
-import { setCloseModal } from "@/state/slices/uiSlice";
-import { useAppDispatch } from "@/hooks/useStoreTypes";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import { HiOutlineClock } from "react-icons/hi";
+import { HiOutlineClock, HiOutlineTrash } from "react-icons/hi";
 import { MdOutlineCalendarMonth } from "react-icons/md";
 
 import Image from "next/image";
+import Modal from "@/comps/ui/Modal";
+import { FaArrowRight } from "react-icons/fa";
 import { AiFillCaretRight } from "react-icons/ai";
 import { RiUploadCloud2Line } from "react-icons/ri";
-import Link from "next/link";
-import { FaArrowRight } from "react-icons/fa";
+import { transformContractRules } from "@/functions/flattenRules";
+import RulesTable from "@/comps/RootAdmin/Triggers/ContractRules/RulesTable";
+
+type ImageSelect = React.ChangeEvent<HTMLInputElement>;
 
 export default function ViewConsumerContractsForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
+  const contractRuleState = useAppSelector((state) => state.contractRule);
+  const [senderSignatureImage, setSenderSignatureImage] = useState<Blob | null>(null);
+  const [receiverSignatureImage, setReceiverSignatureImage] = useState<Blob | null>(null);
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {};
 
   return (
@@ -58,12 +68,18 @@ export default function ViewConsumerContractsForm({ row }: TableRow) {
                 <h3 className="text-xl font-bold mb-2">App Personas Allowed</h3>
 
                 <div className="flex flex-col gap-y-2">
-                  <Link href={"/triggers/contract-rules"} className="flex items-center gap-2">
+                  <Link
+                    href={"/data-contracts/consuming-app-personas"}
+                    className="flex items-center gap-2"
+                  >
                     <span className="text-blue-500 underline">Loan App</span>
                     <AiFillCaretRight className="text-blue-500 " />
                   </Link>
 
-                  <Link href={"/triggers/contract-rules"} className="flex items-center gap-2">
+                  <Link
+                    href={"/data-contracts/consuming-app-personas"}
+                    className="flex items-center gap-2"
+                  >
                     <span className="text-blue-500 underline">Marketing</span>
                     <AiFillCaretRight className="text-blue-500 " />
                   </Link>
@@ -150,49 +166,43 @@ export default function ViewConsumerContractsForm({ row }: TableRow) {
               <div className="w-full">
                 <h3 className="text-xl font-semibold">Legal Addendums</h3>
 
-                <div className="w-full flex flex-col divide-y-2">
-                  <div className="w-full flex flex-col gap-2 py-2">
-                    <span className="font-bold text-xl text-gray-700">Privacy</span>
-                    <p className="text-gray-500">
-                      Lorem ipsum dolor sit amet consectetur. A ut turpis dui integer egestas
-                      tincidunt enim. In nec gravida tempor molestie varius. Libero dolor bibendum
-                      quis nec lectus hac. Pellentesque aliquam amet hendrerit condimentum nullam.
-                      Dolor morbi mauris nunc phasellus diam. Varius pellentesque sed morbi
-                      vestibulum cursus. Tellus hendrerit in viverra ornare.
-                    </p>
-                    <div>
-                      <Button
-                        intent={`primary`}
-                        iconPosition="right"
-                        icon={<AiFillCaretRight className="ml-2" />}
-                      >
-                        View Policy
-                      </Button>
-                    </div>
-                  </div>
+                <div className="w-full flex flex-col divide-y-2 gap-y-2">
+                  {contractRuleState.rows.map((r) => (
+                    <div className="w-full flex flex-col gap-2 py-2" key={r.id}>
+                      <span className="font-bold text-xl text-gray-700 capitalize">{r.type}</span>
+                      <p className="text-gray-500">
+                        Lorem ipsum dolor sit amet consectetur. A ut turpis dui integer egestas
+                        tincidunt enim. In nec gravida tempor molestie varius. Libero dolor bibendum
+                        quis nec lectus hac. Pellentesque aliquam amet hendrerit condimentum nullam.
+                        Dolor morbi mauris nunc phasellus diam. Varius pellentesque sed morbi
+                        vestibulum cursus. Tellus hendrerit in viverra ornare.
+                      </p>
+                      <div>
+                        <Button
+                          intent={`primary`}
+                          iconPosition="right"
+                          icon={<AiFillCaretRight className="ml-2" />}
+                          onClick={() => dispatch(setOpenModal(`contractRulesTable-${r.id}`))}
+                        >
+                          View Contract Rule
+                        </Button>
+                      </div>
 
-                  <div className="w-full flex flex-col gap-2 py-2">
-                    <span className="font-bold text-xl text-gray-700">Regulatory</span>
-                    <p className="text-gray-500">
-                      Lorem ipsum dolor sit amet consectetur. A ut turpis dui integer egestas
-                      tincidunt enim. In nec gravida tempor molestie varius. Libero dolor bibendum
-                      quis nec lectus hac. Pellentesque aliquam amet hendrerit condimentum nullam.
-                      Dolor morbi mauris nunc phasellus diam. Varius pellentesque sed morbi
-                      vestibulum cursus. Tellus hendrerit in viverra ornare.
-                    </p>
-                    <div>
-                      <Button
-                        intent={`primary`}
-                        iconPosition="right"
-                        icon={<AiFillCaretRight className="ml-2" />}
-                      >
-                        View Policy
-                      </Button>
+                      <div className="hidden">
+                        <Modal
+                          label="View"
+                          identifier={`contractRulesTable-${r.id}`}
+                          onClick={() => dispatch(setOpenModal(`contractRulesTable-${r.id}`))}
+                        >
+                          <RulesTable modal={true} rows={transformContractRules(r.rules)} />
+                        </Modal>
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
+
             {/* Signature */}
             <div className="flex flex-col items-center my-4 w-full">
               <div className="flex flex-col gap-y-4">
@@ -207,25 +217,58 @@ export default function ViewConsumerContractsForm({ row }: TableRow) {
                   <span>Cox Automotive Signatory</span>
                 </div>
 
-                <div className="bg-[#F9FBFD] text-blue-500 border-dashed border-2 rounded-lg  border-blue-300 flex flex-col items-center justify-center py-8 px-12">
-                  <RiUploadCloud2Line className="w-10 h-10 mb-4" />
-                  <span className="text-lg font-semibold">Upload signature here</span>
-                </div>
+                {!senderSignatureImage ? (
+                  <>
+                    <label
+                      htmlFor="sender-signature-image"
+                      className="cursor-pointer bg-[#F9FBFD] text-blue-500 border-dashed border-2 rounded-lg  border-blue-300 flex flex-col items-center justify-center py-8 px-12"
+                    >
+                      <RiUploadCloud2Line className="w-10 h-10 mb-4" />
+                      <span className="text-lg font-semibold">Upload signature here</span>
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      id="sender-signature-image"
+                      className="hidden absolute cursor-pointer"
+                      onChange={(event: ImageSelect) =>
+                        setSenderSignatureImage(event?.target?.files && event?.target?.files[0])
+                      }
+                    />
+                  </>
+                ) : (
+                  <div>
+                    <Image
+                      width={350}
+                      height={350}
+                      alt="sender-signature"
+                      src={URL.createObjectURL(senderSignatureImage)}
+                      className="object-contain object-center"
+                    />
+
+                    <span
+                      className="inline-flex mt-4 cursor-pointer"
+                      onClick={() => setSenderSignatureImage(null)}
+                    >
+                      <HiOutlineTrash className="text-drio-red w-8 h-8" />
+                    </span>
+                  </div>
+                )}
 
                 <span className="text-center font-bold text-xl text-gray-700">Marsha Smith</span>
               </div>
             </div>
             {/* Submit/Reject */}
             <div className="px-2 py-2 flex gap-4 justify-center w-full mt-4">
-              <Button
-                type="button"
-                intent={`secondary`}
-                onClick={() => dispatch(setCloseModal("editDatasetForm"))}
-              >
+              <Button type="button" intent={`secondary`}>
                 <span className="inline-flex justify-center w-full">Reject</span>
               </Button>
 
-              <Button type="button" intent={`primary`}>
+              <Button
+                type="button"
+                intent={`primary`}
+                disabled={!senderSignatureImage || !receiverSignatureImage}
+              >
                 <span className="inline-flex justify-center w-full">Approve</span>
               </Button>
             </div>
@@ -247,15 +290,21 @@ export default function ViewConsumerContractsForm({ row }: TableRow) {
               <h3 className="text-xl font-bold mb-2">App Personas Allowed</h3>
 
               <div className="flex flex-col gap-y-2">
-                <div className="flex items-center gap-2">
+                <Link
+                  href={"/data-contracts/consuming-app-personas"}
+                  className="flex items-center gap-2"
+                >
                   <span className="text-blue-500 underline">Loan App</span>
                   <AiFillCaretRight className="text-blue-500 " />
-                </div>
+                </Link>
 
-                <div className="flex items-center gap-2">
+                <Link
+                  href={"/data-contracts/consuming-app-personas"}
+                  className="flex items-center gap-2"
+                >
                   <span className="text-blue-500 underline">Marketing</span>
                   <AiFillCaretRight className="text-blue-500 " />
-                </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -329,10 +378,43 @@ export default function ViewConsumerContractsForm({ row }: TableRow) {
                 <span>Cox Automotive Signatory</span>
               </div>
 
-              <div className="bg-[#F9FBFD] text-blue-500 border-dashed border-2 rounded-lg  border-blue-300 flex flex-col items-center justify-center py-8 px-12">
-                <RiUploadCloud2Line className="w-10 h-10 mb-4" />
-                <span className="text-lg font-semibold">Upload signature here</span>
-              </div>
+              {!receiverSignatureImage ? (
+                <>
+                  <label
+                    htmlFor="receiver-signature-image"
+                    className="cursor-pointer bg-[#F9FBFD] text-blue-500 border-dashed border-2 rounded-lg  border-blue-300 flex flex-col items-center justify-center py-8 px-12"
+                  >
+                    <RiUploadCloud2Line className="w-10 h-10 mb-4" />
+                    <span className="text-lg font-semibold">Upload signature here</span>
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="receiver-signature-image"
+                    className="hidden absolute cursor-pointer"
+                    onChange={(event: ImageSelect) =>
+                      setReceiverSignatureImage(event?.target?.files && event?.target?.files[0])
+                    }
+                  />
+                </>
+              ) : (
+                <div>
+                  <Image
+                    width={350}
+                    height={350}
+                    alt="receiver-signature"
+                    className="object-contain object-center"
+                    src={URL.createObjectURL(receiverSignatureImage)}
+                  />
+
+                  <span
+                    className="inline-flex mt-4 cursor-pointer"
+                    onClick={() => setReceiverSignatureImage(null)}
+                  >
+                    <HiOutlineTrash className="text-drio-red w-8 h-8" />
+                  </span>
+                </div>
+              )}
 
               <span className="text-center font-bold text-xl text-gray-700">Marsha Smith</span>
             </div>
@@ -340,15 +422,15 @@ export default function ViewConsumerContractsForm({ row }: TableRow) {
 
           {/* Submit/Reject */}
           <div className="px-2 py-2 flex gap-4 justify-center">
-            <Button
-              type="button"
-              intent={`secondary`}
-              onClick={() => dispatch(setCloseModal("editDatasetForm"))}
-            >
+            <Button type="button" intent={`secondary`}>
               <span className="inline-flex justify-center w-full">Reject</span>
             </Button>
 
-            <Button type="button" intent={`primary`}>
+            <Button
+              type="button"
+              intent={`primary`}
+              disabled={!senderSignatureImage || !receiverSignatureImage}
+            >
               <span className="inline-flex justify-center w-full">Approve</span>
             </Button>
           </div>

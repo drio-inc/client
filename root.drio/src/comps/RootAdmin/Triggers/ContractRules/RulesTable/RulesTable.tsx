@@ -3,7 +3,7 @@ import Button from "@/comps/ui/Button";
 import { HiPlus, HiX } from "react-icons/hi";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
 import type { FlattenedRule } from "@/functions/flattenRules";
-import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
+import { closeAllModals, setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
 import Modal from "@/comps/ui/Modal";
 import { useRouter } from "next/router";
@@ -119,7 +119,7 @@ const RulesTable = ({ rows, editable = false, modal = false }: PolicyProps) => {
           <span>
             <HiX
               className="w-8 h-8 cursor-pointer hover:text-drio-red-dark transition-all duration-200 ml-4"
-              onClick={() => dispatch(setCloseModal("contractRulesTable"))}
+              onClick={() => dispatch(closeAllModals())}
             />
           </span>
         )}

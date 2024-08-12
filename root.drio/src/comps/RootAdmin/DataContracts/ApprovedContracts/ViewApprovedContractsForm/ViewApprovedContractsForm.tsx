@@ -1,37 +1,48 @@
+import Link from "next/link";
 import Button from "@ui/Button";
-import showAlert from "@ui/Alert";
+import { useState } from "react";
 import Layout from "@/comps/Layout";
 import { SubmitHandler } from "react-hook-form";
-import { setCloseModal } from "@/state/slices/uiSlice";
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import { HiOutlineClock } from "react-icons/hi";
+import { HiOutlineClock, HiOutlineTrash } from "react-icons/hi";
 import { MdOutlineCalendarMonth } from "react-icons/md";
 
 import Image from "next/image";
+import Modal from "@/comps/ui/Modal";
+import { FaArrowRight } from "react-icons/fa";
 import { AiFillCaretRight } from "react-icons/ai";
 import { RiUploadCloud2Line } from "react-icons/ri";
-import { FaArrowRight } from "react-icons/fa";
+import { transformContractRules } from "@/functions/flattenRules";
+import RulesTable from "@/comps/RootAdmin/Triggers/ContractRules/RulesTable";
+import { IoCheckmarkCircleSharp } from "react-icons/io5";
 
-export default function ViewApprovedContractsForm({ row }: TableRow) {
+type ImageSelect = React.ChangeEvent<HTMLInputElement>;
+
+export default function ViewConsumerContractsForm({ row }: TableRow) {
   const dispatch = useAppDispatch();
+  const contractRuleState = useAppSelector((state) => state.contractRule);
+  const [senderSignatureImage, setSenderSignatureImage] = useState<Blob | null>(null);
+  const [receiverSignatureImage, setReceiverSignatureImage] = useState<Blob | null>(null);
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {};
 
   return (
-    <div className="h-full flex items-center justify-center p-4">
+    <div className="h-full flex items-center justify-center">
       <Layout>
-        <div className="flex items-center bg-white mb-4 p-6 rounded-lg">
-          <Image height={40} width={40} alt="bank-logo" src="/images/bank-of-america.svg" />
+        <div className="flex items-center bg-white mb-4 p-4 rounded-lg">
+          <Image width={40} height={40} alt="bank-logo" src="/images/bank-of-america.svg" />
 
           <h2 className="text-gray-700 ml-4 text-2xl font-bold">
             Data Sharing Contract with B Bank
           </h2>
         </div>
 
-        <div className="mx-auto bg-white py-4 px-12 rounded-lg max-w-5xl">
+        <div className="mx-auto bg-white py-2 px-8 rounded-lg max-w-5xl">
           <div className="flex flex-wrap -m-2 rounded-lg my-4">
             {/* Validity Timeframe */}
-            <div className="w-full px-4 my-4">
+            <div className="w-full px-4 my-2">
               <h3 className="text-xl font-bold mb-2">Validity Timeframe</h3>
 
               <div className="flex rounded-lg border p-6 divide-x-2">
@@ -52,52 +63,50 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
                 </div>
               </div>
             </div>
-
             {/* App Personas */}
-            <div className="flex justify-between w-full px-4 my-4">
+            <div className="flex justify-between w-full px-4 my-2">
               <div>
                 <h3 className="text-xl font-bold mb-2">App Personas Allowed</h3>
 
                 <div className="flex flex-col gap-y-2">
-                  <div className="flex items-center gap-2">
+                  <Link
+                    href={"/data-contracts/consuming-app-personas"}
+                    className="flex items-center gap-2"
+                  >
                     <span className="text-blue-500 underline">Loan App</span>
                     <AiFillCaretRight className="text-blue-500 " />
-                  </div>
+                  </Link>
 
-                  <div className="flex items-center gap-2">
+                  <Link
+                    href={"/data-contracts/consuming-app-personas"}
+                    className="flex items-center gap-2"
+                  >
                     <span className="text-blue-500 underline">Marketing</span>
                     <AiFillCaretRight className="text-blue-500 " />
-                  </div>
+                  </Link>
                 </div>
               </div>
             </div>
 
             {/* Limitations */}
-            <div className="w-full px-4 my-4">
+            <div className="w-full px-4 my-2">
               <h3 className="text-xl font-bold mb-2">Limitations</h3>
 
-              <div className="flex rounded-lg border p-6 divide-x-2">
+              <div className="flex rounded-lg border p-4 divide-x-2">
                 <div className="w-1/2 flex flex-col items-center">
                   <span className="text-drio-red font-bold text-2xl">02</span>
-                  <p className="text-gray-500 text-sm text-center">
-                    Max number of <br />
-                    personas
-                  </p>
+                  <p className="text-gray-500 text-sm text-center">Max number of personas</p>
                 </div>
 
                 <div className="w-1/2 flex flex-col items-center">
                   <span className="text-drio-red font-bold text-2xl">56</span>
-                  <p className="text-gray-500 text-sm text-center">
-                    Max number of <br />
-                    accessors
-                  </p>
+                  <p className="text-gray-500 text-sm text-center">Max number of accessors</p>
                 </div>
 
                 <div className="w-1/2 flex flex-col items-center">
                   <span className="text-drio-red font-bold text-2xl">25</span>
                   <p className="text-gray-500 text-sm text-center">
-                    Max daily access <br />
-                    frequency limit
+                    Max daily access frequency limit
                   </p>
                 </div>
               </div>
@@ -105,24 +114,24 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
 
             {/* Datasets Covered */}
             <div className="w-full px-4 my-2">
-              <h3 className="text-xl font-bold mb-2">Datasets Covered</h3>
+              <h3 className="text-xl font-bold">Datasets Covered</h3>
 
               <div className="flex flex-col divide-y-2">
-                <div className="w-full flex justify-between items-center py-6">
+                <div className="w-full flex justify-between items-center py-4">
                   <span className="text-gray-700 font-bold">All Personas</span>
                   <p className="text-gray-500 text-sm text-center underline">
                     : /api/2022-10-31/ account/Cox/orgunit/dt.com/*
                   </p>
                 </div>
 
-                <div className="w-full flex justify-between items-center py-6">
+                <div className="w-full flex justify-between items-center py-4">
                   <span className="text-gray-700 font-bold">Loan App</span>
                   <p className="text-gray-500 text-sm text-center underline">
                     : /api/2022-10-31/ account/Cox/orgunit/dt.com/*
                   </p>
                 </div>
 
-                <div className="w-full flex justify-between items-center py-6">
+                <div className="w-full flex justify-between items-center py-4">
                   <span className="text-gray-700 font-bold">Marketing App</span>
                   <p className="text-gray-500 text-sm text-center underline">
                     : /api/2022-10-31/ account/Cox/orgunit/dt.com/*
@@ -154,48 +163,57 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
             </div>
 
             {/* Legal Addendums */}
-            <div className="flex justify-between w-full my-4 px-4">
+            <div className="flex justify-between w-full my-2 px-4">
               <div className="w-full">
-                <h3 className="text-xl font-semibold mb-2">Legal Addendums</h3>
+                <h3 className="text-xl font-semibold">Legal Addendums</h3>
 
-                <div className="w-full flex flex-col divide-y-2">
-                  <div className="w-full flex flex-col gap-2 py-6">
-                    <span className="font-bold text-xl text-gray-700">Privacy</span>
-                    <p className="text-gray-500">
-                      Contains all the Privacy T&C related to this contract
-                    </p>
-                    <div>
-                      <Button
-                        intent={`primary`}
-                        iconPosition="right"
-                        icon={<AiFillCaretRight className="ml-2" />}
-                      >
-                        View Contract Rule
-                      </Button>
-                    </div>
-                  </div>
+                <div className="w-full flex flex-col divide-y-2 gap-y-2">
+                  {contractRuleState.rows.map((r) => (
+                    <div className="w-full flex flex-col gap-2 py-2" key={r.id}>
+                      <span className="font-bold text-xl text-gray-700 capitalize">{r.type}</span>
+                      <p className="text-gray-500">
+                        Lorem ipsum dolor sit amet consectetur. A ut turpis dui integer egestas
+                        tincidunt enim. In nec gravida tempor molestie varius. Libero dolor bibendum
+                        quis nec lectus hac. Pellentesque aliquam amet hendrerit condimentum nullam.
+                        Dolor morbi mauris nunc phasellus diam. Varius pellentesque sed morbi
+                        vestibulum cursus. Tellus hendrerit in viverra ornare.
+                      </p>
+                      <div>
+                        <Button
+                          intent={`primary`}
+                          iconPosition="right"
+                          icon={<AiFillCaretRight className="ml-2" />}
+                          onClick={() => dispatch(setOpenModal(`contractRulesTable-${r.id}`))}
+                        >
+                          View Contract Rule
+                        </Button>
+                      </div>
 
-                  <div className="w-full flex flex-col gap-2 py-6">
-                    <span className="font-bold text-xl text-gray-700">Regulatory</span>
-                    <p className="text-gray-500">
-                      Contains all the Regulatory T&C related to this contract
-                    </p>
-                    <div>
-                      <Button
-                        intent={`primary`}
-                        iconPosition="right"
-                        icon={<AiFillCaretRight className="ml-2" />}
-                      >
-                        View Contract Rule
-                      </Button>
+                      <div className="hidden">
+                        <Modal
+                          label="View"
+                          identifier={`contractRulesTable-${r.id}`}
+                          onClick={() => dispatch(setOpenModal(`contractRulesTable-${r.id}`))}
+                        >
+                          <RulesTable modal={true} rows={transformContractRules(r.rules)} />
+                        </Modal>
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
 
-            {/* Signature */}
-            <div className="flex flex-col items-center my-4 w-full">
+            {/* Approved/Rejected Status */}
+            <div className="flex items-center justify-between mt-16 mb-4 w-full px-4">
+              <div className="flex flex-col items-center justify-center gap-y-2">
+                <div className="flex items-center bg-green-600 px-6 py-3 rounded-md">
+                  <IoCheckmarkCircleSharp className="text-white w-5 h-5 mr-2" />
+                  <span className="text-white font-bold">Approved</span>
+                </div>
+
+                <span>June 03, 2023</span>
+              </div>
               <div className="flex flex-col gap-y-4">
                 <div className="flex items-center gap-x-2">
                   <Image
@@ -208,28 +226,8 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
                   <span>Cox Automotive Signatory</span>
                 </div>
 
-                <div className="bg-[#F9FBFD] text-blue-500 border-dashed border-2 rounded-lg  border-blue-300 flex flex-col items-center justify-center py-8 px-12">
-                  <RiUploadCloud2Line className="w-10 h-10 mb-4" />
-                  <span className="text-lg font-semibold">Upload signature here</span>
-                </div>
-
                 <span className="text-center font-bold text-xl text-gray-700">Marsha Smith</span>
               </div>
-            </div>
-
-            {/* Submit/Reject */}
-            <div className="px-2 py-2 flex gap-4 justify-center w-full mt-4">
-              <Button
-                type="button"
-                intent={`secondary`}
-                onClick={() => dispatch(setCloseModal("editDatasetForm"))}
-              >
-                <span className="inline-flex justify-center w-full">Reject</span>
-              </Button>
-
-              <Button type="button" intent={`primary`}>
-                <span className="inline-flex justify-center w-full">Approve</span>
-              </Button>
             </div>
           </div>
         </div>
@@ -242,32 +240,38 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
           </h2>
         </div>
 
-        <div className="mx-auto bg-white py-4 px-12 rounded-lg max-w-5xl mt-4">
+        <div className="mx-auto bg-white py-8 px-12 rounded-lg max-w-5xl mt-4">
           {/* App Personas */}
-          <div className="flex justify-between w-full px-4 my-4">
+          <div className="flex justify-between w-full px-4 my-2">
             <div>
               <h3 className="text-xl font-bold mb-2">App Personas Allowed</h3>
 
               <div className="flex flex-col gap-y-2">
-                <div className="flex items-center gap-2">
+                <Link
+                  href={"/data-contracts/consuming-app-personas"}
+                  className="flex items-center gap-2"
+                >
                   <span className="text-blue-500 underline">Loan App</span>
                   <AiFillCaretRight className="text-blue-500 " />
-                </div>
+                </Link>
 
-                <div className="flex items-center gap-2">
+                <Link
+                  href={"/data-contracts/consuming-app-personas"}
+                  className="flex items-center gap-2"
+                >
                   <span className="text-blue-500 underline">Marketing</span>
                   <AiFillCaretRight className="text-blue-500 " />
-                </div>
+                </Link>
               </div>
             </div>
           </div>
 
           {/* Datasets Covered */}
           <div className="w-full px-4 my-2">
-            <h3 className="text-xl font-bold mb-2">Datasets Covered</h3>
+            <h3 className="text-xl font-bold">Datasets Covered</h3>
 
-            <div className="flex flex-col divide-y-2">
-              <div className="w-full flex justify-between items-center py-6">
+            <div className="flex flex-col py-2 divide-y-2">
+              <div className="w-full flex justify-between items-center">
                 <span className="text-gray-700 font-bold">Marketing App</span>
                 <p className="text-gray-500 text-sm text-center underline">
                   : /api/2022-10-31/ account/Cox/orgunit/dt.com/*
@@ -299,38 +303,39 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
           </div>
 
           {/* Limitations */}
-          <div className="w-full px-4 my-4">
+          <div className="w-full px-4 my-2">
             <h3 className="text-xl font-bold mb-2">Limitations</h3>
 
             <div className="flex rounded-lg border p-6 divide-x-2">
               <div className="w-1/2 flex flex-col items-center">
                 <span className="text-drio-red font-bold text-2xl">02</span>
-                <p className="text-gray-500 text-sm text-center">
-                  Max number of <br />
-                  personas
-                </p>
+                <p className="text-gray-500 text-sm text-center">Max number of personas</p>
               </div>
 
               <div className="w-1/2 flex flex-col items-center">
                 <span className="text-drio-red font-bold text-2xl">56</span>
-                <p className="text-gray-500 text-sm text-center">
-                  Max number of <br />
-                  accessors
-                </p>
+                <p className="text-gray-500 text-sm text-center">Max number of accessors</p>
               </div>
 
               <div className="w-1/2 flex flex-col items-center">
                 <span className="text-drio-red font-bold text-2xl">25</span>
                 <p className="text-gray-500 text-sm text-center">
-                  Max daily access <br />
-                  frequency limit
+                  Max daily access frequency limit
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Signature */}
-          <div className="flex flex-col items-center my-8 w-full">
+          {/* Approved/Rejected Status */}
+          <div className="flex items-center justify-between mt-16 mb-4 w-full px-4">
+            <div className="flex flex-col items-center justify-center gap-y-2">
+              <div className="flex items-center bg-green-600 px-6 py-3 rounded-md">
+                <IoCheckmarkCircleSharp className="text-white w-5 h-5 mr-2" />
+                <span className="text-white font-bold">Approved</span>
+              </div>
+
+              <span>June 03, 2023</span>
+            </div>
             <div className="flex flex-col gap-y-4">
               <div className="flex items-center gap-x-2">
                 <Image width={40} height={40} alt="bank-logo" src="/images/cox-automotive-2.jpeg" />
@@ -338,28 +343,8 @@ export default function ViewApprovedContractsForm({ row }: TableRow) {
                 <span>Cox Automotive Signatory</span>
               </div>
 
-              <div className="bg-[#F9FBFD] text-blue-500 border-dashed border-2 rounded-lg  border-blue-300 flex flex-col items-center justify-center py-8 px-12">
-                <RiUploadCloud2Line className="w-10 h-10 mb-4" />
-                <span className="text-lg font-semibold">Upload signature here</span>
-              </div>
-
               <span className="text-center font-bold text-xl text-gray-700">Marsha Smith</span>
             </div>
-          </div>
-
-          {/* Submit/Reject */}
-          <div className="px-2 py-2 flex gap-4 justify-center mt-4">
-            <Button
-              type="button"
-              intent={`secondary`}
-              onClick={() => dispatch(setCloseModal("editDatasetForm"))}
-            >
-              <span className="inline-flex justify-center w-full">Reject</span>
-            </Button>
-
-            <Button type="button" intent={`primary`}>
-              <span className="inline-flex justify-center w-full">Approve</span>
-            </Button>
           </div>
         </div>
       </Layout>

@@ -1,14 +1,13 @@
 import Modal from "@/comps/ui/Modal";
 import AlertModal from "@ui/AlertModal";
 import { useRouter } from "next/router";
+import RulesTable from "../RulesTable";
 import { HiDotsVertical } from "react-icons/hi";
 import * as Popover from "@radix-ui/react-popover";
 import { setOpenModal } from "@/state/slices/uiSlice";
 import { transformContractRules } from "@/functions/flattenRules";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-
 import { setRows, setRuleRows, setSelectedRows } from "@/state/slices/contractRuleSlice";
-import PolicyRulesTable from "../RulesTable";
 
 const PoliciesMenu = ({ row }: TableRow) => {
   const router = useRouter();
@@ -55,7 +54,7 @@ const PoliciesMenu = ({ row }: TableRow) => {
               identifier="contractRulesTable"
               onClick={() => dispatch(setOpenModal("contractRulesTable"))}
             >
-              <PolicyRulesTable modal={true} rows={transformContractRules(row.rules)} />
+              <RulesTable modal={true} rows={transformContractRules(row.rules)} />
             </Modal>
           </span>
 
