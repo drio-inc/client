@@ -21,10 +21,10 @@ const headers = [
     header: "Dataset",
     accessor: "dataset",
   },
-  {
-    header: "Default Allow",
-    accessor: "defaultAllow",
-  },
+  //   {
+  //     header: "Default Allow",
+  //     accessor: "defaultAllow",
+  //   },
   {
     header: "Metadata",
     accessor: "subrule_metadata",
@@ -86,7 +86,7 @@ const RulesTable = ({ rows, editable = false, modal = false }: PolicyProps) => {
   return (
     <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
       <div className="bg-gray-50 px-4 py-3 flex flex-wrap items-center justify-between border-t">
-        <h2 className="text-gray-700 text-2xl font-bold">Contract</h2>
+        <h2 className="text-gray-700 text-2xl font-bold">Contract Rules</h2>
 
         {modal ? (
           <Button

@@ -22,9 +22,9 @@ const schema = z.object({
     required_error: "Please select a dataset",
   }),
 
-  defaultAllow: z.boolean({
-    required_error: "Please select an option",
-  }),
+  //   defaultAllow: z.boolean({
+  //     required_error: "Please select an option",
+  //   }),
 
   subrules: z
     .array(
@@ -97,7 +97,7 @@ export default function AddNewRuleForm() {
       name: data.name,
       action: data.action,
       dataset: data.dataset,
-      defaultAllow: data.defaultAllow,
+      //   defaultAllow: data.defaultAllow,
       subrules:
         data?.subrules?.map((subrule) => ({
           id: uuidv4(),
@@ -165,7 +165,7 @@ export default function AddNewRuleForm() {
     <Layout>
       <Form form={form} onSubmit={onSubmit}>
         <div className="mx-auto bg-white p-6 rounded-lg w-[60vw]">
-          <h2 className="text-gray-700 text-2xl font-bold">Add Contract</h2>
+          <h2 className="text-gray-700 text-2xl font-bold">Add Contract Rule</h2>
 
           <div className="flex flex-wrap -m-2 rounded-lg my-4 border bg-gray-50">
             <div className="px-4 py-2 w-full lg:w-1/2 2xl:w-1/3">
@@ -196,7 +196,7 @@ export default function AddNewRuleForm() {
               />
             </div>
 
-            <div className="px-4 py-2 w-full lg:w-1/2 2xl:w-1/3">
+            {/* <div className="px-4 py-2 w-full lg:w-1/2 2xl:w-1/3">
               <SelectInput
                 placeholder={"Select"}
                 label={"Default Allow"}
@@ -207,7 +207,7 @@ export default function AddNewRuleForm() {
                   { label: "False", value: false },
                 ]}
               />
-            </div>
+            </div> */}
           </div>
 
           {fields.map((item, index) => (
