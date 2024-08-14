@@ -125,7 +125,7 @@ export default function ReviewLexicon({ row }: ReviewLexiconProps) {
       <div className="min-w-[90vw] relative w-full mx-auto bg-white rounded-lg">
         <div className="flex gap-x-2 items-center p-4 rounded">
           <h2 className="text-gray-700 text-lg font-bold">Review Lexicon</h2>
-          <span className="bg-green-200 px-2 py-1 text-sm font-bold text-green-800">
+          <span className="bg-green-200 px-2 py-1 text-sm font-bold text-green-900">
             {row.status}
           </span>
         </div>

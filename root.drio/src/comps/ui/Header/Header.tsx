@@ -22,10 +22,7 @@ import { mergedDDXData } from "@/functions/mergeDDXData";
 import { setRows as setDDXRows } from "@/state/slices/DDXSlice";
 import { mergedDataSourceData } from "@/functions/mergeDataSources";
 
-import {
-  readNotifications,
-  setNotifications,
-} from "@/state/slices/notificationSlice";
+import { readNotifications, setNotifications } from "@/state/slices/notificationSlice";
 
 import { setRawRows, setRows } from "@/state/slices/anomaliesSlice";
 import { setRows as setDataSourceRows } from "@/state/slices/dataSourceSlice";
@@ -40,9 +37,7 @@ export default function Header() {
   const { pageTitles, showSidebar } = useAppSelector((state) => state.ui);
   const { rows: dataSourceRows } = useAppSelector((state) => state.dataSource);
 
-  const { notifications, isRead } = useAppSelector(
-    (state) => state.notifications
-  );
+  const { notifications, isRead } = useAppSelector((state) => state.notifications);
 
   useEffect(() => {
     dispatch(setDDXRows(mergedDDXData()));
@@ -71,28 +66,14 @@ export default function Header() {
     recurse: false,
   });
 
-  const handleLogout = async () => {
-    try {
-      const res = await logout().unwrap();
-      if (res.message === "Logout successful") {
-        dispatch(stateLogout());
-        window.location.href = "/login";
-      }
-    } catch (error) {
-      window.location.href = "/login";
-    }
-  };
-
   const path =
     router.pathname &&
-    router.pathname
-      ?.split("/")
-      [router?.pathname?.split("/")?.length - 1]?.replace(/-/g, " ");
+    router.pathname?.split("/")[router?.pathname?.split("/")?.length - 1]?.replace(/-/g, " ");
 
   return (
     <nav className="shadow-sm h-[4rem]">
-      <div className="flex items-center justify-between md:px-8 px-4 h-full">
-        <span className="text-gray-700 text-2xl capitalize hidden md:inline-block font-bold">
+      <div className="flex items-center justify-between px-4 h-full">
+        <span className="text-gray-700 text-2xl capitalize hidden md:inline-block font-bold px-2">
           {pageTitles[path] ?? path}
         </span>
         <div className="flex items-center">
@@ -127,16 +108,6 @@ export default function Header() {
               </span>
             </div>
           ) : null}
-
-          <Button
-            intent={"primary"}
-            className="text-sm mx-2"
-            isLoading={result.isLoading}
-            onClick={() => handleLogout()}
-            icon={<MdLogout className="w-5 h-5" />}
-          >
-            Logout
-          </Button>
         </div>
       </div>
     </nav>

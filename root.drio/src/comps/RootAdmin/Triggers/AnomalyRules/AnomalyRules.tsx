@@ -79,7 +79,7 @@ const AlertPolicies = () => {
       accessorKey: "anomaly_type",
       cell: ({ row }) => {
         const active = row.original.active;
-        const color = active ? "text-green-800" : "text-red-800";
+        const color = active ? "text-green-900" : "text-red-900";
 
         return (
           <span className={`px-2 py-1 rounded font-medium flex items-center gap-x-2`}>

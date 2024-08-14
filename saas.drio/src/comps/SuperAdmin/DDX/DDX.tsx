@@ -32,10 +32,10 @@ const headers = [
     header: "Status",
     accessor: "status",
     status: {
-      Active: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      Active: "bg-green-100 text-green-900 px-2 py-1 font-medium rounded",
       Inactive: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
-      Unregistered: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
-      Pending: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      Unregistered: "bg-red-100 text-red-900 px-2 py-1 font-medium rounded",
+      Pending: "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -76,9 +76,7 @@ const DDX = () => {
 
   const handleCheckbox = (index: number) => {
     if (DDXState.selectedRows.includes(index)) {
-      dispatch(
-        setSelectedRows(DDXState.selectedRows.filter((row) => row !== index))
-      );
+      dispatch(setSelectedRows(DDXState.selectedRows.filter((row) => row !== index)));
     } else {
       dispatch(setSelectedRows([...DDXState.selectedRows, index]));
     }
@@ -115,21 +113,15 @@ const DDX = () => {
                   ? `NA`
                   : `${account.city}, ${account.state}, ${account.country}`,
 
-                clusterMemory: INDICES_TO_CHANGE.includes(index)
-                  ? `NA`
-                  : `1 GB`,
+                clusterMemory: INDICES_TO_CHANGE.includes(index) ? `NA` : `1 GB`,
 
-                clusterStorage: INDICES_TO_CHANGE.includes(index)
-                  ? `NA`
-                  : `1 TB`,
+                clusterStorage: INDICES_TO_CHANGE.includes(index) ? `NA` : `1 TB`,
 
                 clusterVCPU: INDICES_TO_CHANGE.includes(index)
                   ? `NA`
                   : Math.round(Math.random() * 25),
 
-                status: INDICES_TO_CHANGE.includes(index)
-                  ? "Unregistered"
-                  : "Active",
+                status: INDICES_TO_CHANGE.includes(index) ? "Unregistered" : "Active",
 
                 infraProvider: INDICES_TO_CHANGE.includes(index)
                   ? `NA`
@@ -155,9 +147,7 @@ const DDX = () => {
   return (
     <div className="py-2 w-full">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        <div
-          className={` bg-gray-50 flex flex-wrap items-center justify-between`}
-        >
+        <div className={` bg-gray-50 flex flex-wrap items-center justify-between`}>
           {DDXState.selectedRows.length > 0 && (
             <div className="flex items-center px-4 py-4">
               <Checkbox.Root

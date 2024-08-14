@@ -50,6 +50,22 @@ const LearnedContractMenu = ({ row }: TableRow) => {
     showAlert(`All tags are ${action}!`, "success");
   };
 
+  const disableApproveButton = () => {
+    return learnedContractState.rows
+      .find((r) => r.id === row.id)
+      ?.key_name_tags.some((t: any) => t.status === "Pending" || t.status === "Rejected")
+      ? false
+      : true;
+  };
+
+  const disableRejectButton = () => {
+    return learnedContractState.rows
+      .find((r) => r.id === row.id)
+      ?.key_name_tags.some((t: any) => t.status === "Pending" || t.status === "Approved")
+      ? false
+      : true;
+  };
+
   return (
     <Popover.Root>
       <Popover.Trigger>
@@ -78,15 +94,21 @@ const LearnedContractMenu = ({ row }: TableRow) => {
           </span>
 
           <Popover.Close
+            disabled={disableApproveButton()}
             onClick={() => approveOrRejectAll("Approved")}
-            className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4 text-left"
+            className={`cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4 text-left ${
+              disableApproveButton() ? "opacity-50 pointer-events-none" : ""
+            }`}
           >
             Approve All
           </Popover.Close>
 
           <Popover.Close
+            disabled={disableRejectButton()}
             onClick={() => approveOrRejectAll("Rejected")}
-            className="cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4 text-left"
+            className={`cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4 text-left ${
+              disableRejectButton() ? "opacity-50 pointer-events-none" : ""
+            }`}
           >
             Reject All
           </Popover.Close>

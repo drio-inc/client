@@ -1,9 +1,6 @@
 import ShipmentTable from "./ShipmentTable";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
-import {
-  setSelectedRow,
-  setSelectedRowIndex,
-} from "@/state/slices/shipmentSlice";
+import { setSelectedRow, setSelectedRowIndex } from "@/state/slices/shipmentSlice";
 
 const headers = [
   {
@@ -30,10 +27,10 @@ const headers = [
     header: "Carrier Name",
     accessor: "carrierName",
     status: {
-      Active: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      Active: "bg-green-100 text-green-900 px-2 py-1 font-medium rounded",
       Inactive: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
-      Pending: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
-      "Not Configured": "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
+      Pending: "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
+      "Not Configured": "bg-red-100 text-red-900 px-2 py-1 font-medium rounded",
     },
   },
 

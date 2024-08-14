@@ -1,10 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import {
-  RiGlobeLine,
-  RiMapPin5Line,
-  RiRoadMapLine,
-  RiPinDistanceLine,
-} from "react-icons/ri";
+import { RiGlobeLine, RiMapPin5Line, RiRoadMapLine, RiPinDistanceLine } from "react-icons/ri";
 
 import Image from "next/image";
 import { DateTime } from "luxon";
@@ -13,18 +8,13 @@ import { useAppSelector } from "@/hooks/useStoreTypes";
 const Status = () => {
   const shipmentState = useAppSelector((state) => state.shipment);
 
-  const endDate = DateTime.fromFormat(
-    shipmentState.selectedRow?.endDate ?? "",
-    "m/d/yyyy h:mm"
-  );
+  const endDate = DateTime.fromFormat(shipmentState.selectedRow?.endDate ?? "", "m/d/yyyy h:mm");
 
   const checkDeliveryStatus = () => {
     const browserDate = DateTime.now();
     if (!endDate.isValid) return "In Transit";
 
-    return browserDate.toMillis() > endDate.toMillis()
-      ? "Delivered"
-      : "In Transit";
+    return browserDate.toMillis() > endDate.toMillis() ? "Delivered" : "In Transit";
   };
 
   console.log(checkDeliveryStatus());
@@ -37,16 +27,11 @@ const Status = () => {
     >
       <div className="flex-col items-center gap-4 lg:gap-8 flex">
         <div className="flex-col gap-2 flex w-full">
-          <h3 className="text-neutral-900 text-xl font-bold leading-relaxed">
-            Delivery Status
-          </h3>
+          <h3 className="text-neutral-900 text-xl font-bold leading-relaxed">Delivery Status</h3>
           <span className="text-slate-600 text-sm leading-tight font-medium">
             {shipmentState.selectedRow ? (
               <>
-                Order No:{" "}
-                <span className="font-bold">
-                  #{shipmentState.selectedRow?.order_id}
-                </span>
+                Order No: <span className="font-bold">#{shipmentState.selectedRow?.order_id}</span>
               </>
             ) : (
               <span>Choose an order to track its status</span>
@@ -73,24 +58,16 @@ const Status = () => {
           <div className="w-full flex-col items-center gap-4 flex">
             <div className="w-full justify-between flex text-gray-500 text-xs font-semibold leading-relaxed">
               <span>
-                {new Date(
-                  shipmentState.selectedRow?.startDate
-                ).toLocaleDateString("en-US", {
+                {new Date(shipmentState.selectedRow?.startDate).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
                 })}
               </span>
-              <span>
-                {endDate.isValid
-                  ? shipmentState.selectedRow.endDate
-                  : "Not ended yet"}
-              </span>
+              <span>{endDate.isValid ? shipmentState.selectedRow.endDate : "Not ended yet"}</span>
             </div>
             <div className="text-center flex-col items-center flex leading-7">
-              <h2 className="text-red-800 text-xl font-semibold">
-                {checkDeliveryStatus()}
-              </h2>
+              <h2 className="text-red-900 text-xl font-semibold">{checkDeliveryStatus()}</h2>
               <span className="text-gray-700 text-sm font-medium">
                 to {shipmentState.selectedRow?.destLocation}
               </span>
@@ -119,9 +96,7 @@ const Status = () => {
                 <RiRoadMapLine className="w-6 h-6 text-gray-700" />
               </div>
               <div className="flex-col  items-start inline-flex font-semibold leading-tight">
-                <h3 className="text-neutral-900 text-sm">
-                  Destination Location
-                </h3>
+                <h3 className="text-neutral-900 text-sm">Destination Location</h3>
                 <span className="text-slate-600 text-xs">
                   {shipmentState.selectedRow?.destLocation}
                 </span>

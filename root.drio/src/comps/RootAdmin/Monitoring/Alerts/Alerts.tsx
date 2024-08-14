@@ -20,8 +20,8 @@ const headers = [
     accessor: "severity",
     status: {
       Info: "bg-blue-100 text-blue-800 px-2 py-1 font-medium rounded",
-      Error: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
-      Warning: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      Error: "bg-red-100 text-red-900 px-2 py-1 font-medium rounded",
+      Warning: "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
     },
   },
   {
@@ -48,9 +48,7 @@ const Alerts = () => {
 
   const handleCheckbox = (index: number) => {
     if (alertState.selectedRows.includes(index)) {
-      dispatch(
-        setSelectedRows(alertState.selectedRows.filter((row) => row !== index))
-      );
+      dispatch(setSelectedRows(alertState.selectedRows.filter((row) => row !== index)));
     } else {
       dispatch(setSelectedRows([...alertState.selectedRows, index]));
     }

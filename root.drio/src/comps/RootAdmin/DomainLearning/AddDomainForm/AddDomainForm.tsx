@@ -344,7 +344,7 @@ export default function AddLexiconForm() {
                         {customfiles && Array.from(customfiles).length > 0 && (
                           <button
                             type="button"
-                            className="flex items-center gap-x-1 text-sm text-red-800 transition-all duration-200 ease-in-out hover:text-red-900"
+                            className="flex items-center gap-x-1 text-sm text-red-900 transition-all duration-200 ease-in-out hover:text-red-900"
                           >
                             <FiBookOpen className="text-xl" />
                             <span className="font-medium">Create Lexicon</span>

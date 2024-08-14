@@ -19,10 +19,10 @@ const headers = [
     header: "State",
     accessor: "state",
     status: {
-      failed: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
+      failed: "bg-red-100 text-red-900 px-2 py-1 font-medium rounded",
       stopped: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
-      running: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
-      upgrading: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      running: "bg-green-100 text-green-900 px-2 py-1 font-medium rounded",
+      upgrading: "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
     },
   },
   {
@@ -56,12 +56,9 @@ const DDXInstances = () => {
   return (
     <div className="w-[80vw]">
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
-        <div
-          className={`rounded-lg bg-gray-50 p-4 flex flex-wrap items-center justify-between`}
-        >
+        <div className={`rounded-lg bg-gray-50 p-4 flex flex-wrap items-center justify-between`}>
           <h2 className="font-medium text-lg">
-            DDX Instances for Cluster:{" "}
-            <span className="font-bold">{currentDDXCluster?.name}</span>
+            DDX Instances for Cluster: <span className="font-bold">{currentDDXCluster?.name}</span>
           </h2>
           <span>
             <HiX

@@ -2,11 +2,7 @@ import Table from "@/comps/ui/Table";
 import AddAccountForm from "./AddAccountForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import {
-  setRows,
-  setAccountId,
-  setSelectedRows,
-} from "@/state/slices/accountSlice";
+import { setRows, setAccountId, setSelectedRows } from "@/state/slices/accountSlice";
 
 import Button from "@ui/Button";
 import { useEffect } from "react";
@@ -51,9 +47,9 @@ const headers = [
     header: "Status",
     accessor: "status",
     status: {
-      Active: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      Active: "bg-green-100 text-green-900 px-2 py-1 font-medium rounded",
       Inactive: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
-      Onboarding: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      Onboarding: "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -93,11 +89,7 @@ const Accounts = () => {
 
   const handleCheckbox = (index: number) => {
     if (accountState.selectedRows.includes(index)) {
-      dispatch(
-        setSelectedRows(
-          accountState.selectedRows.filter((row) => row !== index)
-        )
-      );
+      dispatch(setSelectedRows(accountState.selectedRows.filter((row) => row !== index)));
     } else {
       dispatch(setSelectedRows([...accountState.selectedRows, index]));
     }

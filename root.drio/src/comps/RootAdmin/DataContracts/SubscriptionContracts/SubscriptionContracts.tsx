@@ -31,8 +31,8 @@ const headers = [
     header: "Date Approved",
     accessor: "dateOfApproval",
     status: {
-      Pending: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
-      Rejected: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
+      Pending: "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
+      Rejected: "bg-red-100 text-red-900 px-2 py-1 font-medium rounded",
     },
   },
 

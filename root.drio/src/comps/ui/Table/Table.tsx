@@ -55,7 +55,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
             {headers?.map((header, index) => (
               <th
                 key={index}
-                className="uppercase border-t border-b text-gray-500 text-xs px-4 py-6 text-left whitespace-nowrap"
+                className="uppercase border-t border-b text-gray-500 text-xs px-2 py-6 text-left whitespace-nowrap"
               >
                 {header.header}
 
@@ -64,7 +64,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
             ))}
 
             {TableMenu && (
-              <th className="border-t border-b text-gray-500 text-xs px-4 py-6 text-left">
+              <th className="border-t border-b text-gray-500 text-xs px-2 py-6 text-left">
                 <HiOutlinePencil />
               </th>
             )}
@@ -111,7 +111,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                       return (
                         <>
                           {header.type === "array" ? (
-                            <td key={index} className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem]">
+                            <td key={index} className="min-w-[12rem] 2xl:min-w-0 max-w-[12rem] p-2">
                               <LearnedTags tags={row?.[header.accessor]} />
                             </td>
                           ) : header.type === "object" ? (
@@ -122,7 +122,7 @@ const Table = <T extends Record<string, any>, Key extends keyof T>({
                             <td
                               key={index}
                               onClick={() => handleRowClick?.(row)}
-                              className="cursor-pointer border-t border-b text-gray-500 text-xs p-4"
+                              className="cursor-pointer border-t border-b text-gray-500 text-xs p-2"
                             >
                               <div
                                 className={`${

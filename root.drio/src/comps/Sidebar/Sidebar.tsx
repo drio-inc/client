@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { BiBrain } from "react-icons/bi";
 import { setExpandedLinks } from "@/state/slices/uiSlice";
 import { IoGridOutline, IoLayersOutline } from "react-icons/io5";
+import { logout as stateLogout } from "@/state/slices/authSlice";
 import { AiFillCaretDown, AiFillCaretUp, AiOutlineThunderbolt } from "react-icons/ai";
 import {
   HiOutlineCog,
@@ -16,6 +17,9 @@ import {
 } from "react-icons/hi";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
+import { useLogoutMutation } from "@/api/auth";
+import Button from "../ui/Button";
+import { MdLogout } from "react-icons/md";
 
 interface NavLink {
   name: string;
@@ -190,6 +194,7 @@ const NavLinks = [
 export default function Sidebar() {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [logout, result] = useLogoutMutation();
   const { expandedLinks } = useAppSelector((state) => state.ui);
 
   const showNested = (link: NavLink) => {
@@ -207,6 +212,18 @@ export default function Sidebar() {
     });
 
     dispatch(setExpandedLinks({ linkName: link.name, expanded }));
+  };
+
+  const handleLogout = async () => {
+    try {
+      const res = await logout().unwrap();
+      if (res.message === "Logout successful") {
+        dispatch(stateLogout());
+        window.location.href = "/login";
+      }
+    } catch (error) {
+      window.location.href = "/login";
+    }
   };
 
   return (
@@ -282,6 +299,16 @@ export default function Sidebar() {
               </li>
             ))}
           </ul>
+
+          <Button
+            intent={"primary"}
+            isLoading={result.isLoading}
+            className="text-sm mx-2 mt-8"
+            onClick={() => handleLogout()}
+            icon={<MdLogout className="w-5 h-5" />}
+          >
+            Logout
+          </Button>
         </div>
       </div>
     </nav>

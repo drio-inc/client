@@ -26,8 +26,6 @@ const mapStatusToColor = {
 type MapStatusToColor = keyof typeof mapStatusToColor;
 
 const LearnedTags = ({ tags }: LearnedTagsProps) => {
-  console.log(tags);
-
   return (
     <div className="flex flex-wrap gap-1 py-[10px]">
       {tags?.map((tag, index) => (

@@ -47,8 +47,8 @@ const headers = [
     header: "Severity",
     accessor: "severity",
     status: {
-      Error: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
-      Warning: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      Error: "bg-red-100 text-red-900 px-2 py-1 font-medium rounded",
+      Warning: "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
       Informational: "bg-blue-100 text-blue-800 px-2 py-1 font-medium rounded",
     },
   },

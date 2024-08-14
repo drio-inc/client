@@ -2,15 +2,12 @@ import Table from "@/comps/ui/Table";
 import SubscribeDatasetMenu from "./DatasetMarketplaceMenu";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { setSelectedRows } from "@/state/slices/datasetMarketplaceSlice";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/comps/ui/Select";
 
 import { IoRefresh } from "react-icons/io5";
 import * as Checkbox from "@radix-ui/react-checkbox";
 
-import {
-  HiMinusSm,
-  HiOutlineFilter,
-  HiOutlineViewBoards,
-} from "react-icons/hi";
+import { HiMinusSm, HiOutlineFilter, HiOutlineViewBoards } from "react-icons/hi";
 
 import TopOrgs from "../TopOrgs";
 import { useState } from "react";
@@ -37,10 +34,9 @@ const headers = [
     header: "Visibility",
     accessor: "visibility",
     status: {
-      Private: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      Private: "bg-green-100 text-green-900 px-2 py-1 font-medium rounded",
       Public: "bg-cyan-100 text-cyan-800 px-2 py-1 font-medium rounded",
-      Contractual:
-        "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      Contractual: "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -48,10 +44,9 @@ const headers = [
     header: "Contract in Place",
     accessor: "contractInPlace",
     status: {
-      Yes: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
-      "In-Progress":
-        "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
-      No: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
+      Yes: "bg-green-100 text-green-900 px-2 py-1 font-medium rounded",
+      "In-Progress": "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
+      No: "bg-red-100 text-red-900 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -109,12 +104,20 @@ const DatasetProviders = [
   },
 ];
 
+const subscribeOptions = [
+  { label: "Subscribed", value: "subscribed" },
+  { label: "Not Subscribed", value: "notSubscribed" },
+];
+
+const viewOptions = [
+  { label: "List", value: "list" },
+  { label: "Table", value: "table" },
+];
+
 const DatasetMarketplace = () => {
   const dispatch = useAppDispatch();
   const [tab, setTab] = useState("organizations");
-  const { rows, selectedRows } = useAppSelector(
-    (state) => state.datasetMarketplace
-  );
+  const { rows, selectedRows } = useAppSelector((state) => state.datasetMarketplace);
 
   const handleCheckbox = (index: number) => {
     if (selectedRows.includes(index)) {
@@ -161,14 +164,19 @@ const DatasetMarketplace = () => {
                 <HiOutlineViewBoards className="text-drio-red" />
               </span>
 
-              <StatelessSelectInput
-                label=""
-                registerName="view"
-                options={[
-                  { label: "Subscribed", value: "subscribed" },
-                  { label: "Not Subscribed", value: "notSubscribed" },
-                ]}
-              />
+              <Select onValueChange={(value) => console.log("value", value)}>
+                <SelectTrigger className="w-fit md:w-[200px]">
+                  <SelectValue placeholder="Select subscription" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {subscribeOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex items-center gap-x-2 w-full">
@@ -176,14 +184,19 @@ const DatasetMarketplace = () => {
                 <HiOutlineFilter className="text-drio-red" />
               </span>
 
-              <StatelessSelectInput
-                label=""
-                registerName="view"
-                options={[
-                  { label: "List", value: "list" },
-                  { label: "Table", value: "table" },
-                ]}
-              />
+              <Select onValueChange={(value) => console.log("value", value)}>
+                <SelectTrigger className="w-fit md:w-[200px]">
+                  <SelectValue placeholder="Select view" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {viewOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>

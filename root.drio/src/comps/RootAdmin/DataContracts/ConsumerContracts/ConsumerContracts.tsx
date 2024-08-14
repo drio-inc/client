@@ -31,9 +31,9 @@ const headers = [
     header: "Status",
     accessor: "state",
     status: {
-      "Being Approved": "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
-      Pending: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
-      Rejected: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
+      "Being Approved": "bg-green-100 text-green-900 px-2 py-1 font-medium rounded",
+      Pending: "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
+      Rejected: "bg-red-100 text-red-900 px-2 py-1 font-medium rounded",
     },
   },
 

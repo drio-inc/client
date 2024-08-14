@@ -105,7 +105,7 @@ const Lexicon = () => {
       accessorKey: "pre_existing",
       cell: ({ row }) => {
         const pre_existing = row.original.pre_existing;
-        const color = pre_existing === "Yes" ? "text-green-800" : "text-red-800";
+        const color = pre_existing === "Yes" ? "text-green-900" : "text-red-900";
 
         return (
           <span className={`px-2 py-1 rounded font-medium flex items-center gap-x-2 ${color}`}>
@@ -127,8 +127,8 @@ const Lexicon = () => {
         const status = row.original.status;
         const statusEnum = {
           Disabled: "bg-gray-200 text-gray-800",
-          Deployed: "bg-green-200 text-green-800",
-          Uploaded: "bg-yellow-200 text-yellow-800",
+          Deployed: "bg-green-200 text-green-900",
+          Uploaded: "bg-yellow-200 text-yellow-900",
         };
 
         return (
@@ -198,7 +198,7 @@ const Lexicon = () => {
           >
             <div className="flex items-center justify-center flex-col gap-y-4 p-8">
               <span className="w-16 h-16 bg-green-200 rounded-full flex items-center justify-center">
-                <MdCheck className="w-12 h-12 text-green-800" />
+                <MdCheck className="w-12 h-12 text-green-900" />
               </span>
 
               <h2 className="text-gray-700 text-xl font-bold">

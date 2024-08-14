@@ -3,11 +3,7 @@ import DatasetMenu from "./DatasetMenu/DatasetMenu";
 import PublishDatasetForm from "./PublishDatasetForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 
-import {
-  setRows,
-  setRawRows,
-  setSelectedRows,
-} from "@/state/slices/datasetSlice";
+import { setRows, setRawRows, setSelectedRows } from "@/state/slices/datasetSlice";
 
 import Button from "@ui/Button";
 import { IoRefresh } from "react-icons/io5";
@@ -46,10 +42,9 @@ const headers = [
     header: "Visibility",
     accessor: "visibility",
     status: {
-      private: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      private: "bg-green-100 text-green-900 px-2 py-1 font-medium rounded",
       public: "bg-cyan-100 text-cyan-800 px-2 py-1 font-medium rounded",
-      contractual:
-        "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      contractual: "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -57,10 +52,9 @@ const headers = [
     header: "Contract in Place",
     accessor: "contractInPlace",
     status: {
-      Yes: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
-      "In-Progress":
-        "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
-      No: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
+      Yes: "bg-green-100 text-green-900 px-2 py-1 font-medium rounded",
+      "In-Progress": "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
+      No: "bg-red-100 text-red-900 px-2 py-1 font-medium rounded",
     },
   },
 
@@ -167,9 +161,7 @@ const DatasetsComp = () => {
 
       <div className={"flex flex-col w-full shadow-lg rounded-lg bg-white"}>
         <div className="rounded-lg px-4 py-5 flex flex-wrap items-center justify-between">
-          <span className="font-semibold text-gray-700 mx-2 text-lg">
-            Top by Access Frequency
-          </span>
+          <span className="font-semibold text-gray-700 mx-2 text-lg">Top by Access Frequency</span>
 
           <div className="ml-auto">
             <Button

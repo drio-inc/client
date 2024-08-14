@@ -39,7 +39,7 @@ const headers = [
     header: "Status",
     accessor: "status",
     status: {
-      active: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
+      active: "bg-green-100 text-green-900 px-2 py-1 font-medium rounded",
       inactive: "bg-gray-100 text-gray-800 px-2 py-1 font-medium rounded",
     },
   },

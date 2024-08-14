@@ -18,6 +18,11 @@ import {
 import { setExpandedLinks } from "@/state/slices/uiSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
+import { useLogoutMutation } from "@/api/auth";
+import { logout as stateLogout } from "@/state/slices/authSlice";
+import Button from "../ui/Button";
+import { MdLogout } from "react-icons/md";
+
 interface NavLink {
   name: string;
   href: string;
@@ -92,6 +97,7 @@ const NavLinks = [
 export default function Sidebar() {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [logout, { isLoading }] = useLogoutMutation();
   const { expandedLinks } = useAppSelector((state) => state.ui);
 
   const showNested = (link: NavLink) => {
@@ -109,6 +115,18 @@ export default function Sidebar() {
     });
 
     dispatch(setExpandedLinks({ linkName: link.name, expanded }));
+  };
+
+  const handleLogout = async () => {
+    try {
+      const res = await logout().unwrap();
+      if (res.message === "Logout successful") {
+        dispatch(stateLogout());
+        window.location.href = "/login";
+      }
+    } catch (error) {
+      window.location.href = "/login";
+    }
   };
 
   return (
@@ -190,6 +208,16 @@ export default function Sidebar() {
               </li>
             ))}
           </ul>
+
+          <Button
+            intent={"primary"}
+            isLoading={isLoading}
+            className="text-sm mx-2"
+            onClick={() => handleLogout()}
+            icon={<MdLogout className="w-5 h-5" />}
+          >
+            Logout
+          </Button>
         </div>
       </div>
     </nav>

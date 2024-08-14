@@ -24,9 +24,9 @@ const headers = [
     header: "Status",
     accessor: "status",
     status: {
-      Error: "bg-red-100 text-red-800 px-2 py-1 font-medium rounded",
-      Success: "bg-green-100 text-green-800 px-2 py-1 font-medium rounded",
-      Warning: "bg-yellow-100 text-yellow-800 px-2 py-1 font-medium rounded",
+      Error: "bg-red-100 text-red-900 px-2 py-1 font-medium rounded",
+      Success: "bg-green-100 text-green-900 px-2 py-1 font-medium rounded",
+      Warning: "bg-yellow-100 text-yellow-900 px-2 py-1 font-medium rounded",
     },
   },
   {
@@ -45,11 +45,7 @@ const AuditLogs = () => {
 
   const handleCheckbox = (index: number) => {
     if (auditLogsState.selectedRows.includes(index)) {
-      dispatch(
-        setSelectedRows(
-          auditLogsState.selectedRows.filter((row) => row !== index)
-        )
-      );
+      dispatch(setSelectedRows(auditLogsState.selectedRows.filter((row) => row !== index)));
     } else {
       dispatch(setSelectedRows([...auditLogsState.selectedRows, index]));
     }
