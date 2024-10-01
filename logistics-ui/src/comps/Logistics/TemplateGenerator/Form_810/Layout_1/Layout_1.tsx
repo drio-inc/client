@@ -90,7 +90,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
           </tr>
         )) || null}
 
-        <tr className="custom-table-row w-full full-border total-items-row">
+        <tr className="custom-table-row w-full full-border summary-row">
           <td colSpan={3} />
 
           <td className="full-border">

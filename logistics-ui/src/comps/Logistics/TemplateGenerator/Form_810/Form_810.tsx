@@ -131,15 +131,25 @@ const pageStyle = `
 		
 	  }
 
+	  .edi-830-layout-1-table-2-parent{
+	 	page-break-inside: avoid; 
+	  }
+
+	.summary-row {
+    page-break-before: avoid;
+    page-break-inside: avoid;
+  }
+
+  .last-item-row {
+    page-break-inside: avoid;
+  }
+
 	  .edi-830-layout-1-table-2-parent td{
 		padding: 8px;
-		page-break-inside: avoid;
 		border: 2px solid black;
 	  }
 
-	  .total-items-row{
-	  	page-break-inside: avoid;
-	}
+
 
 	  .edi-830-layout-1-footer{
 		font-size: 8px;
