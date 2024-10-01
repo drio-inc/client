@@ -104,7 +104,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <td colSpan={4} />
         </tr>
 
-        <tr>
+        <tr className="summary-row">
           <td colSpan={6} />
           <td className="font-bold border-2 border-black full-border">Total</td>
           <td className="border-2 border-black full-border" contentEditable>
