@@ -17,7 +17,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
   };
 
   return (
-    <table className="w-full">
+    <table className="w-full edi-830-layout-1-table-2">
       <thead>
         <tr className="custom-table-row">
           <th>Line #</th>
@@ -35,7 +35,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
         {items?.map((item, index: number) => (
           <tr
             key={index}
-            className="relative custom-table-row"
+            className="relative custom-table-row edi-830-layout-1-table-2-parent"
             onMouseEnter={(e) => {
               const icons = e.currentTarget.querySelector("#deleteIcon");
               icons?.classList.remove("hidden");
@@ -87,10 +87,10 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
           </tr>
         )) || null}
 
-        <tr className="custom-table-row w-full">
+        <tr className="custom-table-row w-full full-border">
           <td colSpan={3} />
 
-          <td>
+          <td className="full-border">
             <div className="flex flex-col items-start">
               <span>Shipping Cost: {shippingCost}; </span>
               <span>Other Charge Amount: {otherChargeAmount};</span>
@@ -103,8 +103,8 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
         <tr>
           <td colSpan={6} />
-          <td className="font-bold border-2 border-black">Total</td>
-          <td className="border-2 border-black" contentEditable>
+          <td className="font-bold border-2 border-black full-border">Total</td>
+          <td className="border-2 border-black full-border" contentEditable>
             $
             {(
               items.reduce((acc, cur) => acc + cur?.["Amount"], 0) +
@@ -120,13 +120,13 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
 const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
   return (
-    <div className="relative">
-      <div className="flex justify-between">
-        <div className="px-8">
+    <div className="relative edi-830-layout-1-root">
+      <div className="flex justify-between edi-830-layout-1-top-header-container">
+        <div className="px-8 edi-830-layout-1-top-header-image">
           <Image src="/acmemfg.png" width={250} height={250} alt={"Acme Logo"} />
         </div>
 
-        <div className="flex flex-col items-end p-4 gap-y-1">
+        <div className="flex flex-col items-end p-4 gap-y-1 edi-830-layout-1-top-header-content-wrapper">
           <h1 className="text-3xl font-semibold" contentEditable>
             Invoice
           </h1>
@@ -136,7 +136,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </div>
       </div>
 
-      <div className="flex flex-col p-4 max-w-6xl ml-8">
+      <div className="flex flex-col p-4 max-w-6xl ml-8 edi-830-layout-1-bottom-header">
         <h5 className="font-bold">Ship To</h5>
         <h5 contentEditable>Acme Inc</h5>
         <h5 contentEditable>
@@ -150,7 +150,7 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
         </h5>
       </div>
 
-      <table className="w-full table-fixed mb-8">
+      <table className="w-full table-fixed mb-8 edi-830-layout-1-table-1">
         <thead>
           <tr className="custom-table-row">
             <th>PO #</th>
@@ -168,7 +168,9 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
 
       <RenderTable items={items} setItems={setItems} />
 
-      <span className="text-[8px] text-gray-500 absolute inline-block">Created by Drio Inc.</span>
+      <span className="text-[8px] text-gray-500 absolute inline-block edi-830-layout-1-footer">
+        Created by Drio Inc.
+      </span>
     </div>
   );
 };

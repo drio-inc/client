@@ -25,6 +25,121 @@ import Modal from "@/comps/ui/Modal";
 import showAlert from "@/comps/ui/Alert/Alert";
 import { setCloseModal, setOpenModal } from "@/state/slices/uiSlice";
 
+const pageStyle = `
+    @page {
+	  size: A4;
+	  margin: 0;
+	}
+
+	@media print {
+	  body {
+		margin: 10px;
+		font-family: sans-serif;
+	  }
+	  
+
+	
+	  h1{
+		font-size: 1.5rem;
+	  }
+
+	  .edi-830-layout-1-root{
+		width: 100%;
+		position: relative;
+	  }
+
+	  .full-border{
+		border: 2px solid black;
+	  }
+
+	  .edi-830-layout-1-top-header-container{
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+	  }
+
+	  .edi-830-layout-1-top-header-image{
+		width: 200px;
+		height: 200px;
+		position:relative;
+	  }
+
+	  .edi-830-layout-1-top-header-image img{
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		object-position: center;
+	  }
+
+	  .edi-830-layout-1-top-header-content-wrapper{
+		display: flex;
+		align-items: flex-end;
+		flex-direction: column;
+	  }
+
+	  .edi-830-layout-1-top-header-content-pair{
+		display: flex;
+		align-items: flex-end;
+		flex-direction: column;
+	  }
+
+	  .edi-830-layout-1-top-header-content-pair-header{
+		font-weight: bold;
+	  }
+
+	  .edi-830-layout-1-bottom-header{
+		display: flex;
+		margin: 1rem 0;
+		row-gap: 0.5rem;
+		flex-direction: column;
+	  }
+
+	  .edi-830-layout-1-bottom-header-pair-header{
+		font-weight: bold;
+	  }
+
+	  .edi-830-layout-1-table-1{
+		width: 100%;
+		margin: 32px 0;
+		border-collapse: collapse;
+	  }
+
+	  .edi-830-layout-1-table-1 th,
+	  .edi-830-layout-1-table-1 td{
+		padding: 8px;
+		border: 2px solid black;
+	  }
+
+	  .edi-830-layout-1-table-2{
+		width: 100%;
+		border: 2px solid black;
+		border-collapse: collapse;
+		
+	  }
+
+	  .edi-830-layout-1-table-2 th{
+		padding: 8px;
+		border: 2px solid black;
+		page-break-inside: avoid;
+		
+	  }
+
+	  .edi-830-layout-1-table-2-parent td{
+		padding: 8px;
+		page-break-inside: avoid;
+		border: 2px solid black;
+	  }
+
+	  .edi-830-layout-1-footer{
+		font-size: 8px;
+		margin-top: 4px;
+		position: absolute;
+		display: inline-block;  
+
+	  }
+	}
+	  `;
+
 const Form_810 = () => {
   const dispatch = useAppDispatch();
   const printRef = useRef<HTMLDivElement | null>(null);
@@ -212,6 +327,8 @@ const Form_810 = () => {
               </Button>
 
               <ReactToPrint
+                copyStyles={false}
+                pageStyle={pageStyle}
                 content={() => printRef.current}
                 trigger={() => <Button className="w-full">Print PDF</Button>}
                 onAfterPrint={() => showAlert("PDF Downloaded Successfully", "success")}
