@@ -36,12 +36,14 @@ const pageStyle = `
 		margin: 10px;
 		font-family: sans-serif;
 	  }
-	  
-
 	
 	  h1{
 		font-size: 1.5rem;
 	  }
+
+	  .make-bold{
+	  	font-weight: bold;
+	  }	
 
 	  .edi-830-layout-1-root{
 		width: 100%;
@@ -55,6 +57,7 @@ const pageStyle = `
 	  .edi-830-layout-1-top-header-container{
 		width: 100%;
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
 	  }
 
@@ -129,6 +132,10 @@ const pageStyle = `
 		page-break-inside: avoid;
 		border: 2px solid black;
 	  }
+
+	  .total-items-row{
+	  	page-break-inside: avoid;
+	}
 
 	  .edi-830-layout-1-footer{
 		font-size: 8px;
