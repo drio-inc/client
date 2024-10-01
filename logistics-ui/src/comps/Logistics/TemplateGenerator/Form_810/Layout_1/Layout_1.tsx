@@ -77,7 +77,10 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
             <td contentEditable>
               <span>${(item["Qty"] * item["Price"]).toFixed(2)}</span>
 
-              <span className="hidden absolute -bottom-6 -right-6 p-2" id="deleteIcon">
+              <span
+                className="hidden absolute -bottom-6 -right-6 p-2 edi-830-layout-1-table-2-nested-buttons"
+                id="deleteIcon"
+              >
                 <HiMinus
                   className="cursor-pointer w-8 h-8"
                   onClick={() => deleteItem(item.id, index)}

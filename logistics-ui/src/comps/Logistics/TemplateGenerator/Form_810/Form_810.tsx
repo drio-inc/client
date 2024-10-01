@@ -101,6 +101,10 @@ const pageStyle = `
 		font-weight: bold;
 	  }
 
+	 .edi-830-layout-1-table-2-nested-buttons{
+		display: none;
+	  }
+
 	  .edi-830-layout-1-table-1{
 		width: 100%;
 		margin: 32px 0;
