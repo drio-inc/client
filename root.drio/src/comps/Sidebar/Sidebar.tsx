@@ -116,8 +116,8 @@ const NavLinks = [
         href: "trigger-actions",
       },
       {
-        name: "Anomaly Rules",
-        href: "anomaly-rules",
+        name: "Anomaly Detection",
+        href: "anomaly-detection",
       },
     ],
   },
