@@ -185,6 +185,7 @@ export default function AddNewRuleForm() {
                 label={"Select Dataset"}
                 className="md:text-sm 2xl:text-base"
                 options={[
+                  { label: "All", value: "all" },
                   { label: "SAP Inventory", value: "sap_inventory" },
                   { label: "Salesforce Orders", value: "salesforce_orders" },
                   { label: "Quotes Request", value: "quotes_request" },
@@ -223,6 +224,7 @@ export default function AddNewRuleForm() {
                     className="md:text-sm 2xl:text-base"
                     registerName={`subrules.${index}.metadata`}
                     options={[
+                      { label: "All", value: "all" },
                       { label: "Product Name", value: "product_name" },
                       { label: "SKU", value: "sku" },
                       { label: "Price", value: "price" },

@@ -159,6 +159,23 @@ const LearnedContract = () => {
 
           <span className="font-medium">Dataset: {datasetName}</span>
 
+          <div className="flex flex-wrap ml-4 gap-4 justify-center md:justify-start">
+            <div className="rounded-full bg-green-400 pl-2 text-sm flex items-center gap-x-2 border">
+              <span>EDI 850</span>
+              <span className="bg-white rounded-full px-2 h-[90%] flex items-center">0.91</span>
+            </div>
+
+            <div className="rounded-full bg-green-200 pl-2 text-sm flex items-center gap-x-2 border">
+              <span>Purchase Order</span>
+              <span className="bg-white rounded-full px-2 h-[90%] flex items-center">0.72</span>
+            </div>
+
+            <div className="rounded-full bg-yellow-100 pl-2 text-sm flex items-center gap-x-2 border">
+              <span>Invoice</span>
+              <span className="bg-white rounded-full px-2 h-[90%] flex items-center">0.59</span>
+            </div>
+          </div>
+
           <div className="flex gap-4 ml-auto">
             <Button
               icon={<HiPlus />}

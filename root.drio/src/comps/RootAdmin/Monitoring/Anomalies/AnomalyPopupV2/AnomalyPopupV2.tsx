@@ -12,6 +12,8 @@ export default function AnomalyPopupV2() {
   const dispatch = useAppDispatch();
   const { row, rows } = useAppSelector((state) => state.anomalies);
 
+  const commonFields = ["Dealer Name", "Desired ETA", "Order ID", "SKU"];
+
   const markAsAnomaly = (id: string) => {
     const rowToUpdate = rows.find((r) => r.id === id);
     const markedRow = { ...rowToUpdate, status: "anomaly" };
@@ -94,55 +96,70 @@ export default function AnomalyPopupV2() {
       case "Cluster Anomaly":
         return (
           <div className="flex flex-col">
-            <span>
-              The following <strong>{row?.name}</strong> data field combination was detected to be
-              outside the normal metadata distribution.
-            </span>
-
-            <span className="font-bold text-gray-900 text-xl mt-2">Observation:</span>
+            <span className="font-bold text-gray-900 text-xl mb-2 underline">Observation:</span>
 
             <div>
-              <span className="font-medium text-700 block mb-2">
-                Combination of data field values{" "}
-                <span className="text-drio-red">not seen previously</span>:
+              <div className="p-4 bg-gray-200 rounded">
+                <span>Common Fields:</span>
+
+                <div className="grid grid-cols-2 gap-y-1">
+                  {commonFields.map((field) => (
+                    <span key={field} className="font-medium">
+                      {field}:{" "}
+                      {field === "Desired ETA"
+                        ? convertExcelDateToUTC(row?.record[field])
+                        : row?.record[field]}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <span className="font-medium text-700 block my-2 underline">
+                The following attributes contribute to this anomaly:
               </span>
-              <div className="bg-neutral-50 p-4 rounded">
-                {Object.keys(row?.record).map((key) => (
-                  <div className="flex flex-col text-drio-red" key={key}>
-                    <div className="flex gap-x-1">
-                      <span className="font-medium">{key}:</span>
-                      <span>
-                        {key === "Desired ETA"
-                          ? convertExcelDateToUTC(row?.record[key])
-                          : row?.record[key]}
-                      </span>
+
+              <div className="bg-neutral-50 rounded">
+                {Object.keys(row?.record)
+                  .filter((key) => !commonFields.includes(key) && key !== "NOTES")
+                  .map((key) => (
+                    <div className="flex flex-col text-drio-red " key={key}>
+                      <div className="text-sm flex gap-x-1 bg-red-100 w-fit rounded-full px-2 py-1 my-1">
+                        <span className="font-medium">{key}:</span>
+                        <span>
+                          {key === "Desired ETA"
+                            ? convertExcelDateToUTC(row?.record[key])
+                            : row?.record[key]}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                )) ?? "No data found"}
+                  )) ?? "No data found"}
               </div>
             </div>
 
             <div className="mt-2">
-              <span className="font-medium text-700 block mb-2">
-                The {row?.closest_data_points?.length} closest data points seen previously:
+              <span className="font-medium text-700 block mb-2 underline">
+                The {row?.closest_data_points?.length} closest data points seen per the learned
+                contract are:
               </span>
-              <div className="flex flex-col gap-y-2 bg-neutral-50 p-4 rounded">
+
+              <div className="grid grid-cols-3 gap-x-2 text-sm divide-x-2 divide-gray-200">
                 {row?.closest_data_points?.map((point: any, i: number) => (
-                  <div key={i} className="flex flex-col border-b pb-2">
-                    {Object.keys(point).map((p) => (
-                      <div className="flex flex-col text-drio-red" key={p}>
-                        <div className="flex gap-x-1">
-                          <span className="font-medium">{p}:</span>
-                          <span>{point?.[p]}</span>
+                  <div key={i} className="flex flex-col [&:not(:first-child)]:pl-2">
+                    {Object.keys(point)
+                      .filter((key) => !commonFields.includes(key))
+                      .map((p) => (
+                        <div className="flex flex-col text-gray-900" key={p}>
+                          <div className="w-fit rounded-full px-2 my-0.5">
+                            <span className="font-medium">
+                              {p}: {point?.[p]}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    )) ?? "No data found"}
+                      ))}
                   </div>
                 )) ?? "No data found"}
               </div>
             </div>
-
-            <p className="mt-2">This access was allowed to proceed.</p>
           </div>
         );
 
@@ -170,34 +187,16 @@ export default function AnomalyPopupV2() {
   const renderSubtext = () => {
     switch (row?.event_type) {
       case "datatype_mismatch":
-        return (
-          <span className="text-gray-900 block mb-4">
-            Detected deviation from learned schema on{" "}
-            <span className="font-bold">
-              {new Date(row?.timestamp)?.toLocaleString() ?? "Unknown Date"}
-            </span>
-          </span>
-        );
+        return " Data attribute value outside expected range";
 
       case "added_new_field":
-        return (
-          <span className="text-gray-900 block mb-4">Data attribute has unexpected meta tag</span>
-        );
+        return "Data attribute has unexpected meta tag";
 
       case "anomaly":
-        return (
-          <span className="text-gray-900 block">
-            <span>Data attribute value found to be outside expected range</span>
-          </span>
-        );
+        return "Data attribute value found to be outside expected range";
 
       case "Cluster Anomaly":
-        return (
-          <span>
-            The combination of the dataset attributes values seems to be unexpected per the learned
-            contract
-          </span>
-        );
+        return " The combination of the dataset attributes values seems to be unexpected per the learned contract";
     }
   };
 
@@ -213,7 +212,7 @@ export default function AnomalyPopupV2() {
         return "Learned Contract Violation";
 
       case "Cluster Anomaly":
-        return <span className="w-4/5 block">Learned Contract Violation</span>;
+        return "Learned Contract Violation";
       default:
         return "Unknown Event";
     }
@@ -221,7 +220,7 @@ export default function AnomalyPopupV2() {
 
   return (
     <Layout>
-      <div className="xl:w-[50vw] relative w-[90vw] mx-auto bg-[#FAFAFA] p-8 rounded-lg">
+      <div className="xl:w-[60vw] relative w-[90vw] mx-auto bg-[#FAFAFA] p-8 rounded-lg">
         <span
           className="absolute top-0 right-0 p-6 cursor-pointer"
           onClick={() => dispatch(setCloseModal("anomalyDetails"))}
@@ -242,23 +241,23 @@ export default function AnomalyPopupV2() {
             </div>
           </div>
 
-          <div className="bg-white p-4 flex flex-col gap-y-2 rounded-md">
-            <span className="font-medium text-gray-700">Consumbers of this Data</span>
-            <div className="border-2 p-4 rounded-md">
-              <span className="text-gray-900">{row?.name ?? "Unknown"}</span>
+          <div className="bg-white p-4 flex flex-col gap-y-4">
+            <div className="flex items-center gap-x-2">
+              <span className="font-medium text-gray-700">Consumers of this Data: </span>{" "}
+              <span className="text-gray-900 bg-gray-200 px-2 py-0.5 rounded font-medium">
+                {row?.name ?? "Unknown"}
+              </span>
             </div>
-          </div>
 
-          <div className="bg-white p-4 flex flex-col gap-y-2 rounded-md">
-            <span className="font-medium text-gray-700">Severity</span>
-            <div className="border-2 p-4 rounded-md">
-              <span className="text-gray-900">{row?.severity ?? "Informational"}</span>
+            <div className="flex items-center gap-x-2">
+              <span className="font-medium text-gray-700">Severity:</span>{" "}
+              <span className="text-blue-800 bg-blue-100 px-2 py-0.5 rounded font-medium">
+                {row?.severity ?? "Informational"}
+              </span>
             </div>
-          </div>
 
-          <div className="bg-white p-4 flex flex-col gap-y-2 rounded-md">
-            <span className="font-medium text-gray-700">Suggested Resolution</span>
-            <div className="border-2 p-4 rounded-md">
+            <div className="flex items-center gap-x-2">
+              <span className="font-medium text-gray-700">Suggested Resolution:</span>{" "}
               <span className="text-gray-700">{renderResolution()}</span>
             </div>
           </div>
