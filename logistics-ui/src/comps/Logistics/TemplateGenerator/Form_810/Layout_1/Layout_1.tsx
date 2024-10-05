@@ -77,7 +77,10 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
             <td contentEditable>
               <span>${(item["Qty"] * item["Price"]).toFixed(2)}</span>
 
-              <span className="hidden absolute -bottom-6 -right-6 p-2" id="deleteIcon">
+              <span
+                className="hidden absolute -bottom-6 -right-6 p-2 edi-830-layout-1-table-2-nested-buttons"
+                id="deleteIcon"
+              >
                 <HiMinus
                   className="cursor-pointer w-8 h-8"
                   onClick={() => deleteItem(item.id, index)}
@@ -87,7 +90,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
           </tr>
         )) || null}
 
-        <tr className="custom-table-row w-full full-border">
+        <tr className="custom-table-row w-full full-border summary-row">
           <td colSpan={3} />
 
           <td className="full-border">
@@ -101,7 +104,7 @@ const RenderTable = ({ items, setItems }: RenderTableProps): JSX.Element => {
           <td colSpan={4} />
         </tr>
 
-        <tr>
+        <tr className="summary-row">
           <td colSpan={6} />
           <td className="font-bold border-2 border-black full-border">Total</td>
           <td className="border-2 border-black full-border" contentEditable>
@@ -131,23 +134,20 @@ const Layout_1 = ({ items, setItems }: RenderTableProps): JSX.Element => {
             Invoice
           </h1>
 
-          <h5 contentEditable>INV00000156</h5>
-          <h5 contentEditable>5/1/2024</h5>
+          <span contentEditable>INV00000156</span>
+          <span contentEditable>5/1/2024</span>
         </div>
       </div>
 
       <div className="flex flex-col p-4 max-w-6xl ml-8 edi-830-layout-1-bottom-header">
-        <h5 className="font-bold">Ship To</h5>
-        <h5 contentEditable>Acme Inc</h5>
-        <h5 contentEditable>
-          123 Main Street
-          <br />
-          <span>Springfield, IL 62701 USA</span>
-        </h5>
+        <span className="font-bold make-bold">Ship To</span>
+        <span contentEditable>Acme Inc</span>
+        <span contentEditable>123 Main Street</span>
+        <span contentEditable>Springfield, IL 62701 USA</span>
 
-        <h5>
-          Code : <span contentEditable>54325</span>
-        </h5>
+        <span>
+          Code: <span contentEditable>54325</span>
+        </span>
       </div>
 
       <table className="w-full table-fixed mb-8 edi-830-layout-1-table-1">

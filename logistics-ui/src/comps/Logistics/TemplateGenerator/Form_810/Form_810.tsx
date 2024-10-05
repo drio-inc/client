@@ -36,12 +36,14 @@ const pageStyle = `
 		margin: 10px;
 		font-family: sans-serif;
 	  }
-	  
-
 	
 	  h1{
 		font-size: 1.5rem;
 	  }
+
+	  .make-bold{
+	  	font-weight: bold;
+	  }	
 
 	  .edi-830-layout-1-root{
 		width: 100%;
@@ -55,6 +57,7 @@ const pageStyle = `
 	  .edi-830-layout-1-top-header-container{
 		width: 100%;
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
 	  }
 
@@ -98,6 +101,10 @@ const pageStyle = `
 		font-weight: bold;
 	  }
 
+	 .edi-830-layout-1-table-2-nested-buttons{
+		display: none;
+	  }
+
 	  .edi-830-layout-1-table-1{
 		width: 100%;
 		margin: 32px 0;
@@ -124,11 +131,25 @@ const pageStyle = `
 		
 	  }
 
+	  .edi-830-layout-1-table-2-parent{
+	 	page-break-inside: avoid; 
+	  }
+
+	.summary-row {
+    page-break-before: avoid;
+    page-break-inside: avoid;
+  }
+
+  .last-item-row {
+    page-break-inside: avoid;
+  }
+
 	  .edi-830-layout-1-table-2-parent td{
 		padding: 8px;
-		page-break-inside: avoid;
 		border: 2px solid black;
 	  }
+
+
 
 	  .edi-830-layout-1-footer{
 		font-size: 8px;
