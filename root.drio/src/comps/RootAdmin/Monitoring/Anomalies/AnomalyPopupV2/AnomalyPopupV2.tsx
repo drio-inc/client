@@ -87,7 +87,8 @@ export default function AnomalyPopupV2() {
           <p>
             <span className="font-bold">'{row?.field}'</span> field of{" "}
             <span className="font-bold">'{row?.name}'</span> dataset being published on{" "}
-            <span className="font-bold">'{row?.ds}'</span> expected to be{" "}
+            <span className="font-bold">'{row?.ds}'</span> expected to be between{" "}
+            <span className="font-bold">0</span> and{" "}
             <span className="font-bold">{row?.iqr ?? "unknown iqr"}</span> but received value was{" "}
             <span className="font-bold">{row?.value ?? "unknown value"}</span>
           </p>
@@ -245,7 +246,7 @@ export default function AnomalyPopupV2() {
             <div className="flex items-center gap-x-2">
               <span className="font-medium text-gray-700">Consumers of this Data: </span>{" "}
               <span className="text-gray-900 bg-gray-200 px-2 py-0.5 rounded font-medium">
-                {row?.name ?? "Unknown"}
+                Logistics App
               </span>
             </div>
 
