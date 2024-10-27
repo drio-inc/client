@@ -53,7 +53,10 @@ const LearnedContractMenu = ({ row }: TableRow) => {
   const disableApproveButton = () => {
     return learnedContractState.rows
       .find((r) => r.id === row.id)
-      ?.key_name_tags.some((t: any) => t.status === "Pending" || t.status === "Rejected")
+      ?.key_name_tags.some((t: any) => t.status === "Pending" || t.status === "Rejected") ||
+      learnedContractState.rows
+        .find((r) => r.id === row.id)
+        ?.data_field_tags.some((t: any) => t.status === "Pending" || t.status === "Rejected")
       ? false
       : true;
   };
@@ -61,7 +64,10 @@ const LearnedContractMenu = ({ row }: TableRow) => {
   const disableRejectButton = () => {
     return learnedContractState.rows
       .find((r) => r.id === row.id)
-      ?.key_name_tags.some((t: any) => t.status === "Pending" || t.status === "Approved")
+      ?.key_name_tags.some((t: any) => t.status === "Pending" || t.status === "Approved") ||
+      learnedContractState.rows
+        .find((r) => r.id === row.id)
+        ?.data_field_tags.some((t: any) => t.status === "Pending" || t.status === "Approved")
       ? false
       : true;
   };
@@ -97,7 +103,7 @@ const LearnedContractMenu = ({ row }: TableRow) => {
             disabled={disableApproveButton()}
             onClick={() => approveOrRejectAll("Approved")}
             className={`cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4 text-left ${
-              disableApproveButton() ? "opacity-50 pointer-events-none" : ""
+              disableApproveButton() && "opacity-50 pointer-events-none"
             }`}
           >
             Approve All
@@ -107,7 +113,7 @@ const LearnedContractMenu = ({ row }: TableRow) => {
             disabled={disableRejectButton()}
             onClick={() => approveOrRejectAll("Rejected")}
             className={`cursor-pointer hover:bg-indigo-50 w-full block py-2 px-4 text-left ${
-              disableRejectButton() ? "opacity-50 pointer-events-none" : ""
+              disableRejectButton() && "opacity-50 pointer-events-none"
             }`}
           >
             Reject All

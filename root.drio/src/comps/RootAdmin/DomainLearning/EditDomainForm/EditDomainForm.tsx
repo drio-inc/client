@@ -29,7 +29,7 @@ const schema = z.object({
     required_error: "Please select an option",
   }),
 
-  description: z.string().nonempty("Please Enter a value"),
+  description: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;

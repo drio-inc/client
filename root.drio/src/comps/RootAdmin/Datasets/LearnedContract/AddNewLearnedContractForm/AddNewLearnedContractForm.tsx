@@ -97,6 +97,8 @@ export default function AddLearnedContractForm({ row }: TableRow) {
         {
           ...data,
           visibility,
+          optional: true,
+          is_list: false,
           key_name_tags: keyNameTags,
           data_field_tags: dataFieldTags,
           last_updated: new Date().toLocaleDateString(),
