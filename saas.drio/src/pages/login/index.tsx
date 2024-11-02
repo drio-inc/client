@@ -1,7 +1,7 @@
 import Button from "@ui/Button";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { FaLock } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { TextInput } from "@ui/Forms/Inputs";
 
 import { z } from "zod";
@@ -16,10 +16,10 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { HiCheck } from "react-icons/hi";
-import { useLoginMutation } from "@/api/auth";
-import { setUser, setToken } from "@/state/slices/authSlice";
 import * as CheckBox from "@radix-ui/react-checkbox";
 import { useAppDispatch } from "@/hooks/useStoreTypes";
+import { setUser, setToken } from "@/state/slices/authSlice";
+import { useLoginMutation, useLazyOAuthLoginQuery } from "@/api/auth";
 
 const schema = z.object({
   username: z
@@ -39,6 +39,7 @@ export default function Login() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [login, result] = useLoginMutation();
+  const [trigger] = useLazyOAuthLoginQuery();
   const [rememberMe, setRememberMe] = useState(false);
 
   const form = useZodForm({
@@ -65,11 +66,28 @@ export default function Login() {
         router.push("/accounts");
       }
     } catch (err: any) {
-      showAlert(
-        err?.data?.message ?? "Something went wrong. Please try again.",
-        "error"
-      );
+      showAlert(err?.data?.message ?? "Something went wrong. Please try again.", "error");
     }
+  };
+
+  const handleOAuth = async () => {
+    // const res = await trigger().unwrap();
+    // console.log(res);
+
+    window.location.href = process.env.API_URL + "/oauth/admin-login";
+
+    // if (res.token) {
+    //   dispatch(setToken(res.token));
+    //   window.localStorage.setItem("token", res.token);
+
+    //   dispatch(
+    //     setUser({
+    //       username: " ",
+    //     })
+    //   );
+
+    //   router.push("/accounts");
+    // }
   };
 
   return (
@@ -89,11 +107,7 @@ export default function Login() {
 
           <div className="px-4 py-2 w-full">
             <div className="relative">
-              <TextInput
-                type="password"
-                label="Password"
-                {...form.register("password")}
-              />
+              <TextInput type="password" label="Password" {...form.register("password")} />
             </div>
           </div>
 
@@ -117,11 +131,7 @@ export default function Login() {
           </div>
 
           <div className="px-4 py-2 w-full">
-            <Button
-              intent={`primary`}
-              className="w-full relative"
-              isLoading={result.isLoading}
-            >
+            <Button intent={`primary`} className="w-full relative" isLoading={result.isLoading}>
               <FaLock className="inline-block text-drio-red-dark w-4 h-4 absolute left-4" />
               Sign In
             </Button>
@@ -134,10 +144,14 @@ export default function Login() {
           </div>
 
           <div className="px-4 py-2 w-full">
-            <Button intent={`google`} className="w-full justify-center">
-              <FcGoogle className="inline-block w-6 h-6" />
-              <span className="ml-2">Sign In with Google</span>
-            </Button>
+            <button
+              type="button"
+              onClick={handleOAuth}
+              className="w-full justify-center border border-gray-700 flex items-center py-3"
+            >
+              <Image src="/microsoft-logo.svg" alt="Google" width={24} height={24} />
+              <span className="ml-2">Sign In with Microsoft</span>
+            </button>
           </div>
         </Form>
       </AuthContainer>

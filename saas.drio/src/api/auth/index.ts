@@ -3,6 +3,16 @@ import { rootApi } from "@/state/services/apiService";
 
 export const authApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
+    oAuthLogin: builder.query<LoginRespose, void>({
+      query: () => ({
+        url: `/oauth/admin-login`,
+        method: "GET",
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+        },
+      }),
+    }),
+
     login: builder.mutation<LoginRespose, LoginFormData>({
       query: (payload) => ({
         url: `/auth/admin-login`,
@@ -32,5 +42,9 @@ export const authApi = rootApi.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useResetPasswordMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useLazyOAuthLoginQuery,
+  useResetPasswordMutation,
+} = authApi;
