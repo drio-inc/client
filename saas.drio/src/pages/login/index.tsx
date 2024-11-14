@@ -71,23 +71,7 @@ export default function Login() {
   };
 
   const handleOAuth = async () => {
-    // const res = await trigger().unwrap();
-    // console.log(res);
-
     window.location.href = process.env.API_URL + "/oauth/admin-login";
-
-    // if (res.token) {
-    //   dispatch(setToken(res.token));
-    //   window.localStorage.setItem("token", res.token);
-
-    //   dispatch(
-    //     setUser({
-    //       username: " ",
-    //     })
-    //   );
-
-    //   router.push("/accounts");
-    // }
   };
 
   return (
