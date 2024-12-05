@@ -1,4 +1,5 @@
 FROM node:lts-bookworm-slim AS drioui-build
+ARG API_ENDPOINT_ARG
 
 LABEL maintainer="Sudarsan Raghavan <sraghavan@drio.ai>"
 LABEL company="Drio Inc"
@@ -9,6 +10,7 @@ WORKDIR /root/client
 RUN apt update -y && \
     npm install --global concurrently next && \
     yarn install && \
+    /root/client/make-urls.sh ${API_ENDPOINT_ARG} && \
     yarn build && \
     rm -rf node_modules
 
