@@ -31,7 +31,7 @@ const initialState: LexiconState = {
       id: "2",
       name: "Dict 2",
       ou: "Corp",
-      domain: "Loans/Contracts",
+      domain: "Logistics/Transport",
       description: "General dictionary description",
       docs_in_corpus: 5,
       pre_existing: "Yes",

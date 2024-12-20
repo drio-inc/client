@@ -57,12 +57,15 @@ const TriggerRules = () => {
   const transformData = () => {
     return rows.map((row: TableRow) => {
       return {
+        id: row.id,
         rule_template: row.rule_template,
+        rule_description: row.rule_description,
+        streams: row.streams,
+        channels: row.channels,
+        threshhold_value: row.threshhold_value,
         trigger: row.trigger,
         data_source: row.data_source,
-        threshold_value: row.threshold_value,
         message: row.message,
-        notification: row.notification,
         occurence_history: <ThumbnailChart />,
       };
     });

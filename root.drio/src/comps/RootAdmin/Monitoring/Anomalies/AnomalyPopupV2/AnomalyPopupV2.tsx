@@ -7,6 +7,7 @@ import { setCloseModal } from "@/state/slices/uiSlice";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { setRows, setRow } from "@/state/slices/anomaliesSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
+import { c } from "msw/lib/glossary-de6278a9";
 
 export default function AnomalyPopupV2() {
   const dispatch = useAppDispatch();
@@ -164,6 +165,18 @@ export default function AnomalyPopupV2() {
           </div>
         );
 
+      case "PO Delayed Anomaly":
+        return (
+          <p>
+            <span className="font-bold">‘ETA’ </span> field of{" "}
+            <span className="font-bold">‘SalesForce Orders’</span> dataset changed from{" "}
+            <span className="font-bold">‘4/23/2024’</span> to{" "}
+            <span className="font-bold">‘4/30/2024’</span> - a delay of 7 days for PO number{" "}
+            <span className="font-bold">‘115042’</span> and transported by{" "}
+            <span className="font-bold">‘USPN’</span>
+          </p>
+        );
+
       default:
         return "No description available";
     }
@@ -180,6 +193,8 @@ export default function AnomalyPopupV2() {
         return `Please check if this is a valid change or not.`;
       case "Cluster Anomaly":
         return `Please check if the data record is valid.`;
+      case "PO Delayed Anomaly":
+        return `Please check if this is a valid change or not.`;
       default:
         return "No resolution available.";
     }
@@ -198,6 +213,9 @@ export default function AnomalyPopupV2() {
 
       case "Cluster Anomaly":
         return " The combination of the dataset attributes values seems to be unexpected per the learned contract";
+
+      case "PO Delayed Anomaly":
+        return "Delivery date for this PO has been delayed ";
     }
   };
 
@@ -214,6 +232,10 @@ export default function AnomalyPopupV2() {
 
       case "Cluster Anomaly":
         return "Learned Contract Violation";
+
+      case "PO Delayed Anomaly":
+        return "PO Delayed!";
+
       default:
         return "Unknown Event";
     }

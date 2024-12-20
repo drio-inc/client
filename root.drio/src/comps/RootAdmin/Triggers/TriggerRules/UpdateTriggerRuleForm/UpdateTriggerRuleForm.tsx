@@ -158,7 +158,9 @@ const channelOptions = [
   },
 ];
 
-export default function AddTriggerRuleForm() {
+export default function UpdateTriggerRuleForm({ row }: TableRow) {
+  console.log(row);
+
   const dispatch = useAppDispatch();
   const alertPolicies = useAppSelector((state) => state.alertPolicies);
   const [defaultAccordionValue, setDefaultAccordionValue] = useState("0");
@@ -228,7 +230,7 @@ export default function AddTriggerRuleForm() {
     }
 
     form.reset();
-    dispatch(setCloseModal("addAlertPolicyForm"));
+    dispatch(setCloseModal("updateTriggerRuleForm"));
   };
 
   return (
@@ -238,9 +240,7 @@ export default function AddTriggerRuleForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full mx-auto bg-white p-8 rounded-lg min-w-[400px]"
         >
-          <h2 className="text-gray-700 text-2xl font-bold my-4 text-center">
-            Add New Trigger Rule
-          </h2>
+          <h2 className="text-gray-700 text-2xl font-bold my-4 text-center">Update Trigger Rule</h2>
 
           <Tabs
             value={tabValue}
@@ -298,14 +298,10 @@ export default function AddTriggerRuleForm() {
                               variant="outline"
                               className={cn(
                                 "w-full justify-between",
-                                !field.value && "text-gray-400"
+                                !row.rule_template && "text-gray-400"
                               )}
                             >
-                              {field.value
-                                ? ruleTemplateOptions.find(
-                                    (template) => template.id === field.value
-                                  )?.rule_name
-                                : "Select rule template"}
+                              {row.rule_template ?? "Select rule template"}
                               <HiChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </ButtonV2>
                           </FormControl>
@@ -320,7 +316,16 @@ export default function AddTriggerRuleForm() {
                                 {ruleTemplateOptions.map((template) => (
                                   <CommandItem
                                     key={template.id}
-                                    value={template.id}
+                                    // value={
+                                    //   ruleTemplateOptions.find(
+                                    //     (option) => option.rule_name === row.rule_template
+                                    //   )?.id ?? template.id
+                                    // }
+                                    defaultValue={
+                                      ruleTemplateOptions.find(
+                                        (option) => option.rule_name === row.rule_template
+                                      )?.id ?? template.id
+                                    }
                                     className="flex justify-between"
                                     onSelect={() => {
                                       form.setValue("rule_template", template.id);
@@ -366,6 +371,7 @@ export default function AddTriggerRuleForm() {
                         <Textarea
                           rows={6}
                           {...field}
+                          defaultValue={row.rule_description}
                           placeholder="E.g. This template uses 3 streams and creates a mid sensitive spike detector."
                         />
                       </FormControl>
@@ -381,7 +387,7 @@ export default function AddTriggerRuleForm() {
                   type="button"
                   className="w-full"
                   intent={`secondary`}
-                  onClick={() => dispatch(setCloseModal("addAlertPolicyForm"))}
+                  onClick={() => dispatch(setCloseModal("updateTriggerRuleForm"))}
                 >
                   <span className="inline-flex justify-center w-full">Cancel</span>
                 </Button>

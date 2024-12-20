@@ -10,10 +10,46 @@ const initialState: AlertPolicyState = {
     {
       id: "1",
       rule_template: "Range Anomaly",
-      data_source: "SAP Inventory",
+      rule_description: "This trigger is to detect if the value is out of range.",
+      streams: [
+        {
+          data_source_id: "kafka",
+          dataset_id: "dataset_1",
+        },
+      ],
+      channels: [
+        {
+          channel: "email",
+          message: "Out of range by 40%",
+        },
+      ],
       threshold_value: "40%",
-      message: "Out of range by 40%",
       trigger: "notify.teams.outlook.com",
+      data_source: "SAP Inventory",
+      message: "Out of range by 40%",
+      occurence_history: "",
+    },
+    {
+      id: "6a0f95a8-8de3-4b63-9137-fe61ebcb1e20",
+      rule_template: "PO Delayed Trigger",
+      rule_description:
+        "This trigger is created if the delivery date detected in a PO is later than delivery date sent previously.",
+      streams: [
+        {
+          data_source_id: "kafka",
+          dataset_id: "dataset_1",
+        },
+      ],
+      channels: [
+        {
+          channel: "email",
+          message: "Delayed by 2 days",
+        },
+      ],
+      threshold_value: "56%",
+      trigger: "email",
+      data_source: "kafka",
+      message: "Delayed by 2 days",
       occurence_history: "",
     },
   ],
