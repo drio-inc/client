@@ -84,8 +84,8 @@ const ruleTemplateOptions = [
   },
 
   {
-    id: "rule_template_2",
-    rule_name: "Rule Template 2",
+    id: "range_anomaly",
+    rule_name: "Range Anomaly",
     streams: [
       {
         stream_name: "Stream 1",
@@ -201,27 +201,31 @@ export default function UpdateTriggerRuleForm({ row }: TableRow) {
   const [openDatasetPopovers, setOpenDatasetPopovers] = useState<boolean[]>([]);
   const [openDataSourcePopovers, setOpenDataSourcePopovers] = useState<boolean[]>([]);
 
-  const onSubmit = async (data: FormData) => {
-    console.log(data);
+  useEffect(() => {
+    removeChannel();
+  }, [removeChannel]);
 
+  const onSubmit = async (data: FormData) => {
     try {
       dispatch(
-        setRows([
-          ...alertPolicies.rows,
-          {
-            ...data,
-            id: uuiv4(),
-            threshold_value: Math.floor(Math.random() * 100) + "%",
-            trigger: data.channels.map((channel) => channel.channel).join(", "),
-            data_source: data.streams.map((stream) => stream.data_source_id).join(", "),
-            message: data.channels
-              .map((channel) => channel.message.substring(0, 10) + "...")
-              .join(", "),
-            rule_template: ruleTemplateOptions.find(
-              (template) => template.id === data.rule_template
-            )?.rule_name,
-          },
-        ])
+        setRows(
+          alertPolicies.rows.map((templateRow) =>
+            templateRow.id === row.id
+              ? {
+                  ...templateRow,
+                  threshold_value: Math.floor(Math.random() * 100) + "%",
+                  trigger: data.channels.map((channel) => channel.channel).join(", "),
+                  data_source: data.streams.map((stream) => stream.data_source_id).join(", "),
+                  message: data.channels
+                    .map((channel) => channel.message.substring(0, 10) + "...")
+                    .join(", "),
+                  rule_template: ruleTemplateOptions.find(
+                    (template) => template.id === data.rule_template
+                  )?.rule_name,
+                }
+              : templateRow
+          )
+        )
       );
 
       showAlert("Template added successfully", "success");
@@ -283,6 +287,13 @@ export default function UpdateTriggerRuleForm({ row }: TableRow) {
               <div className="py-2 w-full">
                 <FormField
                   control={form.control}
+                  defaultValue={
+                    row.rule_template
+                      ? ruleTemplateOptions.find(
+                          (template) => template.rule_name === row.rule_template
+                        )?.id
+                      : ""
+                  }
                   name="rule_template"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
@@ -298,10 +309,10 @@ export default function UpdateTriggerRuleForm({ row }: TableRow) {
                               variant="outline"
                               className={cn(
                                 "w-full justify-between",
-                                !row.rule_template && "text-gray-400"
+                                !field.value && "text-gray-400"
                               )}
                             >
-                              {row.rule_template ?? "Select rule template"}
+                              {field.value ?? "Select rule template"}
                               <HiChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </ButtonV2>
                           </FormControl>
@@ -316,16 +327,7 @@ export default function UpdateTriggerRuleForm({ row }: TableRow) {
                                 {ruleTemplateOptions.map((template) => (
                                   <CommandItem
                                     key={template.id}
-                                    // value={
-                                    //   ruleTemplateOptions.find(
-                                    //     (option) => option.rule_name === row.rule_template
-                                    //   )?.id ?? template.id
-                                    // }
-                                    defaultValue={
-                                      ruleTemplateOptions.find(
-                                        (option) => option.rule_name === row.rule_template
-                                      )?.id ?? template.id
-                                    }
+                                    value={template.id}
                                     className="flex justify-between"
                                     onSelect={() => {
                                       form.setValue("rule_template", template.id);
@@ -363,6 +365,7 @@ export default function UpdateTriggerRuleForm({ row }: TableRow) {
                 <FormField
                   control={form.control}
                   name="rule_description"
+                  defaultValue={row.rule_description}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-700">Description</FormLabel>
@@ -371,7 +374,6 @@ export default function UpdateTriggerRuleForm({ row }: TableRow) {
                         <Textarea
                           rows={6}
                           {...field}
-                          defaultValue={row.rule_description}
                           placeholder="E.g. This template uses 3 streams and creates a mid sensitive spike detector."
                         />
                       </FormControl>
@@ -407,10 +409,10 @@ export default function UpdateTriggerRuleForm({ row }: TableRow) {
                     if (selectedRuleTemplate) {
                       removeStream();
 
-                      selectedRuleTemplate.streams.forEach((stream) => {
+                      selectedRuleTemplate.streams.forEach((stream, index) => {
                         appendStream({
-                          data_source_id: "",
-                          dataset_id: "",
+                          dataset_id: row.streams[index].dataset_id,
+                          data_source_id: row.streams[index].data_source_id,
                         });
                       });
 
@@ -634,6 +636,13 @@ export default function UpdateTriggerRuleForm({ row }: TableRow) {
                   onClick={async () => {
                     const validate = await form.trigger(["streams"]);
 
+                    row.channels.map((channel: any, index: number) => {
+                      appendChannel({
+                        channel: row.channels[index].channel,
+                        message: row.channels[index].message,
+                      });
+                    });
+
                     if (!validate) return;
                     setTabValue("trigger");
                   }}
@@ -753,6 +762,7 @@ export default function UpdateTriggerRuleForm({ row }: TableRow) {
                         <FormField
                           control={form.control}
                           name={`channels.${index}.message`}
+                          defaultValue={row.message}
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Message</FormLabel>
