@@ -84,8 +84,8 @@ const ruleTemplateOptions = [
   },
 
   {
-    id: "rule_template_2",
-    rule_name: "Rule Template 2",
+    id: "late_bookings",
+    rule_name: "Late Bookings",
     streams: [
       {
         stream_name: "Stream 1",
@@ -97,8 +97,8 @@ const ruleTemplateOptions = [
   },
 
   {
-    id: "rule_template_3",
-    rule_name: "Rule Template 3",
+    id: "inventory_data_change",
+    rule_name: "Inventory Data Change",
     streams: [
       {
         stream_name: "Stream 1",
@@ -130,16 +130,16 @@ const dataSourceOptions = [
 
 const datasetOptions = [
   {
-    label: "Dataset 1",
-    value: "dataset_1",
+    label: "SalesforcerOrders",
+    value: "salesforce_orders",
   },
   {
-    label: "Dataset 2",
-    value: "dataset_2",
+    label: "CarrierShipping Quotes",
+    value: "carrier_shipping_quotes",
   },
   {
-    label: "Dataset 3",
-    value: "dataset_3",
+    label: "SAP Inventory",
+    value: "sap_inventory",
   },
 ];
 
