@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  img {
+    @apply inline-block;
+  }
+}
+
+/* * {
+  border: 1px solid black !important;
+} */
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --drio-accent: #9c0001;
+  --drio-accent-dark: #6b0405;
+}
+
+.custom-container {
+  min-height: calc(100vh - 6rem);
+}
+
+.custom-table-row th {
+  text-align: center;
+  vertical-align: middle;
+  @apply border-2 border-black bg-gray-200;
+}
+
+.custom-table-row td:not(:last-child) {
+  @apply border-2 border-black;
+  vertical-align: middle;
+}
+
+.custom-table-row td {
+  @apply border-2 border-black;
+  vertical-align: middle;
+}
+
+.outer-table-row td {
+  @apply border-l-2 border-black;
+  vertical-align: middle;
+}
+
+h4 {
+  font-weight: 400;
+}
+
+.inner-table {
+  text-align: center;
+}
+
+td {
+  padding: 0.1rem;
+  text-align: center;
+  vertical-align: middle;
+}
