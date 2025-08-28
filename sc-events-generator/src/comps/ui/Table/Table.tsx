@@ -66,9 +66,7 @@ const Table = ({
               <tr
                 key={index}
                 className={`${
-                  isChecked
-                    ? "bg-[#ECF5FF] hover:bg-[#ECF5FF]"
-                    : "hover:bg-gray-50"
+                  isChecked ? "bg-[#ECF5FF] hover:bg-[#ECF5FF]" : "hover:bg-gray-50"
                 } border-t border-b border-gray-100`}
               >
                 {!noSelection && (
@@ -96,9 +94,7 @@ const Table = ({
                     >
                       <RiStarLine className="text-gray-300 w-4 h-4" />
                       <Checkbox.Indicator className="text-white">
-                        {isChecked && (
-                          <RiStarFill className="text-drio-red w-4 h-4" />
-                        )}
+                        {isChecked && <RiStarFill className="text-drio-red w-4 h-4" />}
                       </Checkbox.Indicator>
                     </Checkbox.Root>
                   </td>
@@ -108,13 +104,9 @@ const Table = ({
                   <td
                     key={index}
                     onClick={() => handleRowClick?.(row.id)}
-                    className="cursor-pointer border-t border-b text-gray-500 text-xs p-4 text-left"
+                    className="capitalize cursor-pointer border-t border-b text-gray-500 text-xs p-4 text-left"
                   >
-                    <span
-                      className={`${
-                        header?.status?.[row[header.accessor]]
-                      } inline-block`}
-                    >
+                    <span className={`${header?.status?.[row[header.accessor]]} inline-block`}>
                       {row[header.accessor] ?? "NA"}
                     </span>
                   </td>

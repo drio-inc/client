@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { formatTime } from "@/utils/formatTime";
 import { setRow } from "@/state/slices/anomaliesSlice";
 import { AnimatePresence, motion } from "framer-motion";
@@ -9,14 +11,34 @@ import { MdOutlineClose, MdOutlineNotifications } from "react-icons/md";
 export default function Notificationbar() {
   const dispatch = useAppDispatch();
   const { showSidebar } = useAppSelector((state) => state.ui);
-  const { notifications, isRead } = useAppSelector(
-    (state) => state.notifications
-  );
+  const { notifications, isRead } = useAppSelector((state) => state.notifications);
 
   const handleClick = (n: AnomalyNotification) => {
     dispatch(setRow(n));
     dispatch(setOpenModal("anomalyDetails"));
   };
+
+  useEffect(() => {
+    const eventSource = new EventSource("/api/receive-event");
+
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log("Received event data:", data);
+      } catch (error) {
+        console.error("Error parsing event data:", error);
+      }
+    };
+
+    eventSource.onerror = () => {
+      console.error("EventSource connection error.");
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [dispatch]);
 
   return (
     <AnimatePresence>
@@ -68,15 +90,13 @@ export default function Notificationbar() {
                     </span> */}
 
                     <span className="text-[#1F2937] font-medium capitalize">
-                      {n?.event_type?.replaceAll("_", " ") ?? "Unknown Event"}{" "}
-                      on {n?.name ?? "Unknown"} Dataset
+                      {n?.event_type?.replaceAll("_", " ") ?? "Unknown Event"} on{" "}
+                      {n?.name ?? "Unknown"} Dataset
                     </span>
 
                     <div className="flex items-center gap-x-2">
                       <div className="inline-block w-[10px] h-[10px] rounded-full bg-drio-red" />
-                      <span className="text-drio-red text-sm">
-                        {formatTime(n?.timestamp)}
-                      </span>
+                      <span className="text-drio-red text-sm">{formatTime(n?.timestamp)}</span>
                     </div>
                   </div>
                 </motion.div>

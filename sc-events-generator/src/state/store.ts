@@ -1,30 +1,24 @@
+import { persistReducer } from "redux-persist";
 import { rootApi } from "./services/apiService";
 
-import {
-  PreloadedState,
-  configureStore,
-  combineReducers,
-} from "@reduxjs/toolkit";
-
-import {
-  FLUSH,
-  PAUSE,
-  PURGE,
-  PERSIST,
-  REGISTER,
-  REHYDRATE,
-  persistStore,
-} from "redux-persist";
-
 import { setupListeners } from "@reduxjs/toolkit/query";
+import { PreloadedState, configureStore, combineReducers } from "@reduxjs/toolkit";
+import { FLUSH, PAUSE, PURGE, PERSIST, REGISTER, REHYDRATE, persistStore } from "redux-persist";
 
 import uiReducer from "./slices/uiSlice";
 import eventReducer from "./slices/eventSlice";
+import storage from "redux-persist/lib/storage";
 
+const persistedEventConfig = {
+  key: "events",
+  storage: storage,
+};
+
+const persistedEventReducer = persistReducer(persistedEventConfig, eventReducer);
 
 const rootReducer = combineReducers({
   ui: uiReducer,
-  event: eventReducer,	
+  event: persistedEventReducer,
   [rootApi.reducerPath]: rootApi.reducer,
 });
 
@@ -52,3 +46,7 @@ export type RootState = ReturnType<typeof rootReducer>;
 export type ApplicationState = ReturnType<typeof store.getState>;
 
 export const persistor = persistStore(store);
+
+export const removePersistedState = async () => {
+  await persistor.purge();
+};
