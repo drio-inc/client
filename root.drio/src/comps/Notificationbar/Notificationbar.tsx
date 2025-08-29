@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { setOpenModal, setShowSidebar } from "@/state/slices/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { AnomalyNotification } from "@/state/slices/notificationSlice";
-import { MdOutlineClose, MdOutlineNotifications } from "react-icons/md";
+import { MdDeleteOutline, MdOutlineClose, MdOutlineNotifications } from "react-icons/md";
 
 type Node = {
   name: string;
@@ -26,7 +26,9 @@ export default function Notificationbar() {
   };
 
   useEffect(() => {
-    const es = new EventSource("http://localhost:8000/alerts");
+    const es = new EventSource(
+      `${process.env.NEXT_PUBLIC_AI_API_URL || "http://localhost:8000"}/alerts`
+    );
 
     es.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -62,14 +64,18 @@ export default function Notificationbar() {
             <span className="flex gap-x-2 items-center">
               <h2 className="text-xl font-medium">Notifications</h2>
               <div className="relative">
-                <MdOutlineNotifications className="w-8 h-8 text-[#1F2937]" />
-                {!isRead && (
+                <MdDeleteOutline
+                  className="w-8 h-8 text-red-500 cursor-pointer hover:text-red-700 transition-colors"
+                  onClick={() => setAlerts([])}
+                />
+                {/* <MdOutlineNotifications className="w-8 h-8 text-[#1F2937]" /> */}
+                {/* {!isRead && (
                   <div className="absolute p-[9px] top-0 right-0 bg-drio-red rounded-full flex items-center justify-center w-3 h-3">
                     <span className="text-[12px] text-white font-medium">
-                      {notifications?.length ?? 0}
+                      {alerts?.length ?? 0}
                     </span>
                   </div>
-                )}
+                )} */}
               </div>
             </span>
 
@@ -83,7 +89,7 @@ export default function Notificationbar() {
             .map((alert, index) => {
               const parsedAlert: Node = JSON.parse(alert);
 
-              if (parsedAlert.labels === "factory") return null;
+              if (parsedAlert.labels !== "supplier") return null;
 
               return (
                 <div
