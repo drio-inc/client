@@ -1,18 +1,20 @@
 {
   "private": true,
   "scripts": {
-    "start": "serve ./saas.drio/out -p 3000 & serve ./root.drio/out -p 3001",
-    "build": "yarn workspace root.drio build && yarn workspace saas.drio build",
-    "dev": "concurrently \"yarn workspace root.drio dev\" \"yarn workspace saas.drio dev\"",
-    "serve": "concurrently \"yarn workspace root.drio start\" \"yarn workspace saas.drio start\""
+    "start": "serve ./saas.drio/out -p 3000 & serve ./root.drio/out -p 3001 & serve ./sc-events-generator/out -p 3003",
+    "build": "yarn workspace root.drio build && yarn workspace saas.drio build && yarn workspace sc-events-generator build",
+    "dev": "concurrently \"yarn workspace root.drio dev\" \"yarn workspace saas.drio dev\" \"yarn workspace sc-events-generator dev\"",
+    "serve": "concurrently \"yarn workspace root.drio start\" \"yarn workspace saas.drio start\" \"yarn workspace sc-events-generator start\""
   },
   "workspaces": [
     "root.drio",
     "saas.drio",
-    "logistics-ui"
+    "logistics-ui",
+    "sc-events-generator"
   ],
   "dependencies": {
     "concurrently": "^8.0.1",
     "serve": "^14.2.1"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

@@ -27,6 +27,6 @@ WORKDIR /root/client
 RUN apt update -y && \
     npm install --global serve
 
-EXPOSE 3000 3001
+EXPOSE 3000 3001 3003
 
 ENTRYPOINT ["/root/client/uistart.sh"]
