@@ -44,51 +44,30 @@ const DispatchEventForm = () => {
   });
 
   const onSubmit = async (data: FormData) => {
-    console.log("DispatchEventForm onSubmit", data);
-    const res = await publish({ query: data.event }).unwrap();
+    try {
+      console.log("DispatchEventForm onSubmit", data);
+      const res = await publish({ query: data.event }).unwrap();
 
-    if (res) {
-      const sourceCity = JSON.parse(res?.results[0])?.source_city!;
-      const transformedData = {
-        run_id: uuid(),
-        event: data.event,
-        severity: "extreme",
-        location: sourceCity,
-        event_type: "wildfire",
-        occurence_time: new Date().toISOString(),
-        number_of_affected_nodes: res.results.length,
-      };
+      if (res) {
+        const sourceCity = JSON.parse(res?.results[0])?.source_city!;
+        const transformedData = {
+          run_id: uuid(),
+          event: data.event,
+          severity: "extreme",
+          location: sourceCity,
+          event_type: "wildfire",
+          occurence_time: new Date().toISOString(),
+          number_of_affected_nodes: res.results.length,
+        };
 
-      dispatch(setRows([...eventState.rows, transformedData]));
+        dispatch(setRows([...eventState.rows, transformedData]));
 
-      dispatch(setCloseModal("dispatchEventForm"));
-      showAlert("Event published successfully", "success");
+        dispatch(setCloseModal("dispatchEventForm"));
+        showAlert("Event published successfully", "success");
+      }
+    } catch (err: any) {
+      showAlert(err?.data?.message ?? "Something went wrong. Please try again.", "error");
     }
-
-    // try {
-    //   const res = await publish({ query: data.event }).unwrap();
-
-    //   console.log(res);
-
-    //   if (res) {
-    //     const transformedData = {
-    //       event: data.event,
-    //       run_id: res.run_id,
-    //       occurence_time: new Date().toISOString(),
-    //       severity: res.result.emergency_diffuser.severity,
-    //       event_type: res.result.emergency_diffuser.emergency_type,
-    //       location: res.result.emergency_diffuser.affected_nodes[0].name,
-    //       number_of_affected_nodes: res.result.emergency_diffuser.number_of_affected_nodes,
-    //     };
-
-    //     dispatch(setRows([...eventState.rows, transformedData]));
-
-    //     dispatch(setCloseModal("dispatchEventForm"));
-    //     showAlert("Event published successfully", "success");
-    //   }
-    // } catch (err: any) {
-    //   showAlert(err?.data?.message ?? "Something went wrong. Please try again.", "error");
-    // }
   };
 
   return (
