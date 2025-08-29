@@ -1,3 +1,4 @@
+import { aiApi } from "./services/aiService";
 import { rootApi } from "./services/apiService";
 import storage from "redux-persist/lib/storage";
 
@@ -94,6 +95,7 @@ const rootReducer = combineReducers({
   subscriptionContract: subscriptionContractReducer,
   approvedContract: approvedContractReducer,
   datasetMarketplace: datasetMarketplaceReducer,
+  [aiApi.reducerPath]: aiApi.reducer,
   [rootApi.reducerPath]: rootApi.reducer,
 });
 

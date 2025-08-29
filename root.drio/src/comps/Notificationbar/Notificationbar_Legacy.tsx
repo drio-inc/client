@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { formatTime } from "@/utils/formatTime";
 import { setRow } from "@/state/slices/anomaliesSlice";
@@ -8,15 +8,8 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStoreTypes";
 import { AnomalyNotification } from "@/state/slices/notificationSlice";
 import { MdOutlineClose, MdOutlineNotifications } from "react-icons/md";
 
-type Node = {
-  name: string;
-  labels: string;
-  address?: string;
-};
-
 export default function Notificationbar() {
   const dispatch = useAppDispatch();
-  const [alerts, setAlerts] = useState<any[]>([]);
   const { showSidebar } = useAppSelector((state) => state.ui);
   const { notifications, isRead } = useAppSelector((state) => state.notifications);
 
@@ -30,15 +23,12 @@ export default function Notificationbar() {
 
     es.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setAlerts((prevAlerts) => [data, ...prevAlerts]);
+      console.log("🚨 New alert received:", data);
     };
 
     es.addEventListener("alert", (event) => {
       const data = JSON.parse(event.data);
-
-      data.map((n: any) => {
-        setAlerts((prevAlerts) => [n, ...prevAlerts]);
-      });
+      console.log("Alert event:", data);
     });
 
     return () => es.close();
@@ -79,27 +69,33 @@ export default function Notificationbar() {
             />
           </div>
 
-          {alerts
-            .map((alert, index) => {
-              const parsedAlert: Node = JSON.parse(alert);
-
-              if (parsedAlert.labels === "factory") return null;
-
+          {[...notifications]
+            ?.sort((a, b) => b.timestamp - a.timestamp)
+            ?.map((n) => {
               return (
-                <div
-                  key={index}
-                  className="p-4 border-b border-neutral-200 cursor-pointer hover:bg-neutral-100"
+                <motion.div
+                  key={n.id}
+                  onClick={() => handleClick(n)}
+                  className="flex flex-col px-4 pt-4 hover:bg-gray-100 cursor-pointer"
                 >
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-medium">{parsedAlert.name}</h3>
-                    <span className="text-sm text-neutral-500">{parsedAlert.labels}</span>
+                  <div className="border-b pb-2">
+                    {/* <span className="mb-2 block text-[#6B7280] text-sm font-medium">
+                      {isPreviousDay ? "Previous" : "Today"}
+                    </span> */}
+
+                    <span className="text-[#1F2937] font-medium capitalize">
+                      {n?.event_type?.replaceAll("_", " ") ?? "Unknown Event"} on{" "}
+                      {n?.name ?? "Unknown"} Dataset
+                    </span>
+
+                    <div className="flex items-center gap-x-2">
+                      <div className="inline-block w-[10px] h-[10px] rounded-full bg-drio-red" />
+                      <span className="text-drio-red text-sm">{formatTime(n?.timestamp)}</span>
+                    </div>
                   </div>
-                  <p className="text-sm text-neutral-700 mt-1">{parsedAlert.address}</p>
-                </div>
+                </motion.div>
               );
-            })
-            .reverse()
-            .slice(2)}
+            })}
         </motion.div>
       )}
     </AnimatePresence>
