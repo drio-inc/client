@@ -26,9 +26,7 @@ export default function Notificationbar() {
   };
 
   useEffect(() => {
-    const es = new EventSource(
-      `${process.env.NEXT_PUBLIC_AI_API_URL || "http://localhost:8000"}/alerts`
-    );
+    const es = new EventSource(`http://controller.ddx.drio.ai:8000/alerts`);
 
     es.onmessage = (event) => {
       const data = JSON.parse(event.data);
