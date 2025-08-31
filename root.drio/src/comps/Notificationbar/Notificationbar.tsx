@@ -26,7 +26,7 @@ export default function Notificationbar() {
   };
 
   useEffect(() => {
-    const es = new EventSource(`http://controller.ddx.drio.ai:8000/alerts`);
+    const es = new EventSource(`https://controller.ddx.drio.ai:6443/alerts`);
 
     es.onmessage = (event) => {
       const data = JSON.parse(event.data);
