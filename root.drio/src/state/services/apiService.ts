@@ -4,18 +4,13 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const rootApi = createApi({
   reducerPath: "rootApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${
-      process.env.DEVELOPMENT_MODE === "mock"
-        ? process.env.MOCK_URL
-        : process.env.API_URL
-    }`,
+    baseUrl: `${process.env.API_URL || "https://controller.ddx.drio.ai/api/v1"}`,
     prepareHeaders: (headers, { endpoint }) => {
       if (endpoint?.includes("login")) return headers;
 
       const token = getToken();
 
-      if (token && !headers.has("authorization"))
-        headers.set("authorization", `Bearer ${token}`);
+      if (token && !headers.has("authorization")) headers.set("authorization", `Bearer ${token}`);
 
       return headers;
     },

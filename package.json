@@ -1,9 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "start": "serve ./saas.drio/out -p 3000 & serve ./root.drio/out -p 3001 & serve ./sc-events-generator/out -p 3003",
     "build": "yarn workspace root.drio build && yarn workspace saas.drio build && yarn workspace sc-events-generator build",
     "dev": "concurrently \"yarn workspace root.drio dev\" \"yarn workspace saas.drio dev\" \"yarn workspace sc-events-generator dev\"",
+    "start": "concurrently \"serve ./saas.drio/out -p 3000\" \"serve ./root.drio/out -p 3001\" \"serve ./sc-events-generator/out -p 3003\"",
     "serve": "concurrently \"yarn workspace root.drio start\" \"yarn workspace saas.drio start\" \"yarn workspace sc-events-generator start\""
   },
   "workspaces": [
