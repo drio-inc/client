@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { BiBrain } from "react-icons/bi";
+import { PiGraph } from "react-icons/pi";
 import { setExpandedLinks } from "@/state/slices/uiSlice";
 import { IoGridOutline, IoLayersOutline } from "react-icons/io5";
 import { logout as stateLogout } from "@/state/slices/authSlice";
@@ -16,10 +17,10 @@ import {
   HiOutlinePresentationChartLine,
 } from "react-icons/hi";
 
-import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
-import { useLogoutMutation } from "@/api/auth";
 import Button from "../ui/Button";
 import { MdLogout } from "react-icons/md";
+import { useLogoutMutation } from "@/api/auth";
+import { useAppSelector, useAppDispatch } from "@/hooks/useStoreTypes";
 
 interface NavLink {
   name: string;
@@ -78,7 +79,7 @@ const NavLinks = [
   {
     name: "Knowledge Graph",
     href: "knowledge-graph",
-    icon: <BiBrain className="inline-block w-6 h-6 mr-2" />,
+    icon: <PiGraph className="inline-block w-6 h-6 mr-2" />,
   },
 
   {
