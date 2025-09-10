@@ -50,14 +50,19 @@ const DispatchEventForm = () => {
 
       if (res) {
         const sourceCity = JSON.parse(res?.results[0])?.source_city!;
+        const severity = JSON.parse(res?.results[res?.results.length - 1])?.severity!;
+        const eventType = JSON.parse(res?.results[res?.results.length - 1])?.emergency_type!;
+
         const transformedData = {
           run_id: uuid(),
           event: data.event,
-          severity: "extreme",
+          severity: severity,
           location: sourceCity,
-          event_type: "wildfire",
-          occurence_time: new Date().toISOString(),
-          number_of_affected_nodes: res.results.length,
+          event_type: eventType,
+          occurence_time: new Date().toLocaleString("en-US", {
+            timeZoneName: "short",
+          }),
+          number_of_affected_nodes: res.results.length - 3,
         };
 
         dispatch(setRows([...eventState.rows, transformedData]));
