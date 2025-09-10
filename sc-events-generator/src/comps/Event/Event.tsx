@@ -62,7 +62,7 @@ const Events = () => {
           intent={"primary"}
           onClick={() => dispatch(setOpenModal("resetPipelineModal"))}
         >
-          Resest Knowledge Graph
+          Reset Knowledge Graph
         </Button>
       </div>
 

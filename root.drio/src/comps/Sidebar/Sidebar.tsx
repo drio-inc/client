@@ -75,6 +75,11 @@ const NavLinks = [
       },
     ],
   },
+  {
+    name: "Knowledge Graph",
+    href: "knowledge-graph",
+    icon: <BiBrain className="inline-block w-6 h-6 mr-2" />,
+  },
 
   {
     name: "Data Contracts",
